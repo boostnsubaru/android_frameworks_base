@@ -37,7 +37,10 @@ import android.util.DisplayMetrics;
 import android.util.StateSet;
 import android.util.TypedValue;
 import android.util.Xml;
+<<<<<<< HEAD
 import android.view.View;
+=======
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -124,6 +127,11 @@ public abstract class Drawable {
     private WeakReference<Callback> mCallback = null;
     private boolean mVisible = true;
 
+<<<<<<< HEAD
+=======
+    private int mLayoutDirection;
+
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     /**
      * Draw in its bounds (set via setBounds) respecting optional effects such
      * as alpha (set via setAlpha) and color filter (set via setColorFilter).
@@ -296,6 +304,7 @@ public abstract class Drawable {
     }
 
     /**
+<<<<<<< HEAD
      * Implement this interface if you want to create an drawable that is RTL aware
      * @hide
      */
@@ -309,6 +318,8 @@ public abstract class Drawable {
     }
 
     /**
+=======
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
      * Bind a {@link Callback} object to this Drawable.  Required for clients
      * that want to support animated drawables.
      *
@@ -385,6 +396,7 @@ public abstract class Drawable {
     }
 
     /**
+<<<<<<< HEAD
      * Get the resolved layout direction of this Drawable.
      * @hide
      */
@@ -394,6 +406,32 @@ public abstract class Drawable {
             return View.LAYOUT_DIRECTION_LTR;
         }
         return ((Callback2) callback).getResolvedLayoutDirection(this);
+=======
+     * Returns the resolved layout direction for this Drawable.
+     *
+     * @return One of {@link android.view.View#LAYOUT_DIRECTION_LTR},
+     *   {@link android.view.View#LAYOUT_DIRECTION_RTL}
+     *
+     * @hide
+     */
+    public int getLayoutDirection() {
+        return mLayoutDirection;
+    }
+
+    /**
+     * Set the layout direction for this drawable. Should be a resolved direction as the
+     * Drawable as no capacity to do the resolution on his own.
+     *
+     * @param layoutDirection One of {@link android.view.View#LAYOUT_DIRECTION_LTR},
+     *   {@link android.view.View#LAYOUT_DIRECTION_RTL}
+     *
+     * @hide
+     */
+    public void setLayoutDirection(int layoutDirection) {
+        if (getLayoutDirection() != layoutDirection) {
+            mLayoutDirection = layoutDirection;
+        }
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     }
 
     /**
@@ -777,7 +815,12 @@ public abstract class Drawable {
         // to the compatibility density only to have them scaled back up when
         // drawn to the screen.
         if (opts == null) opts = new BitmapFactory.Options();
+<<<<<<< HEAD
         opts.inScreenDensity = DisplayMetrics.DENSITY_DEVICE;
+=======
+        opts.inScreenDensity = res != null
+                ? res.getDisplayMetrics().noncompatDensityDpi : DisplayMetrics.DENSITY_DEVICE;
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         Bitmap  bm = BitmapFactory.decodeResourceStream(res, value, is, pad, opts);
         if (bm != null) {
             byte[] np = bm.getNinePatchChunk();

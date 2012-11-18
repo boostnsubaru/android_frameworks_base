@@ -1,6 +1,9 @@
 //
 // Copyright 2006 The Android Open Source Project
+<<<<<<< HEAD
 // This code has been modified.  Portions copyright (C) 2010, T-Mobile USA, Inc.
+=======
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 //
 // Build resource files from raw assets.
 //
@@ -9,7 +12,10 @@
 
 #include "XMLNode.h"
 #include "ResourceFilter.h"
+<<<<<<< HEAD
 #include "ResourceIdCache.h"
+=======
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 
 #include <androidfw/ResourceTypes.h>
 #include <utils/ByteOrder.h>
@@ -2058,11 +2064,15 @@ uint32_t ResourceTable::getResId(const String16& ref,
                      String8(name).string()));
         return 0;
     }
+<<<<<<< HEAD
     uint32_t res = ResourceIdCache::lookup(package, type, name, onlyPublic && refOnlyPublic);
     if (res == 0) {
         res = getResId(package, type, name, onlyPublic && refOnlyPublic);
         ResourceIdCache::store(package, type, name, onlyPublic && refOnlyPublic, res);
     }
+=======
+    uint32_t res = getResId(package, type, name, onlyPublic && refOnlyPublic);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     NOISY(printf("Expanded resource: p=%s, t=%s, n=%s, res=%d\n",
                  String8(package).string(), String8(type).string(),
                  String8(name).string(), res));
@@ -2755,6 +2765,15 @@ status_t ResourceTable::flatten(Bundle* bundle, const sp<AaptFile>& dest)
             const bool filterable = (typeName != mipmap16);
 
             const size_t N = t != NULL ? t->getOrderedConfigs().size() : 0;
+<<<<<<< HEAD
+=======
+
+            // Until a non-NO_ENTRY value has been written for a resource,
+            // that resource is invalid; validResources[i] represents
+            // the item at t->getOrderedConfigs().itemAt(i).
+            Vector<bool> validResources;
+            validResources.insertAt(false, 0, N);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
             
             // First write the typeSpec chunk, containing information about
             // each resource entry in this type.
@@ -2811,7 +2830,11 @@ status_t ResourceTable::flatten(Bundle* bundle, const sp<AaptFile>& dest)
 
                 NOISY(printf("Writing config %d config: imsi:%d/%d lang:%c%c cnt:%c%c "
                      "orien:%d ui:%d touch:%d density:%d key:%d inp:%d nav:%d sz:%dx%d "
+<<<<<<< HEAD
                      "sw%ddp w%ddp h%ddp\n",
+=======
+                     "sw%ddp w%ddp h%ddp dir:%d\n",
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
                       ti+1,
                       config.mcc, config.mnc,
                       config.language[0] ? config.language[0] : '-',
@@ -2829,7 +2852,12 @@ status_t ResourceTable::flatten(Bundle* bundle, const sp<AaptFile>& dest)
                       config.screenHeight,
                       config.smallestScreenWidthDp,
                       config.screenWidthDp,
+<<<<<<< HEAD
                       config.screenHeightDp));
+=======
+                      config.screenHeightDp,
+                      config.layoutDirection));
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
                       
                 if (filterable && !filter.match(config)) {
                     continue;
@@ -2853,7 +2881,11 @@ status_t ResourceTable::flatten(Bundle* bundle, const sp<AaptFile>& dest)
                 tHeader->config = config;
                 NOISY(printf("Writing type %d config: imsi:%d/%d lang:%c%c cnt:%c%c "
                      "orien:%d ui:%d touch:%d density:%d key:%d inp:%d nav:%d sz:%dx%d "
+<<<<<<< HEAD
                      "sw%ddp w%ddp h%ddp\n",
+=======
+                     "sw%ddp w%ddp h%ddp dir:%d\n",
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
                       ti+1,
                       tHeader->config.mcc, tHeader->config.mnc,
                       tHeader->config.language[0] ? tHeader->config.language[0] : '-',
@@ -2871,7 +2903,12 @@ status_t ResourceTable::flatten(Bundle* bundle, const sp<AaptFile>& dest)
                       tHeader->config.screenHeight,
                       tHeader->config.smallestScreenWidthDp,
                       tHeader->config.screenWidthDp,
+<<<<<<< HEAD
                       tHeader->config.screenHeightDp));
+=======
+                      tHeader->config.screenHeightDp,
+                      tHeader->config.layoutDirection));
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
                 tHeader->config.swapHtoD();
 
                 // Build the entries inside of this type.
@@ -2891,6 +2928,10 @@ status_t ResourceTable::flatten(Bundle* bundle, const sp<AaptFile>& dest)
                         if (amt < 0) {
                             return amt;
                         }
+<<<<<<< HEAD
+=======
+                        validResources.editItemAt(ei) = true;
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
                     } else {
                         index[ei] = htodl(ResTable_type::NO_ENTRY);
                     }
@@ -2901,6 +2942,17 @@ status_t ResourceTable::flatten(Bundle* bundle, const sp<AaptFile>& dest)
                     (((uint8_t*)data->editData()) + typeStart);
                 tHeader->header.size = htodl(data->getSize()-typeStart);
             }
+<<<<<<< HEAD
+=======
+
+            for (size_t i = 0; i < N; ++i) {
+                if (!validResources[i]) {
+                    sp<ConfigList> c = t->getOrderedConfigs().itemAt(i);
+                    fprintf(stderr, "warning: no entries written for %s/%s\n",
+                            String8(typeName).string(), String8(c->getName()).string());
+                }
+            }
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         }
 
         // Fill in the rest of the package information.
@@ -3480,7 +3532,11 @@ sp<ResourceTable::Entry> ResourceTable::Type::getEntry(const String16& entry,
         if (config != NULL) {
             NOISY(printf("New entry at %s:%d: imsi:%d/%d lang:%c%c cnt:%c%c "
                     "orien:%d touch:%d density:%d key:%d inp:%d nav:%d sz:%dx%d "
+<<<<<<< HEAD
                     "sw%ddp w%ddp h%ddp\n",
+=======
+                    "sw%ddp w%ddp h%ddp dir:%d\n",
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
                       sourcePos.file.string(), sourcePos.line,
                       config->mcc, config->mnc,
                       config->language[0] ? config->language[0] : '-',
@@ -3497,7 +3553,12 @@ sp<ResourceTable::Entry> ResourceTable::Type::getEntry(const String16& entry,
                       config->screenHeight,
                       config->smallestScreenWidthDp,
                       config->screenWidthDp,
+<<<<<<< HEAD
                       config->screenHeightDp));
+=======
+                      config->screenHeightDp,
+                      config->layoutDirection));
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         } else {
             NOISY(printf("New entry at %s:%d: NULL config\n",
                       sourcePos.file.string(), sourcePos.line));
@@ -3729,9 +3790,13 @@ sp<ResourceTable::Package> ResourceTable::getPackage(const String16& package)
 {
     sp<Package> p = mPackages.valueFor(package);
     if (p == NULL) {
+<<<<<<< HEAD
         if (mBundle->getIsOverlayPackage()) {
             p = new Package(package, 0x00);
         } else if (mIsAppPackage) {
+=======
+        if (mIsAppPackage) {
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
             if (mHaveAppPackage) {
                 fprintf(stderr, "Adding multiple application package resources; only one is allowed.\n"
                                 "Use -x to create extended resources.\n");
@@ -3740,6 +3805,7 @@ sp<ResourceTable::Package> ResourceTable::getPackage(const String16& package)
             mHaveAppPackage = true;
             p = new Package(package, 127);
         } else {
+<<<<<<< HEAD
             int extendedPackageId = mBundle->getExtendedPackageId();
             if (extendedPackageId != 0) {
                 if ((uint32_t)extendedPackageId < mNextPackageId) {
@@ -3750,6 +3816,9 @@ sp<ResourceTable::Package> ResourceTable::getPackage(const String16& package)
             } else {
                 p = new Package(package, mNextPackageId);
             }
+=======
+            p = new Package(package, mNextPackageId);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         }
         //printf("*** NEW PACKAGE: \"%s\" id=%d\n",
         //       String8(package).string(), p->getAssignedId());

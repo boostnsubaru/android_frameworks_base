@@ -19,12 +19,25 @@ package android.service.dreams;
 import android.os.Bundle;
 import android.os.ParcelFileDescriptor;
 import android.content.ComponentName;
+<<<<<<< HEAD
+=======
+import android.os.IBinder;
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 
 /** @hide */
 interface IDreamManager {
     void dream();
     void awaken();
+<<<<<<< HEAD
     void setDreamComponent(in ComponentName componentName);
     ComponentName getDreamComponent();
     void testDream(in ComponentName componentName);
+=======
+    void setDreamComponents(in ComponentName[] componentNames);
+    ComponentName[] getDreamComponents();
+    ComponentName getDefaultDreamComponent();
+    void testDream(in ComponentName componentName);
+    boolean isDreaming();
+    void finishSelf(in IBinder token);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 }

@@ -24,12 +24,18 @@ import android.view.SurfaceSession;
 import java.io.PrintWriter;
 
 class DimSurface {
+<<<<<<< HEAD
+=======
+    static final String TAG = "DimSurface";
+
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     Surface mDimSurface;
     boolean mDimShown = false;
     int mDimColor = 0;
     int mLayer = -1;
     int mLastDimWidth, mLastDimHeight;
 
+<<<<<<< HEAD
     DimSurface(SurfaceSession session) {
         if (mDimSurface == null) {
             try {
@@ -51,6 +57,28 @@ class DimSurface {
             } catch (Exception e) {
                 Slog.e(WindowManagerService.TAG, "Exception creating Dim surface", e);
             }
+=======
+    DimSurface(SurfaceSession session, final int layerStack) {
+        try {
+            if (WindowManagerService.DEBUG_SURFACE_TRACE) {
+                mDimSurface = new WindowStateAnimator.SurfaceTrace(session,
+                    "DimSurface",
+                    16, 16, PixelFormat.OPAQUE,
+                    Surface.FX_SURFACE_DIM | Surface.HIDDEN);
+            } else {
+                mDimSurface = new Surface(session, "DimSurface",
+                    16, 16, PixelFormat.OPAQUE,
+                    Surface.FX_SURFACE_DIM | Surface.HIDDEN);
+            }
+            if (WindowManagerService.SHOW_TRANSACTIONS ||
+                    WindowManagerService.SHOW_SURFACE_ALLOC) Slog.i(WindowManagerService.TAG,
+                            "  DIM " + mDimSurface + ": CREATE");
+            mDimSurface.setLayerStack(layerStack);
+            mDimSurface.setAlpha(0.0f);
+            mDimSurface.show();
+        } catch (Exception e) {
+            Slog.e(WindowManagerService.TAG, "Exception creating Dim surface", e);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         }
     }
 
@@ -58,6 +86,14 @@ class DimSurface {
      * Show the dim surface.
      */
     void show(int dw, int dh, int layer, int color) {
+<<<<<<< HEAD
+=======
+        if (mDimSurface == null) {
+            Slog.e(TAG, "show: no Surface");
+            return;
+        }
+
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         if (!mDimShown) {
             if (WindowManagerService.SHOW_TRANSACTIONS) Slog.i(WindowManagerService.TAG, "  DIM " + mDimSurface + ": SHOW pos=(0,0) (" +
                     dw + "x" + dh + " layer=" + layer + ")");
@@ -87,6 +123,14 @@ class DimSurface {
     }
 
     void hide() {
+<<<<<<< HEAD
+=======
+        if (mDimSurface == null) {
+            Slog.e(TAG, "hide: no Surface");
+            return;
+        }
+
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         if (mDimShown) {
             mDimShown = false;
             try {
@@ -98,6 +142,16 @@ class DimSurface {
         }
     }
 
+<<<<<<< HEAD
+=======
+    void kill() {
+        if (mDimSurface != null) {
+            mDimSurface.destroy();
+            mDimSurface = null;
+        }
+    }
+
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     public void printTo(String prefix, PrintWriter pw) {
         pw.print(prefix); pw.print("mDimSurface="); pw.println(mDimSurface);
         pw.print(prefix); pw.print("mDimShown="); pw.print(mDimShown);

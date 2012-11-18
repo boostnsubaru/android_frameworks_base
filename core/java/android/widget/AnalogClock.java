@@ -36,6 +36,13 @@ import java.util.TimeZone;
 /**
  * This widget display an analogic clock with two hands for hours and
  * minutes.
+<<<<<<< HEAD
+=======
+ *
+ * @attr ref android.R.styleable#AnalogClock_dial
+ * @attr ref android.R.styleable#AnalogClock_hand_hour
+ * @attr ref android.R.styleable#AnalogClock_hand_minute
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
  */
 @RemoteView
 public class AnalogClock extends View {

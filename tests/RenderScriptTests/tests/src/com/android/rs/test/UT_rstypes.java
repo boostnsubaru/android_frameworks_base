@@ -30,7 +30,11 @@ public class UT_rstypes extends UnitTest {
 
     public void run() {
         RenderScript pRS = RenderScript.create(mCtx);
+<<<<<<< HEAD
         ScriptC_rstypes s = new ScriptC_rstypes(pRS, mRes, R.raw.rstypes);
+=======
+        ScriptC_rstypes s = new ScriptC_rstypes(pRS);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         pRS.setMessageHandler(mRsMessage);
         s.invoke_test_rstypes(0, 0);
         pRS.finish();

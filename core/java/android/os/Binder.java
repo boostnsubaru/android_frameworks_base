@@ -32,7 +32,11 @@ import java.lang.reflect.Modifier;
  * the standard support creating a local implementation of such an object.
  * 
  * <p>Most developers will not implement this class directly, instead using the
+<<<<<<< HEAD
  * <a href="{@docRoot}guide/developing/tools/aidl.html">aidl</a> tool to describe the desired
+=======
+ * <a href="{@docRoot}guide/components/aidl.html">aidl</a> tool to describe the desired
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
  * interface, having it generate the appropriate Binder subclass.  You can,
  * however, derive directly from Binder to implement your own custom RPC
  * protocol or simply instantiate a raw Binder object directly to use as a
@@ -64,7 +68,11 @@ public class Binder implements IBinder {
     public static final native int getCallingPid();
     
     /**
+<<<<<<< HEAD
      * Return the ID of the user assigned to the process that sent you the
+=======
+     * Return the Linux uid assigned to the process that sent you the
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
      * current transaction that is being processed.  This uid can be used with
      * higher-level system services to determine its identity and check
      * permissions.  If the current thread is not currently executing an
@@ -73,6 +81,7 @@ public class Binder implements IBinder {
     public static final native int getCallingUid();
 
     /**
+<<<<<<< HEAD
      * Return the original ID of the user assigned to the process that sent you the current
      * transaction that is being processed. This uid can be used with higher-level system services
      * to determine its identity and check permissions. If the current thread is not currently
@@ -98,6 +107,17 @@ public class Binder implements IBinder {
      */
     public static final int getOrigCallingUser() {
         return UserId.getUserId(getOrigCallingUid());
+=======
+     * Return the UserHandle assigned to the process that sent you the
+     * current transaction that is being processed.  This is the user
+     * of the caller.  It is distinct from {@link #getCallingUid()} in that a
+     * particular user will have multiple distinct apps running under it each
+     * with their own uid.  If the current thread is not currently executing an
+     * incoming transaction, then its own UserHandle is returned.
+     */
+    public static final UserHandle getCallingUserHandle() {
+        return new UserHandle(UserHandle.getUserId(getCallingUid()));
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     }
 
     /**

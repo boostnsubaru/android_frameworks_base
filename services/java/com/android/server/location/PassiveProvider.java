@@ -16,17 +16,33 @@
 
 package com.android.server.location;
 
+<<<<<<< HEAD
+=======
+import java.io.FileDescriptor;
+import java.io.PrintWriter;
+
+import com.android.internal.location.ProviderProperties;
+import com.android.internal.location.ProviderRequest;
+
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 import android.location.Criteria;
 import android.location.ILocationManager;
 import android.location.Location;
 import android.location.LocationManager;
 import android.location.LocationProvider;
+<<<<<<< HEAD
 import android.net.NetworkInfo;
+=======
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 import android.os.Bundle;
 import android.os.RemoteException;
 import android.os.WorkSource;
 import android.util.Log;
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 /**
  * A passive location provider reports locations received from other providers
  * for clients that want to listen passively without actually triggering
@@ -35,20 +51,36 @@ import android.util.Log;
  * {@hide}
  */
 public class PassiveProvider implements LocationProviderInterface {
+<<<<<<< HEAD
 
     private static final String TAG = "PassiveProvider";
 
     private final ILocationManager mLocationManager;
     private boolean mTracking;
+=======
+    private static final String TAG = "PassiveProvider";
+
+    private static final ProviderProperties PROPERTIES = new ProviderProperties(
+            false, false, false, false, false, false, false,
+            Criteria.POWER_LOW, Criteria.ACCURACY_COARSE);
+
+    private final ILocationManager mLocationManager;
+    private boolean mReportLocation;
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 
     public PassiveProvider(ILocationManager locationManager) {
         mLocationManager = locationManager;
     }
 
+<<<<<<< HEAD
+=======
+    @Override
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     public String getName() {
         return LocationManager.PASSIVE_PROVIDER;
     }
 
+<<<<<<< HEAD
     public boolean requiresNetwork() {
         return false;
     }
@@ -90,10 +122,19 @@ public class PassiveProvider implements LocationProviderInterface {
         return -1;
     }
 
+=======
+    @Override
+    public ProviderProperties getProperties() {
+        return PROPERTIES;
+    }
+
+    @Override
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     public boolean isEnabled() {
         return true;
     }
 
+<<<<<<< HEAD
     public void enable() {
     }
 
@@ -102,16 +143,34 @@ public class PassiveProvider implements LocationProviderInterface {
 
     public int getStatus(Bundle extras) {
         if (mTracking) {
+=======
+    @Override
+    public void enable() {
+    }
+
+    @Override
+    public void disable() {
+    }
+
+    @Override
+    public int getStatus(Bundle extras) {
+        if (mReportLocation) {
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
             return LocationProvider.AVAILABLE;
         } else {
             return LocationProvider.TEMPORARILY_UNAVAILABLE;
         }
     }
 
+<<<<<<< HEAD
+=======
+    @Override
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     public long getStatusUpdateTime() {
         return -1;
     }
 
+<<<<<<< HEAD
     public String getInternalState() {
         return null;
     }
@@ -132,6 +191,20 @@ public class PassiveProvider implements LocationProviderInterface {
 
     public void updateLocation(Location location) {
         if (mTracking) {
+=======
+    @Override
+    public void setRequest(ProviderRequest request, WorkSource source) {
+        mReportLocation = request.reportLocation;
+    }
+
+    @Override
+    public void switchUser(int userId) {
+        // nothing to do here
+    }
+
+    public void updateLocation(Location location) {
+        if (mReportLocation) {
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
             try {
                 // pass the location back to the location manager
                 mLocationManager.reportLocation(location, true);
@@ -141,13 +214,23 @@ public class PassiveProvider implements LocationProviderInterface {
         }
     }
 
+<<<<<<< HEAD
+=======
+    @Override
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     public boolean sendExtraCommand(String command, Bundle extras) {
         return false;
     }
 
+<<<<<<< HEAD
     public void addListener(int uid) {
     }
 
     public void removeListener(int uid) {
+=======
+    @Override
+    public void dump(FileDescriptor fd, PrintWriter pw, String[] args) {
+        pw.println("mReportLocation=" + mReportLocation);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     }
 }

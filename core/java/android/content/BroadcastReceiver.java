@@ -237,16 +237,27 @@ public abstract class BroadcastReceiver {
         final boolean mOrderedHint;
         final boolean mInitialStickyHint;
         final IBinder mToken;
+<<<<<<< HEAD
+=======
+        final int mSendingUser;
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         
         int mResultCode;
         String mResultData;
         Bundle mResultExtras;
         boolean mAbortBroadcast;
         boolean mFinished;
+<<<<<<< HEAD
         
         /** @hide */
         public PendingResult(int resultCode, String resultData, Bundle resultExtras,
                 int type, boolean ordered, boolean sticky, IBinder token) {
+=======
+
+        /** @hide */
+        public PendingResult(int resultCode, String resultData, Bundle resultExtras,
+                int type, boolean ordered, boolean sticky, IBinder token, int userId) {
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
             mResultCode = resultCode;
             mResultData = resultData;
             mResultExtras = resultExtras;
@@ -254,6 +265,10 @@ public abstract class BroadcastReceiver {
             mOrderedHint = ordered;
             mInitialStickyHint = sticky;
             mToken = token;
+<<<<<<< HEAD
+=======
+            mSendingUser = userId;
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         }
         
         /**
@@ -425,7 +440,16 @@ public abstract class BroadcastReceiver {
                 }
             }
         }
+<<<<<<< HEAD
         
+=======
+
+        /** @hide */
+        public int getSendingUserId() {
+            return mSendingUser;
+        }
+
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         void checkSynchronousHint() {
             // Note that we don't assert when receiving the initial sticky value,
             // since that may have come from an ordered broadcast.  We'll catch
@@ -733,9 +757,20 @@ public abstract class BroadcastReceiver {
         return mPendingResult;
     }
     
+<<<<<<< HEAD
     /**
      * Control inclusion of debugging help for mismatched
      * calls to {@ Context#registerReceiver(BroadcastReceiver, IntentFilter)
+=======
+    /** @hide */
+    public int getSendingUserId() {
+        return mPendingResult.mSendingUser;
+    }
+
+    /**
+     * Control inclusion of debugging help for mismatched
+     * calls to {@link Context#registerReceiver(BroadcastReceiver, IntentFilter)
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
      * Context.registerReceiver()}.
      * If called with true, before given to registerReceiver(), then the
      * callstack of the following {@link Context#unregisterReceiver(BroadcastReceiver)

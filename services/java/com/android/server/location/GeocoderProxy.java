@@ -16,6 +16,7 @@
 
 package com.android.server.location;
 
+<<<<<<< HEAD
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
@@ -88,10 +89,62 @@ public class GeocoderProxy {
                 return mProvider;
             }
         }
+=======
+import android.content.Context;
+import android.location.Address;
+import android.location.GeocoderParams;
+import android.location.IGeocodeProvider;
+import android.os.RemoteException;
+import android.os.UserHandle;
+import android.util.Log;
+
+import com.android.server.ServiceWatcher;
+import java.util.List;
+
+/**
+ * Proxy for IGeocodeProvider implementations.
+ */
+public class GeocoderProxy {
+    private static final String TAG = "GeocoderProxy";
+
+    private static final String SERVICE_ACTION = "com.android.location.service.GeocodeProvider";
+
+    private final Context mContext;
+    private final ServiceWatcher mServiceWatcher;
+
+    public static GeocoderProxy createAndBind(Context context,
+            List<String> initialPackageNames, int userId) {
+        GeocoderProxy proxy = new GeocoderProxy(context, initialPackageNames, userId);
+        if (proxy.bind()) {
+            return proxy;
+        } else {
+            return null;
+        }
+    }
+
+    public GeocoderProxy(Context context, List<String> initialPackageNames, int userId) {
+        mContext = context;
+
+        mServiceWatcher = new ServiceWatcher(mContext, TAG, SERVICE_ACTION, initialPackageNames,
+                null, null, userId);
+    }
+
+    private boolean bind () {
+        return mServiceWatcher.start();
+    }
+
+    private IGeocodeProvider getService() {
+        return IGeocodeProvider.Stub.asInterface(mServiceWatcher.getBinder());
+    }
+
+    public String getConnectedPackageName() {
+        return mServiceWatcher.getBestPackageName();
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     }
 
     public String getFromLocation(double latitude, double longitude, int maxResults,
             GeocoderParams params, List<Address> addrs) {
+<<<<<<< HEAD
         IGeocodeProvider provider;
         synchronized (mMutex) {
             provider = mServiceConnection.getProvider();
@@ -102,6 +155,14 @@ public class GeocoderProxy {
                         params, addrs);
             } catch (RemoteException e) {
                 Log.e(TAG, "getFromLocation failed", e);
+=======
+        IGeocodeProvider provider = getService();
+        if (provider != null) {
+            try {
+                return provider.getFromLocation(latitude, longitude, maxResults, params, addrs);
+            } catch (RemoteException e) {
+                Log.w(TAG, e);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
             }
         }
         return "Service not Available";
@@ -111,19 +172,31 @@ public class GeocoderProxy {
             double lowerLeftLatitude, double lowerLeftLongitude,
             double upperRightLatitude, double upperRightLongitude, int maxResults,
             GeocoderParams params, List<Address> addrs) {
+<<<<<<< HEAD
         IGeocodeProvider provider;
         synchronized (mMutex) {
             provider = mServiceConnection.getProvider();
         }
+=======
+        IGeocodeProvider provider = getService();
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         if (provider != null) {
             try {
                 return provider.getFromLocationName(locationName, lowerLeftLatitude,
                         lowerLeftLongitude, upperRightLatitude, upperRightLongitude,
                         maxResults, params, addrs);
             } catch (RemoteException e) {
+<<<<<<< HEAD
                 Log.e(TAG, "getFromLocationName failed", e);
+=======
+                Log.w(TAG, e);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
             }
         }
         return "Service not Available";
     }
+<<<<<<< HEAD
+=======
+
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 }

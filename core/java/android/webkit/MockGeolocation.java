@@ -17,6 +17,7 @@
 package android.webkit;
 
 /**
+<<<<<<< HEAD
  * This class is simply a container for the methods used to configure WebKit's
  * mock Geolocation service for use in LayoutTests.
  * @hide
@@ -25,13 +26,35 @@ public final class MockGeolocation {
 
     // Global instance of a MockGeolocation
     private static MockGeolocation sMockGeolocation;
+=======
+ * Used to configure the mock Geolocation client for the LayoutTests.
+ * @hide
+ */
+public final class MockGeolocation {
+    private WebViewCore mWebViewCore;
+
+    public MockGeolocation(WebViewCore webViewCore) {
+        mWebViewCore = webViewCore;
+    }
+
+    /**
+     * Sets use of the mock Geolocation client. Also resets that client.
+     */
+    public void setUseMock() {
+        nativeSetUseMock(mWebViewCore);
+    }
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 
     /**
      * Set the position for the mock Geolocation service.
      */
     public void setPosition(double latitude, double longitude, double accuracy) {
         // This should only ever be called on the WebKit thread.
+<<<<<<< HEAD
         nativeSetPosition(latitude, longitude, accuracy);
+=======
+        nativeSetPosition(mWebViewCore, latitude, longitude, accuracy);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     }
 
     /**
@@ -39,6 +62,7 @@ public final class MockGeolocation {
      */
     public void setError(int code, String message) {
         // This should only ever be called on the WebKit thread.
+<<<<<<< HEAD
         nativeSetError(code, message);
     }
 
@@ -56,4 +80,20 @@ public final class MockGeolocation {
     // Native functions
     private static native void nativeSetPosition(double latitude, double longitude, double accuracy);
     private static native void nativeSetError(int code, String message);
+=======
+        nativeSetError(mWebViewCore, code, message);
+    }
+
+    public void setPermission(boolean allow) {
+        // This should only ever be called on the WebKit thread.
+        nativeSetPermission(mWebViewCore, allow);
+    }
+
+    // Native functions
+    private static native void nativeSetUseMock(WebViewCore webViewCore);
+    private static native void nativeSetPosition(WebViewCore webViewCore, double latitude,
+            double longitude, double accuracy);
+    private static native void nativeSetError(WebViewCore webViewCore, int code, String message);
+    private static native void nativeSetPermission(WebViewCore webViewCore, boolean allow);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 }

@@ -21,6 +21,19 @@ package android.view;
   */
 public interface ViewManager
 {
+<<<<<<< HEAD
+=======
+    /**
+     * Assign the passed LayoutParams to the passed View and add the view to the window.
+     * <p>Throws {@link android.view.WindowManager.BadTokenException} for certain programming
+     * errors, such as adding a second view to a window without removing the first view.
+     * <p>Throws {@link android.view.WindowManager.InvalidDisplayException} if the window is on a
+     * secondary {@link Display} and the specified display can't be found
+     * (see {@link android.app.Presentation}).
+     * @param view The view to be added to this window.
+     * @param params The LayoutParams to assign to view.
+     */
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     public void addView(View view, ViewGroup.LayoutParams params);
     public void updateViewLayout(View view, ViewGroup.LayoutParams params);
     public void removeView(View view);

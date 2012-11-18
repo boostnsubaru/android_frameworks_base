@@ -25,7 +25,11 @@ import android.app.MediaRouteActionProvider;
 import android.app.MediaRouteButton;
 import android.content.Context;
 import android.graphics.drawable.Drawable;
+<<<<<<< HEAD
 import android.media.AudioManager;
+=======
+import android.hardware.display.DisplayManager;
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 import android.media.MediaRouter;
 import android.media.MediaRouter.RouteCategory;
 import android.media.MediaRouter.RouteGroup;
@@ -70,6 +74,10 @@ public class MediaRouteChooserDialogFragment extends DialogFragment {
     };
 
     MediaRouter mRouter;
+<<<<<<< HEAD
+=======
+    DisplayManager mDisplayService;
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     private int mRouteTypes;
 
     private LayoutInflater mInflater;
@@ -97,6 +105,10 @@ public class MediaRouteChooserDialogFragment extends DialogFragment {
     public void onAttach(Activity activity) {
         super.onAttach(activity);
         mRouter = (MediaRouter) activity.getSystemService(Context.MEDIA_ROUTER_SERVICE);
+<<<<<<< HEAD
+=======
+        mDisplayService = (DisplayManager) activity.getSystemService(Context.DISPLAY_SERVICE);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     }
 
     @Override
@@ -119,6 +131,18 @@ public class MediaRouteChooserDialogFragment extends DialogFragment {
 
     public void setRouteTypes(int types) {
         mRouteTypes = types;
+<<<<<<< HEAD
+=======
+        if ((mRouteTypes & MediaRouter.ROUTE_TYPE_LIVE_VIDEO) != 0 && mDisplayService == null) {
+            final Context activity = getActivity();
+            if (activity != null) {
+                mDisplayService = (DisplayManager) activity.getSystemService(
+                        Context.DISPLAY_SERVICE);
+            }
+        } else {
+            mDisplayService = null;
+        }
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     }
 
     void updateVolume() {
@@ -194,6 +218,12 @@ public class MediaRouteChooserDialogFragment extends DialogFragment {
     @Override
     public void onResume() {
         super.onResume();
+<<<<<<< HEAD
+=======
+        if (mDisplayService != null) {
+            mDisplayService.scanWifiDisplays();
+        }
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     }
 
     private static class ViewHolder {
@@ -253,7 +283,13 @@ public class MediaRouteChooserDialogFragment extends DialogFragment {
                 final RouteCategory cat = mRouter.getCategoryAt(i);
                 routes = cat.getRoutes(mCatRouteList);
 
+<<<<<<< HEAD
                 mItems.add(cat);
+=======
+                if (!cat.isSystem()) {
+                    mItems.add(cat);
+                }
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 
                 if (cat == mCategoryEditingGroups) {
                     addGroupEditingCategoryRoutes(routes);
@@ -370,6 +406,10 @@ public class MediaRouteChooserDialogFragment extends DialogFragment {
         public boolean isEnabled(int position) {
             switch (getItemViewType(position)) {
                 case VIEW_ROUTE:
+<<<<<<< HEAD
+=======
+                    return ((RouteInfo) mItems.get(position)).isEnabled();
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
                 case VIEW_GROUPING_ROUTE:
                 case VIEW_GROUPING_DONE:
                     return true;
@@ -434,6 +474,10 @@ public class MediaRouteChooserDialogFragment extends DialogFragment {
             }
 
             convertView.setActivated(position == mSelectedItemPosition);
+<<<<<<< HEAD
+=======
+            convertView.setEnabled(isEnabled(position));
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 
             return convertView;
         }

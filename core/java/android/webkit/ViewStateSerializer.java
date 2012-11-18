@@ -16,7 +16,10 @@
 package android.webkit;
 
 import android.graphics.Point;
+<<<<<<< HEAD
 import android.graphics.Region;
+=======
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 import android.webkit.WebViewCore.DrawData;
 
 import java.io.DataInputStream;
@@ -68,6 +71,18 @@ class ViewStateSerializer {
         return draw;
     }
 
+<<<<<<< HEAD
+=======
+    public static void dumpLayerHierarchy(int baseLayer, OutputStream out, int level) {
+        nativeDumpLayerHierarchy(baseLayer, level, out,
+                new byte[WORKING_STREAM_STORAGE]);
+    }
+
+
+    private static native void nativeDumpLayerHierarchy(int baseLayer, int level,
+            OutputStream out, byte[] storage);
+
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     private static native boolean nativeSerializeViewState(int baseLayer,
             OutputStream stream, byte[] storage);
 

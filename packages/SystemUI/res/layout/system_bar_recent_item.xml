@@ -37,6 +37,10 @@
         android:singleLine="true"
         android:ellipsize="marquee"
         android:textColor="@color/status_bar_recents_app_label_color"
+<<<<<<< HEAD
+=======
+        android:importantForAccessibility="no"
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     />
 
     <FrameLayout android:id="@+id/app_thumbnail"

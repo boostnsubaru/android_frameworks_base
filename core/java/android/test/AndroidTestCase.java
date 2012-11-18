@@ -135,7 +135,12 @@ public class AndroidTestCase extends TestCase {
             fail("expected SecurityException requiring " + permission);
         } catch (SecurityException expected) {
             assertNotNull("security exception's error message.", expected.getMessage());
+<<<<<<< HEAD
             assertTrue("error message should contain " + permission + ".",
+=======
+            assertTrue("error message should contain \"" + permission + "\". Got: \""
+                    + expected.getMessage() + "\".",
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
                     expected.getMessage().contains(permission));
         }
     }

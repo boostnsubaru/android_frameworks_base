@@ -204,7 +204,11 @@ class ZoomManager {
      */
     private boolean mAllowPanAndScale;
 
+<<<<<<< HEAD
     // use the framework's ScaleGestureDetector to handle multi-touch
+=======
+    // use the framework's ScaleGestureDetector to handle scaling gestures
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     private ScaleGestureDetector mScaleDetector;
     private boolean mPinchToZoomAnimating = false;
 
@@ -287,6 +291,10 @@ class ZoomManager {
         if (!exceedsMinScaleIncrement(mMinZoomScale, mMaxZoomScale)) {
             mMaxZoomScale = mMinZoomScale;
         }
+<<<<<<< HEAD
+=======
+        sanitizeMinMaxScales();
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     }
 
     public final float getScale() {
@@ -768,7 +776,11 @@ class ZoomManager {
         return isZoomAnimating();
     }
 
+<<<<<<< HEAD
     public ScaleGestureDetector getMultiTouchGestureDetector() {
+=======
+    public ScaleGestureDetector getScaleGestureDetector() {
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         return mScaleDetector;
     }
 
@@ -909,6 +921,17 @@ class ZoomManager {
         }
     }
 
+<<<<<<< HEAD
+=======
+    private void sanitizeMinMaxScales() {
+        if (mMinZoomScale > mMaxZoomScale) {
+            Log.w(LOGTAG, "mMinZoom > mMaxZoom!!! " + mMinZoomScale + " > " + mMaxZoomScale,
+                    new Exception());
+            mMaxZoomScale = mMinZoomScale;
+        }
+    }
+
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     public void onSizeChanged(int w, int h, int ow, int oh) {
         // reset zoom and anchor to the top left corner of the screen
         // unless we are already zooming
@@ -933,6 +956,10 @@ class ZoomManager {
             if (mInitialScale > 0 && mInitialScale < mMinZoomScale) {
                 mMinZoomScale = mInitialScale;
             }
+<<<<<<< HEAD
+=======
+            sanitizeMinMaxScales();
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         }
 
         dismissZoomPicker();
@@ -1004,6 +1031,10 @@ class ZoomManager {
         } else {
             mMaxZoomScale = viewState.mMaxScale;
         }
+<<<<<<< HEAD
+=======
+        sanitizeMinMaxScales();
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     }
 
     /**
@@ -1033,6 +1064,10 @@ class ZoomManager {
         if (!mMinZoomScaleFixed || settings.getUseWideViewPort()) {
             mMinZoomScale = newZoomOverviewScale;
             mMaxZoomScale = Math.max(mMaxZoomScale, mMinZoomScale);
+<<<<<<< HEAD
+=======
+            sanitizeMinMaxScales();
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         }
         // fit the content width to the current view for the first new picture
         // after first layout.
@@ -1113,6 +1148,10 @@ class ZoomManager {
             mMinZoomScale = (mInitialScale > 0) ?
                     Math.min(mInitialScale, overviewScale) : overviewScale;
             mMaxZoomScale = Math.max(mMaxZoomScale, mMinZoomScale);
+<<<<<<< HEAD
+=======
+            sanitizeMinMaxScales();
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         }
 
         if (!mWebView.drawHistory()) {

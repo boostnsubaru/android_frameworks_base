@@ -221,10 +221,17 @@ public class Html {
                 false /* no info */);
         switch(paraDir) {
             case Layout.DIR_RIGHT_TO_LEFT:
+<<<<<<< HEAD
                 return "<p dir=rtl>";
             case Layout.DIR_LEFT_TO_RIGHT:
             default:
                 return "<p dir=ltr>";
+=======
+                return "<p dir=\"rtl\">";
+            case Layout.DIR_LEFT_TO_RIGHT:
+            default:
+                return "<p dir=\"ltr\">";
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         }
     }
 

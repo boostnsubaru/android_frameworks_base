@@ -23,7 +23,12 @@ LOCAL_MODULE:= com.android.location.provider
 LOCAL_MODULE_TAGS := optional
 
 LOCAL_SRC_FILES := \
+<<<<<<< HEAD
             $(call all-subdir-java-files)
+=======
+            $(call all-subdir-java-files) \
+            $(call all-aidl-files-under, java)
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 
 include $(BUILD_JAVA_LIBRARY)
 

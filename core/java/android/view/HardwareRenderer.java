@@ -21,6 +21,10 @@ import android.content.ComponentCallbacks2;
 import android.graphics.Paint;
 import android.graphics.Rect;
 import android.graphics.SurfaceTexture;
+<<<<<<< HEAD
+=======
+import android.opengl.EGL14;
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 import android.opengl.GLUtils;
 import android.opengl.ManagedEGLContext;
 import android.os.Handler;
@@ -77,6 +81,7 @@ public abstract class HardwareRenderer {
     static final String RENDER_DIRTY_REGIONS_PROPERTY = "debug.hwui.render_dirty_regions";
     
     /**
+<<<<<<< HEAD
      * System property used to enable or disable tile rendering
      *
      * Possible values:
@@ -89,6 +94,11 @@ public abstract class HardwareRenderer {
      * System property used to enable or disable vsync.
      * The default value of this property is assumed to be false.
      *
+=======
+     * System property used to enable or disable vsync.
+     * The default value of this property is assumed to be false.
+     * 
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
      * Possible values:
      * "true", to disable vsync
      * "false", to enable vsync
@@ -144,7 +154,34 @@ public abstract class HardwareRenderer {
      * @hide
      */
     public static final String DEBUG_DIRTY_REGIONS_PROPERTY = "debug.hwui.show_dirty_regions";
+<<<<<<< HEAD
     
+=======
+
+    /**
+     * Turn on to flash hardware layers when they update.
+     *
+     * Possible values:
+     * "true", to enable hardware layers updates debugging
+     * "false", to disable hardware layers updates debugging
+     *
+     * @hide
+     */
+    public static final String DEBUG_SHOW_LAYERS_UPDATES_PROPERTY =
+            "debug.hwui.show_layers_updates";
+
+    /**
+     * Turn on to show overdraw level.
+     *
+     * Possible values:
+     * "true", to enable overdraw debugging
+     * "false", to disable overdraw debugging
+     *
+     * @hide
+     */
+    public static final String DEBUG_SHOW_OVERDRAW_PROPERTY = "debug.hwui.show_overdraw";
+
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     /**
      * A process can set this flag to false to prevent the use of hardware
      * rendering.
@@ -206,6 +243,7 @@ public abstract class HardwareRenderer {
     /**
      * Initializes the hardware renderer for the specified surface.
      * 
+<<<<<<< HEAD
      * @param holder The holder for the surface to hardware accelerate.
      * 
      * @return True if the initialization was successful, false otherwise.
@@ -218,6 +256,20 @@ public abstract class HardwareRenderer {
      * @param holder The holder for the surface to hardware accelerate
      */
     abstract void updateSurface(SurfaceHolder holder) throws Surface.OutOfResourcesException;
+=======
+     * @param surface The surface to hardware accelerate
+     * 
+     * @return True if the initialization was successful, false otherwise.
+     */
+    abstract boolean initialize(Surface surface) throws Surface.OutOfResourcesException;
+    
+    /**
+     * Updates the hardware renderer for the specified surface.
+     *
+     * @param surface The surface to hardware accelerate
+     */
+    abstract void updateSurface(Surface surface) throws Surface.OutOfResourcesException;
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 
     /**
      * Destroys the layers used by the specified view hierarchy.
@@ -237,10 +289,17 @@ public abstract class HardwareRenderer {
     /**
      * This method should be invoked whenever the current hardware renderer
      * context should be reset.
+<<<<<<< HEAD
      * 
      * @param holder The holder for the surface to hardware accelerate
      */
     abstract void invalidate(SurfaceHolder holder);
+=======
+     *
+     * @param surface The surface to hardware accelerate
+     */
+    abstract void invalidate(Surface surface);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 
     /**
      * This method should be invoked to ensure the hardware renderer is in
@@ -367,6 +426,17 @@ public abstract class HardwareRenderer {
     private static native void nDisableVsync();
 
     /**
+<<<<<<< HEAD
+=======
+     * Indicates that the specified hardware layer needs to be updated
+     * as soon as possible.
+     * 
+     * @param layer The hardware layer that needs an update
+     */
+    abstract void pushLayerUpdate(HardwareLayer layer);
+
+    /**
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
      * Interface used to receive callbacks whenever a view is drawn by
      * a hardware renderer instance.
      */
@@ -483,18 +553,37 @@ public abstract class HardwareRenderer {
      *
      * @param width The width of the drawing surface.
      * @param height The height of the drawing surface.
+<<<<<<< HEAD
      * @param holder The target surface
      */
     void initializeIfNeeded(int width, int height, SurfaceHolder holder)
+=======
+     * @param surface The surface to hardware accelerate
+     *                
+     * @return true if the surface was initialized, false otherwise. Returning
+     *         false might mean that the surface was already initialized.
+     */
+    boolean initializeIfNeeded(int width, int height, Surface surface)
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
             throws Surface.OutOfResourcesException {
         if (isRequested()) {
             // We lost the gl context, so recreate it.
             if (!isEnabled()) {
+<<<<<<< HEAD
                 if (initialize(holder)) {
                     setup(width, height);
                 }
             }
         }        
+=======
+                if (initialize(surface)) {
+                    setup(width, height);
+                    return true;
+                }
+            }
+        }
+        return false;
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     }
 
     /**
@@ -586,12 +675,15 @@ public abstract class HardwareRenderer {
 
     @SuppressWarnings({"deprecation"})
     static abstract class GlRenderer extends HardwareRenderer {
+<<<<<<< HEAD
         // These values are not exposed in our EGL APIs
         static final int EGL_CONTEXT_CLIENT_VERSION = 0x3098;
         static final int EGL_OPENGL_ES2_BIT = 4;
         static final int EGL_SURFACE_TYPE = 0x3033;
         static final int EGL_SWAP_BEHAVIOR_PRESERVED_BIT = 0x0400;        
 
+=======
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         static final int SURFACE_STATE_ERROR = 0;
         static final int SURFACE_STATE_SUCCESS = 1;
         static final int SURFACE_STATE_UPDATED = 2;
@@ -620,6 +712,7 @@ public abstract class HardwareRenderer {
 
         static boolean sDirtyRegions;
         static final boolean sDirtyRegionsRequested;
+<<<<<<< HEAD
         static boolean sTileRendering;
         static {
             String dirtyProperty = SystemProperties.get(RENDER_DIRTY_REGIONS_PROPERTY, "true");
@@ -630,6 +723,12 @@ public abstract class HardwareRenderer {
             sDirtyRegions = RENDER_DIRTY_REGIONS &&
                             ("true".equalsIgnoreCase(dirtyProperty) ||
                              sTileRendering);
+=======
+        static {
+            String dirtyProperty = SystemProperties.get(RENDER_DIRTY_REGIONS_PROPERTY, "true");
+            //noinspection PointlessBooleanExpression,ConstantConditions
+            sDirtyRegions = RENDER_DIRTY_REGIONS && "true".equalsIgnoreCase(dirtyProperty);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
             sDirtyRegionsRequested = sDirtyRegions;
         }
 
@@ -644,6 +743,10 @@ public abstract class HardwareRenderer {
         int mProfileCurrentFrame = -PROFILE_FRAME_DATA_COUNT;
         
         final boolean mDebugDirtyRegions;
+<<<<<<< HEAD
+=======
+        final boolean mShowOverdraw;
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 
         final int mGlVersion;
         final boolean mTranslucent;
@@ -693,6 +796,12 @@ public abstract class HardwareRenderer {
             if (mDebugDirtyRegions) {
                 Log.d(LOG_TAG, "Debugging dirty regions");
             }
+<<<<<<< HEAD
+=======
+
+            mShowOverdraw = SystemProperties.getBoolean(
+                    HardwareRenderer.DEBUG_SHOW_OVERDRAW_PROPERTY, false);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         }
 
         @Override
@@ -736,6 +845,7 @@ public abstract class HardwareRenderer {
          */
         void checkEglErrors() {
             if (isEnabled()) {
+<<<<<<< HEAD
                 int error = sEgl.eglGetError();
                 if (error != EGL_SUCCESS) {
                     // something bad has happened revert to
@@ -743,6 +853,19 @@ public abstract class HardwareRenderer {
                     Log.w(LOG_TAG, "EGL error: " + GLUtils.getEGLErrorString(error));
                     fallback(error != EGL11.EGL_CONTEXT_LOST);
                 }
+=======
+                checkEglErrorsForced();
+            }
+        }
+
+        private void checkEglErrorsForced() {
+            int error = sEgl.eglGetError();
+            if (error != EGL_SUCCESS) {
+                // something bad has happened revert to
+                // normal rendering.
+                Log.w(LOG_TAG, "EGL error: " + GLUtils.getEGLErrorString(error));
+                fallback(error != EGL11.EGL_CONTEXT_LOST);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
             }
         }
 
@@ -757,10 +880,17 @@ public abstract class HardwareRenderer {
         }
 
         @Override
+<<<<<<< HEAD
         boolean initialize(SurfaceHolder holder) throws Surface.OutOfResourcesException {
             if (isRequested() && !isEnabled()) {
                 initializeEgl();
                 mGl = createEglSurface(holder);
+=======
+        boolean initialize(Surface surface) throws Surface.OutOfResourcesException {
+            if (isRequested() && !isEnabled()) {
+                initializeEgl();
+                mGl = createEglSurface(surface);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
                 mDestroyed = false;
 
                 if (mGl != null) {
@@ -786,9 +916,15 @@ public abstract class HardwareRenderer {
         }
         
         @Override
+<<<<<<< HEAD
         void updateSurface(SurfaceHolder holder) throws Surface.OutOfResourcesException {
             if (isRequested() && isEnabled()) {
                 createEglSurface(holder);
+=======
+        void updateSurface(Surface surface) throws Surface.OutOfResourcesException {
+            if (isRequested() && isEnabled()) {
+                createEglSurface(surface);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
             }
         }
 
@@ -815,7 +951,13 @@ public abstract class HardwareRenderer {
                         throw new RuntimeException("eglInitialize failed " +
                                 GLUtils.getEGLErrorString(sEgl.eglGetError()));
                     }
+<<<<<<< HEAD
         
+=======
+
+                    checkEglErrorsForced();
+
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
                     sEglConfig = chooseEglConfig();
                     if (sEglConfig == null) {
                         // We tried to use EGL_SWAP_BEHAVIOR_PRESERVED_BIT, try again without
@@ -899,11 +1041,28 @@ public abstract class HardwareRenderer {
             sEgl.eglGetConfigAttrib(sEglDisplay, config, EGL_STENCIL_SIZE, value);
             Log.d(LOG_TAG, "  STENCIL_SIZE = " + value[0]);
 
+<<<<<<< HEAD
             sEgl.eglGetConfigAttrib(sEglDisplay, config, EGL_SURFACE_TYPE, value);
             Log.d(LOG_TAG, "  SURFACE_TYPE = 0x" + Integer.toHexString(value[0]));
         }
 
         GL createEglSurface(SurfaceHolder holder) throws Surface.OutOfResourcesException {
+=======
+            sEgl.eglGetConfigAttrib(sEglDisplay, config, EGL_SAMPLE_BUFFERS, value);
+            Log.d(LOG_TAG, "  SAMPLE_BUFFERS = " + value[0]);
+
+            sEgl.eglGetConfigAttrib(sEglDisplay, config, EGL_SAMPLES, value);
+            Log.d(LOG_TAG, "  SAMPLES = " + value[0]);
+
+            sEgl.eglGetConfigAttrib(sEglDisplay, config, EGL_SURFACE_TYPE, value);
+            Log.d(LOG_TAG, "  SURFACE_TYPE = 0x" + Integer.toHexString(value[0]));
+
+            sEgl.eglGetConfigAttrib(sEglDisplay, config, EGL_CONFIG_CAVEAT, value);
+            Log.d(LOG_TAG, "  CONFIG_CAVEAT = 0x" + Integer.toHexString(value[0]));
+        }
+
+        GL createEglSurface(Surface surface) throws Surface.OutOfResourcesException {
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
             // Check preconditions.
             if (sEgl == null) {
                 throw new RuntimeException("egl not initialized");
@@ -923,6 +1082,7 @@ public abstract class HardwareRenderer {
             destroySurface();
 
             // Create an EGL surface we can render into.
+<<<<<<< HEAD
             if (!createSurface(holder)) {
                 return null;
             }
@@ -940,6 +1100,14 @@ public abstract class HardwareRenderer {
 
             enableDirtyRegions();
 
+=======
+            if (!createSurface(surface)) {
+                return null;
+            }
+
+            initCaches();
+
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
             return mEglContext.getGL();
         }
 
@@ -964,10 +1132,24 @@ public abstract class HardwareRenderer {
         abstract void initCaches();
 
         EGLContext createContext(EGL10 egl, EGLDisplay eglDisplay, EGLConfig eglConfig) {
+<<<<<<< HEAD
             int[] attribs = { EGL_CONTEXT_CLIENT_VERSION, mGlVersion, EGL_NONE };
 
             return egl.eglCreateContext(eglDisplay, eglConfig, EGL_NO_CONTEXT,
                     mGlVersion != 0 ? attribs : null);            
+=======
+            int[] attribs = { EGL14.EGL_CONTEXT_CLIENT_VERSION, mGlVersion, EGL_NONE };
+
+            EGLContext context = egl.eglCreateContext(eglDisplay, eglConfig, EGL_NO_CONTEXT,
+                    mGlVersion != 0 ? attribs : null);
+            if (context == null || context == EGL_NO_CONTEXT) {
+                //noinspection ConstantConditions
+                throw new IllegalStateException(
+                        "Could not create an EGL context. eglCreateContext failed with error: " +
+                        GLUtils.getEGLErrorString(sEgl.eglGetError()));
+            }
+            return context;
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         }
 
         @Override
@@ -997,7 +1179,11 @@ public abstract class HardwareRenderer {
         }
 
         @Override
+<<<<<<< HEAD
         void invalidate(SurfaceHolder holder) {
+=======
+        void invalidate(Surface surface) {
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
             // Cancels any existing buffer to ensure we'll get a buffer
             // of the right size before we call eglSwapBuffers
             sEgl.eglMakeCurrent(sEglDisplay, EGL_NO_SURFACE, EGL_NO_SURFACE, EGL_NO_CONTEXT);
@@ -1008,8 +1194,13 @@ public abstract class HardwareRenderer {
                 setEnabled(false);
             }
 
+<<<<<<< HEAD
             if (holder.getSurface().isValid()) {
                 if (!createSurface(holder)) {
+=======
+            if (surface.isValid()) {
+                if (!createSurface(surface)) {
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
                     return;
                 }
 
@@ -1021,8 +1212,13 @@ public abstract class HardwareRenderer {
             }
         }
 
+<<<<<<< HEAD
         private boolean createSurface(SurfaceHolder holder) {
             mEglSurface = sEgl.eglCreateWindowSurface(sEglDisplay, sEglConfig, holder, null);
+=======
+        private boolean createSurface(Surface surface) {
+            mEglSurface = sEgl.eglCreateWindowSurface(sEglDisplay, sEglConfig, surface, null);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 
             if (mEglSurface == null || mEglSurface == EGL_NO_SURFACE) {
                 int error = sEgl.eglGetError();
@@ -1033,6 +1229,17 @@ public abstract class HardwareRenderer {
                 throw new RuntimeException("createWindowSurface failed "
                         + GLUtils.getEGLErrorString(error));
             }
+<<<<<<< HEAD
+=======
+
+            if (!sEgl.eglMakeCurrent(sEglDisplay, mEglSurface, mEglSurface, mEglContext)) {
+                throw new IllegalStateException("eglMakeCurrent failed " +
+                        GLUtils.getEGLErrorString(sEgl.eglGetError()));
+            }
+
+            enableDirtyRegions();
+
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
             return true;
         }
 
@@ -1069,12 +1276,15 @@ public abstract class HardwareRenderer {
             return mGl != null && mCanvas != null;
         }        
         
+<<<<<<< HEAD
         void startTileRendering(Rect dirty) {
         }
 
         void endTileRendering() {
         }
 
+=======
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         int onPreDraw(Rect dirty) {
             return DisplayList.STATUS_DONE;
         }
@@ -1110,7 +1320,11 @@ public abstract class HardwareRenderer {
                 attachInfo.mIgnoreDirtyState = true;
                 attachInfo.mDrawingTime = SystemClock.uptimeMillis();
 
+<<<<<<< HEAD
                 view.mPrivateFlags |= View.DRAWN;
+=======
+                view.mPrivateFlags |= View.PFLAG_DRAWN;
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 
                 final int surfaceState = checkCurrent();
                 if (surfaceState != SURFACE_STATE_ERROR) {
@@ -1139,6 +1353,7 @@ public abstract class HardwareRenderer {
                         }
                     }
 
+<<<<<<< HEAD
                     if (sTileRendering)
                         startTileRendering(dirty);
 
@@ -1150,6 +1365,15 @@ public abstract class HardwareRenderer {
                         view.mRecreateDisplayList =
                                 (view.mPrivateFlags & View.INVALIDATED) == View.INVALIDATED;
                         view.mPrivateFlags &= ~View.INVALIDATED;
+=======
+                    int saveCount = 0;
+                    int status = DisplayList.STATUS_DONE;
+
+                    try {
+                        view.mRecreateDisplayList = (view.mPrivateFlags & View.PFLAG_INVALIDATED)
+                                == View.PFLAG_INVALIDATED;
+                        view.mPrivateFlags &= ~View.PFLAG_INVALIDATED;
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 
                         long getDisplayListStartTime = 0;
                         if (mProfileEnabled) {
@@ -1161,8 +1385,14 @@ public abstract class HardwareRenderer {
                             getDisplayListStartTime = System.nanoTime();
                         }
 
+<<<<<<< HEAD
                         DisplayList displayList;
 
+=======
+                        canvas.clearLayerUpdates();
+
+                        DisplayList displayList;
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
                         Trace.traceBegin(Trace.TRACE_TAG_VIEW, "getDisplayList");
                         try {
                             displayList = view.getDisplayList();
@@ -1170,6 +1400,18 @@ public abstract class HardwareRenderer {
                             Trace.traceEnd(Trace.TRACE_TAG_VIEW);
                         }
 
+<<<<<<< HEAD
+=======
+                        Trace.traceBegin(Trace.TRACE_TAG_VIEW, "prepareFrame");
+                        try {
+                            status = onPreDraw(dirty);
+                        } finally {
+                            Trace.traceEnd(Trace.TRACE_TAG_VIEW);
+                        }
+                        saveCount = canvas.save();
+                        callbacks.onHardwarePreDraw(canvas);
+
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
                         if (mProfileEnabled) {
                             long now = System.nanoTime();
                             float total = (now - getDisplayListStartTime) * 0.000001f;
@@ -1222,8 +1464,11 @@ public abstract class HardwareRenderer {
                     }
 
                     onPostDraw();
+<<<<<<< HEAD
                     if (sTileRendering)
                         endTileRendering();
+=======
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 
                     attachInfo.mIgnoreDirtyState = false;
                     
@@ -1404,15 +1649,27 @@ public abstract class HardwareRenderer {
         @Override
         int[] getConfig(boolean dirtyRegions) {
             return new int[] {
+<<<<<<< HEAD
                     EGL_RENDERABLE_TYPE, EGL_OPENGL_ES2_BIT,
+=======
+                    EGL_RENDERABLE_TYPE, EGL14.EGL_OPENGL_ES2_BIT,
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
                     EGL_RED_SIZE, 8,
                     EGL_GREEN_SIZE, 8,
                     EGL_BLUE_SIZE, 8,
                     EGL_ALPHA_SIZE, 8,
                     EGL_DEPTH_SIZE, 0,
+<<<<<<< HEAD
                     EGL_STENCIL_SIZE, GLES20Canvas.getStencilSize(),
                     EGL_SURFACE_TYPE, EGL_WINDOW_BIT |
                             (dirtyRegions ? EGL_SWAP_BEHAVIOR_PRESERVED_BIT : 0),
+=======
+                    EGL_CONFIG_CAVEAT, EGL_NONE,
+                    // TODO: Find a better way to choose the stencil size
+                    EGL_STENCIL_SIZE, mShowOverdraw ? GLES20Canvas.getStencilSize() : 0,
+                    EGL_SURFACE_TYPE, EGL_WINDOW_BIT |
+                            (dirtyRegions ? EGL14.EGL_SWAP_BEHAVIOR_PRESERVED_BIT : 0),
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
                     EGL_NONE
             };
         }
@@ -1438,6 +1695,7 @@ public abstract class HardwareRenderer {
         }
 
         @Override
+<<<<<<< HEAD
         void startTileRendering(Rect dirty) {
             mGlCanvas.startTileRendering(dirty);
         }
@@ -1448,6 +1706,8 @@ public abstract class HardwareRenderer {
         }
 
         @Override
+=======
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         void destroy(boolean full) {
             try {
                 super.destroy(full);
@@ -1467,6 +1727,14 @@ public abstract class HardwareRenderer {
         }
 
         @Override
+<<<<<<< HEAD
+=======
+        void pushLayerUpdate(HardwareLayer layer) {
+            mGlCanvas.pushLayerUpdate(layer);
+        }
+
+        @Override
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         public DisplayList createDisplayList(String name) {
             return new GLES20DisplayList(name);
         }
@@ -1492,6 +1760,7 @@ public abstract class HardwareRenderer {
         }
 
         @Override
+<<<<<<< HEAD
         void destroyLayers(View view) {
             if (view != null && isEnabled() && checkCurrent() != SURFACE_STATE_ERROR) {
                 destroyHardwareLayer(view);
@@ -1513,6 +1782,8 @@ public abstract class HardwareRenderer {
         }
 
         @Override
+=======
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         boolean safelyRun(Runnable action) {
             boolean needsContext = true;
             if (isEnabled() && checkCurrent() != SURFACE_STATE_ERROR) needsContext = false;
@@ -1537,11 +1808,49 @@ public abstract class HardwareRenderer {
         }
 
         @Override
+<<<<<<< HEAD
+=======
+        void destroyLayers(final View view) {
+            if (view != null) {
+                safelyRun(new Runnable() {
+                    @Override
+                    public void run() {
+                        if (mCanvas != null) {
+                            mCanvas.clearLayerUpdates();
+                        }
+                        destroyHardwareLayer(view);
+                        GLES20Canvas.flushCaches(GLES20Canvas.FLUSH_CACHES_LAYERS);
+                    }
+                });
+            }
+        }
+
+        private static void destroyHardwareLayer(View view) {
+            view.destroyLayer(true);
+
+            if (view instanceof ViewGroup) {
+                ViewGroup group = (ViewGroup) view;
+
+                int count = group.getChildCount();
+                for (int i = 0; i < count; i++) {
+                    destroyHardwareLayer(group.getChildAt(i));
+                }
+            }
+        }
+
+        @Override
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         void destroyHardwareResources(final View view) {
             if (view != null) {
                 safelyRun(new Runnable() {
                     @Override
                     public void run() {
+<<<<<<< HEAD
+=======
+                        if (mCanvas != null) {
+                            mCanvas.clearLayerUpdates();
+                        }
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
                         destroyResources(view);
                         GLES20Canvas.flushCaches(GLES20Canvas.FLUSH_CACHES_LAYERS);
                     }

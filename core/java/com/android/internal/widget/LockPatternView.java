@@ -18,7 +18,10 @@ package com.android.internal.widget;
 
 
 import android.content.Context;
+<<<<<<< HEAD
 import android.content.res.Resources;
+=======
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 import android.content.res.TypedArray;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -33,11 +36,17 @@ import android.os.Parcel;
 import android.os.Parcelable;
 import android.os.SystemClock;
 import android.util.AttributeSet;
+<<<<<<< HEAD
 import android.util.Log;
 import android.view.HapticFeedbackConstants;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.accessibility.AccessibilityEvent;
+=======
+import android.view.HapticFeedbackConstants;
+import android.view.MotionEvent;
+import android.view.View;
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 import android.view.accessibility.AccessibilityManager;
 
 import com.android.internal.R;
@@ -375,6 +384,7 @@ public class LockPatternView extends View {
     }
 
     private void notifyCellAdded() {
+<<<<<<< HEAD
         if (mOnPatternListener != null) {
             mOnPatternListener.onPatternCellAdded(mPattern);
         }
@@ -400,6 +410,33 @@ public class LockPatternView extends View {
             mOnPatternListener.onPatternCleared();
         }
         sendAccessEvent(R.string.lockscreen_access_pattern_cleared);
+=======
+        sendAccessEvent(R.string.lockscreen_access_pattern_cell_added);
+        if (mOnPatternListener != null) {
+            mOnPatternListener.onPatternCellAdded(mPattern);
+        }
+    }
+
+    private void notifyPatternStarted() {
+        sendAccessEvent(R.string.lockscreen_access_pattern_start);
+        if (mOnPatternListener != null) {
+            mOnPatternListener.onPatternStart();
+        }
+    }
+
+    private void notifyPatternDetected() {
+        sendAccessEvent(R.string.lockscreen_access_pattern_detected);
+        if (mOnPatternListener != null) {
+            mOnPatternListener.onPatternDetected(mPattern);
+        }
+    }
+
+    private void notifyPatternCleared() {
+        sendAccessEvent(R.string.lockscreen_access_pattern_cleared);
+        if (mOnPatternListener != null) {
+            mOnPatternListener.onPatternCleared();
+        }
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     }
 
     /**
@@ -657,9 +694,17 @@ public class LockPatternView extends View {
                 handleActionMove(event);
                 return true;
             case MotionEvent.ACTION_CANCEL:
+<<<<<<< HEAD
                 resetPattern();
                 mPatternInProgress = false;
                 notifyPatternCleared();
+=======
+                if (mPatternInProgress) {
+                    mPatternInProgress = false;
+                    resetPattern();
+                    notifyPatternCleared();
+                }
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
                 if (PROFILE_DRAWING) {
                     if (mDrawingProfilingStarted) {
                         Debug.stopMethodTracing();
@@ -799,9 +844,13 @@ public class LockPatternView extends View {
     }
 
     private void sendAccessEvent(int resId) {
+<<<<<<< HEAD
         setContentDescription(mContext.getString(resId));
         sendAccessibilityEvent(AccessibilityEvent.TYPE_VIEW_SELECTED);
         setContentDescription(null);
+=======
+        announceForAccessibility(mContext.getString(resId));
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     }
 
     private void handleActionUp(MotionEvent event) {
@@ -828,7 +877,11 @@ public class LockPatternView extends View {
             mPatternInProgress = true;
             mPatternDisplayMode = DisplayMode.Correct;
             notifyPatternStarted();
+<<<<<<< HEAD
         } else {
+=======
+        } else if (mPatternInProgress) {
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
             mPatternInProgress = false;
             notifyPatternCleared();
         }

@@ -326,6 +326,10 @@ public class Criteria implements Parcelable {
 
     public static final Parcelable.Creator<Criteria> CREATOR =
         new Parcelable.Creator<Criteria>() {
+<<<<<<< HEAD
+=======
+        @Override
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         public Criteria createFromParcel(Parcel in) {
             Criteria c = new Criteria();
             c.mHorizontalAccuracy = in.readInt();
@@ -340,15 +344,27 @@ public class Criteria implements Parcelable {
             return c;
         }
 
+<<<<<<< HEAD
+=======
+        @Override
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         public Criteria[] newArray(int size) {
             return new Criteria[size];
         }
     };
 
+<<<<<<< HEAD
+=======
+    @Override
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     public int describeContents() {
         return 0;
     }
 
+<<<<<<< HEAD
+=======
+    @Override
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     public void writeToParcel(Parcel parcel, int flags) {
         parcel.writeInt(mHorizontalAccuracy);
         parcel.writeInt(mVerticalAccuracy);
@@ -360,4 +376,46 @@ public class Criteria implements Parcelable {
         parcel.writeInt(mSpeedRequired ? 1 : 0);
         parcel.writeInt(mCostAllowed ? 1 : 0);
     }
+<<<<<<< HEAD
+=======
+
+    private static String powerToString(int power) {
+        switch (power) {
+            case NO_REQUIREMENT:
+                return "NO_REQ";
+            case POWER_LOW:
+                return "LOW";
+            case POWER_MEDIUM:
+                return "MEDIUM";
+            case POWER_HIGH:
+                return "HIGH";
+            default:
+                return "???";
+        }
+    }
+
+    private static String accuracyToString(int accuracy) {
+        switch (accuracy) {
+            case NO_REQUIREMENT:
+                return "---";
+            case ACCURACY_HIGH:
+                return "HIGH";
+            case ACCURACY_MEDIUM:
+                return "MEDIUM";
+            case ACCURACY_LOW:
+                return "LOW";
+            default:
+                return "???";
+        }
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder s = new StringBuilder();
+        s.append("Criteria[power=").append(powerToString(mPowerRequirement));
+        s.append(" acc=").append(accuracyToString(mHorizontalAccuracy));
+        s.append(']');
+        return s.toString();
+    }
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 }

@@ -16,14 +16,32 @@
 
 package android.webkit;
 
+<<<<<<< HEAD
 import android.util.Log;
 
+=======
+import android.os.Build;
+import android.os.StrictMode;
+import android.os.SystemProperties;
+import android.util.Log;
+
+import dalvik.system.PathClassLoader;
+
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 /**
  * Top level factory, used creating all the main WebView implementation classes.
  */
 class WebViewFactory {
     // Default Provider factory class name.
+<<<<<<< HEAD
     private static final String DEFAULT_WEB_VIEW_FACTORY = "android.webkit.WebViewClassic$Factory";
+=======
+    // TODO: When the Chromium powered WebView is ready, it should be the default factory class.
+    private static final String DEFAULT_WEBVIEW_FACTORY = "android.webkit.WebViewClassic$Factory";
+    private static final String CHROMIUM_WEBVIEW_FACTORY =
+            "com.android.webviewchromium.WebViewChromiumFactoryProvider";
+    private static final String CHROMIUM_WEBVIEW_JAR = "/system/framework/webviewchromium.jar";
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 
     private static final String LOGTAG = "WebViewFactory";
 
@@ -32,6 +50,7 @@ class WebViewFactory {
     // Cache the factory both for efficiency, and ensure any one process gets all webviews from the
     // same provider.
     private static WebViewFactoryProvider sProviderInstance;
+<<<<<<< HEAD
 
     static synchronized WebViewFactoryProvider getProvider() {
         // For now the main purpose of this function (and the factory abstraction) is to keep
@@ -50,6 +69,56 @@ class WebViewFactory {
         try {
             if (DEBUG) Log.v(LOGTAG, "attempt to load class " + providerName);
             Class<?> c = Class.forName(providerName);
+=======
+    private static final Object sProviderLock = new Object();
+
+    static WebViewFactoryProvider getProvider() {
+        synchronized (sProviderLock) {
+            // For now the main purpose of this function (and the factory abstraction) is to keep
+            // us honest and minimize usage of WebViewClassic internals when binding the proxy.
+            if (sProviderInstance != null) return sProviderInstance;
+
+            // For debug builds, we allow a system property to specify that we should use the
+            // Chromium powered WebView. This enables us to switch between implementations
+            // at runtime. For user (release) builds, don't allow this.
+            if (Build.IS_DEBUGGABLE && SystemProperties.getBoolean("webview.use_chromium", false)) {
+                StrictMode.ThreadPolicy oldPolicy = StrictMode.allowThreadDiskReads();
+                try {
+                    sProviderInstance = loadChromiumProvider();
+                    if (DEBUG) Log.v(LOGTAG, "Loaded Chromium provider: " + sProviderInstance);
+                } finally {
+                    StrictMode.setThreadPolicy(oldPolicy);
+                }
+            }
+
+            if (sProviderInstance == null) {
+                if (DEBUG) Log.v(LOGTAG, "Falling back to default provider: "
+                        + DEFAULT_WEBVIEW_FACTORY);
+                sProviderInstance = getFactoryByName(DEFAULT_WEBVIEW_FACTORY,
+                        WebViewFactory.class.getClassLoader());
+                if (sProviderInstance == null) {
+                    if (DEBUG) Log.v(LOGTAG, "Falling back to explicit linkage");
+                    sProviderInstance = new WebViewClassic.Factory();
+                }
+            }
+            return sProviderInstance;
+        }
+    }
+
+    // TODO: This allows us to have the legacy and Chromium WebView coexist for development
+    // and side-by-side testing. After transition, remove this when no longer required.
+    private static WebViewFactoryProvider loadChromiumProvider() {
+        ClassLoader clazzLoader = new PathClassLoader(CHROMIUM_WEBVIEW_JAR, null,
+                WebViewFactory.class.getClassLoader());
+        return getFactoryByName(CHROMIUM_WEBVIEW_FACTORY, clazzLoader);
+    }
+
+    private static WebViewFactoryProvider getFactoryByName(String providerName,
+            ClassLoader loader) {
+        try {
+            if (DEBUG) Log.v(LOGTAG, "attempt to load class " + providerName);
+            Class<?> c = Class.forName(providerName, true, loader);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
             if (DEBUG) Log.v(LOGTAG, "instantiating factory");
             return (WebViewFactoryProvider) c.newInstance();
         } catch (ClassNotFoundException e) {

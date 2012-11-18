@@ -248,7 +248,11 @@ public:
     /* Notifies the policy about switch events.
      */
     virtual void notifySwitch(nsecs_t when,
+<<<<<<< HEAD
             int32_t switchCode, int32_t switchValue, uint32_t policyFlags) = 0;
+=======
+            uint32_t switchValues, uint32_t switchMask, uint32_t policyFlags) = 0;
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 
     /* Poke user activity for an event dispatched to a window. */
     virtual void pokeUserActivity(nsecs_t eventTime, int32_t eventType) = 0;
@@ -511,15 +515,27 @@ private:
         float xPrecision;
         float yPrecision;
         nsecs_t downTime;
+<<<<<<< HEAD
+=======
+        int32_t displayId;
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         uint32_t pointerCount;
         PointerProperties pointerProperties[MAX_POINTERS];
         PointerCoords pointerCoords[MAX_POINTERS];
 
         MotionEntry(nsecs_t eventTime,
+<<<<<<< HEAD
                 int32_t deviceId, uint32_t source, uint32_t policyFlags, int32_t action,
                 int32_t flags, int32_t metaState, int32_t buttonState, int32_t edgeFlags,
                 float xPrecision, float yPrecision,
                 nsecs_t downTime, uint32_t pointerCount,
+=======
+                int32_t deviceId, uint32_t source, uint32_t policyFlags,
+                int32_t action, int32_t flags,
+                int32_t metaState, int32_t buttonState, int32_t edgeFlags,
+                float xPrecision, float yPrecision,
+                nsecs_t downTime, int32_t displayId, uint32_t pointerCount,
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
                 const PointerProperties* pointerProperties, const PointerCoords* pointerCoords);
         virtual void appendDescription(String8& msg) const;
 
@@ -696,7 +712,11 @@ private:
 
         // Returns true if the specified source is known to have received a hover enter
         // motion event.
+<<<<<<< HEAD
         bool isHovering(int32_t deviceId, uint32_t source) const;
+=======
+        bool isHovering(int32_t deviceId, uint32_t source, int32_t displayId) const;
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 
         // Records tracking information for a key event that has just been published.
         // Returns true if the event should be delivered, false if it is inconsistent
@@ -752,6 +772,10 @@ private:
             float xPrecision;
             float yPrecision;
             nsecs_t downTime;
+<<<<<<< HEAD
+=======
+            int32_t displayId;
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
             uint32_t pointerCount;
             PointerProperties pointerProperties[MAX_POINTERS];
             PointerCoords pointerCoords[MAX_POINTERS];
@@ -867,7 +891,11 @@ private:
     // to transfer focus to a new application.
     EventEntry* mNextUnblockedEvent;
 
+<<<<<<< HEAD
     sp<InputWindowHandle> findTouchedWindowAtLocked(int32_t x, int32_t y);
+=======
+    sp<InputWindowHandle> findTouchedWindowAtLocked(int32_t displayId, int32_t x, int32_t y);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 
     // All registered connections mapped by channel file descriptor.
     KeyedVector<int, sp<Connection> > mConnectionsByFd;
@@ -896,9 +924,20 @@ private:
     KeyEntry* synthesizeKeyRepeatLocked(nsecs_t currentTime);
 
     // Deferred command processing.
+<<<<<<< HEAD
     bool runCommandsLockedInterruptible();
     CommandEntry* postCommandLocked(Command command);
 
+=======
+    bool haveCommandsLocked() const;
+    bool runCommandsLockedInterruptible();
+    CommandEntry* postCommandLocked(Command command);
+
+    // Input filter processing.
+    bool shouldSendKeyToInputFilterLocked(const NotifyKeyArgs* args);
+    bool shouldSendMotionToInputFilterLocked(const NotifyMotionArgs* args);
+
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     // Inbound event processing.
     void drainInboundQueueLocked();
     void releasePendingEventLocked();
@@ -928,6 +967,10 @@ private:
         bool split;
         int32_t deviceId; // id of the device that is currently down, others are rejected
         uint32_t source;  // source of the device that is current down, others are rejected
+<<<<<<< HEAD
+=======
+        int32_t displayId; // id to the display that currently has a touch, others are rejected
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         Vector<TouchedWindow> windows;
 
         TouchState();

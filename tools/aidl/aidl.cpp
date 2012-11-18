@@ -590,7 +590,12 @@ exactly_one_interface(const char* filename, const document_item_type* items, con
     }
 
     const document_item_type* next = items->next;
+<<<<<<< HEAD
     if (items->next != NULL) {
+=======
+    // Allow parcelables to skip the "one-only" rule.
+    if (items->next != NULL && next->item_type != USER_DATA_TYPE) {
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         int lineno = -1;
         if (next->item_type == INTERFACE_TYPE_BINDER) {
             lineno = ((interface_type*)next)->interface_token.lineno;
@@ -598,9 +603,12 @@ exactly_one_interface(const char* filename, const document_item_type* items, con
         else if (next->item_type == INTERFACE_TYPE_RPC) {
             lineno = ((interface_type*)next)->interface_token.lineno;
         }
+<<<<<<< HEAD
         else if (next->item_type == USER_DATA_TYPE) {
             lineno = ((user_data_type*)next)->keyword_token.lineno;
         }
+=======
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         fprintf(stderr, "%s:%d aidl can only handle one interface per file\n",
                             filename, lineno);
         return 1;

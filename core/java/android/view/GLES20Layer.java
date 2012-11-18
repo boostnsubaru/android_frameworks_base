@@ -18,6 +18,10 @@
 package android.view;
 
 import android.graphics.Bitmap;
+<<<<<<< HEAD
+=======
+import android.graphics.Paint;
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 
 /**
  * An OpenGL ES 2.0 implementation of {@link HardwareLayer}.
@@ -43,6 +47,7 @@ abstract class GLES20Layer extends HardwareLayer {
     }
 
     @Override
+<<<<<<< HEAD
     boolean copyInto(Bitmap bitmap) {
         return GLES20Canvas.nCopyLayer(mLayer, bitmap.mNativeBitmap);
     }
@@ -50,6 +55,19 @@ abstract class GLES20Layer extends HardwareLayer {
     @Override
     void update(int width, int height, boolean isOpaque) {
         super.update(width, height, isOpaque);
+=======
+    void setLayerPaint(Paint paint) {
+        if (paint != null) {
+            GLES20Canvas.nSetLayerPaint(mLayer, paint.mNativePaint);
+            GLES20Canvas.nSetLayerColorFilter(mLayer, paint.getColorFilter() != null ?
+                    paint.getColorFilter().nativeColorFilter : 0);
+        }
+    }
+
+    @Override
+    boolean copyInto(Bitmap bitmap) {
+        return GLES20Canvas.nCopyLayer(mLayer, bitmap.mNativeBitmap);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     }
 
     @Override
@@ -60,12 +78,19 @@ abstract class GLES20Layer extends HardwareLayer {
         }
         mLayer = 0;
     }
+<<<<<<< HEAD
     
     @Override
     void flush() {
         if (mLayer != 0) {
             GLES20Canvas.nFlushLayer(mLayer);
         }
+=======
+
+    @Override
+    void clearStorage() {
+        if (mLayer != 0) GLES20Canvas.nClearLayerTexture(mLayer);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     }
 
     static class Finalizer {

@@ -32,6 +32,10 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.os.Vibrator;
 import android.os.Handler;
+<<<<<<< HEAD
+=======
+import android.text.SpannableStringBuilder;
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 import android.text.TextUtils;
 import android.util.Log;
 import android.net.Uri;
@@ -187,6 +191,23 @@ public class NotificationBuilderTest extends Activity
         mNM.notify(id, n);
     }
 
+<<<<<<< HEAD
+=======
+    private static CharSequence subst(CharSequence in, char ch, CharSequence sub) {
+        int i=0;
+        SpannableStringBuilder edit = new SpannableStringBuilder(in);
+        while (i<edit.length()) {
+            if (edit.charAt(i) == ch) {
+                edit.replace(i, i+1, sub);
+                i += sub.length();
+            } else {
+                i ++;
+            }
+        }
+        return edit;
+    }
+
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     private Notification buildNotification(int id) {
         Notification.Builder b = new Notification.Builder(this);
 
@@ -223,12 +244,17 @@ public class NotificationBuilderTest extends Activity
         }
 
         // title
+<<<<<<< HEAD
         final String title = getRadioTag(R.id.group_title);
+=======
+        final CharSequence title = getRadioTag(R.id.group_title);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         if (!TextUtils.isEmpty(title)) {
             b.setContentTitle(title);
         }
 
         // text
+<<<<<<< HEAD
         final String text = getRadioTag(R.id.group_text);
         if (!TextUtils.isEmpty(text)) {
             b.setContentText(text);
@@ -236,6 +262,21 @@ public class NotificationBuilderTest extends Activity
 
         // info
         final String info = getRadioTag(R.id.group_info);
+=======
+        final CharSequence text = getRadioTag(R.id.group_text);
+        if (!TextUtils.isEmpty(text)) {
+            if (getRadioChecked(R.id.group_text) == R.id.text_emoji) {
+                // UTF-16 for +1F335
+                b.setContentText(subst(text,
+                        '_', "\ud83c\udf35"));
+            } else {
+                b.setContentText(text);
+            }
+        }
+
+        // info
+        final CharSequence info = getRadioTag(R.id.group_info);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         if (!TextUtils.isEmpty(info)) {
             b.setContentInfo(info);
         }
@@ -272,6 +313,14 @@ public class NotificationBuilderTest extends Activity
             case R.id.ticker_haiku:
                 b.setTicker(getRadioTag(R.id.group_ticker));
                 break;
+<<<<<<< HEAD
+=======
+            case R.id.ticker_emoji:
+                // UTF-16 for +1F335
+                b.setTicker(subst(getRadioTag(R.id.group_ticker),
+                        '_', "\ud83c\udf35"));
+                break;
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
             case R.id.ticker_custom:
                 // TODO
                 break;
@@ -370,6 +419,7 @@ public class NotificationBuilderTest extends Activity
         return g.getCheckedRadioButtonId();
     }
 
+<<<<<<< HEAD
     private String getRadioTag(int id) {
         final RadioGroup g = (RadioGroup)findViewById(id);
         final View v = findViewById(g.getCheckedRadioButtonId());
@@ -378,11 +428,25 @@ public class NotificationBuilderTest extends Activity
 
     private int getRadioInt(int id, int def) {
         String str = getRadioTag(id);
+=======
+    private CharSequence getRadioTag(int id) {
+        final RadioGroup g = (RadioGroup)findViewById(id);
+        final View v = findViewById(g.getCheckedRadioButtonId());
+        return (CharSequence) v.getTag();
+    }
+
+    private int getRadioInt(int id, int def) {
+        CharSequence str = getRadioTag(id);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         if (TextUtils.isEmpty(str)) {
             return def;
         } else {
             try {
+<<<<<<< HEAD
                 return Integer.parseInt(str);
+=======
+                return Integer.parseInt(str.toString());
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
             } catch (NumberFormatException ex) {
                 return def;
             }

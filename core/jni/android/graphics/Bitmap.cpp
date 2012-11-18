@@ -145,7 +145,11 @@ static void ToColor_S4444_Alpha(SkColor dst[], const void* src, int width,
 static void ToColor_S4444_Opaque(SkColor dst[], const void* src, int width,
                                  SkColorTable*) {
     SkASSERT(width > 0);
+<<<<<<< HEAD
     const SkPMColor* s = (const SkPMColor*)src;
+=======
+    const SkPMColor16* s = (const SkPMColor16*)src;
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     do {
         SkPMColor c = SkPixel4444ToPixel32(*s++);
         *dst++ = SkColorSetRGB(SkGetPackedR32(c), SkGetPackedG32(c),
@@ -261,6 +265,7 @@ static void Bitmap_destructor(JNIEnv* env, jobject, SkBitmap* bitmap) {
     delete bitmap;
 }
 
+<<<<<<< HEAD
 static void Bitmap_recycle(JNIEnv* env, jobject, SkBitmap* bitmap) {
 #ifdef USE_OPENGL_RENDERER
     if (android::uirenderer::Caches::hasInstance()) {
@@ -269,6 +274,16 @@ static void Bitmap_recycle(JNIEnv* env, jobject, SkBitmap* bitmap) {
     }
 #endif // USE_OPENGL_RENDERER
     bitmap->setPixels(NULL, NULL);
+=======
+static jboolean Bitmap_recycle(JNIEnv* env, jobject, SkBitmap* bitmap) {
+#ifdef USE_OPENGL_RENDERER
+    if (android::uirenderer::Caches::hasInstance()) {
+        return android::uirenderer::Caches::getInstance().resourceCache.recycle(bitmap);
+    }
+#endif // USE_OPENGL_RENDERER
+    bitmap->setPixels(NULL, NULL);
+    return true;
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 }
 
 // These must match the int values in Bitmap.java
@@ -353,6 +368,18 @@ static void Bitmap_setHasAlpha(JNIEnv* env, jobject, SkBitmap* bitmap,
     bitmap->setIsOpaque(!hasAlpha);
 }
 
+<<<<<<< HEAD
+=======
+static jboolean Bitmap_hasMipMap(JNIEnv* env, jobject, SkBitmap* bitmap) {
+    return bitmap->hasHardwareMipMap();
+}
+
+static void Bitmap_setHasMipMap(JNIEnv* env, jobject, SkBitmap* bitmap,
+                                jboolean hasMipMap) {
+    bitmap->setHasHardwareMipMap(hasMipMap);
+}
+
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 ///////////////////////////////////////////////////////////////////////////////
 
 static jobject Bitmap_createFromParcel(JNIEnv* env, jobject, jobject parcel) {
@@ -656,7 +683,11 @@ static JNINativeMethod gBitmapMethods[] = {
     {   "nativeCopy",               "(IIZ)Landroid/graphics/Bitmap;",
         (void*)Bitmap_copy },
     {   "nativeDestructor",         "(I)V", (void*)Bitmap_destructor },
+<<<<<<< HEAD
     {   "nativeRecycle",            "(I)V", (void*)Bitmap_recycle },
+=======
+    {   "nativeRecycle",            "(I)Z", (void*)Bitmap_recycle },
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     {   "nativeCompress",           "(IIILjava/io/OutputStream;[B)Z",
         (void*)Bitmap_compress },
     {   "nativeErase",              "(II)V", (void*)Bitmap_erase },
@@ -666,6 +697,11 @@ static JNINativeMethod gBitmapMethods[] = {
     {   "nativeConfig",             "(I)I", (void*)Bitmap_config },
     {   "nativeHasAlpha",           "(I)Z", (void*)Bitmap_hasAlpha },
     {   "nativeSetHasAlpha",        "(IZ)V", (void*)Bitmap_setHasAlpha },
+<<<<<<< HEAD
+=======
+    {   "nativeHasMipMap",          "(I)Z", (void*)Bitmap_hasMipMap },
+    {   "nativeSetHasMipMap",       "(IZ)V", (void*)Bitmap_setHasMipMap },
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     {   "nativeCreateFromParcel",
         "(Landroid/os/Parcel;)Landroid/graphics/Bitmap;",
         (void*)Bitmap_createFromParcel },

@@ -172,6 +172,10 @@ public class MediaFile {
 
     static {
         addFileType("MP3", FILE_TYPE_MP3, "audio/mpeg", MtpConstants.FORMAT_MP3);
+<<<<<<< HEAD
+=======
+        addFileType("MPGA", FILE_TYPE_MP3, "audio/mpeg", MtpConstants.FORMAT_MP3);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         addFileType("M4A", FILE_TYPE_M4A, "audio/mp4", MtpConstants.FORMAT_MPEG);
         addFileType("WAV", FILE_TYPE_WAV, "audio/x-wav", MtpConstants.FORMAT_WAV);
         addFileType("AMR", FILE_TYPE_AMR, "audio/amr");
@@ -181,7 +185,10 @@ public class MediaFile {
         }
         addFileType("OGG", FILE_TYPE_OGG, "audio/ogg", MtpConstants.FORMAT_OGG);
         addFileType("OGG", FILE_TYPE_OGG, "application/ogg", MtpConstants.FORMAT_OGG);
+<<<<<<< HEAD
         addFileType("OGA", FILE_TYPE_OGG, "audio/ogg", MtpConstants.FORMAT_OGG);
+=======
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         addFileType("OGA", FILE_TYPE_OGG, "application/ogg", MtpConstants.FORMAT_OGG);
         addFileType("AAC", FILE_TYPE_AAC, "audio/aac", MtpConstants.FORMAT_AAC);
         addFileType("AAC", FILE_TYPE_AAC, "audio/aac-adts", MtpConstants.FORMAT_AAC);
@@ -325,7 +332,11 @@ public class MediaFile {
         }
         int lastDot = fileName.lastIndexOf('.');
         if (lastDot > 0) {
+<<<<<<< HEAD
             String extension = fileName.substring(lastDot + 1);
+=======
+            String extension = fileName.substring(lastDot + 1).toUpperCase();
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
             Integer value = sFileTypeToFormatMap.get(extension);
             if (value != null) {
                 return value.intValue();

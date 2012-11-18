@@ -34,10 +34,17 @@ import android.os.IBinder;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
+<<<<<<< HEAD
 import android.os.RemoteException;
 import android.os.ServiceManager;
 import android.os.WorkSource;
 import android.os.Messenger;
+=======
+import android.os.Messenger;
+import android.os.RemoteException;
+import android.os.ServiceManager;
+import android.os.WorkSource;
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 import android.util.Log;
 
 import com.android.internal.util.AsyncChannel;
@@ -267,6 +274,16 @@ public class WifiP2pManager {
     public static final String EXTRA_WIFI_P2P_DEVICE = "wifiP2pDevice";
 
     /**
+<<<<<<< HEAD
+=======
+     * Broadcast intent action indicating that remembered persistent groups have changed.
+     * @hide
+     */
+    public static final String WIFI_P2P_PERSISTENT_GROUPS_CHANGED_ACTION =
+        "android.net.wifi.p2p.PERSISTENT_GROUPS_CHANGED";
+
+    /**
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
      * The lookup key for a {@link #String} object.
      * Retrieve with {@link android.os.Bundle#getString(String)}.
      * @hide
@@ -436,6 +453,28 @@ public class WifiP2pManager {
     /** @hide */
     public static final int SHOW_PIN_REQUESTED                      = BASE + 58;
 
+<<<<<<< HEAD
+=======
+    /** @hide */
+    public static final int DELETE_PERSISTENT_GROUP                 = BASE + 59;
+    /** @hide */
+    public static final int DELETE_PERSISTENT_GROUP_FAILED          = BASE + 60;
+    /** @hide */
+    public static final int DELETE_PERSISTENT_GROUP_SUCCEEDED       = BASE + 61;
+
+    /** @hide */
+    public static final int REQUEST_PERSISTENT_GROUP_INFO           = BASE + 62;
+    /** @hide */
+    public static final int RESPONSE_PERSISTENT_GROUP_INFO          = BASE + 63;
+
+    /** @hide */
+    public static final int SET_WFD_INFO                            = BASE + 64;
+    /** @hide */
+    public static final int SET_WFD_INFO_FAILED                     = BASE + 65;
+    /** @hide */
+    public static final int SET_WFD_INFO_SUCCEEDED                  = BASE + 66;
+
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     /**
      * Create a new WifiP2pManager instance. Applications use
      * {@link android.content.Context#getSystemService Context.getSystemService()} to retrieve
@@ -657,6 +696,18 @@ public class WifiP2pManager {
         public void onDetached(int reason);
     }
 
+<<<<<<< HEAD
+=======
+    /** Interface for callback invocation when stored group info list is available {@hide}*/
+    public interface PersistentGroupInfoListener {
+        /**
+         * The requested stored p2p group info list is available
+         * @param groups Wi-Fi p2p group info list
+         */
+        public void onPersistentGroupInfoAvailable(WifiP2pGroupList groups);
+    }
+
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     /**
      * A channel that connects the application to the Wifi p2p framework.
      * Most p2p operations require a Channel as an argument. An instance of Channel is obtained
@@ -713,6 +764,11 @@ public class WifiP2pManager {
                     case WifiP2pManager.REMOVE_SERVICE_REQUEST_FAILED:
                     case WifiP2pManager.CLEAR_SERVICE_REQUESTS_FAILED:
                     case WifiP2pManager.SET_DEVICE_NAME_FAILED:
+<<<<<<< HEAD
+=======
+                    case WifiP2pManager.DELETE_PERSISTENT_GROUP_FAILED:
+                    case WifiP2pManager.SET_WFD_INFO_FAILED:
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
                         if (listener != null) {
                             ((ActionListener) listener).onFailure(message.arg1);
                         }
@@ -732,6 +788,11 @@ public class WifiP2pManager {
                     case WifiP2pManager.REMOVE_SERVICE_REQUEST_SUCCEEDED:
                     case WifiP2pManager.CLEAR_SERVICE_REQUESTS_SUCCEEDED:
                     case WifiP2pManager.SET_DEVICE_NAME_SUCCEEDED:
+<<<<<<< HEAD
+=======
+                    case WifiP2pManager.DELETE_PERSISTENT_GROUP_SUCCEEDED:
+                    case WifiP2pManager.SET_WFD_INFO_SUCCEEDED:
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
                         if (listener != null) {
                             ((ActionListener) listener).onSuccess();
                         }
@@ -786,6 +847,16 @@ public class WifiP2pManager {
                             mDialogListener = null;
                         }
                         break;
+<<<<<<< HEAD
+=======
+                    case WifiP2pManager.RESPONSE_PERSISTENT_GROUP_INFO:
+                        WifiP2pGroupList groups = (WifiP2pGroupList) message.obj;
+                        if (listener != null) {
+                            ((PersistentGroupInfoListener) listener).
+                                onPersistentGroupInfoAvailable(groups);
+                        }
+                        break;
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
                    default:
                         Log.d(TAG, "Ignored " + message);
                         break;
@@ -995,7 +1066,12 @@ public class WifiP2pManager {
      */
     public void createGroup(Channel c, ActionListener listener) {
         checkChannel(c);
+<<<<<<< HEAD
         c.mAsyncChannel.sendMessage(CREATE_GROUP, 0, c.putListener(listener));
+=======
+        c.mAsyncChannel.sendMessage(CREATE_GROUP, WifiP2pGroup.PERSISTENT_NET_ID,
+                c.putListener(listener));
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     }
 
     /**
@@ -1259,6 +1335,16 @@ public class WifiP2pManager {
         c.mAsyncChannel.sendMessage(SET_DEVICE_NAME, 0, c.putListener(listener), d);
     }
 
+<<<<<<< HEAD
+=======
+    /** @hide */
+    public void setWFDInfo(
+            Channel c, WifiP2pWfdInfo wfdInfo,
+            ActionListener listener) {
+        checkChannel(c);
+        c.mAsyncChannel.sendMessage(SET_WFD_INFO, 0, c.putListener(listener), wfdInfo);
+    }
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 
     /**
      * Set dialog listener to over-ride system dialogs on p2p events. This function
@@ -1297,6 +1383,43 @@ public class WifiP2pManager {
     }
 
     /**
+<<<<<<< HEAD
+=======
+     * Delete a stored persistent group from the system settings.
+     *
+     * <p> The function call immediately returns after sending a persistent group removal request
+     * to the framework. The application is notified of a success or failure to initiate
+     * group removal through listener callbacks {@link ActionListener#onSuccess} or
+     * {@link ActionListener#onFailure}.
+     *
+     * <p>The persistent p2p group list stored in the system can be obtained by
+     * {@link #requestPersistentGroupInfo(Channel, PersistentGroupInfoListener)} and
+     *  a network id can be obtained by {@link WifiP2pGroup#getNetworkId()}.
+     *
+     * @param c is the channel created at {@link #initialize}
+     * @param netId he network id of the p2p group.
+     * @param listener for callbacks on success or failure. Can be null.
+     * @hide
+     */
+    public void deletePersistentGroup(Channel c, int netId, ActionListener listener) {
+        checkChannel(c);
+        c.mAsyncChannel.sendMessage(DELETE_PERSISTENT_GROUP, netId, c.putListener(listener));
+    }
+
+    /**
+     * Request a list of all the persistent p2p groups stored in system.
+     *
+     * @param c is the channel created at {@link #initialize}
+     * @param listener for callback when persistent group info list is available. Can be null.
+     * @hide
+     */
+    public void requestPersistentGroupInfo(Channel c, PersistentGroupInfoListener listener) {
+        checkChannel(c);
+        c.mAsyncChannel.sendMessage(REQUEST_PERSISTENT_GROUP_INFO, 0, c.putListener(listener));
+    }
+
+    /**
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
      * Get a reference to WifiP2pService handler. This is used to establish
      * an AsyncChannel communication with WifiService
      *

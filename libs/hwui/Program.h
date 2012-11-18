@@ -41,8 +41,13 @@ namespace uirenderer {
     #define PROGRAM_LOGD(...)
 #endif
 
+<<<<<<< HEAD
 #define COLOR_COMPONENT_THRESHOLD (1.0f - (0.5f / PANEL_BIT_DEPTH))
 #define COLOR_COMPONENT_INV_THRESHOLD (0.5f / PANEL_BIT_DEPTH)
+=======
+#define COLOR_COMPONENT_THRESHOLD 1.0f
+#define COLOR_COMPONENT_INV_THRESHOLD 0.0f
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 
 #define PROGRAM_KEY_TEXTURE 0x1
 #define PROGRAM_KEY_A8_TEXTURE 0x2
@@ -77,6 +82,15 @@ namespace uirenderer {
 #define PROGRAM_HAS_EXTERNAL_TEXTURE_SHIFT 38
 #define PROGRAM_HAS_TEXTURE_TRANSFORM_SHIFT 39
 
+<<<<<<< HEAD
+=======
+#define PROGRAM_HAS_GAMMA_CORRECTION 40
+
+#define PROGRAM_IS_SIMPLE_GRADIENT 41
+
+#define PROGRAM_IS_VERTEX_SHAPE_SHIFT 42
+
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 ///////////////////////////////////////////////////////////////////////////////
 // Types
 ///////////////////////////////////////////////////////////////////////////////
@@ -94,14 +108,22 @@ typedef uint64_t programid;
  */
 struct ProgramDescription {
     enum ColorModifier {
+<<<<<<< HEAD
         kColorNone,
+=======
+        kColorNone = 0,
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         kColorMatrix,
         kColorLighting,
         kColorBlend
     };
 
     enum Gradient {
+<<<<<<< HEAD
         kGradientLinear,
+=======
+        kGradientLinear = 0,
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         kGradientCircular,
         kGradientSweep
     };
@@ -124,9 +146,17 @@ struct ProgramDescription {
     bool isBitmapNpot;
 
     bool isAA;
+<<<<<<< HEAD
 
     bool hasGradient;
     Gradient gradientType;
+=======
+    bool isVertexShape;
+
+    bool hasGradient;
+    Gradient gradientType;
+    bool isSimpleGradient;
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 
     SkXfermode::Mode shadersMode;
 
@@ -146,6 +176,12 @@ struct ProgramDescription {
     bool isPoint;
     float pointSize;
 
+<<<<<<< HEAD
+=======
+    bool hasGammaCorrection;
+    float gamma;
+
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     /**
      * Resets this description. All fields are reset back to the default
      * values they hold after building a new instance.
@@ -157,6 +193,10 @@ struct ProgramDescription {
         hasTextureTransform = false;
 
         isAA = false;
+<<<<<<< HEAD
+=======
+        isVertexShape = false;
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 
         modulate = false;
 
@@ -165,6 +205,10 @@ struct ProgramDescription {
 
         hasGradient = false;
         gradientType = kGradientLinear;
+<<<<<<< HEAD
+=======
+        isSimpleGradient = false;
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 
         shadersMode = SkXfermode::kClear_Mode;
 
@@ -180,6 +224,12 @@ struct ProgramDescription {
 
         isPoint = false;
         pointSize = 0.0f;
+<<<<<<< HEAD
+=======
+
+        hasGammaCorrection = false;
+        gamma = 2.2f;
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     }
 
     /**
@@ -188,8 +238,12 @@ struct ProgramDescription {
      * be provided with a modulation color.
      */
     bool setColor(const float r, const float g, const float b, const float a) {
+<<<<<<< HEAD
         modulate = a < COLOR_COMPONENT_THRESHOLD || r < COLOR_COMPONENT_THRESHOLD ||
                 g < COLOR_COMPONENT_THRESHOLD || b < COLOR_COMPONENT_THRESHOLD;
+=======
+        modulate = a < COLOR_COMPONENT_THRESHOLD;
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         return modulate;
     }
 
@@ -246,6 +300,12 @@ struct ProgramDescription {
         if (isAA) key |= programid(0x1) << PROGRAM_HAS_AA_SHIFT;
         if (hasExternalTexture) key |= programid(0x1) << PROGRAM_HAS_EXTERNAL_TEXTURE_SHIFT;
         if (hasTextureTransform) key |= programid(0x1) << PROGRAM_HAS_TEXTURE_TRANSFORM_SHIFT;
+<<<<<<< HEAD
+=======
+        if (hasGammaCorrection) key |= programid(0x1) << PROGRAM_HAS_GAMMA_CORRECTION;
+        if (isSimpleGradient) key |= programid(0x1) << PROGRAM_IS_SIMPLE_GRADIENT;
+        if (isVertexShape) key |= programid(0x1) << PROGRAM_IS_VERTEX_SHAPE_SHIFT;
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         return key;
     }
 
@@ -261,7 +321,11 @@ struct ProgramDescription {
     }
 
 private:
+<<<<<<< HEAD
     inline uint32_t getEnumForWrap(GLenum wrap) const {
+=======
+    static inline uint32_t getEnumForWrap(GLenum wrap) {
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         switch (wrap) {
             case GL_CLAMP_TO_EDGE:
                 return 0;
@@ -356,6 +420,14 @@ public:
      */
     int transform;
 
+<<<<<<< HEAD
+=======
+    /**
+     * Name of the projection uniform.
+     */
+    int projection;
+
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 protected:
     /**
      * Adds an attribute with the specified name.

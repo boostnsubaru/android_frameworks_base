@@ -16,7 +16,10 @@
 
 package com.android.server.input;
 
+<<<<<<< HEAD
 import com.android.internal.os.AtomicFile;
+=======
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 import com.android.internal.util.ArrayUtils;
 import com.android.internal.util.FastXmlSerializer;
 import com.android.internal.util.XmlUtils;
@@ -25,6 +28,10 @@ import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
 import org.xmlpull.v1.XmlSerializer;
 
+<<<<<<< HEAD
+=======
+import android.util.AtomicFile;
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 import android.util.Slog;
 import android.util.Xml;
 

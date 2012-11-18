@@ -44,12 +44,20 @@ interface IUsbManager
     /* Sets the default package for a USB device
      * (or clears it if the package name is null)
      */
+<<<<<<< HEAD
     void setDevicePackage(in UsbDevice device, String packageName);
+=======
+    void setDevicePackage(in UsbDevice device, String packageName, int userId);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 
     /* Sets the default package for a USB accessory
      * (or clears it if the package name is null)
      */
+<<<<<<< HEAD
     void setAccessoryPackage(in UsbAccessory accessory, String packageName);
+=======
+    void setAccessoryPackage(in UsbAccessory accessory, String packageName, int userId);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 
     /* Returns true if the caller has permission to access the device. */
     boolean hasDevicePermission(in UsbDevice device);
@@ -77,14 +85,32 @@ interface IUsbManager
     void grantAccessoryPermission(in UsbAccessory accessory, int uid);
 
     /* Returns true if the USB manager has default preferences or permissions for the package */
+<<<<<<< HEAD
     boolean hasDefaults(String packageName);
 
     /* Clears default preferences and permissions for the package */
     void clearDefaults(String packageName);
+=======
+    boolean hasDefaults(String packageName, int userId);
+
+    /* Clears default preferences and permissions for the package */
+    void clearDefaults(String packageName, int userId);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 
     /* Sets the current USB function. */
     void setCurrentFunction(String function, boolean makeDefault);
 
     /* Sets the file path for USB mass storage backing file. */
     void setMassStorageBackingFile(String path);
+<<<<<<< HEAD
+=======
+
+    /* Allow USB debugging from the attached host. If alwaysAllow is true, add the
+     * the public key to list of host keys that the user has approved.
+     */
+    void allowUsbDebugging(boolean alwaysAllow, String publicKey);
+
+    /* Deny USB debugging from the attached host */
+    void denyUsbDebugging();
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 }

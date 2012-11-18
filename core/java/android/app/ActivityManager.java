@@ -1,6 +1,5 @@
 /*
  * Copyright (C) 2007 The Android Open Source Project
- * This code has been modified.  Portions copyright (C) 2010, T-Mobile USA, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -28,10 +27,12 @@ import android.content.pm.ApplicationInfo;
 import android.content.pm.ConfigurationInfo;
 import android.content.pm.IPackageDataObserver;
 import android.content.pm.PackageManager;
-import android.content.res.Configuration;
+import android.content.pm.UserInfo;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.Point;
+import android.hardware.display.DisplayManager;
+import android.hardware.display.DisplayManagerGlobal;
 import android.os.Binder;
 import android.os.Bundle;
 import android.os.Debug;
@@ -42,7 +43,7 @@ import android.os.Process;
 import android.os.RemoteException;
 import android.os.ServiceManager;
 import android.os.SystemProperties;
-import android.os.UserId;
+import android.os.UserHandle;
 import android.text.TextUtils;
 import android.util.DisplayMetrics;
 import android.util.Log;
@@ -211,6 +212,15 @@ public class ActivityManager {
      */
     public static final int INTENT_SENDER_SERVICE = 4;
 
+    /** @hide User operation call: success! */
+    public static final int USER_OP_SUCCESS = 0;
+
+    /** @hide User operation call: given user id is not known. */
+    public static final int USER_OP_UNKNOWN_USER = -1;
+
+    /** @hide User operation call: given user id is the current user, can't be stopped. */
+    public static final int USER_OP_IS_CURRENT = -2;
+
     /*package*/ ActivityManager(Context context, Handler handler) {
         mContext = context;
         mHandler = handler;
@@ -368,7 +378,7 @@ public class ActivityManager {
      * (which tends to consume a lot more RAM).
      * @hide
      */
-    static public boolean isHighEndGfx(Display display) {
+    static public boolean isHighEndGfx() {
         MemInfoReader reader = new MemInfoReader();
         reader.readMemInfo();
         if (reader.getTotalSize() >= (512*1024*1024)) {
@@ -376,6 +386,9 @@ public class ActivityManager {
             // we can afford the overhead of graphics acceleration.
             return true;
         }
+
+        Display display = DisplayManagerGlobal.getInstance().getRealDisplay(
+                Display.DEFAULT_DISPLAY);
         Point p = new Point();
         display.getRealSize(p);
         int pixels = p.x * p.y;
@@ -531,7 +544,36 @@ public class ActivityManager {
             throws SecurityException {
         try {
             return ActivityManagerNative.getDefault().getRecentTasks(maxNum,
-                    flags);
+                    flags, UserHandle.myUserId());
+        } catch (RemoteException e) {
+            // System dead, we will be dead too soon!
+            return null;
+        }
+    }
+
+    /**
+     * Same as {@link #getRecentTasks(int, int)} but returns the recent tasks for a
+     * specific user. It requires holding
+     * the {@link android.Manifest.permission#INTERACT_ACROSS_USERS_FULL} permission.
+     * @param maxNum The maximum number of entries to return in the list.  The
+     * actual number returned may be smaller, depending on how many tasks the
+     * user has started and the maximum number the system can remember.
+     * @param flags Information about what to return.  May be any combination
+     * of {@link #RECENT_WITH_EXCLUDED} and {@link #RECENT_IGNORE_UNAVAILABLE}.
+     *
+     * @return Returns a list of RecentTaskInfo records describing each of
+     * the recent tasks.
+     *
+     * @throws SecurityException Throws SecurityException if the caller does
+     * not hold the {@link android.Manifest.permission#GET_TASKS} or the
+     * {@link android.Manifest.permission#INTERACT_ACROSS_USERS_FULL} permissions.
+     * @hide
+     */
+    public List<RecentTaskInfo> getRecentTasksForUser(int maxNum, int flags, int userId)
+            throws SecurityException {
+        try {
+            return ActivityManagerNative.getDefault().getRecentTasks(maxNum,
+                    flags, userId);
         } catch (RemoteException e) {
             // System dead, we will be dead too soon!
             return null;
@@ -822,7 +864,17 @@ public class ActivityManager {
             return null;
         }
     }
-    
+
+    /** @hide */
+    public Bitmap getTaskTopThumbnail(int id) throws SecurityException {
+        try {
+            return ActivityManagerNative.getDefault().getTaskTopThumbnail(id);
+        } catch (RemoteException e) {
+            // System dead, we will be dead too soon!
+            return null;
+        }
+    }
+
     /**
      * Flag for {@link #moveTaskToFront(int, int)}: also move the "home"
      * activity along with the task, so it is positioned immediately behind
@@ -1184,7 +1236,7 @@ public class ActivityManager {
     public boolean clearApplicationUserData(String packageName, IPackageDataObserver observer) {
         try {
             return ActivityManagerNative.getDefault().clearApplicationUserData(packageName, 
-                    observer, Binder.getOrigCallingUser());
+                    observer, UserHandle.myUserId());
         } catch (RemoteException e) {
             return false;
         }
@@ -1346,6 +1398,13 @@ public class ActivityManager {
          * @hide
          */
         public static final int FLAG_PERSISTENT = 1<<1;
+
+        /**
+         * Constant for {@link #flags}: this process is associated with a
+         * persistent system app.
+         * @hide
+         */
+        public static final int FLAG_HAS_ACTIVITIES = 1<<2;
 
         /**
          * Flags of information.  May be any of
@@ -1562,17 +1621,6 @@ public class ActivityManager {
         }
     }
     /**
-     * @hide
-     */
-    public Configuration getConfiguration() {
-        try {
-            return ActivityManagerNative.getDefault().getConfiguration();
-        } catch (RemoteException e) {
-            return null;
-        }
-    }
-
-    /**
      * Returns a list of application processes that are running on the device.
      *
      * <p><b>Note: this method is only intended for debugging or building
@@ -1654,7 +1702,8 @@ public class ActivityManager {
      */
     public void killBackgroundProcesses(String packageName) {
         try {
-            ActivityManagerNative.getDefault().killBackgroundProcesses(packageName);
+            ActivityManagerNative.getDefault().killBackgroundProcesses(packageName,
+                    UserHandle.myUserId());
         } catch (RemoteException e) {
         }
     }
@@ -1679,7 +1728,8 @@ public class ActivityManager {
      */
     public void forceStopPackage(String packageName) {
         try {
-            ActivityManagerNative.getDefault().forceStopPackage(packageName);
+            ActivityManagerNative.getDefault().forceStopPackage(packageName,
+                    UserHandle.myUserId());
         } catch (RemoteException e) {
         }
     }
@@ -1826,12 +1876,12 @@ public class ActivityManager {
             return PackageManager.PERMISSION_GRANTED;
         }
         // Isolated processes don't get any permissions.
-        if (UserId.isIsolated(uid)) {
+        if (UserHandle.isIsolated(uid)) {
             return PackageManager.PERMISSION_DENIED;
         }
         // If there is a uid that owns whatever is being accessed, it has
         // blanket access to it regardless of the permissions it requires.
-        if (owningUid >= 0 && UserId.isSameApp(uid, owningUid)) {
+        if (owningUid >= 0 && UserHandle.isSameApp(uid, owningUid)) {
             return PackageManager.PERMISSION_GRANTED;
         }
         // If the target is not exported, then nobody else can get to it.
@@ -1850,6 +1900,43 @@ public class ActivityManager {
             Slog.e(TAG, "PackageManager is dead?!?", e);
         }
         return PackageManager.PERMISSION_DENIED;
+    }
+
+    /** @hide */
+    public static int checkUidPermission(String permission, int uid) {
+        try {
+            return AppGlobals.getPackageManager()
+                    .checkUidPermission(permission, uid);
+        } catch (RemoteException e) {
+            // Should never happen, but if it does... deny!
+            Slog.e(TAG, "PackageManager is dead?!?", e);
+        }
+        return PackageManager.PERMISSION_DENIED;
+    }
+
+    /** @hide */
+    public static int handleIncomingUser(int callingPid, int callingUid, int userId,
+            boolean allowAll, boolean requireFull, String name, String callerPackage) {
+        if (UserHandle.getUserId(callingUid) == userId) {
+            return userId;
+        }
+        try {
+            return ActivityManagerNative.getDefault().handleIncomingUser(callingPid,
+                    callingUid, userId, allowAll, requireFull, name, callerPackage);
+        } catch (RemoteException e) {
+            throw new SecurityException("Failed calling activity manager", e);
+        }
+    }
+
+    /** @hide */
+    public static int getCurrentUser() {
+        UserInfo ui;
+        try {
+            ui = ActivityManagerNative.getDefault().getCurrentUser();
+            return ui != null ? ui.id : 0;
+        } catch (RemoteException e) {
+            return 0;
+        }
     }
 
     /**
@@ -1883,15 +1970,19 @@ public class ActivityManager {
     }
 
     /**
-     * @throws SecurityException Throws SecurityException if the caller does
-     * not hold the {@link android.Manifest.permission#CHANGE_CONFIGURATION} permission.
-     *
+     * Return whether the given user is actively running.  This means that
+     * the user is in the "started" state, not "stopped" -- it is currently
+     * allowed to run code through scheduled alarms, receiving broadcasts,
+     * etc.  A started user may be either the current foreground user or a
+     * background user; the result here does not distinguish between the two.
+     * @param userid the user's id. Zero indicates the default user.
      * @hide
      */
-    public void updateConfiguration(Configuration values) throws SecurityException {
+    public boolean isUserRunning(int userid) {
         try {
-            ActivityManagerNative.getDefault().updateConfiguration(values);
+            return ActivityManagerNative.getDefault().isUserRunning(userid, false);
         } catch (RemoteException e) {
+            return false;
         }
     }
 }

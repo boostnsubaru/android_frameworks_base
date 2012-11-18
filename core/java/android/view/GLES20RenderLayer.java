@@ -54,8 +54,13 @@ class GLES20RenderLayer extends GLES20Layer {
     }
 
     @Override
+<<<<<<< HEAD
     void resize(int width, int height) {
         if (!isValid() || width <= 0 || height <= 0) return;
+=======
+    boolean resize(int width, int height) {
+        if (!isValid() || width <= 0 || height <= 0) return false;
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 
         mWidth = width;
         mHeight = height;
@@ -63,11 +68,31 @@ class GLES20RenderLayer extends GLES20Layer {
         if (width != mLayerWidth || height != mLayerHeight) {
             int[] layerInfo = new int[2];
 
+<<<<<<< HEAD
             GLES20Canvas.nResizeLayer(mLayer, width, height, layerInfo);
 
             mLayerWidth = layerInfo[0];
             mLayerHeight = layerInfo[1];
         }
+=======
+            if (GLES20Canvas.nResizeLayer(mLayer, width, height, layerInfo)) {
+                mLayerWidth = layerInfo[0];
+                mLayerHeight = layerInfo[1];
+            } else {
+                // Failure: not enough GPU resources for requested size
+                mLayer = 0;
+                mLayerWidth = 0;
+                mLayerHeight = 0;
+            }
+        }
+        return isValid();
+    }
+
+    @Override
+    void setOpaque(boolean isOpaque) {
+        mOpaque = isOpaque;
+        GLES20Canvas.nSetOpaqueLayer(mLayer, isOpaque);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     }
 
     @Override
@@ -98,7 +123,11 @@ class GLES20RenderLayer extends GLES20Layer {
     }
 
     @Override
+<<<<<<< HEAD
     void redraw(DisplayList displayList, Rect dirtyRect) {
+=======
+    void redrawLater(DisplayList displayList, Rect dirtyRect) {
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         GLES20Canvas.nUpdateRenderLayer(mLayer, mCanvas.getRenderer(),
                 ((GLES20DisplayList) displayList).getNativeDisplayList(),
                 dirtyRect.left, dirtyRect.top, dirtyRect.right, dirtyRect.bottom);

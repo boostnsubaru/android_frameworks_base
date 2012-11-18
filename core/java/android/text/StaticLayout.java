@@ -150,8 +150,13 @@ public class StaticLayout extends Layout {
 
         mColumns = COLUMNS_ELLIPSIZE;
         mLines = new int[ArrayUtils.idealIntArraySize(2 * mColumns)];
+<<<<<<< HEAD
         mLineDirections = new Directions[
                              ArrayUtils.idealIntArraySize(2 * mColumns)];
+=======
+        mLineDirections = new Directions[ArrayUtils.idealIntArraySize(2 * mColumns)];
+        // FIXME This is never recycled
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         mMeasured = MeasuredText.obtain();
     }
 
@@ -340,7 +345,13 @@ public class StaticLayout extends Layout {
                         w += widths[j - paraStart];
                     }
 
+<<<<<<< HEAD
                     if (w <= width) {
+=======
+                    boolean isSpaceOrTab = c == CHAR_SPACE || c == CHAR_TAB;
+
+                    if (w <= width || isSpaceOrTab) {
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
                         fitWidth = w;
                         fit = j + 1;
 
@@ -353,6 +364,7 @@ public class StaticLayout extends Layout {
                         if (fmBottom > fitBottom)
                             fitBottom = fmBottom;
 
+<<<<<<< HEAD
                         /*
                          * From the Unicode Line Breaking Algorithm:
                          * (at least approximately)
@@ -377,6 +389,19 @@ public class StaticLayout extends Layout {
                              (j + 1 >= spanEnd || !Character.isDigit(chs[j + 1 - paraStart]))) ||
                             (c >= CHAR_FIRST_CJK && isIdeographic(c, true) &&
                              j + 1 < spanEnd && isIdeographic(chs[j + 1 - paraStart], false))) {
+=======
+                        // From the Unicode Line Breaking Algorithm (at least approximately)
+                        boolean isLineBreak = isSpaceOrTab ||
+                                // / is class SY and - is class HY, except when followed by a digit
+                                ((c == CHAR_SLASH || c == CHAR_HYPHEN) &&
+                                (j + 1 >= spanEnd || !Character.isDigit(chs[j + 1 - paraStart]))) ||
+                                // Ideographs are class ID: breakpoints when adjacent, except for NS
+                                // (non-starters), which can be broken after but not before
+                                (c >= CHAR_FIRST_CJK && isIdeographic(c, true) &&
+                                j + 1 < spanEnd && isIdeographic(chs[j + 1 - paraStart], false));
+
+                        if (isLineBreak) {
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
                             okWidth = w;
                             ok = j + 1;
 
@@ -396,6 +421,7 @@ public class StaticLayout extends Layout {
                         float currentTextWidth;
 
                         if (ok != here) {
+<<<<<<< HEAD
                             // If it is a space that makes the length exceed width, cut here
                             if (c == CHAR_SPACE) ok = j + 1;
 
@@ -403,6 +429,8 @@ public class StaticLayout extends Layout {
                                 ok++;
                             }
 
+=======
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
                             endPos = ok;
                             above = okAscent;
                             below = okDescent;
@@ -450,10 +478,17 @@ public class StaticLayout extends Layout {
                             spanEnd = here;
                             break;
                         }
+<<<<<<< HEAD
                     }
                     // FIXME This should be moved in the above else block which changes mLineCount
                     if (mLineCount >= mMaximumVisibleLineCount) {
                         break;
+=======
+
+                        if (mLineCount >= mMaximumVisibleLineCount) {
+                            break;
+                        }
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
                     }
                 }
             }
@@ -972,10 +1007,13 @@ public class StaticLayout extends Layout {
     private static final char CHAR_NEW_LINE = '\n';
     private static final char CHAR_TAB = '\t';
     private static final char CHAR_SPACE = ' ';
+<<<<<<< HEAD
     private static final char CHAR_DOT = '.';
     private static final char CHAR_COMMA = ',';
     private static final char CHAR_COLON = ':';
     private static final char CHAR_SEMICOLON = ';';
+=======
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     private static final char CHAR_SLASH = '/';
     private static final char CHAR_HYPHEN = '-';
 

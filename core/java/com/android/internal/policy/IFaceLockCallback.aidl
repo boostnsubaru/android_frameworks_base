@@ -22,6 +22,9 @@ oneway interface IFaceLockCallback {
     void unlock();
     void cancel();
     void reportFailedAttempt();
+<<<<<<< HEAD
     void exposeFallback();
+=======
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     void pokeWakelock(int millis);
 }

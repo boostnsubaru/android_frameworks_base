@@ -63,6 +63,7 @@ the software can't be established, click <strong>OK</strong>.</p></li>
 
 <h2 id="Configure">Configure the ADT Plugin</h2>
 
+<<<<<<< HEAD
 <p>After you've installed ADT and restarted Eclipse, you
   must specify the location of your Android SDK directory:</p>
 
@@ -75,11 +76,26 @@ make your choice and click <strong>Proceed</strong>.</p>
     <li>For the <em>SDK Location</em> in the main panel, click <strong>Browse...</strong> and
         locate your downloaded Android SDK directory (such as <code>android-sdk-windows</code>).</li>
     <li>Click <strong>Apply</strong>, then <strong>OK</strong>.</li>
+=======
+<p>Once Eclipse restarts, you
+  must specify the location of your Android SDK directory:</p>
+
+<ol>
+    <li>In the "Welcome to Android Development" window that appears, select <strong>Use
+existing SDKs</strong>.</li>
+    <li>Browse and select the location of the Android SDK directory you recently
+downloaded.</li>
+    <li>Click <strong>Next</strong>.</li>
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 </ol>
 
 
 <p>If you haven't encountered any errors, you're done setting up ADT
+<<<<<<< HEAD
   and can continue to the next step of the SDK installation.</p>
+=======
+  and can continue to <a href="{@docRoot}sdk/installing/next.html">Next Steps</a>.</p>
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 
 
 

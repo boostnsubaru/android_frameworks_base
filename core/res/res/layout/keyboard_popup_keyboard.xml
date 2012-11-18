@@ -41,7 +41,11 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
+<<<<<<< HEAD
         android:layout_marginLeft="8dp"
+=======
+        android:layout_marginStart="8dp"
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         android:clickable="true"
         />
 </LinearLayout>

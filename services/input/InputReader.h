@@ -24,7 +24,10 @@
 #include <androidfw/Input.h>
 #include <androidfw/VelocityControl.h>
 #include <androidfw/VelocityTracker.h>
+<<<<<<< HEAD
 #include <ui/DisplayInfo.h>
+=======
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 #include <utils/KeyedVector.h>
 #include <utils/threads.h>
 #include <utils/Timers.h>
@@ -48,6 +51,72 @@ namespace android {
 class InputDevice;
 class InputMapper;
 
+<<<<<<< HEAD
+=======
+/*
+ * Describes how coordinates are mapped on a physical display.
+ * See com.android.server.display.DisplayViewport.
+ */
+struct DisplayViewport {
+    int32_t displayId; // -1 if invalid
+    int32_t orientation;
+    int32_t logicalLeft;
+    int32_t logicalTop;
+    int32_t logicalRight;
+    int32_t logicalBottom;
+    int32_t physicalLeft;
+    int32_t physicalTop;
+    int32_t physicalRight;
+    int32_t physicalBottom;
+    int32_t deviceWidth;
+    int32_t deviceHeight;
+
+    DisplayViewport() :
+            displayId(ADISPLAY_ID_NONE), orientation(DISPLAY_ORIENTATION_0),
+            logicalLeft(0), logicalTop(0), logicalRight(0), logicalBottom(0),
+            physicalLeft(0), physicalTop(0), physicalRight(0), physicalBottom(0),
+            deviceWidth(0), deviceHeight(0) {
+    }
+
+    bool operator==(const DisplayViewport& other) const {
+        return displayId == other.displayId
+                && orientation == other.orientation
+                && logicalLeft == other.logicalLeft
+                && logicalTop == other.logicalTop
+                && logicalRight == other.logicalRight
+                && logicalBottom == other.logicalBottom
+                && physicalLeft == other.physicalLeft
+                && physicalTop == other.physicalTop
+                && physicalRight == other.physicalRight
+                && physicalBottom == other.physicalBottom
+                && deviceWidth == other.deviceWidth
+                && deviceHeight == other.deviceHeight;
+    }
+
+    bool operator!=(const DisplayViewport& other) const {
+        return !(*this == other);
+    }
+
+    inline bool isValid() const {
+        return displayId >= 0;
+    }
+
+    void setNonDisplayViewport(int32_t width, int32_t height) {
+        displayId = ADISPLAY_ID_NONE;
+        orientation = DISPLAY_ORIENTATION_0;
+        logicalLeft = 0;
+        logicalTop = 0;
+        logicalRight = width;
+        logicalBottom = height;
+        physicalLeft = 0;
+        physicalTop = 0;
+        physicalRight = width;
+        physicalBottom = height;
+        deviceWidth = width;
+        deviceHeight = height;
+    }
+};
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 
 /*
  * Input reader configuration.
@@ -75,9 +144,12 @@ struct InputReaderConfiguration {
         // The device name alias supplied by the may have changed for some devices.
         CHANGE_DEVICE_ALIAS = 1 << 5,
 
+<<<<<<< HEAD
         // Stylus icon option changed.
         CHANGE_STYLUS_ICON_ENABLED = 1 << 6,
 
+=======
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         // All devices must be reopened.
         CHANGE_MUST_REOPEN = 1 << 31,
     };
@@ -165,12 +237,15 @@ struct InputReaderConfiguration {
     // True to show the location of touches on the touch screen as spots.
     bool showTouches;
 
+<<<<<<< HEAD
     // True to show the pointer icon when a stylus is used.
     bool stylusIconEnabled;
 
     // Ignore finger touches this long after the stylus has been used (including hover)
     nsecs_t stylusPalmRejectionTime;
 
+=======
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     InputReaderConfiguration() :
             virtualKeyQuietTime(0),
             pointerVelocityControlParameters(1.0f, 500.0f, 3000.0f, 3.0f),
@@ -187,6 +262,7 @@ struct InputReaderConfiguration {
             pointerGestureSwipeMaxWidthRatio(0.25f),
             pointerGestureMovementSpeedRatio(0.8f),
             pointerGestureZoomSpeedRatio(0.3f),
+<<<<<<< HEAD
             showTouches(false),
             stylusIconEnabled(false),
             stylusPalmRejectionTime(50 * 10000000LL) // 50 ms
@@ -211,6 +287,16 @@ private:
 
     DisplayInfo mInternalDisplay;
     DisplayInfo mExternalDisplay;
+=======
+            showTouches(false) { }
+
+    bool getDisplayInfo(bool external, DisplayViewport* outViewport) const;
+    void setDisplayInfo(bool external, const DisplayViewport& viewport);
+
+private:
+    DisplayViewport mInternalDisplay;
+    DisplayViewport mExternalDisplay;
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 };
 
 
@@ -300,10 +386,13 @@ public:
     virtual void vibrate(int32_t deviceId, const nsecs_t* pattern, size_t patternSize,
             ssize_t repeat, int32_t token) = 0;
     virtual void cancelVibrate(int32_t deviceId, int32_t token) = 0;
+<<<<<<< HEAD
 
     /* Sets a specific input device's keyLayout to be overridden by filename.
      */
     virtual void setKeyLayout(const char* deviceName, const char* keyLayout) = 0;
+=======
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 };
 
 
@@ -374,8 +463,11 @@ public:
             ssize_t repeat, int32_t token);
     virtual void cancelVibrate(int32_t deviceId, int32_t token);
 
+<<<<<<< HEAD
     virtual void setKeyLayout(const char* deviceName, const char* keyLayout);
 
+=======
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 protected:
     // These members are protected so they can be instrumented by test cases.
     virtual InputDevice* createDeviceLocked(int32_t deviceId,
@@ -931,7 +1023,15 @@ public:
     virtual int32_t getSwitchState(uint32_t sourceMask, int32_t switchCode);
 
 private:
+<<<<<<< HEAD
     void processSwitch(nsecs_t when, int32_t switchCode, int32_t switchValue);
+=======
+    uint32_t mUpdatedSwitchValues;
+    uint32_t mUpdatedSwitchMask;
+
+    void processSwitch(int32_t switchCode, int32_t switchValue);
+    void sync(nsecs_t when);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 };
 
 
@@ -1010,7 +1110,11 @@ private:
 
     // Immutable configuration parameters.
     struct Parameters {
+<<<<<<< HEAD
         int32_t associatedDisplayId;
+=======
+        bool hasAssociatedDisplay;
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         bool orientationAware;
     } mParameters;
 
@@ -1060,7 +1164,11 @@ private:
         };
 
         Mode mode;
+<<<<<<< HEAD
         int32_t associatedDisplayId;
+=======
+        bool hasAssociatedDisplay;
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         bool orientationAware;
     } mParameters;
 
@@ -1161,7 +1269,11 @@ protected:
         };
 
         DeviceType deviceType;
+<<<<<<< HEAD
         int32_t associatedDisplayId;
+=======
+        bool hasAssociatedDisplay;
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         bool associatedDisplayIsExternal;
         bool orientationAware;
 
@@ -1180,6 +1292,10 @@ protected:
             SIZE_CALIBRATION_NONE,
             SIZE_CALIBRATION_GEOMETRIC,
             SIZE_CALIBRATION_DIAMETER,
+<<<<<<< HEAD
+=======
+            SIZE_CALIBRATION_BOX,
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
             SIZE_CALIBRATION_AREA,
         };
 
@@ -1289,6 +1405,7 @@ protected:
     virtual void syncTouch(nsecs_t when, bool* outHavePointerIds) = 0;
 
 private:
+<<<<<<< HEAD
     // The surface orientation and width and height set by configureSurface().
     int32_t mSurfaceOrientation;
     int32_t mSurfaceWidth;
@@ -1303,6 +1420,32 @@ private:
     float mXScale;
     float mXPrecision;
 
+=======
+    // The current viewport.
+    // The components of the viewport are specified in the display's rotated orientation.
+    DisplayViewport mViewport;
+
+    // The surface orientation, width and height set by configureSurface().
+    // The width and height are derived from the viewport but are specified
+    // in the natural orientation.
+    // The surface origin specifies how the surface coordinates should be translated
+    // to align with the logical display coordinate space.
+    // The orientation may be different from the viewport orientation as it specifies
+    // the rotation of the surface coordinates required to produce the viewport's
+    // requested orientation, so it will depend on whether the device is orientation aware.
+    int32_t mSurfaceWidth;
+    int32_t mSurfaceHeight;
+    int32_t mSurfaceLeft;
+    int32_t mSurfaceTop;
+    int32_t mSurfaceOrientation;
+
+    // Translation and scaling factors, orientation-independent.
+    float mXTranslate;
+    float mXScale;
+    float mXPrecision;
+
+    float mYTranslate;
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     float mYScale;
     float mYPrecision;
 
@@ -1312,7 +1455,10 @@ private:
 
     float mSizeScale;
 
+<<<<<<< HEAD
     float mOrientationCenter;
+=======
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     float mOrientationScale;
 
     float mDistanceScale;
@@ -1364,8 +1510,11 @@ private:
     } mOrientedRanges;
 
     // Oriented dimensions and precision.
+<<<<<<< HEAD
     float mOrientedSurfaceWidth;
     float mOrientedSurfaceHeight;
+=======
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     float mOrientedXPrecision;
     float mOrientedYPrecision;
 
@@ -1567,9 +1716,12 @@ private:
     VelocityControl mWheelXVelocityControl;
     VelocityControl mWheelYVelocityControl;
 
+<<<<<<< HEAD
     // The time the stylus event was processed by any TouchInputMapper
     static nsecs_t mLastStylusTime;
 
+=======
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     void sync(nsecs_t when);
 
     bool consumeRawTouches(nsecs_t when, uint32_t policyFlags);
@@ -1622,10 +1774,13 @@ private:
     const VirtualKey* findVirtualKeyHit(int32_t x, int32_t y);
 
     void assignPointerIds();
+<<<<<<< HEAD
 
     void unfadePointer(PointerControllerInterface::Transition transition);
 
     bool rejectPalm(nsecs_t when);
+=======
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 };
 
 

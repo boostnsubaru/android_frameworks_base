@@ -28,6 +28,10 @@ import android.util.Slog;
 class StrictModeViolationDialog extends BaseErrorDialog {
     private final static String TAG = "StrictModeViolationDialog";
 
+<<<<<<< HEAD
+=======
+    private final ActivityManagerService mService;
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     private final AppErrorResult mResult;
     private final ProcessRecord mProc;
 
@@ -39,11 +43,20 @@ class StrictModeViolationDialog extends BaseErrorDialog {
     // dialog
     static final long DISMISS_TIMEOUT = 1000 * 60 * 1;
 
+<<<<<<< HEAD
     public StrictModeViolationDialog(Context context, AppErrorResult result, ProcessRecord app) {
+=======
+    public StrictModeViolationDialog(Context context, ActivityManagerService service,
+            AppErrorResult result, ProcessRecord app) {
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         super(context);
 
         Resources res = context.getResources();
 
+<<<<<<< HEAD
+=======
+        mService = service;
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         mProc = app;
         mResult = result;
         CharSequence name;
@@ -83,7 +96,11 @@ class StrictModeViolationDialog extends BaseErrorDialog {
 
     private final Handler mHandler = new Handler() {
         public void handleMessage(Message msg) {
+<<<<<<< HEAD
             synchronized (mProc) {
+=======
+            synchronized (mService) {
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
                 if (mProc != null && mProc.crashDialog == StrictModeViolationDialog.this) {
                     mProc.crashDialog = null;
                 }

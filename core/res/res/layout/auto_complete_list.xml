@@ -27,7 +27,11 @@
         android:orientation="vertical"
         android:layout_width="match_parent" 
         android:layout_height="wrap_content"
+<<<<<<< HEAD
         android:paddingRight="0dip"
+=======
+        android:paddingEnd="0dip"
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     />
 
     <AutoCompleteTextView android:id="@+id/edit"

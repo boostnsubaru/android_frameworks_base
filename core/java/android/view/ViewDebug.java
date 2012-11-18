@@ -255,6 +255,38 @@ public class ViewDebug {
         boolean retrieveReturn() default false;
     }
 
+<<<<<<< HEAD
+=======
+    /**
+     * Allows a View to inject custom children into HierarchyViewer. For example,
+     * WebView uses this to add its internal layer tree as a child to itself
+     * @hide
+     */
+    public interface HierarchyHandler {
+        /**
+         * Dumps custom children to hierarchy viewer.
+         * See ViewDebug.dumpViewWithProperties(Context, View, BufferedWriter, int)
+         * for the format
+         *
+         * An empty implementation should simply do nothing
+         *
+         * @param out The output writer
+         * @param level The indentation level
+         */
+        public void dumpViewHierarchyWithProperties(BufferedWriter out, int level);
+
+        /**
+         * Returns a View to enable grabbing screenshots from custom children
+         * returned in dumpViewHierarchyWithProperties.
+         *
+         * @param className The className of the view to find
+         * @param hashCode The hashCode of the view to find
+         * @return the View to capture from, or null if not found
+         */
+        public View findHierarchyView(String className, int hashCode);
+    }
+
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     private static HashMap<Class<?>, Method[]> mCapturedViewMethodsForClasses = null;
     private static HashMap<Class<?>, Field[]> mCapturedViewFieldsForClasses = null;
 
@@ -468,8 +500,13 @@ public class ViewDebug {
             throws IOException {
 
         long durationMeasure =
+<<<<<<< HEAD
                 (root || (view.mPrivateFlags & View.MEASURED_DIMENSION_SET) != 0) ? profileViewOperation(
                         view, new ViewOperation<Void>() {
+=======
+                (root || (view.mPrivateFlags & View.PFLAG_MEASURED_DIMENSION_SET) != 0)
+                ? profileViewOperation(view, new ViewOperation<Void>() {
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
                             public Void[] pre() {
                                 forceLayout(view);
                                 return null;
@@ -495,8 +532,13 @@ public class ViewDebug {
                         })
                         : 0;
         long durationLayout =
+<<<<<<< HEAD
                 (root || (view.mPrivateFlags & View.LAYOUT_REQUIRED) != 0) ? profileViewOperation(
                         view, new ViewOperation<Void>() {
+=======
+                (root || (view.mPrivateFlags & View.PFLAG_LAYOUT_REQUIRED) != 0)
+                ? profileViewOperation(view, new ViewOperation<Void>() {
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
                             public Void[] pre() {
                                 return null;
                             }
@@ -509,15 +551,24 @@ public class ViewDebug {
                             }
                         }) : 0;
         long durationDraw =
+<<<<<<< HEAD
                 (root || !view.willNotDraw() || (view.mPrivateFlags & View.DRAWN) != 0) ? profileViewOperation(
                         view,
                         new ViewOperation<Object>() {
+=======
+                (root || !view.willNotDraw() || (view.mPrivateFlags & View.PFLAG_DRAWN) != 0)
+                ? profileViewOperation(view, new ViewOperation<Object>() {
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
                             public Object[] pre() {
                                 final DisplayMetrics metrics =
                                         (view != null && view.getResources() != null) ?
                                                 view.getResources().getDisplayMetrics() : null;
                                 final Bitmap bitmap = metrics != null ?
+<<<<<<< HEAD
                                         Bitmap.createBitmap(metrics.widthPixels,
+=======
+                                        Bitmap.createBitmap(metrics, metrics.widthPixels,
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
                                                 metrics.heightPixels, Bitmap.Config.RGB_565) : null;
                                 final Canvas canvas = bitmap != null ? new Canvas(bitmap) : null;
                                 return new Object[] {
@@ -622,7 +673,11 @@ public class ViewDebug {
 
         final boolean localVisible = view.getVisibility() == View.VISIBLE && visible;
 
+<<<<<<< HEAD
         if ((view.mPrivateFlags & View.SKIP_DRAW) != View.SKIP_DRAW) {
+=======
+        if ((view.mPrivateFlags & View.PFLAG_SKIP_DRAW) != View.PFLAG_SKIP_DRAW) {
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
             final int id = view.getId();
             String name = view.getClass().getSimpleName();
             if (id != View.NO_ID) {
@@ -677,7 +732,12 @@ public class ViewDebug {
             Log.w("View", "Failed to create capture bitmap!");
             // Send an empty one so that it doesn't get stuck waiting for
             // something.
+<<<<<<< HEAD
             b = Bitmap.createBitmap(1, 1, Bitmap.Config.ARGB_8888);
+=======
+            b = Bitmap.createBitmap(root.getResources().getDisplayMetrics(),
+                    1, 1, Bitmap.Config.ARGB_8888);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         }
 
         BufferedOutputStream out = null;
@@ -759,6 +819,16 @@ public class ViewDebug {
             } else if (isRequestedView(view, className, hashCode)) {
                 return view;
             }
+<<<<<<< HEAD
+=======
+            if (view instanceof HierarchyHandler) {
+                final View found = ((HierarchyHandler)view)
+                        .findHierarchyView(className, hashCode);
+                if (found != null) {
+                    return found;
+                }
+            }
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         }
 
         return null;
@@ -783,6 +853,12 @@ public class ViewDebug {
                 dumpViewWithProperties(context, view, out, level + 1);
             }
         }
+<<<<<<< HEAD
+=======
+        if (group instanceof HierarchyHandler) {
+            ((HierarchyHandler)group).dumpViewHierarchyWithProperties(out, level + 1);
+        }
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     }
 
     private static boolean dumpViewWithProperties(Context context, View view,
@@ -884,8 +960,17 @@ public class ViewDebug {
     private static void dumpViewProperties(Context context, Object view,
             BufferedWriter out, String prefix) throws IOException {
 
+<<<<<<< HEAD
         Class<?> klass = view.getClass();
 
+=======
+        if (view == null) {
+            out.write(prefix + "=4,null ");
+            return;
+        }
+
+        Class<?> klass = view.getClass();
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         do {
             exportFields(context, view, out, klass, prefix);
             exportMethods(context, view, out, klass, prefix);
@@ -1025,8 +1110,13 @@ public class ViewDebug {
                     return;
                 } else if (!type.isPrimitive()) {
                     if (property.deepExport()) {
+<<<<<<< HEAD
                         dumpViewProperties(context, field.get(view), out, prefix
                                 + property.prefix());
+=======
+                        dumpViewProperties(context, field.get(view), out, prefix +
+                                property.prefix());
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
                         continue;
                     }
                 }
@@ -1139,10 +1229,21 @@ public class ViewDebug {
 
     private static void writeValue(BufferedWriter out, Object value) throws IOException {
         if (value != null) {
+<<<<<<< HEAD
             String output = value.toString().replace("\n", "\\n");
             out.write(String.valueOf(output.length()));
             out.write(",");
             out.write(output);
+=======
+            String output = "[EXCEPTION]";
+            try {
+                output = value.toString().replace("\n", "\\n");
+            } finally {
+                out.write(String.valueOf(output.length()));
+                out.write(",");
+                out.write(output);
+            }
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         } else {
             out.write("4,null");
         }

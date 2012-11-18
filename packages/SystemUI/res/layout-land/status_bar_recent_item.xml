@@ -23,13 +23,25 @@
     android:layout_height="match_parent"
     android:layout_width="wrap_content"
     android:paddingLeft="@dimen/status_bar_recents_item_padding"
+<<<<<<< HEAD
     android:paddingRight="@dimen/status_bar_recents_item_padding">
+=======
+    android:paddingRight="@dimen/status_bar_recents_item_padding"
+    android:importantForAccessibility="no"
+    android:clipChildren="false">
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 
     <RelativeLayout android:id="@+id/recent_item"
         android:layout_gravity="center_vertical"
         android:layout_height="wrap_content"
         android:layout_width="wrap_content"
+<<<<<<< HEAD
         android:paddingTop="@*android:dimen/status_bar_height">
+=======
+        android:paddingTop="@*android:dimen/status_bar_height"
+        android:clipChildren="false"
+        android:clipToPadding="false">
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 
         <FrameLayout android:id="@+id/app_thumbnail"
             android:layout_width="wrap_content"
@@ -75,6 +87,10 @@
             android:singleLine="true"
             android:ellipsize="marquee"
             android:textColor="@color/status_bar_recents_app_label_color"
+<<<<<<< HEAD
+=======
+            android:importantForAccessibility="no"
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         />
 
         <TextView android:id="@+id/app_description"

@@ -121,6 +121,14 @@ public:
     bool isIgnored() const;
 
     /**
+<<<<<<< HEAD
+=======
+     * Indicates whether the current transform has perspective components.
+     */
+    bool hasPerspectiveTransform() const;
+
+    /**
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
      * Dirty flags.
      */
     int flags;
@@ -198,7 +206,11 @@ public:
      *
      * This field is used only if STENCIL_BUFFER_SIZE is > 0.
      */
+<<<<<<< HEAD
     Region* clipRegion;
+=======
+    SkRegion* clipRegion;
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 
     /**
      * The ancestor layer's dirty region.
@@ -223,17 +235,25 @@ private:
     void ensureClipRegion();
     void copyClipRectFromRegion();
 
+<<<<<<< HEAD
     bool clipRegionOr(float left, float top, float right, float bottom);
     bool clipRegionXor(float left, float top, float right, float bottom);
     bool clipRegionAnd(float left, float top, float right, float bottom);
     bool clipRegionNand(float left, float top, float right, float bottom);
+=======
+    bool clipRegionOp(float left, float top, float right, float bottom, SkRegion::Op op);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 
     mat4 mTransformRoot;
     Rect mClipRectRoot;
     Rect mLocalClip;
 
 #if STENCIL_BUFFER_SIZE
+<<<<<<< HEAD
     Region mClipRegionRoot;
+=======
+    SkRegion mClipRegionRoot;
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 #endif
 
 }; // class Snapshot

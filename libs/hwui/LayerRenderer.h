@@ -47,6 +47,7 @@ public:
     ANDROID_API LayerRenderer(Layer* layer);
     virtual ~LayerRenderer();
 
+<<<<<<< HEAD
     virtual int prepareDirty(float left, float top, float right, float bottom, bool opaque);
     virtual void finish();
 
@@ -54,6 +55,13 @@ public:
     virtual Region* getRegion();
     virtual GLint getTargetFbo();
 
+=======
+    virtual void setViewport(int width, int height);
+    virtual status_t prepareDirty(float left, float top, float right, float bottom, bool opaque);
+    virtual status_t clear(float left, float top, float right, float bottom, bool opaque);
+    virtual void finish();
+
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     ANDROID_API static Layer* createTextureLayer(bool isOpaque);
     ANDROID_API static Layer* createLayer(uint32_t width, uint32_t height, bool isOpaque = false);
     ANDROID_API static bool resizeLayer(Layer* layer, uint32_t width, uint32_t height);
@@ -61,9 +69,22 @@ public:
             bool isOpaque, GLenum renderTarget, float* transform);
     ANDROID_API static void destroyLayer(Layer* layer);
     ANDROID_API static void destroyLayerDeferred(Layer* layer);
+<<<<<<< HEAD
     ANDROID_API static void flushLayer(Layer* layer);
     ANDROID_API static bool copyLayer(Layer* layer, SkBitmap* bitmap);
 
+=======
+    ANDROID_API static bool copyLayer(Layer* layer, SkBitmap* bitmap);
+
+    static void flushLayer(Layer* layer);
+
+protected:
+    virtual bool hasLayer();
+    virtual Region* getRegion();
+    virtual GLint getTargetFbo();
+    virtual bool suppressErrorChecks();
+
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 private:
     void generateMesh();
 

@@ -25,6 +25,7 @@
     android:layout_width="wrap_content"
     android:layout_height="wrap_content">
 
+<<<<<<< HEAD
     <!-- hour -->
     <NumberPicker
         android:id="@+id/hour"
@@ -59,6 +60,49 @@
         android:focusable="true"
         android:focusableInTouchMode="true"
         />
+=======
+    <LinearLayout android:orientation="horizontal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layoutDirection="ltr">
+
+        <!-- hour -->
+        <NumberPicker
+            android:id="@+id/hour"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dip"
+            android:layout_marginBottom="16dip"
+            android:layout_marginStart="16dip"
+            android:layout_marginEnd="6dip"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
+            />
+
+        <!-- divider -->
+        <TextView
+            android:id="@+id/divider"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:importantForAccessibility="no"
+            />
+
+        <!-- minute -->
+        <NumberPicker
+            android:id="@+id/minute"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dip"
+            android:layout_marginBottom="16dip"
+            android:layout_marginStart="6dip"
+            android:layout_marginEnd="8dip"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
+            />
+
+    </LinearLayout>
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 
     <!-- AM / PM -->
     <NumberPicker
@@ -67,8 +111,13 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="16dip"
         android:layout_marginBottom="16dip"
+<<<<<<< HEAD
         android:layout_marginLeft="8dip"
         android:layout_marginRight="16dip"
+=======
+        android:layout_marginStart="8dip"
+        android:layout_marginEnd="16dip"
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         android:focusable="true"
         android:focusableInTouchMode="true"
         />

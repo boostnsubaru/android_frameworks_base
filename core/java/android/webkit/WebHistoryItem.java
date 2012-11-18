@@ -18,9 +18,12 @@ package android.webkit;
 
 import android.graphics.Bitmap;
 
+<<<<<<< HEAD
 import java.net.MalformedURLException;
 import java.net.URL;
 
+=======
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 /**
  * A convenience class for accessing fields in an entry in the back/forward list
  * of a WebView. Each WebHistoryItem is a snapshot of the requested history
@@ -28,6 +31,7 @@ import java.net.URL;
  * @see WebBackForwardList
  */
 public class WebHistoryItem implements Cloneable {
+<<<<<<< HEAD
     // Global identifier count.
     private static int sNextId = 0;
     // Unique identifier.
@@ -89,6 +93,13 @@ public class WebHistoryItem implements Cloneable {
         if (mNativeBridge != 0) {
             nativeRef(mNativeBridge);
         }
+=======
+
+    /**
+     * @hide
+     */
+    public WebHistoryItem() {
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     }
 
     /**
@@ -97,10 +108,18 @@ public class WebHistoryItem implements Cloneable {
      * same object.
      * @return The id for this item.
      * @deprecated This method is now obsolete.
+<<<<<<< HEAD
      */
     @Deprecated
     public int getId() {
         return mId;
+=======
+     * @hide Since API level {@link android.os.Build.VERSION_CODES#JELLY_BEAN_MR1}
+     */
+    @Deprecated
+    public int getId() {
+        throw new MustOverrideException();
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     }
 
     /**
@@ -112,8 +131,12 @@ public class WebHistoryItem implements Cloneable {
      * to synchronize this method.
      */
     public String getUrl() {
+<<<<<<< HEAD
         if (mNativeBridge == 0) return null;
         return nativeGetUrl(mNativeBridge);
+=======
+        throw new MustOverrideException();
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     }
 
     /**
@@ -123,8 +146,12 @@ public class WebHistoryItem implements Cloneable {
      * @return The original url of this history item.
      */
     public String getOriginalUrl() {
+<<<<<<< HEAD
         if (mNativeBridge == 0) return null;
         return nativeGetOriginalUrl(mNativeBridge);
+=======
+        throw new MustOverrideException();
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     }
     
     /**
@@ -134,8 +161,12 @@ public class WebHistoryItem implements Cloneable {
      * to synchronize this method.
      */
     public String getTitle() {
+<<<<<<< HEAD
         if (mNativeBridge == 0) return null;
         return nativeGetTitle(mNativeBridge);
+=======
+        throw new MustOverrideException();
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     }
 
     /**
@@ -145,6 +176,7 @@ public class WebHistoryItem implements Cloneable {
      * to synchronize this method.
      */
     public Bitmap getFavicon() {
+<<<<<<< HEAD
         if (mFavicon == null && mNativeBridge != 0) {
             mFavicon = nativeGetFavicon(mNativeBridge);
         }
@@ -240,12 +272,16 @@ public class WebHistoryItem implements Cloneable {
     /*package*/ void inflate(int nativeFrame) {
         mNativeBridge = inflate(nativeFrame, mFlattenedData);
         mFlattenedData = null;
+=======
+        throw new MustOverrideException();
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     }
 
     /**
      * Clone the history item for use by clients of WebView.
      */
     protected synchronized WebHistoryItem clone() {
+<<<<<<< HEAD
         return new WebHistoryItem(this);
     }
 
@@ -260,4 +296,9 @@ public class WebHistoryItem implements Cloneable {
     private native byte[] nativeGetFlattenedData(int nptr);
     private native Bitmap nativeGetFavicon(int nptr);
 
+=======
+        throw new MustOverrideException();
+    }
+
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 }

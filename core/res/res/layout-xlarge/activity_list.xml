@@ -22,8 +22,13 @@
     android:orientation="vertical"
     android:paddingTop="9dip"
     android:paddingBottom="3dip"
+<<<<<<< HEAD
     android:paddingLeft="3dip"
     android:paddingRight="1dip"
+=======
+    android:paddingStart="3dip"
+    android:paddingEnd="1dip"
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     android:majorWeightMin="0.45"
     android:minorWeightMin="0.72"
     android:majorWeightMax="0.45"
@@ -37,6 +42,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
+<<<<<<< HEAD
             android:gravity="center_vertical|left"
             android:minHeight="60dip"
             android:layout_marginLeft="32dip"
@@ -45,6 +51,16 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:paddingRight="16dip"
+=======
+            android:gravity="center_vertical|start"
+            android:minHeight="60dip"
+            android:layout_marginStart="32dip"
+            android:layout_marginEnd="32dip">
+            <ImageView android:id="@+id/icon"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingEnd="16dip"
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
                 android:src="@null"
                 android:visibility="gone" />
             <com.android.internal.widget.DialogTitle android:id="@+id/alertTitle"
@@ -104,7 +120,11 @@
                 android:visibility="gone" />
             <Button android:id="@+id/button1"
                 android:layout_width="0dip"
+<<<<<<< HEAD
                 android:layout_gravity="left"
+=======
+                android:layout_gravity="start"
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
                 android:layout_weight="1"
                 android:maxLines="2"
                 android:text="@string/cancel"

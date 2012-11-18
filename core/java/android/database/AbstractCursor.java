@@ -19,6 +19,10 @@ package android.database;
 import android.content.ContentResolver;
 import android.net.Uri;
 import android.os.Bundle;
+<<<<<<< HEAD
+=======
+import android.os.UserHandle;
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 import android.util.Log;
 
 import java.lang.ref.WeakReference;
@@ -350,6 +354,14 @@ public abstract class AbstractCursor implements CrossProcessCursor {
      * specific row URI, or a base URI for a whole class of content.
      */
     public void setNotificationUri(ContentResolver cr, Uri notifyUri) {
+<<<<<<< HEAD
+=======
+        setNotificationUri(cr, notifyUri, UserHandle.myUserId());
+    }
+
+    /** @hide - set the notification uri but with an observer for a particular user's view */
+    public void setNotificationUri(ContentResolver cr, Uri notifyUri, int userHandle) {
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         synchronized (mSelfObserverLock) {
             mNotifyUri = notifyUri;
             mContentResolver = cr;
@@ -357,7 +369,11 @@ public abstract class AbstractCursor implements CrossProcessCursor {
                 mContentResolver.unregisterContentObserver(mSelfObserver);
             }
             mSelfObserver = new SelfContentObserver(this);
+<<<<<<< HEAD
             mContentResolver.registerContentObserver(mNotifyUri, true, mSelfObserver);
+=======
+            mContentResolver.registerContentObserver(mNotifyUri, true, mSelfObserver, userHandle);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
             mSelfObserverRegistered = true;
         }
     }
@@ -424,6 +440,12 @@ public abstract class AbstractCursor implements CrossProcessCursor {
         if (mSelfObserver != null && mSelfObserverRegistered == true) {
             mContentResolver.unregisterContentObserver(mSelfObserver);
         }
+<<<<<<< HEAD
+=======
+        try {
+            if (!mClosed) close();
+        } catch(Exception e) { }
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     }
 
     /**

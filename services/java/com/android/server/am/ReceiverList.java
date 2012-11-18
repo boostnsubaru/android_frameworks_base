@@ -39,18 +39,30 @@ class ReceiverList extends ArrayList<BroadcastFilter>
     public final ProcessRecord app;
     public final int pid;
     public final int uid;
+<<<<<<< HEAD
+=======
+    public final int userId;
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     BroadcastRecord curBroadcast = null;
     boolean linkedToDeath = false;
 
     String stringName;
     
     ReceiverList(ActivityManagerService _owner, ProcessRecord _app,
+<<<<<<< HEAD
             int _pid, int _uid, IIntentReceiver _receiver) {
+=======
+            int _pid, int _uid, int _userId, IIntentReceiver _receiver) {
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         owner = _owner;
         receiver = _receiver;
         app = _app;
         pid = _pid;
         uid = _uid;
+<<<<<<< HEAD
+=======
+        userId = _userId;
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     }
 
     // Want object identity, not the array identity we are inheriting.
@@ -67,8 +79,14 @@ class ReceiverList extends ArrayList<BroadcastFilter>
     }
     
     void dumpLocal(PrintWriter pw, String prefix) {
+<<<<<<< HEAD
         pw.print(prefix); pw.print("app="); pw.print(app);
             pw.print(" pid="); pw.print(pid); pw.print(" uid="); pw.println(uid);
+=======
+        pw.print(prefix); pw.print("app="); pw.print(app.toShortString());
+            pw.print(" pid="); pw.print(pid); pw.print(" uid="); pw.print(uid);
+            pw.print(" user="); pw.println(userId);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         if (curBroadcast != null || linkedToDeath) {
             pw.print(prefix); pw.print("curBroadcast="); pw.print(curBroadcast);
                 pw.print(" linkedToDeath="); pw.println(linkedToDeath);
@@ -103,6 +121,11 @@ class ReceiverList extends ArrayList<BroadcastFilter>
         sb.append((app != null ? app.processName : "(unknown name)"));
         sb.append('/');
         sb.append(uid);
+<<<<<<< HEAD
+=======
+        sb.append("/u");
+        sb.append(userId);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         sb.append((receiver.asBinder() instanceof Binder) ? " local:" : " remote:");
         sb.append(Integer.toHexString(System.identityHashCode(receiver.asBinder())));
         sb.append('}');

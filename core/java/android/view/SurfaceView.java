@@ -46,13 +46,27 @@ import java.util.concurrent.locks.ReentrantLock;
  * 
  * <p>The surface is Z ordered so that it is behind the window holding its
  * SurfaceView; the SurfaceView punches a hole in its window to allow its
+<<<<<<< HEAD
  * surface to be displayed.  The view hierarchy will take care of correctly
  * compositing with the Surface any siblings of the SurfaceView that would
  * normally appear on top of it.  This can be used to place overlays such as
+=======
+ * surface to be displayed. The view hierarchy will take care of correctly
+ * compositing with the Surface any siblings of the SurfaceView that would
+ * normally appear on top of it. This can be used to place overlays such as
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
  * buttons on top of the Surface, though note however that it can have an
  * impact on performance since a full alpha-blended composite will be performed
  * each time the Surface changes.
  * 
+<<<<<<< HEAD
+=======
+ * <p> The transparent region that makes the surface visible is based on the
+ * layout positions in the view hierarchy. If the post-layout transform
+ * properties are used to draw a sibling view on top of the SurfaceView, the
+ * view may not be properly composited with the surface.
+ *
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
  * <p>Access to the underlying surface is provided via the SurfaceHolder interface,
  * which can be retrieved by calling {@link #getHolder}.
  * 
@@ -62,14 +76,22 @@ import java.util.concurrent.locks.ReentrantLock;
  * Surface is created and destroyed as the window is shown and hidden.
  * 
  * <p>One of the purposes of this class is to provide a surface in which a
+<<<<<<< HEAD
  * secondary thread can render into the screen.  If you are going to use it
+=======
+ * secondary thread can render into the screen. If you are going to use it
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
  * this way, you need to be aware of some threading semantics:
  * 
  * <ul>
  * <li> All SurfaceView and
  * {@link SurfaceHolder.Callback SurfaceHolder.Callback} methods will be called
  * from the thread running the SurfaceView's window (typically the main thread
+<<<<<<< HEAD
  * of the application).  They thus need to correctly synchronize with any
+=======
+ * of the application). They thus need to correctly synchronize with any
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
  * state that is also touched by the drawing thread.
  * <li> You must ensure that the drawing thread only touches the underlying
  * Surface while it is valid -- between
@@ -296,7 +318,11 @@ public class SurfaceView extends View {
         }
         
         boolean opaque = true;
+<<<<<<< HEAD
         if ((mPrivateFlags & SKIP_DRAW) == 0) {
+=======
+        if ((mPrivateFlags & PFLAG_SKIP_DRAW) == 0) {
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
             // this view draws, remove it from the transparent region
             opaque = super.gatherTransparentRegion(region);
         } else if (region != null) {
@@ -320,7 +346,11 @@ public class SurfaceView extends View {
     public void draw(Canvas canvas) {
         if (mWindowType != WindowManager.LayoutParams.TYPE_APPLICATION_PANEL) {
             // draw() is not called when SKIP_DRAW is set
+<<<<<<< HEAD
             if ((mPrivateFlags & SKIP_DRAW) == 0) {
+=======
+            if ((mPrivateFlags & PFLAG_SKIP_DRAW) == 0) {
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
                 // punch a whole in the view-hierarchy below us
                 canvas.drawColor(0, PorterDuff.Mode.CLEAR);
             }
@@ -332,7 +362,11 @@ public class SurfaceView extends View {
     protected void dispatchDraw(Canvas canvas) {
         if (mWindowType != WindowManager.LayoutParams.TYPE_APPLICATION_PANEL) {
             // if SKIP_DRAW is cleared, draw() has already punched a hole
+<<<<<<< HEAD
             if ((mPrivateFlags & SKIP_DRAW) == SKIP_DRAW) {
+=======
+            if ((mPrivateFlags & PFLAG_SKIP_DRAW) == PFLAG_SKIP_DRAW) {
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
                 // punch a whole in the view-hierarchy below us
                 canvas.drawColor(0, PorterDuff.Mode.CLEAR);
             }
@@ -380,7 +414,31 @@ public class SurfaceView extends View {
             mLayout.flags &= ~WindowManager.LayoutParams.FLAG_ALT_FOCUSABLE_IM;
         }
     }
+<<<<<<< HEAD
     
+=======
+
+    /**
+     * Control whether the surface view's content should be treated as secure,
+     * preventing it from appearing in screenshots or from being viewed on
+     * non-secure displays.
+     *
+     * <p>Note that this must be set before the surface view's containing
+     * window is attached to the window manager.
+     *
+     * <p>See {@link android.view.Display#FLAG_SECURE} for details.
+     *
+     * @param isSecure True if the surface view is secure.
+     */
+    public void setSecure(boolean isSecure) {
+        if (isSecure) {
+            mLayout.flags |= WindowManager.LayoutParams.FLAG_SECURE;
+        } else {
+            mLayout.flags &= ~WindowManager.LayoutParams.FLAG_SECURE;
+        }
+    }
+
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     /**
      * Hack to allow special layering of windows.  The type is one of the
      * types in WindowManager.LayoutParams.  This is a hack so:
@@ -456,11 +514,20 @@ public class SurfaceView extends View {
                 }
 
                 if (mWindow == null) {
+<<<<<<< HEAD
                     mWindow = new MyWindow(this);
                     mLayout.type = mWindowType;
                     mLayout.gravity = Gravity.LEFT|Gravity.TOP;
                     mSession.addWithoutInputChannel(mWindow, mWindow.mSeq, mLayout,
                             mVisible ? VISIBLE : GONE, mContentInsets);
+=======
+                    Display display = getDisplay();
+                    mWindow = new MyWindow(this);
+                    mLayout.type = mWindowType;
+                    mLayout.gravity = Gravity.START|Gravity.TOP;
+                    mSession.addToDisplayWithoutInputChannel(mWindow, mWindow.mSeq, mLayout,
+                            mVisible ? VISIBLE : GONE, display.getDisplayId(), mContentInsets);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
                 }
                 
                 boolean realSizeChanged;
@@ -480,10 +547,17 @@ public class SurfaceView extends View {
                     relayoutResult = mSession.relayout(
                         mWindow, mWindow.mSeq, mLayout, mWidth, mHeight,
                             visible ? VISIBLE : GONE,
+<<<<<<< HEAD
                             WindowManagerImpl.RELAYOUT_DEFER_SURFACE_DESTROY,
                             mWinFrame, mContentInsets,
                             mVisibleInsets, mConfiguration, mNewSurface);
                     if ((relayoutResult&WindowManagerImpl.RELAYOUT_RES_FIRST_TIME) != 0) {
+=======
+                            WindowManagerGlobal.RELAYOUT_DEFER_SURFACE_DESTROY,
+                            mWinFrame, mContentInsets,
+                            mVisibleInsets, mConfiguration, mNewSurface);
+                    if ((relayoutResult & WindowManagerGlobal.RELAYOUT_RES_FIRST_TIME) != 0) {
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
                         mReportDrawNeeded = true;
                     }
 
@@ -516,8 +590,13 @@ public class SurfaceView extends View {
 
                     SurfaceHolder.Callback callbacks[] = null;
 
+<<<<<<< HEAD
                     final boolean surfaceChanged =
                             (relayoutResult&WindowManagerImpl.RELAYOUT_RES_SURFACE_CHANGED) != 0;
+=======
+                    final boolean surfaceChanged = (relayoutResult
+                            & WindowManagerGlobal.RELAYOUT_RES_SURFACE_CHANGED) != 0;
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
                     if (mSurfaceCreated && (surfaceChanged || (!visible && visibleChanged))) {
                         mSurfaceCreated = false;
                         if (mSurface.isValid()) {
@@ -531,7 +610,11 @@ public class SurfaceView extends View {
 
                     mSurface.transferFrom(mNewSurface);
 
+<<<<<<< HEAD
                     if (visible) {
+=======
+                    if (visible && mSurface.isValid()) {
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
                         if (!mSurfaceCreated && (surfaceChanged || visibleChanged)) {
                             mSurfaceCreated = true;
                             mIsCreating = true;
@@ -615,21 +698,36 @@ public class SurfaceView extends View {
             mSurfaceView = new WeakReference<SurfaceView>(surfaceView);
         }
 
+<<<<<<< HEAD
         public void resized(int w, int h, Rect contentInsets,
+=======
+        @Override
+        public void resized(Rect frame, Rect contentInsets,
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
                 Rect visibleInsets, boolean reportDraw, Configuration newConfig) {
             SurfaceView surfaceView = mSurfaceView.get();
             if (surfaceView != null) {
                 if (DEBUG) Log.v(
+<<<<<<< HEAD
                         "SurfaceView", surfaceView + " got resized: w=" +
                                 w + " h=" + h + ", cur w=" + mCurWidth + " h=" + mCurHeight);
+=======
+                        "SurfaceView", surfaceView + " got resized: w=" + frame.width()
+                        + " h=" + frame.height() + ", cur w=" + mCurWidth + " h=" + mCurHeight);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
                 surfaceView.mSurfaceLock.lock();
                 try {
                     if (reportDraw) {
                         surfaceView.mUpdateWindowNeeded = true;
                         surfaceView.mReportDrawNeeded = true;
                         surfaceView.mHandler.sendEmptyMessage(UPDATE_WINDOW_MSG);
+<<<<<<< HEAD
                     } else if (surfaceView.mWinFrame.width() != w
                             || surfaceView.mWinFrame.height() != h) {
+=======
+                    } else if (surfaceView.mWinFrame.width() != frame.width()
+                            || surfaceView.mWinFrame.height() != frame.height()) {
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
                         surfaceView.mUpdateWindowNeeded = true;
                         surfaceView.mHandler.sendEmptyMessage(UPDATE_WINDOW_MSG);
                     }

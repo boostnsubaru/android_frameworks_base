@@ -18,7 +18,11 @@
     android:layout_width="match_parent"
     android:layout_height="?android:attr/dropdownListPreferredItemHeight"
     android:minWidth="196dip"
+<<<<<<< HEAD
     android:paddingRight="16dip">
+=======
+    android:paddingEnd="16dip">
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     
     <!-- Icon will be inserted here. -->
     
@@ -28,7 +32,11 @@
         android:layout_weight="1"
         android:layout_height="wrap_content"
         android:layout_gravity="center_vertical"
+<<<<<<< HEAD
         android:layout_marginLeft="16dip"
+=======
+        android:layout_marginStart="16dip"
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         android:duplicateParentState="true">
         
         <TextView 
@@ -36,7 +44,11 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentTop="true"
+<<<<<<< HEAD
             android:layout_alignParentLeft="true"
+=======
+            android:layout_alignParentStart="true"
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
             android:textAppearance="?android:attr/textAppearanceLargePopupMenu"
             android:singleLine="true"
             android:duplicateParentState="true"
@@ -48,7 +60,11 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/title"
+<<<<<<< HEAD
             android:layout_alignParentLeft="true"
+=======
+            android:layout_alignParentStart="true"
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
             android:textAppearance="?android:attr/textAppearanceSmallPopupMenu"
             android:singleLine="true"
             android:duplicateParentState="true" />

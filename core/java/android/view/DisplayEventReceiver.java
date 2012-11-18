@@ -66,7 +66,11 @@ public abstract class DisplayEventReceiver {
     @Override
     protected void finalize() throws Throwable {
         try {
+<<<<<<< HEAD
             dispose();
+=======
+            dispose(true);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         } finally {
             super.finalize();
         }
@@ -76,9 +80,23 @@ public abstract class DisplayEventReceiver {
      * Disposes the receiver.
      */
     public void dispose() {
+<<<<<<< HEAD
         if (mCloseGuard != null) {
             mCloseGuard.close();
         }
+=======
+        dispose(false);
+    }
+
+    private void dispose(boolean finalized) {
+        if (mCloseGuard != null) {
+            if (finalized) {
+                mCloseGuard.warnIfOpen();
+            }
+            mCloseGuard.close();
+        }
+
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         if (mReceiverPtr != 0) {
             nativeDispose(mReceiverPtr);
             mReceiverPtr = 0;
@@ -93,9 +111,29 @@ public abstract class DisplayEventReceiver {
      *
      * @param timestampNanos The timestamp of the pulse, in the {@link System#nanoTime()}
      * timebase.
+<<<<<<< HEAD
      * @param frame The frame number.  Increases by one for each vertical sync interval.
      */
     public void onVsync(long timestampNanos, int frame) {
+=======
+     * @param builtInDisplayId The surface flinger built-in display id such as
+     * {@link Surface#BUILT_IN_DISPLAY_ID_MAIN}.
+     * @param frame The frame number.  Increases by one for each vertical sync interval.
+     */
+    public void onVsync(long timestampNanos, int builtInDisplayId, int frame) {
+    }
+
+    /**
+     * Called when a display hotplug event is received.
+     *
+     * @param timestampNanos The timestamp of the event, in the {@link System#nanoTime()}
+     * timebase.
+     * @param builtInDisplayId The surface flinger built-in display id such as
+     * {@link Surface#BUILT_IN_DISPLAY_ID_HDMI}.
+     * @param connected True if the display is connected, false if it disconnected.
+     */
+    public void onHotplug(long timestampNanos, int builtInDisplayId, boolean connected) {
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     }
 
     /**
@@ -113,7 +151,18 @@ public abstract class DisplayEventReceiver {
 
     // Called from native code.
     @SuppressWarnings("unused")
+<<<<<<< HEAD
     private void dispatchVsync(long timestampNanos, int frame) {
         onVsync(timestampNanos, frame);
+=======
+    private void dispatchVsync(long timestampNanos, int builtInDisplayId, int frame) {
+        onVsync(timestampNanos, builtInDisplayId, frame);
+    }
+
+    // Called from native code.
+    @SuppressWarnings("unused")
+    private void dispatchHotplug(long timestampNanos, int builtInDisplayId, boolean connected) {
+        onHotplug(timestampNanos, builtInDisplayId, connected);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     }
 }

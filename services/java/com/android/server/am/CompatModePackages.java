@@ -4,7 +4,10 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.util.HashMap;
+<<<<<<< HEAD
 import java.util.HashSet;
+=======
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 import java.util.Iterator;
 import java.util.Map;
 
@@ -12,7 +15,10 @@ import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
 import org.xmlpull.v1.XmlSerializer;
 
+<<<<<<< HEAD
 import com.android.internal.os.AtomicFile;
+=======
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 import com.android.internal.util.FastXmlSerializer;
 
 import android.app.ActivityManager;
@@ -24,6 +30,10 @@ import android.content.res.CompatibilityInfo;
 import android.os.Handler;
 import android.os.Message;
 import android.os.RemoteException;
+<<<<<<< HEAD
+=======
+import android.util.AtomicFile;
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 import android.util.Slog;
 import android.util.Xml;
 

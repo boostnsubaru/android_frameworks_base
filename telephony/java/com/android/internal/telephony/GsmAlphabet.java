@@ -24,15 +24,22 @@ import android.util.Log;
 
 import java.nio.ByteBuffer;
 import java.nio.charset.Charset;
+<<<<<<< HEAD
+=======
+import com.android.internal.telephony.SmsConstants;
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 import com.android.internal.R;
 
 import java.util.ArrayList;
 import java.util.List;
 
+<<<<<<< HEAD
 import static android.telephony.SmsMessage.ENCODING_7BIT;
 import static android.telephony.SmsMessage.MAX_USER_DATA_SEPTETS;
 import static android.telephony.SmsMessage.MAX_USER_DATA_SEPTETS_WITH_HEADER;
 
+=======
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 /**
  * This class implements the character set mapping between
  * the GSM SMS 7-bit alphabet specified in TS 23.038 6.2.1
@@ -45,8 +52,11 @@ public class GsmAlphabet {
 
     private GsmAlphabet() { }
 
+<<<<<<< HEAD
     //***** Constants
 
+=======
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     /**
      * This escapes extended characters, and when present indicates that the
      * following character should be looked up in the "extended" table.
@@ -81,6 +91,63 @@ public class GsmAlphabet {
     public static final int UDH_SEPTET_COST_CONCATENATED_MESSAGE = 6;
 
     /**
+<<<<<<< HEAD
+=======
+     * For a specific text string, this object describes protocol
+     * properties of encoding it for transmission as message user
+     * data.
+     */
+    public static class TextEncodingDetails {
+        /**
+         *The number of SMS's required to encode the text.
+         */
+        public int msgCount;
+
+        /**
+         * The number of code units consumed so far, where code units
+         * are basically characters in the encoding -- for example,
+         * septets for the standard ASCII and GSM encodings, and 16
+         * bits for Unicode.
+         */
+        public int codeUnitCount;
+
+        /**
+         * How many code units are still available without spilling
+         * into an additional message.
+         */
+        public int codeUnitsRemaining;
+
+        /**
+         * The encoding code unit size (specified using
+         * android.telephony.SmsMessage ENCODING_*).
+         */
+        public int codeUnitSize;
+
+        /**
+         * The GSM national language table to use, or 0 for the default 7-bit alphabet.
+         */
+        public int languageTable;
+
+        /**
+         * The GSM national language shift table to use, or 0 for the default 7-bit extension table.
+         */
+        public int languageShiftTable;
+
+        @Override
+        public String toString() {
+            return "TextEncodingDetails " +
+                    "{ msgCount=" + msgCount +
+                    ", codeUnitCount=" + codeUnitCount +
+                    ", codeUnitsRemaining=" + codeUnitsRemaining +
+                    ", codeUnitSize=" + codeUnitSize +
+                    ", languageTable=" + languageTable +
+                    ", languageShiftTable=" + languageShiftTable +
+                    " }";
+        }
+    }
+
+    /**
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
      * Converts a char to a GSM 7 bit table index.
      * Returns ' ' in GSM alphabet if there's no possible match. Returns
      * GSM_EXTENDED_ESCAPE if this character is in the extended table.
@@ -752,15 +819,24 @@ public class GsmAlphabet {
      *     character counts for the most efficient 7-bit encoding,
      *     or null if there are no suitable language tables to encode the string.
      */
+<<<<<<< HEAD
     public static SmsMessageBase.TextEncodingDetails
     countGsmSeptets(CharSequence s, boolean use7bitOnly) {
         // fast path for common case where no national language shift tables are enabled
         if (sEnabledSingleShiftTables.length + sEnabledLockingShiftTables.length == 0) {
             SmsMessageBase.TextEncodingDetails ted = new SmsMessageBase.TextEncodingDetails();
+=======
+    public static TextEncodingDetails
+    countGsmSeptets(CharSequence s, boolean use7bitOnly) {
+        // fast path for common case where no national language shift tables are enabled
+        if (sEnabledSingleShiftTables.length + sEnabledLockingShiftTables.length == 0) {
+            TextEncodingDetails ted = new TextEncodingDetails();
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
             int septets = GsmAlphabet.countGsmSeptetsUsingTables(s, use7bitOnly, 0, 0);
             if (septets == -1) {
                 return null;
             }
+<<<<<<< HEAD
             ted.codeUnitSize = ENCODING_7BIT;
             ted.codeUnitCount = septets;
             if (septets > MAX_USER_DATA_SEPTETS) {
@@ -773,6 +849,20 @@ public class GsmAlphabet {
                 ted.codeUnitsRemaining = MAX_USER_DATA_SEPTETS - septets;
             }
             ted.codeUnitSize = ENCODING_7BIT;
+=======
+            ted.codeUnitSize = SmsConstants.ENCODING_7BIT;
+            ted.codeUnitCount = septets;
+            if (septets > SmsConstants.MAX_USER_DATA_SEPTETS) {
+                ted.msgCount = (septets + (SmsConstants.MAX_USER_DATA_SEPTETS_WITH_HEADER - 1)) /
+                        SmsConstants.MAX_USER_DATA_SEPTETS_WITH_HEADER;
+                ted.codeUnitsRemaining = (ted.msgCount *
+                        SmsConstants.MAX_USER_DATA_SEPTETS_WITH_HEADER) - septets;
+            } else {
+                ted.msgCount = 1;
+                ted.codeUnitsRemaining = SmsConstants.MAX_USER_DATA_SEPTETS - septets;
+            }
+            ted.codeUnitSize = SmsConstants.ENCODING_7BIT;
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
             return ted;
         }
 
@@ -832,9 +922,15 @@ public class GsmAlphabet {
         }
 
         // find the least cost encoding (lowest message count and most code units remaining)
+<<<<<<< HEAD
         SmsMessageBase.TextEncodingDetails ted = new SmsMessageBase.TextEncodingDetails();
         ted.msgCount = Integer.MAX_VALUE;
         ted.codeUnitSize = ENCODING_7BIT;
+=======
+        TextEncodingDetails ted = new TextEncodingDetails();
+        ted.msgCount = Integer.MAX_VALUE;
+        ted.codeUnitSize = SmsConstants.ENCODING_7BIT;
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         int minUnencodableCount = Integer.MAX_VALUE;
         for (LanguagePairCount lpc : lpcList) {
             for (int shiftTable = 0; shiftTable <= maxSingleShiftCode; shiftTable++) {
@@ -852,17 +948,29 @@ public class GsmAlphabet {
                 }
                 int msgCount;
                 int septetsRemaining;
+<<<<<<< HEAD
                 if (septets + udhLength > MAX_USER_DATA_SEPTETS) {
+=======
+                if (septets + udhLength > SmsConstants.MAX_USER_DATA_SEPTETS) {
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
                     if (udhLength == 0) {
                         udhLength = UDH_SEPTET_COST_LENGTH;
                     }
                     udhLength += UDH_SEPTET_COST_CONCATENATED_MESSAGE;
+<<<<<<< HEAD
                     int septetsPerMessage = MAX_USER_DATA_SEPTETS - udhLength;
+=======
+                    int septetsPerMessage = SmsConstants.MAX_USER_DATA_SEPTETS - udhLength;
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
                     msgCount = (septets + septetsPerMessage - 1) / septetsPerMessage;
                     septetsRemaining = (msgCount * septetsPerMessage) - septets;
                 } else {
                     msgCount = 1;
+<<<<<<< HEAD
                     septetsRemaining = MAX_USER_DATA_SEPTETS - udhLength - septets;
+=======
+                    septetsRemaining = SmsConstants.MAX_USER_DATA_SEPTETS - udhLength - septets;
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
                 }
                 // for 7-bit only mode, use language pair with the least unencodable chars
                 int unencodableCount = lpc.unencodableCounts[shiftTable];

@@ -30,7 +30,11 @@ import android.os.Bundle;
 import android.os.IBinder;
 import android.os.Process;
 import android.os.SystemClock;
+<<<<<<< HEAD
 import android.os.UserId;
+=======
+import android.os.UserHandle;
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 import android.util.PrintWriterPrinter;
 import android.util.TimeUtils;
 
@@ -61,6 +65,11 @@ class ProcessRecord {
     long lruWeight;             // Weight for ordering in LRU list
     int maxAdj;                 // Maximum OOM adjustment for this process
     int hiddenAdj;              // If hidden, this is the adjustment to use
+<<<<<<< HEAD
+=======
+    int clientHiddenAdj;        // If empty but hidden client, this is the adjustment to use
+    int emptyAdj;               // If empty, this is the adjustment to use
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     int curRawAdj;              // Current OOM unlimited adjustment for this process
     int setRawAdj;              // Last set OOM unlimited adjustment for this process
     int nonStoppingAdj;         // Adjustment not counting any stopping activities
@@ -73,6 +82,11 @@ class ProcessRecord {
     boolean serviceb;           // Process currently is on the service B list
     boolean keeping;            // Actively running code so don't kill due to that?
     boolean setIsForeground;    // Running foreground UI when last set?
+<<<<<<< HEAD
+=======
+    boolean hasActivities;      // Are there any activities running in this process?
+    boolean hasClientActivities;  // Are there any client services with activities?
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     boolean foregroundServices; // Running any services that are foreground?
     boolean foregroundActivities; // Running any activities that are foreground?
     boolean systemNoUi;         // This is a system process, but not currently showing UI.
@@ -186,8 +200,12 @@ class ProcessRecord {
                 instrumentationInfo.dump(new PrintWriterPrinter(pw), prefix + "  ");
             }
         }
+<<<<<<< HEAD
         pw.print(prefix); pw.print("thread="); pw.print(thread);
                 pw.print(" curReceiver="); pw.println(curReceiver);
+=======
+        pw.print(prefix); pw.print("thread="); pw.println(thread);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         pw.print(prefix); pw.print("pid="); pw.print(pid); pw.print(" starting=");
                 pw.print(starting); pw.print(" lastPss="); pw.println(lastPss);
         pw.print(prefix); pw.print("lastActivityTime=");
@@ -199,6 +217,11 @@ class ProcessRecord {
                 pw.print(" empty="); pw.println(empty);
         pw.print(prefix); pw.print("oom: max="); pw.print(maxAdj);
                 pw.print(" hidden="); pw.print(hiddenAdj);
+<<<<<<< HEAD
+=======
+                pw.print(" client="); pw.print(clientHiddenAdj);
+                pw.print(" empty="); pw.print(emptyAdj);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
                 pw.print(" curRaw="); pw.print(curRawAdj);
                 pw.print(" setRaw="); pw.print(setRawAdj);
                 pw.print(" nonStopping="); pw.print(nonStoppingAdj);
@@ -208,6 +231,7 @@ class ProcessRecord {
                 pw.print(" setSchedGroup="); pw.print(setSchedGroup);
                 pw.print(" systemNoUi="); pw.print(systemNoUi);
                 pw.print(" trimMemoryLevel="); pw.println(trimMemoryLevel);
+<<<<<<< HEAD
         pw.print(prefix); pw.print("hasShownUi="); pw.print(hasShownUi);
                 pw.print(" pendingUiClean="); pw.print(pendingUiClean);
                 pw.print(" hasAboveClient="); pw.println(hasAboveClient);
@@ -218,6 +242,29 @@ class ProcessRecord {
                 pw.print(" removed="); pw.println(removed);
         pw.print(prefix); pw.print("adjSeq="); pw.print(adjSeq);
                 pw.print(" lruSeq="); pw.println(lruSeq);
+=======
+        pw.print(prefix); pw.print("adjSeq="); pw.print(adjSeq);
+                pw.print(" lruSeq="); pw.println(lruSeq);
+        if (hasShownUi || pendingUiClean || hasAboveClient) {
+            pw.print(prefix); pw.print("hasShownUi="); pw.print(hasShownUi);
+                    pw.print(" pendingUiClean="); pw.print(pendingUiClean);
+                    pw.print(" hasAboveClient="); pw.println(hasAboveClient);
+        }
+        if (setIsForeground || foregroundServices || forcingToForeground != null) {
+            pw.print(prefix); pw.print("setIsForeground="); pw.print(setIsForeground);
+                    pw.print(" foregroundServices="); pw.print(foregroundServices);
+                    pw.print(" forcingToForeground="); pw.println(forcingToForeground);
+        }
+        if (persistent || removed) {
+            pw.print(prefix); pw.print("persistent="); pw.print(persistent);
+                    pw.print(" removed="); pw.println(removed);
+        }
+        if (hasActivities || hasClientActivities || foregroundActivities) {
+            pw.print(prefix); pw.print("hasActivities="); pw.print(hasActivities);
+                    pw.print(" hasClientActivities="); pw.print(hasClientActivities);
+                    pw.print(" foregroundActivities="); pw.println(foregroundActivities);
+        }
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         if (!keeping) {
             long wtime;
             synchronized (batteryStats.getBatteryStats()) {
@@ -226,10 +273,17 @@ class ProcessRecord {
             }
             long timeUsed = wtime - lastWakeTime;
             pw.print(prefix); pw.print("lastWakeTime="); pw.print(lastWakeTime);
+<<<<<<< HEAD
                     pw.print(" time used=");
                     TimeUtils.formatDuration(timeUsed, pw); pw.println("");
             pw.print(prefix); pw.print("lastCpuTime="); pw.print(lastCpuTime);
                     pw.print(" time used=");
+=======
+                    pw.print(" timeUsed=");
+                    TimeUtils.formatDuration(timeUsed, pw); pw.println("");
+            pw.print(prefix); pw.print("lastCpuTime="); pw.print(lastCpuTime);
+                    pw.print(" timeUsed=");
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
                     TimeUtils.formatDuration(curCpuTime-lastCpuTime, pw); pw.println("");
         }
         pw.print(prefix); pw.print("lastRequestedGc=");
@@ -294,6 +348,12 @@ class ProcessRecord {
                 pw.print(prefix); pw.print("  - "); pw.println(conProviders.get(i).toShortString());
             }
         }
+<<<<<<< HEAD
+=======
+        if (curReceiver != null) {
+            pw.print(prefix); pw.print("curReceiver="); pw.println(curReceiver);
+        }
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         if (receivers.size() > 0) {
             pw.print(prefix); pw.println("Receivers:");
             for (ReceiverList rl : receivers) {
@@ -308,12 +368,20 @@ class ProcessRecord {
         info = _info;
         isolated = _info.uid != _uid;
         uid = _uid;
+<<<<<<< HEAD
         userId = UserId.getUserId(_uid);
+=======
+        userId = UserHandle.getUserId(_uid);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         processName = _processName;
         pkgList.add(_info.packageName);
         thread = _thread;
         maxAdj = ProcessList.HIDDEN_APP_MAX_ADJ;
+<<<<<<< HEAD
         hiddenAdj = ProcessList.HIDDEN_APP_MIN_ADJ;
+=======
+        hiddenAdj = clientHiddenAdj = emptyAdj = ProcessList.HIDDEN_APP_MIN_ADJ;
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         curRawAdj = setRawAdj = -100;
         curAdj = setAdj = -100;
         persistent = false;
@@ -388,10 +456,17 @@ class ProcessRecord {
             sb.append('u');
             sb.append(userId);
             sb.append('a');
+<<<<<<< HEAD
             sb.append(info.uid%Process.FIRST_APPLICATION_UID);
             if (uid != info.uid) {
                 sb.append('i');
                 sb.append(UserId.getAppId(uid) - Process.FIRST_ISOLATED_UID);
+=======
+            sb.append(UserHandle.getAppId(info.uid));
+            if (uid != info.uid) {
+                sb.append('i');
+                sb.append(UserHandle.getAppId(uid) - Process.FIRST_ISOLATED_UID);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
             }
         }
     }

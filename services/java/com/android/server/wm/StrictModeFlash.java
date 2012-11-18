@@ -22,8 +22,11 @@ import android.graphics.Color;
 import android.graphics.PixelFormat;
 import android.graphics.Rect;
 import android.graphics.Region;
+<<<<<<< HEAD
 import android.util.DisplayMetrics;
 import android.util.Slog;
+=======
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 import android.view.Display;
 import android.view.Surface;
 import android.view.SurfaceSession;
@@ -39,13 +42,25 @@ class StrictModeFlash {
 
     public StrictModeFlash(Display display, SurfaceSession session) {
         try {
+<<<<<<< HEAD
             mSurface = new Surface(session, 0, "StrictModeFlash", -1, 1, 1, PixelFormat.TRANSLUCENT, 0);
+=======
+            mSurface = new Surface(session, "StrictModeFlash",
+                1, 1, PixelFormat.TRANSLUCENT, Surface.HIDDEN);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         } catch (Surface.OutOfResourcesException e) {
             return;
         }
 
+<<<<<<< HEAD
         mSurface.setLayer(WindowManagerService.TYPE_LAYER_MULTIPLIER * 101);  // one more than Watermark? arbitrary.
         mSurface.setPosition(0, 0);
+=======
+        mSurface.setLayerStack(display.getLayerStack());
+        mSurface.setLayer(WindowManagerService.TYPE_LAYER_MULTIPLIER * 101);  // one more than Watermark? arbitrary.
+        mSurface.setPosition(0, 0);
+        mSurface.show();
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         mDrawNeeded = true;
     }
 

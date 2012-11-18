@@ -23,6 +23,7 @@ import static android.net.wifi.WifiManager.WIFI_STATE_ENABLING;
 import static android.net.wifi.WifiManager.WIFI_STATE_UNKNOWN;
 
 /**
+<<<<<<< HEAD
  * TODO: Add soft AP states as part of WIFI_STATE_XXX
  * Retain WIFI_STATE_ENABLING that indicates driver is loading
  * Add WIFI_STATE_AP_ENABLED to indicate soft AP has started
@@ -30,6 +31,10 @@ import static android.net.wifi.WifiManager.WIFI_STATE_UNKNOWN;
  * Deprecate WIFI_STATE_UNKNOWN
  *
  * Doing this will simplify the logic for sending broadcasts
+=======
+ * TODO:
+ * Deprecate WIFI_STATE_UNKNOWN
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
  */
 import static android.net.wifi.WifiManager.WIFI_AP_STATE_DISABLED;
 import static android.net.wifi.WifiManager.WIFI_AP_STATE_DISABLING;
@@ -46,6 +51,10 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.pm.PackageManager;
+<<<<<<< HEAD
+=======
+import android.database.ContentObserver;
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 import android.net.ConnectivityManager;
 import android.net.DhcpInfo;
 import android.net.DhcpInfoInternal;
@@ -56,6 +65,10 @@ import android.net.LinkProperties;
 import android.net.NetworkInfo;
 import android.net.NetworkInfo.DetailedState;
 import android.net.NetworkUtils;
+<<<<<<< HEAD
+=======
+import android.net.wifi.RssiPacketCountInfo;
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 import android.net.wifi.WpsResult.Status;
 import android.net.wifi.p2p.WifiP2pManager;
 import android.net.wifi.p2p.WifiP2pService;
@@ -71,12 +84,20 @@ import android.os.RemoteException;
 import android.os.ServiceManager;
 import android.os.SystemClock;
 import android.os.SystemProperties;
+<<<<<<< HEAD
+=======
+import android.os.UserHandle;
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 import android.os.WorkSource;
 import android.provider.Settings;
 import android.util.EventLog;
 import android.util.Log;
 import android.util.LruCache;
 
+<<<<<<< HEAD
+=======
+import com.android.internal.R;
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 import com.android.internal.app.IBatteryStats;
 import com.android.internal.util.AsyncChannel;
 import com.android.internal.util.Protocol;
@@ -94,6 +115,7 @@ import java.util.regex.Pattern;
  * Track the state of Wifi connectivity. All event handling is done here,
  * and all changes in connectivity state are initiated here.
  *
+<<<<<<< HEAD
  * Wi-Fi now supports three modes of operation: Client, Soft Ap and Direct
  * In the current implementation, we do not support any concurrency and thus only
  * one of Client, Soft Ap or Direct operation is supported at any time.
@@ -101,6 +123,12 @@ import java.util.regex.Pattern;
  * The WifiStateMachine supports Soft Ap and Client operations while WifiP2pService
  * handles Direct. WifiP2pService and WifiStateMachine co-ordinate to ensure only
  * one exists at a certain time.
+=======
+ * Wi-Fi now supports three modes of operation: Client, SoftAp and p2p
+ * In the current implementation, we support concurrent wifi p2p and wifi operation.
+ * The WifiStateMachine handles SoftAp and Client operations while WifiP2pService
+ * handles p2p operation.
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
  *
  * @hide
  */
@@ -110,9 +138,12 @@ public class WifiStateMachine extends StateMachine {
     private static final String NETWORKTYPE = "WIFI";
     private static final boolean DBG = false;
 
+<<<<<<< HEAD
     /* TODO: This is no more used with the hostapd code. Clean up */
     private static final String SOFTAP_IFACE = "wl0.1";
 
+=======
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     private WifiMonitor mWifiMonitor;
     private WifiNative mWifiNative;
     private WifiConfigStore mWifiConfigStore;
@@ -120,10 +151,19 @@ public class WifiStateMachine extends StateMachine {
     private ConnectivityManager mCm;
 
     private final boolean mP2pSupported;
+<<<<<<< HEAD
     private final String mPrimaryDeviceType;
 
     /* Scan results handling */
     private List<ScanResult> mScanResults;
+=======
+    private final AtomicBoolean mP2pConnected = new AtomicBoolean(false);
+    private boolean mTemporarilyDisconnectWifi = false;
+    private final String mPrimaryDeviceType;
+
+    /* Scan results handling */
+    private List<ScanResult> mScanResults = new ArrayList<ScanResult>();
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     private static final Pattern scanResultPattern = Pattern.compile("\t+");
     private static final int SCAN_RESULT_CACHE_SIZE = 80;
     private final LruCache<String, ScanResult> mScanResultCache;
@@ -146,6 +186,7 @@ public class WifiStateMachine extends StateMachine {
     private boolean mScanResultIsPending = false;
     /* Tracks if the current scan settings are active */
     private boolean mSetScanActive = false;
+<<<<<<< HEAD
     /* High perf mode is true if an app has held a high perf Wifi Lock */
     private boolean mHighPerfMode = false;
 
@@ -153,6 +194,15 @@ public class WifiStateMachine extends StateMachine {
 
     private BroadcastReceiver mScreenReceiver;
     private IntentFilter mScreenFilter;
+=======
+    /* Tracks if state machine has received any screen state change broadcast yet.
+     * We can miss one of these at boot.
+     */
+    private AtomicBoolean mScreenBroadcastReceived = new AtomicBoolean(false);
+
+    private boolean mBluetoothConnectionActive = false;
+
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     private PowerManager.WakeLock mSuspendWakeLock;
 
     /**
@@ -214,9 +264,12 @@ public class WifiStateMachine extends StateMachine {
     /* Tracks current frequency mode */
     private AtomicInteger mFrequencyBand = new AtomicInteger(WifiManager.WIFI_FREQUENCY_BAND_AUTO);
 
+<<<<<<< HEAD
     /* Tracks current country code */
     private String mCountryCode = "GB";
 
+=======
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     /* Tracks if we are filtering Multicast v4 packets. Default is to filter. */
     private AtomicBoolean mFilteringMulticastV4Packets = new AtomicBoolean(true);
 
@@ -266,6 +319,11 @@ public class WifiStateMachine extends StateMachine {
     static final int CMD_DELAYED_STOP_DRIVER              = BASE + 18;
     /* A delayed message sent to start driver when it fail to come up */
     static final int CMD_DRIVER_START_TIMED_OUT           = BASE + 19;
+<<<<<<< HEAD
+=======
+    /* Ready to switch to network as default */
+    static final int CMD_CAPTIVE_CHECK_COMPLETE           = BASE + 20;
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 
     /* Start the soft access point */
     static final int CMD_START_AP                         = BASE + 21;
@@ -345,10 +403,15 @@ public class WifiStateMachine extends StateMachine {
     static final int CMD_START_PACKET_FILTERING           = BASE + 84;
     /* Clear packet filter */
     static final int CMD_STOP_PACKET_FILTERING            = BASE + 85;
+<<<<<<< HEAD
     /* Set suspend mode optimizations in the driver */
     static final int CMD_SET_SUSPEND_OPTIMIZATIONS        = BASE + 86;
     /* Clear suspend mode optimizations in the driver */
     static final int CMD_CLEAR_SUSPEND_OPTIMIZATIONS      = BASE + 87;
+=======
+    /* Enable suspend mode optimizations in the driver */
+    static final int CMD_SET_SUSPEND_OPT_ENABLED          = BASE + 86;
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     /* When there are no saved networks, we do a periodic scan to notify user of
      * an open network */
     static final int CMD_NO_NETWORKS_PERIODIC_SCAN        = BASE + 88;
@@ -367,8 +430,17 @@ public class WifiStateMachine extends StateMachine {
     static final int CMD_RESET_SUPPLICANT_STATE           = BASE + 111;
 
     /* P2p commands */
+<<<<<<< HEAD
     public static final int CMD_ENABLE_P2P                = BASE + 131;
     public static final int CMD_DISABLE_P2P               = BASE + 132;
+=======
+    /* We are ok with no response here since we wont do much with it anyway */
+    public static final int CMD_ENABLE_P2P                = BASE + 131;
+    /* In order to shut down supplicant cleanly, we wait till p2p has
+     * been disabled */
+    public static final int CMD_DISABLE_P2P_REQ           = BASE + 132;
+    public static final int CMD_DISABLE_P2P_RSP           = BASE + 133;
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 
     private static final int CONNECT_MODE   = 1;
     private static final int SCAN_ONLY_MODE = 2;
@@ -393,21 +465,45 @@ public class WifiStateMachine extends StateMachine {
      */
     private static final int DEFAULT_MAX_DHCP_RETRIES = 9;
 
+<<<<<<< HEAD
     /* Tracks if power save is enabled in driver */
     private boolean mPowerSaveEnabled = true;;
+=======
+    /* Tracks if suspend optimizations need to be disabled by DHCP,
+     * screen or due to high perf mode.
+     * When any of them needs to disable it, we keep the suspend optimizations
+     * disabled
+     */
+    private int mSuspendOptNeedsDisabled = 0;
+
+    private static final int SUSPEND_DUE_TO_DHCP       = 1;
+    private static final int SUSPEND_DUE_TO_HIGH_PERF  = 1<<1;
+    private static final int SUSPEND_DUE_TO_SCREEN     = 1<<2;
+
+    /* Tracks if user has enabled suspend optimizations through settings */
+    private AtomicBoolean mUserWantsSuspendOpt = new AtomicBoolean(true);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 
     /**
      * Default framework scan interval in milliseconds. This is used in the scenario in which
      * wifi chipset does not support background scanning to set up a
      * periodic wake up scan so that the device can connect to a new access
+<<<<<<< HEAD
      * point on the move. {@link Settings.Secure#WIFI_FRAMEWORK_SCAN_INTERVAL_MS} can
+=======
+     * point on the move. {@link Settings.Global#WIFI_FRAMEWORK_SCAN_INTERVAL_MS} can
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
      * override this.
      */
     private final int mDefaultFrameworkScanIntervalMs;
 
     /**
      * Supplicant scan interval in milliseconds.
+<<<<<<< HEAD
      * Comes from {@link Settings.Secure#WIFI_SUPPLICANT_SCAN_INTERVAL_MS} or
+=======
+     * Comes from {@link Settings.Global#WIFI_SUPPLICANT_SCAN_INTERVAL_MS} or
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
      * from the default config if the setting is not set
      */
     private long mSupplicantScanIntervalMs;
@@ -455,6 +551,14 @@ public class WifiStateMachine extends StateMachine {
     private State mDriverStartingState = new DriverStartingState();
     /* Driver started */
     private State mDriverStartedState = new DriverStartedState();
+<<<<<<< HEAD
+=======
+    /* Wait until p2p is disabled
+     * This is a special state which is entered right after we exit out of DriverStartedState
+     * before transitioning to another state.
+     */
+    private State mWaitForP2pDisableState = new WaitForP2pDisableState();
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     /* Driver stopping */
     private State mDriverStoppingState = new DriverStoppingState();
     /* Driver stopped */
@@ -469,6 +573,11 @@ public class WifiStateMachine extends StateMachine {
     private State mObtainingIpState = new ObtainingIpState();
     /* Waiting for link quality verification to be complete */
     private State mVerifyingLinkState = new VerifyingLinkState();
+<<<<<<< HEAD
+=======
+    /* Waiting for captive portal check to be complete */
+    private State mCaptivePortalCheckState = new CaptivePortalCheckState();
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     /* Connected with IP addr */
     private State mConnectedState = new ConnectedState();
     /* disconnect issued, waiting for network disconnect confirmation */
@@ -593,6 +702,7 @@ public class WifiStateMachine extends StateMachine {
         mScanIntent = PendingIntent.getBroadcast(mContext, SCAN_REQUEST, scanIntent, 0);
 
         mDefaultFrameworkScanIntervalMs = mContext.getResources().getInteger(
+<<<<<<< HEAD
                 com.android.internal.R.integer.config_wifi_framework_scan_interval);
 
         mDriverStopDelayMs = mContext.getResources().getInteger(
@@ -603,6 +713,21 @@ public class WifiStateMachine extends StateMachine {
 
         mPrimaryDeviceType = mContext.getResources().getString(
                 com.android.internal.R.string.config_wifi_p2p_device_type);
+=======
+                R.integer.config_wifi_framework_scan_interval);
+
+        mDriverStopDelayMs = mContext.getResources().getInteger(
+                R.integer.config_wifi_driver_stop_delay);
+
+        mBackgroundScanSupported = mContext.getResources().getBoolean(
+                R.bool.config_wifi_background_scan_support);
+
+        mPrimaryDeviceType = mContext.getResources().getString(
+                R.string.config_wifi_p2p_device_type);
+
+        mUserWantsSuspendOpt.set(Settings.Global.getInt(mContext.getContentResolver(),
+                    Settings.Global.WIFI_SUSPEND_OPTIMIZATIONS_ENABLED, 1) == 1);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 
         mContext.registerReceiver(
             new BroadcastReceiver() {
@@ -625,15 +750,23 @@ public class WifiStateMachine extends StateMachine {
                 },
                 new IntentFilter(ACTION_START_SCAN));
 
+<<<<<<< HEAD
         mScreenFilter = new IntentFilter();
         mScreenFilter.addAction(Intent.ACTION_SCREEN_ON);
         mScreenFilter.addAction(Intent.ACTION_SCREEN_OFF);
         mScreenReceiver = new BroadcastReceiver() {
+=======
+        IntentFilter screenFilter = new IntentFilter();
+        screenFilter.addAction(Intent.ACTION_SCREEN_ON);
+        screenFilter.addAction(Intent.ACTION_SCREEN_OFF);
+        BroadcastReceiver screenReceiver = new BroadcastReceiver() {
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
             @Override
             public void onReceive(Context context, Intent intent) {
                 String action = intent.getAction();
 
                 if (action.equals(Intent.ACTION_SCREEN_ON)) {
+<<<<<<< HEAD
                     enableRssiPolling(true);
                     if (mBackgroundScanSupported) {
                         enableBackgroundScanCommand(false);
@@ -651,6 +784,16 @@ public class WifiStateMachine extends StateMachine {
                 }
             }
         };
+=======
+                    handleScreenStateChanged(true);
+                } else if (action.equals(Intent.ACTION_SCREEN_OFF)) {
+                    handleScreenStateChanged(false);
+                }
+            }
+        };
+        mContext.registerReceiver(screenReceiver, screenFilter);
+
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         mContext.registerReceiver(
                 new BroadcastReceiver() {
                     @Override
@@ -661,6 +804,19 @@ public class WifiStateMachine extends StateMachine {
                 },
                 new IntentFilter(ACTION_DELAYED_DRIVER_STOP));
 
+<<<<<<< HEAD
+=======
+        mContext.getContentResolver().registerContentObserver(Settings.Global.getUriFor(
+                Settings.Global.WIFI_SUSPEND_OPTIMIZATIONS_ENABLED), false,
+                new ContentObserver(getHandler()) {
+                    @Override
+                    public void onChange(boolean selfChange) {
+                        mUserWantsSuspendOpt.set(Settings.Global.getInt(mContext.getContentResolver(),
+                                Settings.Global.WIFI_SUSPEND_OPTIMIZATIONS_ENABLED, 1) == 1);
+                    }
+                });
+
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         mScanResultCache = new LruCache<String, ScanResult>(SCAN_RESULT_CACHE_SIZE);
 
         PowerManager powerManager = (PowerManager)mContext.getSystemService(Context.POWER_SERVICE);
@@ -685,10 +841,18 @@ public class WifiStateMachine extends StateMachine {
                         addState(mL2ConnectedState, mConnectModeState);
                             addState(mObtainingIpState, mL2ConnectedState);
                             addState(mVerifyingLinkState, mL2ConnectedState);
+<<<<<<< HEAD
+=======
+                            addState(mCaptivePortalCheckState, mL2ConnectedState);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
                             addState(mConnectedState, mL2ConnectedState);
                         addState(mDisconnectingState, mConnectModeState);
                         addState(mDisconnectedState, mConnectModeState);
                         addState(mWpsRunningState, mConnectModeState);
+<<<<<<< HEAD
+=======
+                addState(mWaitForP2pDisableState, mSupplicantStartedState);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
                 addState(mDriverStoppingState, mSupplicantStartedState);
                 addState(mDriverStoppedState, mSupplicantStartedState);
             addState(mSupplicantStoppingState, mDefaultState);
@@ -700,7 +864,11 @@ public class WifiStateMachine extends StateMachine {
 
         setInitialState(mInitialState);
 
+<<<<<<< HEAD
         setProcessedMessagesSize(100);
+=======
+        setLogRecSize(100);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         if (DBG) setDbg(true);
 
         //start the state machine
@@ -855,6 +1023,13 @@ public class WifiStateMachine extends StateMachine {
         }
     }
 
+<<<<<<< HEAD
+=======
+    public void captivePortalCheckComplete() {
+        sendMessage(obtainMessage(CMD_CAPTIVE_CHECK_COMPLETE));
+    }
+
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     /**
      * TODO: doc
      */
@@ -881,7 +1056,17 @@ public class WifiStateMachine extends StateMachine {
      * TODO: doc
      */
     public List<ScanResult> syncGetScanResultsList() {
+<<<<<<< HEAD
         return mScanResults;
+=======
+        synchronized (mScanResultCache) {
+            List<ScanResult> scanList = new ArrayList<ScanResult>();
+            for(ScanResult result: mScanResults) {
+                scanList.add(new ScanResult(result));
+            }
+            return scanList;
+        }
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     }
 
     /**
@@ -1041,14 +1226,20 @@ public class WifiStateMachine extends StateMachine {
      */
     public void setCountryCode(String countryCode, boolean persist) {
         if (persist) {
+<<<<<<< HEAD
             Settings.Secure.putString(mContext.getContentResolver(),
                     Settings.Secure.WIFI_COUNTRY_CODE,
+=======
+            Settings.Global.putString(mContext.getContentResolver(),
+                    Settings.Global.WIFI_COUNTRY_CODE,
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
                     countryCode);
         }
         sendMessage(obtainMessage(CMD_SET_COUNTRY_CODE, countryCode));
     }
 
     /**
+<<<<<<< HEAD
      * Returns the operational country code
      */
     public String getCountryCode() {
@@ -1056,14 +1247,21 @@ public class WifiStateMachine extends StateMachine {
     }
 
     /**
+=======
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
      * Set the operational frequency band
      * @param band
      * @param persist {@code true} if the setting should be remembered.
      */
     public void setFrequencyBand(int band, boolean persist) {
         if (persist) {
+<<<<<<< HEAD
             Settings.Secure.putInt(mContext.getContentResolver(),
                     Settings.Secure.WIFI_FREQUENCY_BAND,
+=======
+            Settings.Global.putInt(mContext.getContentResolver(),
+                    Settings.Global.WIFI_FREQUENCY_BAND,
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
                     band);
         }
         sendMessage(obtainMessage(CMD_SET_FREQUENCY_BAND, band, 0));
@@ -1153,6 +1351,11 @@ public class WifiStateMachine extends StateMachine {
         sb.append("mLastNetworkId ").append(mLastNetworkId).append(LS);
         sb.append("mReconnectCount ").append(mReconnectCount).append(LS);
         sb.append("mIsScanMode ").append(mIsScanMode).append(LS);
+<<<<<<< HEAD
+=======
+        sb.append("mUserWantsSuspendOpt ").append(mUserWantsSuspendOpt).append(LS);
+        sb.append("mSuspendOptNeedsDisabled ").append(mSuspendOptNeedsDisabled).append(LS);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         sb.append("Supplicant status").append(LS)
                 .append(mWifiNative.status()).append(LS).append(LS);
 
@@ -1161,7 +1364,11 @@ public class WifiStateMachine extends StateMachine {
     }
 
     @Override
+<<<<<<< HEAD
     protected boolean recordProcessedMessage(Message msg) {
+=======
+    protected boolean recordLogRec(Message msg) {
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         //Ignore screen on/off & common messages when driver has started
         if (getCurrentState() == mConnectedState || getCurrentState() == mDisconnectedState) {
             switch (msg.what) {
@@ -1170,8 +1377,12 @@ public class WifiStateMachine extends StateMachine {
                 case CMD_START_DRIVER:
                 case CMD_SET_SCAN_MODE:
                 case CMD_SET_HIGH_PERF_MODE:
+<<<<<<< HEAD
                 case CMD_SET_SUSPEND_OPTIMIZATIONS:
                 case CMD_CLEAR_SUSPEND_OPTIMIZATIONS:
+=======
+                case CMD_SET_SUSPEND_OPT_ENABLED:
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
                 case CMD_ENABLE_BACKGROUND_SCAN:
                 case CMD_ENABLE_ALL_NETWORKS:
                 return false;
@@ -1184,7 +1395,11 @@ public class WifiStateMachine extends StateMachine {
             case CMD_RSSI_POLL:
             case CMD_DELAYED_STOP_DRIVER:
             case WifiMonitor.SCAN_RESULTS_EVENT:
+<<<<<<< HEAD
             case WifiWatchdogStateMachine.RSSI_FETCH:
+=======
+            case WifiManager.RSSI_PKTCNT_FETCH:
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
                 return false;
             default:
                 return true;
@@ -1195,6 +1410,29 @@ public class WifiStateMachine extends StateMachine {
      * Internal private functions
      ********************************************************/
 
+<<<<<<< HEAD
+=======
+    private void handleScreenStateChanged(boolean screenOn) {
+        if (DBG) log("handleScreenStateChanged: " + screenOn);
+        enableRssiPolling(screenOn);
+        if (mBackgroundScanSupported) {
+            enableBackgroundScanCommand(screenOn == false);
+        }
+
+        if (screenOn) enableAllNetworks();
+        if (mUserWantsSuspendOpt.get()) {
+            if (screenOn) {
+                sendMessage(obtainMessage(CMD_SET_SUSPEND_OPT_ENABLED, 0, 0));
+            } else {
+                //Allow 2s for suspend optimizations to be set
+                mSuspendWakeLock.acquire(2000);
+                sendMessage(obtainMessage(CMD_SET_SUSPEND_OPT_ENABLED, 1, 0));
+            }
+        }
+        mScreenBroadcastReceived.set(true);
+    }
+
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     private void checkAndSetConnectivityInstance() {
         if (mCm == null) {
             mCm = (ConnectivityManager) mContext.getSystemService(Context.CONNECTIVITY_SERVICE);
@@ -1285,8 +1523,13 @@ public class WifiStateMachine extends StateMachine {
      * Set the country code from the system setting value, if any.
      */
     private void setCountryCode() {
+<<<<<<< HEAD
         String countryCode = Settings.Secure.getString(mContext.getContentResolver(),
                 Settings.Secure.WIFI_COUNTRY_CODE);
+=======
+        String countryCode = Settings.Global.getString(mContext.getContentResolver(),
+                Settings.Global.WIFI_COUNTRY_CODE);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         if (countryCode != null && !countryCode.isEmpty()) {
             setCountryCode(countryCode, false);
         } else {
@@ -1298,11 +1541,43 @@ public class WifiStateMachine extends StateMachine {
      * Set the frequency band from the system setting value, if any.
      */
     private void setFrequencyBand() {
+<<<<<<< HEAD
         int band = Settings.Secure.getInt(mContext.getContentResolver(),
                 Settings.Secure.WIFI_FREQUENCY_BAND, WifiManager.WIFI_FREQUENCY_BAND_AUTO);
         setFrequencyBand(band, false);
     }
 
+=======
+        int band = Settings.Global.getInt(mContext.getContentResolver(),
+                Settings.Global.WIFI_FREQUENCY_BAND, WifiManager.WIFI_FREQUENCY_BAND_AUTO);
+        setFrequencyBand(band, false);
+    }
+
+    private void setSuspendOptimizationsNative(int reason, boolean enabled) {
+        if (DBG) log("setSuspendOptimizationsNative: " + reason + " " + enabled);
+        if (enabled) {
+            mSuspendOptNeedsDisabled &= ~reason;
+            /* None of dhcp, screen or highperf need it disabled and user wants it enabled */
+            if (mSuspendOptNeedsDisabled == 0 && mUserWantsSuspendOpt.get()) {
+                mWifiNative.setSuspendOptimizations(true);
+            }
+        } else {
+            mSuspendOptNeedsDisabled |= reason;
+            mWifiNative.setSuspendOptimizations(false);
+        }
+    }
+
+    private void setSuspendOptimizations(int reason, boolean enabled) {
+        if (DBG) log("setSuspendOptimizations: " + reason + " " + enabled);
+        if (enabled) {
+            mSuspendOptNeedsDisabled &= ~reason;
+        } else {
+            mSuspendOptNeedsDisabled |= reason;
+        }
+        if (DBG) log("mSuspendOptNeedsDisabled " + mSuspendOptNeedsDisabled);
+    }
+
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     private void setWifiState(int wifiState) {
         final int previousWifiState = mWifiState.get();
 
@@ -1324,7 +1599,11 @@ public class WifiStateMachine extends StateMachine {
         intent.addFlags(Intent.FLAG_RECEIVER_REGISTERED_ONLY_BEFORE_BOOT);
         intent.putExtra(WifiManager.EXTRA_WIFI_STATE, wifiState);
         intent.putExtra(WifiManager.EXTRA_PREVIOUS_WIFI_STATE, previousWifiState);
+<<<<<<< HEAD
         mContext.sendStickyBroadcast(intent);
+=======
+        mContext.sendStickyBroadcastAsUser(intent, UserHandle.ALL);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     }
 
     private void setWifiApState(int wifiApState) {
@@ -1349,6 +1628,7 @@ public class WifiStateMachine extends StateMachine {
         intent.addFlags(Intent.FLAG_RECEIVER_REGISTERED_ONLY_BEFORE_BOOT);
         intent.putExtra(WifiManager.EXTRA_WIFI_AP_STATE, wifiApState);
         intent.putExtra(WifiManager.EXTRA_PREVIOUS_WIFI_AP_STATE, previousWifiApState);
+<<<<<<< HEAD
         mContext.sendStickyBroadcast(intent);
     }
 
@@ -1374,10 +1654,68 @@ public class WifiStateMachine extends StateMachine {
                     try {
                         frequency = Integer.parseInt(result[1]);
                         level = Integer.parseInt(result[2]);
+=======
+        mContext.sendStickyBroadcastAsUser(intent, UserHandle.ALL);
+    }
+
+    private static final String BSSID_STR = "bssid=";
+    private static final String FREQ_STR = "freq=";
+    private static final String LEVEL_STR = "level=";
+    private static final String TSF_STR = "tsf=";
+    private static final String FLAGS_STR = "flags=";
+    private static final String SSID_STR = "ssid=";
+    private static final String DELIMITER_STR = "====";
+    /**
+     * Format:
+     * bssid=68:7f:76:d7:1a:6e
+     * freq=2412
+     * level=-44
+     * tsf=1344626243700342
+     * flags=[WPA2-PSK-CCMP][WPS][ESS]
+     * ssid=zfdy
+     * ====
+     * bssid=68:5f:74:d7:1a:6f
+     * freq=5180
+     * level=-73
+     * tsf=1344626243700373
+     * flags=[WPA2-PSK-CCMP][WPS][ESS]
+     * ssid=zuby
+     * ====
+     */
+    private void setScanResults(String scanResults) {
+        String bssid = "";
+        int level = 0;
+        int freq = 0;
+        long tsf = 0;
+        String flags = "";
+        WifiSsid wifiSsid = null;
+
+        if (scanResults == null) {
+            return;
+        }
+
+        synchronized(mScanResultCache) {
+            mScanResults = new ArrayList<ScanResult>();
+            String[] lines = scanResults.split("\n");
+
+            for (String line : lines) {
+                if (line.startsWith(BSSID_STR)) {
+                    bssid = line.substring(BSSID_STR.length());
+                } else if (line.startsWith(FREQ_STR)) {
+                    try {
+                        freq = Integer.parseInt(line.substring(FREQ_STR.length()));
+                    } catch (NumberFormatException e) {
+                        freq = 0;
+                    }
+                } else if (line.startsWith(LEVEL_STR)) {
+                    try {
+                        level = Integer.parseInt(line.substring(LEVEL_STR.length()));
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
                         /* some implementations avoid negative values by adding 256
                          * so we need to adjust for that here.
                          */
                         if (level > 0) level -= 256;
+<<<<<<< HEAD
                     } catch (NumberFormatException e) {
                         frequency = 0;
                         level = 0;
@@ -1477,6 +1815,53 @@ public class WifiStateMachine extends StateMachine {
         }
 
         mScanResults = scanList;
+=======
+                    } catch(NumberFormatException e) {
+                        level = 0;
+                    }
+                } else if (line.startsWith(TSF_STR)) {
+                    try {
+                        tsf = Long.parseLong(line.substring(TSF_STR.length()));
+                    } catch (NumberFormatException e) {
+                        tsf = 0;
+                    }
+                } else if (line.startsWith(FLAGS_STR)) {
+                    flags = line.substring(FLAGS_STR.length());
+                } else if (line.startsWith(SSID_STR)) {
+                    wifiSsid = WifiSsid.createFromAsciiEncoded(
+                            line.substring(SSID_STR.length()));
+                } else if (line.startsWith(DELIMITER_STR)) {
+                    if (bssid != null) {
+                        String ssid = (wifiSsid != null) ? wifiSsid.toString() : WifiSsid.NONE;
+                        String key = bssid + ssid;
+                        ScanResult scanResult = mScanResultCache.get(key);
+                        if (scanResult != null) {
+                            scanResult.level = level;
+                            scanResult.wifiSsid = wifiSsid;
+                            // Keep existing API
+                            scanResult.SSID = (wifiSsid != null) ? wifiSsid.toString() :
+                                    WifiSsid.NONE;
+                            scanResult.capabilities = flags;
+                            scanResult.frequency = freq;
+                            scanResult.timestamp = tsf;
+                        } else {
+                            scanResult =
+                                new ScanResult(
+                                        wifiSsid, bssid, flags, level, freq, tsf);
+                            mScanResultCache.put(key, scanResult);
+                        }
+                        mScanResults.add(scanResult);
+                    }
+                    bssid = null;
+                    level = 0;
+                    freq = 0;
+                    tsf = 0;
+                    flags = "";
+                    wifiSsid = null;
+                }
+            }
+        }
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     }
 
     /*
@@ -1535,6 +1920,33 @@ public class WifiStateMachine extends StateMachine {
         }
     }
 
+<<<<<<< HEAD
+=======
+    /*
+     * Fetch TX packet counters on current connection
+     */
+    private void fetchPktcntNative(RssiPacketCountInfo info) {
+        String pktcntPoll = mWifiNative.pktcntPoll();
+
+        if (pktcntPoll != null) {
+            String[] lines = pktcntPoll.split("\n");
+            for (String line : lines) {
+                String[] prop = line.split("=");
+                if (prop.length < 2) continue;
+                try {
+                    if (prop[0].equals("TXGOOD")) {
+                        info.txgood = Integer.parseInt(prop[1]);
+                    } else if (prop[0].equals("TXBAD")) {
+                        info.txbad = Integer.parseInt(prop[1]);
+                    }
+                } catch (NumberFormatException e) {
+                    //Ignore
+                }
+            }
+        }
+    }
+
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     private void configureLinkProperties() {
         if (mWifiConfigStore.isUsingStaticIp(mLastNetworkId)) {
             mLinkProperties = mWifiConfigStore.getLinkProperties(mLastNetworkId);
@@ -1552,22 +1964,35 @@ public class WifiStateMachine extends StateMachine {
     }
 
     private int getMaxDhcpRetries() {
+<<<<<<< HEAD
         return Settings.Secure.getInt(mContext.getContentResolver(),
                                       Settings.Secure.WIFI_MAX_DHCP_RETRY_COUNT,
+=======
+        return Settings.Global.getInt(mContext.getContentResolver(),
+                                      Settings.Global.WIFI_MAX_DHCP_RETRY_COUNT,
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
                                       DEFAULT_MAX_DHCP_RETRIES);
     }
 
     private void sendScanResultsAvailableBroadcast() {
         Intent intent = new Intent(WifiManager.SCAN_RESULTS_AVAILABLE_ACTION);
         intent.addFlags(Intent.FLAG_RECEIVER_REGISTERED_ONLY_BEFORE_BOOT);
+<<<<<<< HEAD
         mContext.sendBroadcast(intent);
+=======
+        mContext.sendBroadcastAsUser(intent, UserHandle.ALL);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     }
 
     private void sendRssiChangeBroadcast(final int newRssi) {
         Intent intent = new Intent(WifiManager.RSSI_CHANGED_ACTION);
         intent.addFlags(Intent.FLAG_RECEIVER_REGISTERED_ONLY_BEFORE_BOOT);
         intent.putExtra(WifiManager.EXTRA_NEW_RSSI, newRssi);
+<<<<<<< HEAD
         mContext.sendBroadcast(intent);
+=======
+        mContext.sendStickyBroadcastAsUser(intent, UserHandle.ALL);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     }
 
     private void sendNetworkStateChangeBroadcast(String bssid) {
@@ -1581,26 +2006,42 @@ public class WifiStateMachine extends StateMachine {
                 mNetworkInfo.getDetailedState() == DetailedState.CONNECTED) {
             intent.putExtra(WifiManager.EXTRA_WIFI_INFO, new WifiInfo(mWifiInfo));
         }
+<<<<<<< HEAD
         mContext.sendStickyBroadcast(intent);
+=======
+        mContext.sendStickyBroadcastAsUser(intent, UserHandle.ALL);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     }
 
     private void sendLinkConfigurationChangedBroadcast() {
         Intent intent = new Intent(WifiManager.LINK_CONFIGURATION_CHANGED_ACTION);
         intent.addFlags(Intent.FLAG_RECEIVER_REGISTERED_ONLY_BEFORE_BOOT);
         intent.putExtra(WifiManager.EXTRA_LINK_PROPERTIES, new LinkProperties(mLinkProperties));
+<<<<<<< HEAD
         mContext.sendBroadcast(intent);
+=======
+        mContext.sendBroadcastAsUser(intent, UserHandle.ALL);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     }
 
     private void sendSupplicantConnectionChangedBroadcast(boolean connected) {
         Intent intent = new Intent(WifiManager.SUPPLICANT_CONNECTION_CHANGE_ACTION);
         intent.addFlags(Intent.FLAG_RECEIVER_REGISTERED_ONLY_BEFORE_BOOT);
         intent.putExtra(WifiManager.EXTRA_SUPPLICANT_CONNECTED, connected);
+<<<<<<< HEAD
         mContext.sendBroadcast(intent);
+=======
+        mContext.sendBroadcastAsUser(intent, UserHandle.ALL);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     }
 
     /**
      * Record the detailed state of a network.
+<<<<<<< HEAD
      * @param state the new @{code DetailedState}
+=======
+     * @param state the new {@code DetailedState}
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
      */
     private void setNetworkDetailedState(NetworkInfo.DetailedState state) {
         if (DBG) {
@@ -1609,7 +2050,11 @@ public class WifiStateMachine extends StateMachine {
         }
 
         if (state != mNetworkInfo.getDetailedState()) {
+<<<<<<< HEAD
             mNetworkInfo.setDetailedState(state, null, null);
+=======
+            mNetworkInfo.setDetailedState(state, null, mWifiInfo.getSSID());
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         }
     }
 
@@ -1634,11 +2079,16 @@ public class WifiStateMachine extends StateMachine {
             mWifiInfo.setNetworkId(WifiConfiguration.INVALID_NETWORK_ID);
         }
 
+<<<<<<< HEAD
         if (state == SupplicantState.ASSOCIATING) {
             /* BSSID is valid only in ASSOCIATING state */
             mWifiInfo.setBSSID(stateChangeResult.BSSID);
         }
         mWifiInfo.setSSID(stateChangeResult.SSID);
+=======
+        mWifiInfo.setBSSID(stateChangeResult.BSSID);
+        mWifiInfo.setSSID(stateChangeResult.wifiSsid);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 
         mSupplicantStateTracker.sendMessage(Message.obtain(message));
 
@@ -1659,10 +2109,14 @@ public class WifiStateMachine extends StateMachine {
             /* In case we were in middle of DHCP operation
                restore back powermode */
             handlePostDhcpSetup();
+<<<<<<< HEAD
 
             mDhcpStateMachine.sendMessage(DhcpStateMachine.CMD_STOP_DHCP);
             mDhcpStateMachine.quit();
             mDhcpStateMachine = null;
+=======
+            mDhcpStateMachine.sendMessage(DhcpStateMachine.CMD_STOP_DHCP);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         }
 
         try {
@@ -1721,18 +2175,33 @@ public class WifiStateMachine extends StateMachine {
                     mWifiNative.BLUETOOTH_COEXISTENCE_MODE_DISABLED);
         }
 
+<<<<<<< HEAD
         /* Disable power save during DHCP */
         if (mPowerSaveEnabled) {
             mPowerSaveEnabled = false;
             mWifiNative.setPowerSave(mPowerSaveEnabled);
         }
+=======
+        /* Disable power save and suspend optimizations during DHCP */
+        // Note: The order here is important for now. Brcm driver changes
+        // power settings when we control suspend mode optimizations.
+        // TODO: Remove this comment when the driver is fixed.
+        setSuspendOptimizationsNative(SUSPEND_DUE_TO_DHCP, false);
+        mWifiNative.setPowerSave(false);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     }
 
 
     void handlePostDhcpSetup() {
+<<<<<<< HEAD
         /* Restore power save */
         mPowerSaveEnabled = true;
         mWifiNative.setPowerSave(mPowerSaveEnabled);
+=======
+        /* Restore power save and suspend optimizations */
+        setSuspendOptimizationsNative(SUSPEND_DUE_TO_DHCP, true);
+        mWifiNative.setPowerSave(true);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 
         // Set the coexistence mode back to its default value
         mWifiNative.setBluetoothCoexistenceMode(
@@ -1804,12 +2273,20 @@ public class WifiStateMachine extends StateMachine {
         new Thread(new Runnable() {
             public void run() {
                 try {
+<<<<<<< HEAD
                     mNwService.startAccessPoint(config, mInterfaceName, SOFTAP_IFACE);
+=======
+                    mNwService.startAccessPoint(config, mInterfaceName);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
                 } catch (Exception e) {
                     loge("Exception in softap start " + e);
                     try {
                         mNwService.stopAccessPoint(mInterfaceName);
+<<<<<<< HEAD
                         mNwService.startAccessPoint(config, mInterfaceName, SOFTAP_IFACE);
+=======
+                        mNwService.startAccessPoint(config, mInterfaceName);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
                     } catch (Exception e1) {
                         loge("Exception in softap re-start " + e1);
                         sendMessage(CMD_START_AP_FAILURE);
@@ -1865,7 +2342,15 @@ public class WifiStateMachine extends StateMachine {
                     mEnableBackgroundScan = (message.arg1 == 1);
                     break;
                 case CMD_SET_HIGH_PERF_MODE:
+<<<<<<< HEAD
                     mHighPerfMode = (message.arg1 == 1);
+=======
+                    if (message.arg1 == 1) {
+                        setSuspendOptimizations(SUSPEND_DUE_TO_HIGH_PERF, false);
+                    } else {
+                        setSuspendOptimizations(SUSPEND_DUE_TO_HIGH_PERF, true);
+                    }
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
                     break;
                     /* Discard */
                 case CMD_LOAD_DRIVER:
@@ -1912,11 +2397,26 @@ public class WifiStateMachine extends StateMachine {
                 case CMD_RESPONSE_AP_CONFIG:
                 case WifiWatchdogStateMachine.POOR_LINK_DETECTED:
                 case WifiWatchdogStateMachine.GOOD_LINK_DETECTED:
+<<<<<<< HEAD
                 case CMD_CLEAR_SUSPEND_OPTIMIZATIONS:
                 case CMD_NO_NETWORKS_PERIODIC_SCAN:
                     break;
                 case CMD_SET_SUSPEND_OPTIMIZATIONS:
                     mSuspendWakeLock.release();
+=======
+                case CMD_NO_NETWORKS_PERIODIC_SCAN:
+                    break;
+                case DhcpStateMachine.CMD_ON_QUIT:
+                    mDhcpStateMachine = null;
+                    break;
+                case CMD_SET_SUSPEND_OPT_ENABLED:
+                    if (message.arg1 == 1) {
+                        mSuspendWakeLock.release();
+                        setSuspendOptimizations(SUSPEND_DUE_TO_SCREEN, true);
+                    } else {
+                        setSuspendOptimizations(SUSPEND_DUE_TO_SCREEN, false);
+                    }
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
                     break;
                 case WifiMonitor.DRIVER_HUNG_EVENT:
                     setWifiEnabled(false);
@@ -1946,8 +2446,22 @@ public class WifiStateMachine extends StateMachine {
                     replyToMessage(message, WifiManager.DISABLE_NETWORK_FAILED,
                             WifiManager.BUSY);
                     break;
+<<<<<<< HEAD
                 case WifiWatchdogStateMachine.RSSI_FETCH:
                     replyToMessage(message, WifiWatchdogStateMachine.RSSI_FETCH_FAILED);
+=======
+                case WifiManager.RSSI_PKTCNT_FETCH:
+                    replyToMessage(message, WifiManager.RSSI_PKTCNT_FETCH_FAILED,
+                            WifiManager.BUSY);
+                    break;
+                case WifiP2pService.P2P_CONNECTION_CHANGED:
+                    NetworkInfo info = (NetworkInfo) message.obj;
+                    mP2pConnected.set(info.isConnected());
+                    break;
+                case WifiP2pService.DISCONNECT_WIFI_REQUEST:
+                    mTemporarilyDisconnectWifi = (message.arg1 == 1);
+                    replyToMessage(message, WifiP2pService.DISCONNECT_WIFI_RESPONSE);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
                     break;
                 default:
                     loge("Error! unhandled message" + message);
@@ -2346,10 +2860,17 @@ public class WifiStateMachine extends StateMachine {
             mNetworkInfo.setIsAvailable(true);
 
             int defaultInterval = mContext.getResources().getInteger(
+<<<<<<< HEAD
                     com.android.internal.R.integer.config_wifi_supplicant_scan_interval);
 
             mSupplicantScanIntervalMs = Settings.Secure.getLong(mContext.getContentResolver(),
                     Settings.Secure.WIFI_SUPPLICANT_SCAN_INTERVAL_MS,
+=======
+                    R.integer.config_wifi_supplicant_scan_interval);
+
+            mSupplicantScanIntervalMs = Settings.Global.getLong(mContext.getContentResolver(),
+                    Settings.Global.WIFI_SUPPLICANT_SCAN_INTERVAL_MS,
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
                     defaultInterval);
 
             mWifiNative.setScanInterval((int)mSupplicantScanIntervalMs / 1000);
@@ -2360,7 +2881,15 @@ public class WifiStateMachine extends StateMachine {
             WifiConfiguration config;
             switch(message.what) {
                 case CMD_STOP_SUPPLICANT:   /* Supplicant stopped by user */
+<<<<<<< HEAD
                     transitionTo(mSupplicantStoppingState);
+=======
+                    if (mP2pSupported) {
+                        transitionTo(mWaitForP2pDisableState);
+                    } else {
+                        transitionTo(mSupplicantStoppingState);
+                    }
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
                     break;
                 case WifiMonitor.SUP_DISCONNECTION_EVENT:  /* Supplicant connection lost */
                     loge("Connection lost, restart supplicant");
@@ -2370,7 +2899,15 @@ public class WifiStateMachine extends StateMachine {
                     handleNetworkDisconnect();
                     sendSupplicantConnectionChangedBroadcast(false);
                     mSupplicantStateTracker.sendMessage(CMD_RESET_SUPPLICANT_STATE);
+<<<<<<< HEAD
                     transitionTo(mDriverLoadedState);
+=======
+                    if (mP2pSupported) {
+                        transitionTo(mWaitForP2pDisableState);
+                    } else {
+                        transitionTo(mDriverLoadedState);
+                    }
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
                     sendMessageDelayed(CMD_START_SUPPLICANT, SUPPLICANT_RESTART_INTERVAL_MSECS);
                     break;
                 case WifiMonitor.SCAN_RESULTS_EVENT:
@@ -2484,6 +3021,12 @@ public class WifiStateMachine extends StateMachine {
 
             /* Send any reset commands to supplicant before shutting it down */
             handleNetworkDisconnect();
+<<<<<<< HEAD
+=======
+            if (mDhcpStateMachine != null) {
+                mDhcpStateMachine.doQuit();
+            }
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 
             if (DBG) log("stopping supplicant");
             if (!mWifiNative.stopSupplicant()) {
@@ -2648,8 +3191,11 @@ public class WifiStateMachine extends StateMachine {
                 mWifiNative.stopFilteringMulticastV4Packets();
             }
 
+<<<<<<< HEAD
             mWifiNative.setPowerSave(mPowerSaveEnabled);
 
+=======
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
             if (mIsScanMode) {
                 mWifiNative.setScanResultHandling(SCAN_ONLY_MODE);
                 mWifiNative.disconnect();
@@ -2664,9 +3210,25 @@ public class WifiStateMachine extends StateMachine {
                 transitionTo(mDisconnectedState);
             }
 
+<<<<<<< HEAD
             if (mP2pSupported) mWifiP2pChannel.sendMessage(WifiStateMachine.CMD_ENABLE_P2P);
 
             mContext.registerReceiver(mScreenReceiver, mScreenFilter);
+=======
+            // We may have missed screen update at boot
+            if (mScreenBroadcastReceived.get() == false) {
+                PowerManager powerManager = (PowerManager)mContext.getSystemService(
+                        Context.POWER_SERVICE);
+                handleScreenStateChanged(powerManager.isScreenOn());
+            } else {
+                // Set the right suspend mode settings
+                mWifiNative.setSuspendOptimizations(mSuspendOptNeedsDisabled == 0
+                        && mUserWantsSuspendOpt.get());
+            }
+            mWifiNative.setPowerSave(true);
+
+            if (mP2pSupported) mWifiP2pChannel.sendMessage(WifiStateMachine.CMD_ENABLE_P2P);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         }
         @Override
         public boolean processMessage(Message message) {
@@ -2690,9 +3252,13 @@ public class WifiStateMachine extends StateMachine {
                 case CMD_SET_COUNTRY_CODE:
                     String country = (String) message.obj;
                     if (DBG) log("set country code " + country);
+<<<<<<< HEAD
                     if (mWifiNative.setCountryCode(country.toUpperCase())) {
                         mCountryCode = country;
                     } else {
+=======
+                    if (!mWifiNative.setCountryCode(country.toUpperCase())) {
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
                         loge("Failed to set country code " + country);
                     }
                     break;
@@ -2756,8 +3322,17 @@ public class WifiStateMachine extends StateMachine {
                     }
                     mWakeLock.acquire();
                     mWifiNative.stopDriver();
+<<<<<<< HEAD
                     transitionTo(mDriverStoppingState);
                     mWakeLock.release();
+=======
+                    mWakeLock.release();
+                    if (mP2pSupported) {
+                        transitionTo(mWaitForP2pDisableState);
+                    } else {
+                        transitionTo(mDriverStoppingState);
+                    }
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
                     break;
                 case CMD_START_PACKET_FILTERING:
                     if (message.arg1 == MULTICAST_V6) {
@@ -2777,6 +3352,7 @@ public class WifiStateMachine extends StateMachine {
                         loge("Illegal arugments to CMD_STOP_PACKET_FILTERING");
                     }
                     break;
+<<<<<<< HEAD
                 case CMD_SET_SUSPEND_OPTIMIZATIONS:
                     if (!mHighPerfMode) {
                         mWifiNative.setSuspendOptimizations(true);
@@ -2791,6 +3367,21 @@ public class WifiStateMachine extends StateMachine {
                     if (mHighPerfMode) {
                         //Disable any suspend optimizations
                         mWifiNative.setSuspendOptimizations(false);
+=======
+                case CMD_SET_SUSPEND_OPT_ENABLED:
+                    if (message.arg1 == 1) {
+                        setSuspendOptimizationsNative(SUSPEND_DUE_TO_SCREEN, true);
+                        mSuspendWakeLock.release();
+                    } else {
+                        setSuspendOptimizationsNative(SUSPEND_DUE_TO_SCREEN, false);
+                    }
+                    break;
+                case CMD_SET_HIGH_PERF_MODE:
+                    if (message.arg1 == 1) {
+                        setSuspendOptimizationsNative(SUSPEND_DUE_TO_HIGH_PERF, false);
+                    } else {
+                        setSuspendOptimizationsNative(SUSPEND_DUE_TO_HIGH_PERF, true);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
                     }
                     break;
                 default:
@@ -2803,10 +3394,72 @@ public class WifiStateMachine extends StateMachine {
             if (DBG) log(getName() + "\n");
             mIsRunning = false;
             updateBatteryWorkSource(null);
+<<<<<<< HEAD
             mScanResults = null;
 
             if (mP2pSupported) mWifiP2pChannel.sendMessage(WifiStateMachine.CMD_DISABLE_P2P);
             mContext.unregisterReceiver(mScreenReceiver);
+=======
+            mScanResults = new ArrayList<ScanResult>();
+        }
+    }
+
+    class WaitForP2pDisableState extends State {
+        private State mTransitionToState;
+        @Override
+        public void enter() {
+            if (DBG) log(getName() + "\n");
+            EventLog.writeEvent(EVENTLOG_WIFI_STATE_CHANGED, getName());
+            switch (getCurrentMessage().what) {
+                case WifiMonitor.SUP_DISCONNECTION_EVENT:
+                    mTransitionToState = mDriverLoadedState;
+                    break;
+                case CMD_DELAYED_STOP_DRIVER:
+                    mTransitionToState = mDriverStoppingState;
+                    break;
+                case CMD_STOP_SUPPLICANT:
+                    mTransitionToState = mSupplicantStoppingState;
+                    break;
+                default:
+                    mTransitionToState = mDriverStoppingState;
+                    break;
+            }
+            mWifiP2pChannel.sendMessage(WifiStateMachine.CMD_DISABLE_P2P_REQ);
+        }
+        @Override
+        public boolean processMessage(Message message) {
+            if (DBG) log(getName() + message.toString() + "\n");
+            switch(message.what) {
+                case WifiStateMachine.CMD_DISABLE_P2P_RSP:
+                    transitionTo(mTransitionToState);
+                    break;
+                /* Defer wifi start/shut and driver commands */
+                case WifiMonitor.SUPPLICANT_STATE_CHANGE_EVENT:
+                case CMD_LOAD_DRIVER:
+                case CMD_UNLOAD_DRIVER:
+                case CMD_START_SUPPLICANT:
+                case CMD_STOP_SUPPLICANT:
+                case CMD_START_AP:
+                case CMD_STOP_AP:
+                case CMD_START_DRIVER:
+                case CMD_STOP_DRIVER:
+                case CMD_SET_SCAN_MODE:
+                case CMD_SET_SCAN_TYPE:
+                case CMD_SET_COUNTRY_CODE:
+                case CMD_SET_FREQUENCY_BAND:
+                case CMD_START_PACKET_FILTERING:
+                case CMD_STOP_PACKET_FILTERING:
+                case CMD_START_SCAN:
+                case CMD_DISCONNECT:
+                case CMD_REASSOCIATE:
+                case CMD_RECONNECT:
+                    deferMessage(message);
+                    break;
+                default:
+                    return NOT_HANDLED;
+            }
+            return HANDLED;
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         }
     }
 
@@ -2955,6 +3608,18 @@ public class WifiStateMachine extends StateMachine {
                         transitionTo(mDisconnectedState);
                     }
                     break;
+<<<<<<< HEAD
+=======
+                case WifiP2pService.DISCONNECT_WIFI_REQUEST:
+                    if (message.arg1 == 1) {
+                        mWifiNative.disconnect();
+                        mTemporarilyDisconnectWifi = true;
+                    } else {
+                        mWifiNative.reconnect();
+                        mTemporarilyDisconnectWifi = false;
+                    }
+                    break;
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
                     /* Do a redundant disconnect without transition */
                 case CMD_DISCONNECT:
                     mWifiNative.disconnect();
@@ -3084,6 +3749,16 @@ public class WifiStateMachine extends StateMachine {
                     mWifiNative.disconnect();
                     transitionTo(mDisconnectingState);
                     break;
+<<<<<<< HEAD
+=======
+                case WifiP2pService.DISCONNECT_WIFI_REQUEST:
+                    if (message.arg1 == 1) {
+                        mWifiNative.disconnect();
+                        mTemporarilyDisconnectWifi = true;
+                        transitionTo(mDisconnectingState);
+                    }
+                    break;
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
                 case CMD_SET_SCAN_MODE:
                     if (message.arg1 == SCAN_ONLY_MODE) {
                         sendMessage(CMD_DISCONNECT);
@@ -3152,10 +3827,19 @@ public class WifiStateMachine extends StateMachine {
                                 mRssiPollToken, 0), POLL_RSSI_INTERVAL_MSECS);
                     }
                     break;
+<<<<<<< HEAD
                 case WifiWatchdogStateMachine.RSSI_FETCH:
                     fetchRssiAndLinkSpeedNative();
                     replyToMessage(message, WifiWatchdogStateMachine.RSSI_FETCH_SUCCEEDED,
                             mWifiInfo.getRssi());
+=======
+                case WifiManager.RSSI_PKTCNT_FETCH:
+                    RssiPacketCountInfo info = new RssiPacketCountInfo();
+                    fetchRssiAndLinkSpeedNative();
+                    info.rssi = mWifiInfo.getRssi();
+                    fetchPktcntNative(info);
+                    replyToMessage(message, WifiManager.RSSI_PKTCNT_FETCH_SUCCEEDED, info);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
                     break;
                 default:
                     return NOT_HANDLED;
@@ -3183,8 +3867,16 @@ public class WifiStateMachine extends StateMachine {
 
             if (!mWifiConfigStore.isUsingStaticIp(mLastNetworkId)) {
                 //start DHCP
+<<<<<<< HEAD
                 mDhcpStateMachine = DhcpStateMachine.makeDhcpStateMachine(
                         mContext, WifiStateMachine.this, mInterfaceName);
+=======
+                if (mDhcpStateMachine == null) {
+                    mDhcpStateMachine = DhcpStateMachine.makeDhcpStateMachine(
+                            mContext, WifiStateMachine.this, mInterfaceName);
+
+                }
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
                 mDhcpStateMachine.registerForPreDhcpNotification();
                 mDhcpStateMachine.sendMessage(DhcpStateMachine.CMD_START_DHCP);
             } else {
@@ -3248,6 +3940,29 @@ public class WifiStateMachine extends StateMachine {
                     //stay here
                     break;
                 case WifiWatchdogStateMachine.GOOD_LINK_DETECTED:
+<<<<<<< HEAD
+=======
+                    transitionTo(mCaptivePortalCheckState);
+                    break;
+                default:
+                    return NOT_HANDLED;
+            }
+            return HANDLED;
+        }
+    }
+
+    class CaptivePortalCheckState extends State {
+        @Override
+        public void enter() {
+            setNetworkDetailedState(DetailedState.CAPTIVE_PORTAL_CHECK);
+            mWifiConfigStore.updateStatus(mLastNetworkId, DetailedState.CAPTIVE_PORTAL_CHECK);
+            sendNetworkStateChangeBroadcast(mLastBssid);
+        }
+        @Override
+        public boolean processMessage(Message message) {
+            switch (message.what) {
+                case CMD_CAPTIVE_CHECK_COMPLETE:
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
                     try {
                         mNwService.enableIpv6(mInterfaceName);
                     } catch (RemoteException re) {
@@ -3255,7 +3970,10 @@ public class WifiStateMachine extends StateMachine {
                     } catch (IllegalStateException e) {
                         loge("Failed to enable IPv6: " + e);
                     }
+<<<<<<< HEAD
 
+=======
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
                     setNetworkDetailedState(DetailedState.CONNECTED);
                     mWifiConfigStore.updateStatus(mLastNetworkId, DetailedState.CONNECTED);
                     sendNetworkStateChangeBroadcast(mLastBssid);
@@ -3366,8 +4084,20 @@ public class WifiStateMachine extends StateMachine {
             if (DBG) log(getName() + "\n");
             EventLog.writeEvent(EVENTLOG_WIFI_STATE_CHANGED, getName());
 
+<<<<<<< HEAD
             mFrameworkScanIntervalMs = Settings.Secure.getLong(mContext.getContentResolver(),
                     Settings.Secure.WIFI_FRAMEWORK_SCAN_INTERVAL_MS,
+=======
+            // We dont scan frequently if this is a temporary disconnect
+            // due to p2p
+            if (mTemporarilyDisconnectWifi) {
+                mWifiP2pChannel.sendMessage(WifiP2pService.DISCONNECT_WIFI_RESPONSE);
+                return;
+            }
+
+            mFrameworkScanIntervalMs = Settings.Global.getLong(mContext.getContentResolver(),
+                    Settings.Global.WIFI_FRAMEWORK_SCAN_INTERVAL_MS,
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
                     mDefaultFrameworkScanIntervalMs);
             /*
              * We initiate background scanning if it is enabled, otherwise we
@@ -3393,7 +4123,11 @@ public class WifiStateMachine extends StateMachine {
              * The scans are useful to notify the user of the presence of an open network.
              * Note that these are not wake up scans.
              */
+<<<<<<< HEAD
             if (mWifiConfigStore.getConfiguredNetworks().size() == 0) {
+=======
+            if (!mP2pConnected.get() && mWifiConfigStore.getConfiguredNetworks().size() == 0) {
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
                 sendMessageDelayed(obtainMessage(CMD_NO_NETWORKS_PERIODIC_SCAN,
                             ++mPeriodicScanToken, 0), mSupplicantScanIntervalMs);
             }
@@ -3404,6 +4138,10 @@ public class WifiStateMachine extends StateMachine {
             boolean ret = HANDLED;
             switch (message.what) {
                 case CMD_NO_NETWORKS_PERIODIC_SCAN:
+<<<<<<< HEAD
+=======
+                    if (mP2pConnected.get()) break;
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
                     if (message.arg1 == mPeriodicScanToken &&
                             mWifiConfigStore.getConfiguredNetworks().size() == 0) {
                         sendMessage(CMD_START_SCAN);
@@ -3464,6 +4202,30 @@ public class WifiStateMachine extends StateMachine {
                     /* Handled in parent state */
                     ret = NOT_HANDLED;
                     break;
+<<<<<<< HEAD
+=======
+                case WifiP2pService.P2P_CONNECTION_CHANGED:
+                    NetworkInfo info = (NetworkInfo) message.obj;
+                    mP2pConnected.set(info.isConnected());
+                    if (mP2pConnected.get()) {
+                        int defaultInterval = mContext.getResources().getInteger(
+                                R.integer.config_wifi_scan_interval_p2p_connected);
+                        long scanIntervalMs = Settings.Global.getLong(mContext.getContentResolver(),
+                                Settings.Global.WIFI_SCAN_INTERVAL_WHEN_P2P_CONNECTED_MS,
+                                defaultInterval);
+                        mWifiNative.setScanInterval((int) scanIntervalMs/1000);
+                    } else if (mWifiConfigStore.getConfiguredNetworks().size() == 0) {
+                        if (DBG) log("Turn on scanning after p2p disconnected");
+                        sendMessageDelayed(obtainMessage(CMD_NO_NETWORKS_PERIODIC_SCAN,
+                                    ++mPeriodicScanToken, 0), mSupplicantScanIntervalMs);
+                    }
+                case CMD_RECONNECT:
+                case CMD_REASSOCIATE:
+                    // Drop a third party reconnect/reassociate if we are
+                    // tempoarily disconnected for p2p
+                    if (mTemporarilyDisconnectWifi) ret = NOT_HANDLED;
+                    break;
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
                 default:
                     ret = NOT_HANDLED;
             }

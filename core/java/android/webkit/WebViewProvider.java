@@ -37,6 +37,10 @@ import android.view.inputmethod.InputConnection;
 import android.webkit.WebView.HitTestResult;
 import android.webkit.WebView.PictureListener;
 
+<<<<<<< HEAD
+=======
+import java.io.BufferedWriter;
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 import java.io.File;
 import java.util.Map;
 
@@ -220,8 +224,11 @@ public interface WebViewProvider {
 
     public WebSettings getSettings();
 
+<<<<<<< HEAD
     public void emulateShiftHeld();
 
+=======
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     public void setMapTrackballToArrowKeys(boolean setMap);
 
     public void flingScroll(int vx, int vy);
@@ -236,7 +243,13 @@ public interface WebViewProvider {
 
     public boolean zoomOut();
 
+<<<<<<< HEAD
     public void debugDump();
+=======
+    public void dumpViewHierarchyWithProperties(BufferedWriter out, int level);
+
+    public View findHierarchyView(String className, int hashCode);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 
     //-------------------------------------------------------------------------
     // Provider glue methods

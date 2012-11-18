@@ -43,11 +43,20 @@ import android.os.Looper;
 import android.os.Message;
 import android.os.RemoteException;
 import android.os.ServiceManager;
+<<<<<<< HEAD
 import android.provider.Settings;
 import android.util.Log;
 
 import com.android.internal.app.ThemeUtils;
 import com.android.internal.telephony.Phone;
+=======
+import android.os.UserHandle;
+import android.provider.Settings;
+import android.util.Log;
+
+import com.android.internal.telephony.Phone;
+import com.android.internal.telephony.PhoneConstants;
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 import com.android.internal.util.IState;
 import com.android.internal.util.State;
 import com.android.internal.util.StateMachine;
@@ -73,7 +82,10 @@ import java.util.Set;
 public class Tethering extends INetworkManagementEventObserver.Stub {
 
     private Context mContext;
+<<<<<<< HEAD
     private Context mUiContext;
+=======
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     private final static String TAG = "Tethering";
     private final static boolean DBG = true;
     private final static boolean VDBG = false;
@@ -158,6 +170,7 @@ public class Tethering extends INetworkManagementEventObserver.Stub {
         filter.addAction(ConnectivityManager.CONNECTIVITY_ACTION);
         mContext.registerReceiver(mStateReceiver, filter);
 
+<<<<<<< HEAD
         ThemeUtils.registerThemeChangeReceiver(mContext, new BroadcastReceiver() {
             @Override
             public void onReceive(Context content, Intent intent) {
@@ -165,6 +178,8 @@ public class Tethering extends INetworkManagementEventObserver.Stub {
             }
         });
 
+=======
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         filter = new IntentFilter();
         filter.addAction(Intent.ACTION_MEDIA_SHARED);
         filter.addAction(Intent.ACTION_MEDIA_UNSHARED);
@@ -327,6 +342,11 @@ public class Tethering extends INetworkManagementEventObserver.Stub {
 
     public void limitReached(String limitName, String iface) {}
 
+<<<<<<< HEAD
+=======
+    public void interfaceClassDataActivityChanged(String label, boolean active) {}
+
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     public int tether(String iface) {
         if (DBG) Log.d(TAG, "Tethering " + iface);
         TetherInterfaceSM sm = null;
@@ -423,7 +443,11 @@ public class Tethering extends INetworkManagementEventObserver.Stub {
         broadcast.putStringArrayListExtra(ConnectivityManager.EXTRA_ACTIVE_TETHER, activeList);
         broadcast.putStringArrayListExtra(ConnectivityManager.EXTRA_ERRORED_TETHER,
                 erroredList);
+<<<<<<< HEAD
         mContext.sendStickyBroadcast(broadcast);
+=======
+        mContext.sendStickyBroadcastAsUser(broadcast, UserHandle.ALL);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         if (DBG) {
             Log.d(TAG, "sendTetherStateChangedBroadcast " + availableList.size() + ", " +
                     activeList.size() + ", " + erroredList.size());
@@ -459,14 +483,24 @@ public class Tethering extends INetworkManagementEventObserver.Stub {
             if (mTetheredNotification.icon == icon) {
                 return;
             }
+<<<<<<< HEAD
             notificationManager.cancel(mTetheredNotification.icon);
+=======
+            notificationManager.cancelAsUser(null, mTetheredNotification.icon,
+                    UserHandle.ALL);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         }
 
         Intent intent = new Intent();
         intent.setClassName("com.android.settings", "com.android.settings.TetherSettings");
         intent.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
 
+<<<<<<< HEAD
         PendingIntent pi = PendingIntent.getActivity(mContext, 0, intent, 0);
+=======
+        PendingIntent pi = PendingIntent.getActivityAsUser(mContext, 0, intent, 0,
+                null, UserHandle.CURRENT);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 
         Resources r = Resources.getSystem();
         CharSequence title = r.getText(com.android.internal.R.string.tethered_notification_title);
@@ -481,6 +515,7 @@ public class Tethering extends INetworkManagementEventObserver.Stub {
         mTetheredNotification.defaults &= ~Notification.DEFAULT_SOUND;
         mTetheredNotification.flags = Notification.FLAG_ONGOING_EVENT;
         mTetheredNotification.tickerText = title;
+<<<<<<< HEAD
         mTetheredNotification.setLatestEventInfo(getUiContext(), title, message, pi);
 
         notificationManager.notify(mTetheredNotification.icon, mTetheredNotification);
@@ -491,13 +526,24 @@ public class Tethering extends INetworkManagementEventObserver.Stub {
             mUiContext = ThemeUtils.createUiContext(mContext);
         }
         return mUiContext != null ? mUiContext : mContext;
+=======
+        mTetheredNotification.setLatestEventInfo(mContext, title, message, pi);
+
+        notificationManager.notifyAsUser(null, mTetheredNotification.icon,
+                mTetheredNotification, UserHandle.ALL);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     }
 
     private void clearTetheredNotification() {
         NotificationManager notificationManager =
             (NotificationManager)mContext.getSystemService(Context.NOTIFICATION_SERVICE);
         if (notificationManager != null && mTetheredNotification != null) {
+<<<<<<< HEAD
             notificationManager.cancel(mTetheredNotification.icon);
+=======
+            notificationManager.cancelAsUser(null, mTetheredNotification.icon,
+                    UserHandle.ALL);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
             mTetheredNotification = null;
         }
     }
@@ -516,8 +562,18 @@ public class Tethering extends INetworkManagementEventObserver.Stub {
                     mUsbTetherRequested = false;
                 }
             } else if (action.equals(ConnectivityManager.CONNECTIVITY_ACTION)) {
+<<<<<<< HEAD
                 if (VDBG) Log.d(TAG, "Tethering got CONNECTIVITY_ACTION");
                 mTetherMasterSM.sendMessage(TetherMasterSM.CMD_UPSTREAM_CHANGED);
+=======
+                NetworkInfo networkInfo = (NetworkInfo)intent.getParcelableExtra(
+                        ConnectivityManager.EXTRA_NETWORK_INFO);
+                if (networkInfo != null &&
+                        networkInfo.getDetailedState() != NetworkInfo.DetailedState.FAILED) {
+                    if (VDBG) Log.d(TAG, "Tethering got CONNECTIVITY_ACTION");
+                    mTetherMasterSM.sendMessage(TetherMasterSM.CMD_UPSTREAM_CHANGED);
+                }
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
             }
         }
     }
@@ -631,8 +687,13 @@ public class Tethering extends INetworkManagementEventObserver.Stub {
     }
 
     public void checkDunRequired() {
+<<<<<<< HEAD
         int secureSetting = Settings.Secure.getInt(mContext.getContentResolver(),
                 Settings.Secure.TETHER_DUN_REQUIRED, 2);
+=======
+        int secureSetting = Settings.Global.getInt(mContext.getContentResolver(),
+                Settings.Global.TETHER_DUN_REQUIRED, 2);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         synchronized (mPublicSync) {
             // 2 = not set, 0 = DUN not required, 1 = DUN required
             if (secureSetting != 2) {
@@ -1150,7 +1211,11 @@ public class Tethering extends INetworkManagementEventObserver.Stub {
         private State mStopTetheringErrorState;
         private State mSetDnsForwardersErrorState;
 
+<<<<<<< HEAD
         private ArrayList mNotifyList;
+=======
+        private ArrayList<TetherInterfaceSM> mNotifyList;
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 
         private int mCurrentConnectionSequence;
         private int mMobileApnReserved = ConnectivityManager.TYPE_NONE;
@@ -1180,7 +1245,11 @@ public class Tethering extends INetworkManagementEventObserver.Stub {
             mSetDnsForwardersErrorState = new SetDnsForwardersErrorState();
             addState(mSetDnsForwardersErrorState);
 
+<<<<<<< HEAD
             mNotifyList = new ArrayList();
+=======
+            mNotifyList = new ArrayList<TetherInterfaceSM>();
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
             setInitialState(mInitialState);
         }
 
@@ -1206,7 +1275,11 @@ public class Tethering extends INetworkManagementEventObserver.Stub {
                 boolean retValue = true;
                 if (apnType == ConnectivityManager.TYPE_NONE) return false;
                 if (apnType != mMobileApnReserved) turnOffUpstreamMobileConnection();
+<<<<<<< HEAD
                 int result = Phone.APN_REQUEST_FAILED;
+=======
+                int result = PhoneConstants.APN_REQUEST_FAILED;
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
                 String enableString = enableString(apnType);
                 if (enableString == null) return false;
                 try {
@@ -1215,14 +1288,23 @@ public class Tethering extends INetworkManagementEventObserver.Stub {
                 } catch (Exception e) {
                 }
                 switch (result) {
+<<<<<<< HEAD
                 case Phone.APN_ALREADY_ACTIVE:
                 case Phone.APN_REQUEST_STARTED:
+=======
+                case PhoneConstants.APN_ALREADY_ACTIVE:
+                case PhoneConstants.APN_REQUEST_STARTED:
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
                     mMobileApnReserved = apnType;
                     Message m = obtainMessage(CMD_CELL_CONNECTION_RENEW);
                     m.arg1 = ++mCurrentConnectionSequence;
                     sendMessageDelayed(m, CELL_CONNECTION_RENEW_MS);
                     break;
+<<<<<<< HEAD
                 case Phone.APN_REQUEST_FAILED:
+=======
+                case PhoneConstants.APN_REQUEST_FAILED:
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
                 default:
                     retValue = false;
                     break;
@@ -1377,8 +1459,12 @@ public class Tethering extends INetworkManagementEventObserver.Stub {
             protected void notifyTetheredOfNewUpstreamIface(String ifaceName) {
                 if (DBG) Log.d(TAG, "notifying tethered with iface =" + ifaceName);
                 mUpstreamIfaceName = ifaceName;
+<<<<<<< HEAD
                 for (Object o : mNotifyList) {
                     TetherInterfaceSM sm = (TetherInterfaceSM)o;
+=======
+                for (TetherInterfaceSM sm : mNotifyList) {
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
                     sm.sendMessage(TetherInterfaceSM.CMD_TETHER_CONNECTION_CHANGED,
                             ifaceName);
                 }
@@ -1396,13 +1482,21 @@ public class Tethering extends INetworkManagementEventObserver.Stub {
                 switch (message.what) {
                     case CMD_TETHER_MODE_REQUESTED:
                         TetherInterfaceSM who = (TetherInterfaceSM)message.obj;
+<<<<<<< HEAD
                         if (VDBG) Log.d(TAG, "Tether Mode requested by " + who.toString());
+=======
+                        if (VDBG) Log.d(TAG, "Tether Mode requested by " + who);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
                         mNotifyList.add(who);
                         transitionTo(mTetherModeAliveState);
                         break;
                     case CMD_TETHER_MODE_UNREQUESTED:
                         who = (TetherInterfaceSM)message.obj;
+<<<<<<< HEAD
                         if (VDBG) Log.d(TAG, "Tether Mode unrequested by " + who.toString());
+=======
+                        if (VDBG) Log.d(TAG, "Tether Mode unrequested by " + who);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
                         int index = mNotifyList.indexOf(who);
                         if (index != -1) {
                             mNotifyList.remove(who);
@@ -1439,18 +1533,41 @@ public class Tethering extends INetworkManagementEventObserver.Stub {
                 switch (message.what) {
                     case CMD_TETHER_MODE_REQUESTED:
                         TetherInterfaceSM who = (TetherInterfaceSM)message.obj;
+<<<<<<< HEAD
+=======
+                        if (VDBG) Log.d(TAG, "Tether Mode requested by " + who);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
                         mNotifyList.add(who);
                         who.sendMessage(TetherInterfaceSM.CMD_TETHER_CONNECTION_CHANGED,
                                 mUpstreamIfaceName);
                         break;
                     case CMD_TETHER_MODE_UNREQUESTED:
                         who = (TetherInterfaceSM)message.obj;
+<<<<<<< HEAD
                         int index = mNotifyList.indexOf(who);
                         if (index != -1) {
                             mNotifyList.remove(index);
                             if (mNotifyList.isEmpty()) {
                                 turnOffMasterTetherSettings(); // transitions appropriately
                             }
+=======
+                        if (VDBG) Log.d(TAG, "Tether Mode unrequested by " + who);
+                        int index = mNotifyList.indexOf(who);
+                        if (index != -1) {
+                            if (DBG) Log.d(TAG, "TetherModeAlive removing notifyee " + who);
+                            mNotifyList.remove(index);
+                            if (mNotifyList.isEmpty()) {
+                                turnOffMasterTetherSettings(); // transitions appropriately
+                            } else {
+                                if (DBG) {
+                                    Log.d(TAG, "TetherModeAlive still has " + mNotifyList.size() +
+                                            " live requests:");
+                                    for (Object o : mNotifyList) Log.d(TAG, "  " + o);
+                                }
+                            }
+                        } else {
+                           Log.e(TAG, "TetherModeAliveState UNREQUESTED has unknown who: " + who);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
                         }
                         break;
                     case CMD_UPSTREAM_CHANGED:
@@ -1577,7 +1694,11 @@ public class Tethering extends INetworkManagementEventObserver.Stub {
             pw.println();
             pw.println("Tether state:");
             for (Object o : mIfaces.values()) {
+<<<<<<< HEAD
                 pw.println(" "+o.toString());
+=======
+                pw.println(" " + o);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
             }
         }
         pw.println();

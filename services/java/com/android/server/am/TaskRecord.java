@@ -19,7 +19,11 @@ package com.android.server.am;
 import android.content.ComponentName;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
+<<<<<<< HEAD
 import android.os.UserId;
+=======
+import android.os.UserHandle;
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 import android.util.Slog;
 
 import java.io.PrintWriter;
@@ -101,7 +105,11 @@ class TaskRecord extends ThumbnailHolder {
         }
 
         if (info.applicationInfo != null) {
+<<<<<<< HEAD
             userId = UserId.getUserId(info.applicationInfo.uid);
+=======
+            userId = UserHandle.getUserId(info.applicationInfo.uid);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         }
     }
     

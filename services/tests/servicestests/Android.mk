@@ -9,7 +9,12 @@ LOCAL_SRC_FILES := $(call all-java-files-under, src)
 
 LOCAL_STATIC_JAVA_LIBRARIES := \
     easymocklib \
+<<<<<<< HEAD
     guava
+=======
+    guava \
+    littlemock
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 
 LOCAL_JAVA_LIBRARIES := android.test.runner services
 

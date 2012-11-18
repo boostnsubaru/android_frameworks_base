@@ -40,5 +40,9 @@ interface ITelephonyRegistry {
     void notifyDataConnectionFailed(String reason, String apnType);
     void notifyCellLocation(in Bundle cellLocation);
     void notifyOtaspChanged(in int otaspMode);
+<<<<<<< HEAD
     void notifyCellInfo(in CellInfo cellInfo);
+=======
+    void notifyCellInfo(in List<CellInfo> cellInfo);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 }

@@ -45,8 +45,11 @@ public abstract class HardwareCanvas extends Canvas {
      * the canvas).
      */
     public abstract int onPreDraw(Rect dirty);
+<<<<<<< HEAD
     abstract void startTileRendering(Rect dirty);
     abstract void endTileRendering();
+=======
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 
     /**
      * Invoked after all drawing operation have been performed.
@@ -134,4 +137,23 @@ public abstract class HardwareCanvas extends Canvas {
      * @see #detachFunctor(int) 
      */
     abstract void attachFunctor(int functor);
+<<<<<<< HEAD
+=======
+
+    /**
+     * Indicates that the specified layer must be updated as soon as possible.
+     * 
+     * @param layer The layer to update
+     *
+     * @see #clearLayerUpdates()
+     */
+    abstract void pushLayerUpdate(HardwareLayer layer);
+
+    /**
+     * Removes all enqueued layer updates.
+     * 
+     * @see #pushLayerUpdate(HardwareLayer) 
+     */
+    abstract void clearLayerUpdates();
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 }

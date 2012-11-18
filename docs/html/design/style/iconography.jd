@@ -109,9 +109,14 @@ files for further customization.
 
 </p>
 <p>
+<<<<<<< HEAD
 
 <a href="{@docRoot}downloads/design/Android_Design_Icons_20120229.zip">Download the Action Bar Icon Pack</a>
 
+=======
+<a onClick="_gaq.push(['_trackEvent', 'Design', 'Download', 'Action Bar Icons (@iconography page)']);"
+   href="{@docRoot}downloads/design/Android_Design_Icons_20120814.zip">Download the Action Bar Icon Pack</a>
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 </p>
 
 <div class="layout-content-row">

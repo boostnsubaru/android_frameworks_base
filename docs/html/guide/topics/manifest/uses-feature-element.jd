@@ -561,7 +561,11 @@ is sensitive to delays or lag in sound input or output.</td>
 </td>
     </tr>
     <tr>
+<<<<<<< HEAD
        <td rowspan="4">Camera</td>
+=======
+       <td rowspan="5">Camera</td>
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
        <td><code>android.hardware.camera</code></td>
        <td>The application uses the device's camera. If the device supports
            multiple cameras, the application uses the camera that facing
@@ -583,6 +587,15 @@ is sensitive to delays or lag in sound input or output.</td>
   <td><code>android.hardware.camera.front</code></td>
   <td>Subfeature. The application uses a front-facing camera on the device.</td>
 </tr>
+<<<<<<< HEAD
+=======
+<tr>
+  <td><code>android.hardware.camera.any</code></td>
+  <td>The application uses at least one camera facing in any direction. Use this
+in preference to <code>android.hardware.camera</code> if a back-facing camera is
+not required.</td>
+</tr>
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 
 <tr>
   <td rowspan="3">Location</td>

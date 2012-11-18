@@ -14,14 +14,26 @@
  * limitations under the License.
  */
 
+<<<<<<< HEAD
 package android.security.tests;
+=======
+package android.security;
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 
 import android.app.Activity;
 import android.security.KeyStore;
 import android.test.ActivityUnitTestCase;
+<<<<<<< HEAD
 import android.test.suitebuilder.annotation.MediumTest;
 import java.nio.charset.Charsets;
 import java.util.Arrays;
+=======
+import android.test.AssertionFailedError;
+import android.test.suitebuilder.annotation.MediumTest;
+import java.nio.charset.Charsets;
+import java.util.Arrays;
+import java.util.Date;
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 import java.util.HashSet;
 
 /**
@@ -29,7 +41,15 @@ import java.util.HashSet;
  *
  * Running the test suite:
  *
+<<<<<<< HEAD
  *  adb shell am instrument -w android.security.tests/.KeyStoreTestRunner
+=======
+ *  runtest keystore-unit
+ *
+ * Or this individual test case:
+ *
+ *  runtest --path frameworks/base/keystore/tests/src/android/security/KeyStoreTest.java
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
  */
 @MediumTest
 public class KeyStoreTest extends ActivityUnitTestCase<Activity> {
@@ -399,4 +419,55 @@ public class KeyStoreTest extends ActivityUnitTestCase<Activity> {
         assertFalse("Should fail to ungrant key to other user second time",
                 mKeyStore.ungrant(TEST_KEYNAME, 0));
     }
+<<<<<<< HEAD
+=======
+
+    /**
+     * The amount of time to allow before and after expected time for variance
+     * in timing tests.
+     */
+    private static final long SLOP_TIME_MILLIS = 15000L;
+
+    public void testGetmtime_Success() throws Exception {
+        assertTrue("Password should work for keystore",
+                mKeyStore.password(TEST_PASSWD));
+
+        assertTrue("Should be able to import key when unlocked",
+                mKeyStore.importKey(TEST_KEYNAME, PRIVKEY_BYTES));
+
+        long now = System.currentTimeMillis();
+        long actual = mKeyStore.getmtime(TEST_KEYNAME);
+
+        long expectedAfter = now - SLOP_TIME_MILLIS;
+        long expectedBefore = now + SLOP_TIME_MILLIS;
+
+        assertLessThan("Time should be close to current time", expectedBefore, actual);
+        assertGreaterThan("Time should be close to current time", expectedAfter, actual);
+    }
+
+    private static void assertLessThan(String explanation, long expectedBefore, long actual) {
+        if (actual >= expectedBefore) {
+            throw new AssertionFailedError(explanation + ": actual=" + actual
+                    + ", expected before: " + expectedBefore);
+        }
+    }
+
+    private static void assertGreaterThan(String explanation, long expectedAfter, long actual) {
+        if (actual <= expectedAfter) {
+            throw new AssertionFailedError(explanation + ": actual=" + actual
+                    + ", expected after: " + expectedAfter);
+        }
+    }
+
+    public void testGetmtime_NonExist_Failure() throws Exception {
+        assertTrue("Password should work for keystore",
+                mKeyStore.password(TEST_PASSWD));
+
+        assertTrue("Should be able to import key when unlocked",
+                mKeyStore.importKey(TEST_KEYNAME, PRIVKEY_BYTES));
+
+        assertEquals("-1 should be returned for non-existent key",
+                -1L, mKeyStore.getmtime(TEST_KEYNAME2));
+    }
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 }

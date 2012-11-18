@@ -16,12 +16,20 @@
 
 <resources xmlns:android="http://schemas.android.com/apk/res/android">
 
+<<<<<<< HEAD
     <style name="StatusBarNotificationText">
+=======
+    <style name="SystemBarNotificationText">
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         <item name="android:textSize">16sp</item>
         <item name="android:textColor">#ff999999</item>
     </style>
 
+<<<<<<< HEAD
     <style name="StatusBarPanelSettingsRow">
+=======
+    <style name="SystemBarPanelSettingsRow">
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         <item name="android:paddingRight">16dp</item>
         <item name="android:layout_height">64dp</item>
         <item name="android:layout_width">match_parent</item>
@@ -29,13 +37,21 @@
         <item name="android:background">?android:attr/listChoiceBackgroundIndicator</item>
     </style>
 
+<<<<<<< HEAD
     <style name="StatusBarPanelSettingsIcon">
+=======
+    <style name="SystemBarPanelSettingsIcon">
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         <item name="android:layout_height">match_parent</item>
         <item name="android:layout_width">64dp</item>
         <item name="android:scaleType">center</item>
     </style>
 
+<<<<<<< HEAD
     <style name="StatusBarPanelSettingsContents">
+=======
+    <style name="SystemBarPanelSettingsContents">
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_width">0dp</item>
         <item name="android:layout_weight">1</item>
@@ -44,27 +60,43 @@
         <item name="android:textSize">18sp</item>
     </style>
 
+<<<<<<< HEAD
     <style name="StatusBarPanelSettingsPanelSeparator">
+=======
+    <style name="SystemBarPanelSettingsPanelSeparator">
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         <item name="android:layout_marginRight">0dp</item>
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">1dp</item>
         <item name="android:background">@android:drawable/divider_horizontal_dark</item>
     </style>
 
+<<<<<<< HEAD
     <style name="TextAppearance.StatusBar.Clock" parent="@*android:style/TextAppearance.StatusBar.Icon">
+=======
+    <style name="TextAppearance.SystemBar.Clock" parent="@*android:style/TextAppearance.StatusBar.Icon">
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         <item name="android:textSize">30dp</item>
         <item name="android:textStyle">normal</item>
         <item name="android:textColor">@android:color/holo_blue_light</item>
     </style>
 
+<<<<<<< HEAD
     <style name="TextAppearance.StatusBar.Expanded.Clock">
+=======
+    <style name="TextAppearance.SystemBar.Expanded.Clock" parent="@style/TextAppearance.StatusBar.Expanded.Clock">
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         <item name="android:textSize">48dp</item>
         <item name="android:fontFamily">sans-serif-light</item>
         <item name="android:textStyle">normal</item>
         <item name="android:textColor">#ffffff</item>
     </style>
 
+<<<<<<< HEAD
     <style name="TextAppearance.StatusBar.Expanded.Date">
+=======
+    <style name="TextAppearance.SystemBar.Expanded.Date" parent="@style/TextAppearance.StatusBar.Expanded.Date">
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         <item name="android:textSize">14dp</item>
         <item name="android:textStyle">normal</item>
         <item name="android:textColor">#666666</item>

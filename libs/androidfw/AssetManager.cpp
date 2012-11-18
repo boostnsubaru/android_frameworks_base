@@ -1,6 +1,9 @@
 /*
  * Copyright (C) 2006 The Android Open Source Project
+<<<<<<< HEAD
  * This code has been modified.  Portions copyright (C) 2010, T-Mobile USA, Inc.
+=======
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -99,6 +102,27 @@ namespace {
 
         return path;
     }
+<<<<<<< HEAD
+=======
+
+    /*
+     * Like strdup(), but uses C++ "new" operator instead of malloc.
+     */
+    static char* strdupNew(const char* str)
+    {
+        char* newStr;
+        int len;
+
+        if (str == NULL)
+            return NULL;
+
+        len = strlen(str);
+        newStr = new char[len+1];
+        memcpy(newStr, str, len+1);
+
+        return newStr;
+    }
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 }
 
 /*
@@ -135,7 +159,11 @@ AssetManager::~AssetManager(void)
     delete[] mVendor;
 }
 
+<<<<<<< HEAD
 bool AssetManager::addAssetPath(const String8& path, void** cookie, bool asSkin)
+=======
+bool AssetManager::addAssetPath(const String8& path, void** cookie)
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 {
     AutoMutex _l(mLock);
 
@@ -145,7 +173,10 @@ bool AssetManager::addAssetPath(const String8& path, void** cookie, bool asSkin)
     if (kAppZipName) {
         realPath.appendPath(kAppZipName);
     }
+<<<<<<< HEAD
     ap.asSkin = asSkin;
+=======
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     ap.type = ::getFileType(realPath.string());
     if (ap.type == kFileTypeRegular) {
         ap.path = realPath;
@@ -500,6 +531,7 @@ Asset* AssetManager::open(const char* fileName, AccessMode mode)
     size_t i = mAssetPaths.size();
     while (i > 0) {
         i--;
+<<<<<<< HEAD
         const asset_path& ap = mAssetPaths.itemAt(i);
         if (ap.asSkin) {
             continue;
@@ -507,6 +539,11 @@ Asset* AssetManager::open(const char* fileName, AccessMode mode)
         ALOGV("Looking for asset '%s' in '%s'\n",
                 assetName.string(), ap.path.string());
         Asset* pAsset = openNonAssetInPathLocked(assetName.string(), mode, ap);
+=======
+        ALOGV("Looking for asset '%s' in '%s'\n",
+                assetName.string(), mAssetPaths.itemAt(i).path.string());
+        Asset* pAsset = openNonAssetInPathLocked(assetName.string(), mode, mAssetPaths.itemAt(i));
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         if (pAsset != NULL) {
             return pAsset != kExcludedAsset ? pAsset : NULL;
         }
@@ -538,6 +575,7 @@ Asset* AssetManager::openNonAsset(const char* fileName, AccessMode mode)
     size_t i = mAssetPaths.size();
     while (i > 0) {
         i--;
+<<<<<<< HEAD
         const asset_path& ap = mAssetPaths.itemAt(i);
         if (ap.asSkin) {
             continue;
@@ -545,6 +583,11 @@ Asset* AssetManager::openNonAsset(const char* fileName, AccessMode mode)
         ALOGV("Looking for non-asset '%s' in '%s'\n", fileName, ap.path.string());
         Asset* pAsset = openNonAssetInPathLocked(
             fileName, mode, ap);
+=======
+        ALOGV("Looking for non-asset '%s' in '%s'\n", fileName, mAssetPaths.itemAt(i).path.string());
+        Asset* pAsset = openNonAssetInPathLocked(
+            fileName, mode, mAssetPaths.itemAt(i));
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         if (pAsset != NULL) {
             return pAsset != kExcludedAsset ? pAsset : NULL;
         }
@@ -623,6 +666,7 @@ const ResTable* AssetManager::getResTable(bool required) const
 
     if (mCacheMode != CACHE_OFF && !mCacheValid)
         const_cast<AssetManager*>(this)->loadFileNameCacheLocked();
+<<<<<<< HEAD
     mResources = rt = new ResTable();
 
     if (rt) {
@@ -702,6 +746,86 @@ void AssetManager::updateResTableFromAssetPath(ResTable *rt, const asset_path& a
             delete ass;
         }
     }
+=======
+
+    const size_t N = mAssetPaths.size();
+    for (size_t i=0; i<N; i++) {
+        Asset* ass = NULL;
+        ResTable* sharedRes = NULL;
+        bool shared = true;
+        const asset_path& ap = mAssetPaths.itemAt(i);
+        Asset* idmap = openIdmapLocked(ap);
+        ALOGV("Looking for resource asset in '%s'\n", ap.path.string());
+        if (ap.type != kFileTypeDirectory) {
+            if (i == 0) {
+                // The first item is typically the framework resources,
+                // which we want to avoid parsing every time.
+                sharedRes = const_cast<AssetManager*>(this)->
+                    mZipSet.getZipResourceTable(ap.path);
+            }
+            if (sharedRes == NULL) {
+                ass = const_cast<AssetManager*>(this)->
+                    mZipSet.getZipResourceTableAsset(ap.path);
+                if (ass == NULL) {
+                    ALOGV("loading resource table %s\n", ap.path.string());
+                    ass = const_cast<AssetManager*>(this)->
+                        openNonAssetInPathLocked("resources.arsc",
+                                                 Asset::ACCESS_BUFFER,
+                                                 ap);
+                    if (ass != NULL && ass != kExcludedAsset) {
+                        ass = const_cast<AssetManager*>(this)->
+                            mZipSet.setZipResourceTableAsset(ap.path, ass);
+                    }
+                }
+                
+                if (i == 0 && ass != NULL) {
+                    // If this is the first resource table in the asset
+                    // manager, then we are going to cache it so that we
+                    // can quickly copy it out for others.
+                    ALOGV("Creating shared resources for %s", ap.path.string());
+                    sharedRes = new ResTable();
+                    sharedRes->add(ass, (void*)(i+1), false, idmap);
+                    sharedRes = const_cast<AssetManager*>(this)->
+                        mZipSet.setZipResourceTable(ap.path, sharedRes);
+                }
+            }
+        } else {
+            ALOGV("loading resource table %s\n", ap.path.string());
+            Asset* ass = const_cast<AssetManager*>(this)->
+                openNonAssetInPathLocked("resources.arsc",
+                                         Asset::ACCESS_BUFFER,
+                                         ap);
+            shared = false;
+        }
+        if ((ass != NULL || sharedRes != NULL) && ass != kExcludedAsset) {
+            if (rt == NULL) {
+                mResources = rt = new ResTable();
+                updateResourceParamsLocked();
+            }
+            ALOGV("Installing resource asset %p in to table %p\n", ass, mResources);
+            if (sharedRes != NULL) {
+                ALOGV("Copying existing resources for %s", ap.path.string());
+                rt->add(sharedRes);
+            } else {
+                ALOGV("Parsing resources for %s", ap.path.string());
+                rt->add(ass, (void*)(i+1), !shared, idmap);
+            }
+
+            if (!shared) {
+                delete ass;
+            }
+        }
+        if (idmap != NULL) {
+            delete idmap;
+        }
+    }
+
+    if (required && !rt) ALOGW("Unable to find resources file resources.arsc");
+    if (!rt) {
+        mResources = rt = new ResTable();
+    }
+    return rt;
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 }
 
 void AssetManager::updateResourceParamsLocked() const
@@ -1156,9 +1280,12 @@ AssetDir* AssetManager::openDir(const char* dirName)
     while (i > 0) {
         i--;
         const asset_path& ap = mAssetPaths.itemAt(i);
+<<<<<<< HEAD
         if (ap.asSkin) {
             continue;
         }
+=======
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         if (ap.type == kFileTypeRegular) {
             ALOGV("Adding directory %s from zip %s", dirName, ap.path.string());
             scanAndMergeZipLocked(pMergedInfo, ap, kAssetsRoot, dirName);
@@ -2013,6 +2140,7 @@ int AssetManager::ZipSet::getIndex(const String8& zip) const
 
     return mZipPath.size()-1;
 }
+<<<<<<< HEAD
 
 bool AssetManager::attachThemePath(const String8& path, void** cookie)
 {
@@ -2062,3 +2190,5 @@ void AssetManager::clearRedirections()
     ResTable* rt = mResources;
     rt->clearRedirections();
 }
+=======
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a

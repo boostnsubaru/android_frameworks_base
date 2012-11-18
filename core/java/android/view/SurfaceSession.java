@@ -16,6 +16,7 @@
 
 package android.view;
 
+<<<<<<< HEAD
 
 /**
  * An instance of this class represents a connection to the surface
@@ -45,5 +46,46 @@ public class SurfaceSession {
     private native void destroy();
     
     private int mClient;
+=======
+/**
+ * An instance of this class represents a connection to the surface
+ * flinger, from which you can create one or more Surface instances that will
+ * be composited to the screen.
+ * {@hide}
+ */
+public final class SurfaceSession {
+    // Note: This field is accessed by native code.
+    private int mNativeClient; // SurfaceComposerClient*
+
+    private static native int nativeCreate();
+    private static native void nativeDestroy(int ptr);
+    private static native void nativeKill(int ptr);
+
+    /** Create a new connection with the surface flinger. */
+    public SurfaceSession() {
+        mNativeClient = nativeCreate();
+    }
+
+    /* no user serviceable parts here ... */
+    @Override
+    protected void finalize() throws Throwable {
+        try {
+            if (mNativeClient != 0) {
+                nativeDestroy(mNativeClient);
+            }
+        } finally {
+            super.finalize();
+        }
+    }
+
+    /**
+     * Forcibly detach native resources associated with this object.
+     * Unlike destroy(), after this call any surfaces that were created
+     * from the session will no longer work.
+     */
+    public void kill() {
+        nativeKill(mNativeClient);
+    }
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 }
 

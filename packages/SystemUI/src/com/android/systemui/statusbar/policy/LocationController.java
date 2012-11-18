@@ -26,6 +26,10 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.location.LocationManager;
+<<<<<<< HEAD
+=======
+import android.os.UserHandle;
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 import android.provider.Settings;
 import android.util.Slog;
 import android.view.View;
@@ -36,6 +40,10 @@ import android.app.INotificationManager;
 import com.android.internal.statusbar.StatusBarNotification;
 
 import com.android.systemui.R;
+<<<<<<< HEAD
+=======
+import com.android.systemui.statusbar.policy.BatteryController.BatteryStateChangeCallback;
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 
 public class LocationController extends BroadcastReceiver {
     private static final String TAG = "StatusBar.LocationController";
@@ -46,6 +54,16 @@ public class LocationController extends BroadcastReceiver {
 
     private INotificationManager mNotificationService;
 
+<<<<<<< HEAD
+=======
+    private ArrayList<LocationGpsStateChangeCallback> mChangeCallbacks =
+            new ArrayList<LocationGpsStateChangeCallback>();
+
+    public interface LocationGpsStateChangeCallback {
+        public void onLocationGpsStateChanged(boolean inUse, String description);
+    }
+
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     public LocationController(Context context) {
         mContext = context;
 
@@ -59,6 +77,13 @@ public class LocationController extends BroadcastReceiver {
         mNotificationService = nm.getService();
     }
 
+<<<<<<< HEAD
+=======
+    public void addStateChangedCallback(LocationGpsStateChangeCallback cb) {
+        mChangeCallbacks.add(cb);
+    }
+
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     @Override
     public void onReceive(Context context, Intent intent) {
         final String action = intent.getAction();
@@ -87,11 +112,22 @@ public class LocationController extends BroadcastReceiver {
             if (visible) {
                 Intent gpsIntent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
                 gpsIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+<<<<<<< HEAD
                 PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, gpsIntent, 0);
 
                 Notification n = new Notification.Builder(mContext)
                     .setSmallIcon(iconId)
                     .setContentTitle(mContext.getText(textResId))
+=======
+
+                PendingIntent pendingIntent = PendingIntent.getActivityAsUser(context, 0,
+                        gpsIntent, 0, null, UserHandle.CURRENT);
+                String text = mContext.getText(textResId).toString();
+
+                Notification n = new Notification.Builder(mContext)
+                    .setSmallIcon(iconId)
+                    .setContentTitle(text)
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
                     .setOngoing(true)
                     .setContentIntent(pendingIntent)
                     .getNotification();
@@ -108,11 +144,28 @@ public class LocationController extends BroadcastReceiver {
                         null, 
                         GPS_NOTIFICATION_ID, 
                         n,
+<<<<<<< HEAD
                         idOut);
             } else {
                 mNotificationService.cancelNotification(
                         mContext.getPackageName(),
                         GPS_NOTIFICATION_ID);
+=======
+                        idOut,
+                        UserHandle.USER_ALL);
+
+                for (LocationGpsStateChangeCallback cb : mChangeCallbacks) {
+                    cb.onLocationGpsStateChanged(true, text);
+                }
+            } else {
+                mNotificationService.cancelNotificationWithTag(
+                        mContext.getPackageName(), null,
+                        GPS_NOTIFICATION_ID, UserHandle.USER_ALL);
+
+                for (LocationGpsStateChangeCallback cb : mChangeCallbacks) {
+                    cb.onLocationGpsStateChanged(false, null);
+                }
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
             }
         } catch (android.os.RemoteException ex) {
             // well, it was worth a shot

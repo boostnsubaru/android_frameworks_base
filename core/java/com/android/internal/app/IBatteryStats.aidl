@@ -58,14 +58,24 @@ interface IBatteryStats {
     void noteBluetoothOff();
     void noteFullWifiLockAcquired(int uid);
     void noteFullWifiLockReleased(int uid);
+<<<<<<< HEAD
     void noteScanWifiLockAcquired(int uid);
     void noteScanWifiLockReleased(int uid);
+=======
+    void noteWifiScanStarted(int uid);
+    void noteWifiScanStopped(int uid);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     void noteWifiMulticastEnabled(int uid);
     void noteWifiMulticastDisabled(int uid);
     void noteFullWifiLockAcquiredFromSource(in WorkSource ws);
     void noteFullWifiLockReleasedFromSource(in WorkSource ws);
+<<<<<<< HEAD
     void noteScanWifiLockAcquiredFromSource(in WorkSource ws);
     void noteScanWifiLockReleasedFromSource(in WorkSource ws);
+=======
+    void noteWifiScanStartedFromSource(in WorkSource ws);
+    void noteWifiScanStoppedFromSource(in WorkSource ws);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     void noteWifiMulticastEnabledFromSource(in WorkSource ws);
     void noteWifiMulticastDisabledFromSource(in WorkSource ws);
     void noteNetworkInterfaceType(String iface, int type);

@@ -1,3 +1,7 @@
+<<<<<<< HEAD
+=======
+<?xml version="1.0" encoding="utf-8"?>
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 <!-- This file defines the base public resources exported by the
      platform, which must always exist. -->
 
@@ -19,6 +23,7 @@
      *************************************************************** -->
 <resources>
 
+<<<<<<< HEAD
   <!-- We don't want to publish private symbols in android.R as part of the
        SDK.  Instead, put them here. -->
   <private-symbols package="com.android.internal" />
@@ -1768,6 +1773,8 @@
   <!-- AndroidManifest.xml attributes. -->
   <eat-comment />
 
+=======
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 <!-- ===============================================================
      Resources for version 1 of the platform.
      =============================================================== -->
@@ -3719,28 +3726,41 @@
   <public type="color" name="holo_orange_dark" id="0x01060019" />
   <public type="color" name="holo_purple" id="0x0106001a" />
   <public type="color" name="holo_blue_bright" id="0x0106001b" />
+<<<<<<< HEAD
   <public type="color" name="holo_white_light" id="0x0106001c" />
   <public type="color" name="holo_aocp_orange" id="0x0106001d" />
+=======
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 
 <!-- ===============================================================
      Resources added in version 16 of the platform (Jelly Bean)
      =============================================================== -->
   <eat-comment />
   <public type="attr" name="parentActivityName" id="0x010103a7" />
+<<<<<<< HEAD
   <public type="attr" name="permissionGroupFlags" id="0x010103a8" />
+=======
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
   <public type="attr" name="isolatedProcess" id="0x010103a9" />
   <public type="attr" name="importantForAccessibility" id="0x010103aa" />
   <public type="attr" name="keyboardLayout" id="0x010103ab" />
   <public type="attr" name="fontFamily" id="0x010103ac" />
+<<<<<<< HEAD
 
   <public type="attr" name="mediaRouteButtonStyle" id="0x010103ad" />
   <public type="attr" name="mediaRouteTypes" id="0x010103ae" />
+=======
+  <public type="attr" name="mediaRouteButtonStyle" id="0x010103ad" />
+  <public type="attr" name="mediaRouteTypes" id="0x010103ae" />
+
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
   <public type="style" name="Widget.Holo.MediaRouteButton" id="0x010301d5" />
   <public type="style" name="Widget.Holo.Light.MediaRouteButton" id="0x010301d6" />
   <public type="style" name="Widget.DeviceDefault.MediaRouteButton" id="0x010301d7" />
   <public type="style" name="Widget.DeviceDefault.Light.MediaRouteButton" id="0x010301d8" />
 
 <!-- ===============================================================
+<<<<<<< HEAD
      Resources added in version JB of AoCP
      =============================================================== -->
   <eat-comment />
@@ -3819,5 +3839,44 @@
  <!-- Tablets and docks -->
   <java-symbol type="bool" name="config_hasRemovableLid" />
   <java-symbol type="bool" name="config_hasDockBattery" />
+=======
+     Resources added in version 17 of the platform (Jelly Bean MR1)
+     =============================================================== -->
+  <eat-comment />
+  <public type="attr" name="supportsRtl" id="0x010103af" />
+  <public type="attr" name="textDirection" id="0x010103b0" />
+  <public type="attr" name="textAlignment" id="0x010103b1" />
+  <public type="attr" name="layoutDirection" id="0x010103b2" />
+  <public type="attr" name="paddingStart" id="0x010103b3" />
+  <public type="attr" name="paddingEnd" id="0x010103b4" />
+  <public type="attr" name="layout_marginStart" id="0x010103b5" />
+  <public type="attr" name="layout_marginEnd" id="0x010103b6" />
+  <public type="attr" name="layout_toStartOf" id="0x010103b7" />
+  <public type="attr" name="layout_toEndOf" id="0x010103b8" />
+  <public type="attr" name="layout_alignStart" id="0x010103b9" />
+  <public type="attr" name="layout_alignEnd" id="0x010103ba" />
+  <public type="attr" name="layout_alignParentStart" id="0x010103bb" />
+  <public type="attr" name="layout_alignParentEnd" id="0x010103bc" />
+  <public type="attr" name="listPreferredItemPaddingStart" id="0x010103bd" />
+  <public type="attr" name="listPreferredItemPaddingEnd" id="0x010103be" />
+  <public type="attr" name="singleUser" id="0x010103bf" />
+  <public type="attr" name="presentationTheme" id="0x010103c0" />
+  <public type="attr" name="subtypeId" id="0x010103c1" />
+  <public type="attr" name="initialKeyguardLayout" id="0x010103c2" />
+  <public type="attr" name="widgetCategory" id="0x010103c4" />
+  <public type="attr" name="permissionGroupFlags" id="0x010103c5" />
+  <public type="attr" name="labelFor" id="0x010103c6" />
+  <public type="attr" name="permissionFlags" id="0x010103c7" />
+  <public type="attr" name="checkedTextViewStyle" id="0x010103c8" />
+  <public type="attr" name="showOnLockScreen" id="0x010103c9" />
+  <public type="attr" name="format12Hour" id="0x010103ca" />
+  <public type="attr" name="format24Hour" id="0x010103cb" />
+  <public type="attr" name="timeZone" id="0x010103cc" />
+
+  <public type="style" name="Widget.Holo.CheckedTextView" id="0x010301d9" />
+  <public type="style" name="Widget.Holo.Light.CheckedTextView" id="0x010301da" />
+  <public type="style" name="Widget.DeviceDefault.CheckedTextView" id="0x010301db" />
+  <public type="style" name="Widget.DeviceDefault.Light.CheckedTextView" id="0x010301dc" />
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 
 </resources>

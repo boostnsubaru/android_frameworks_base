@@ -17,6 +17,7 @@
 package com.android.systemui;
 
 import android.animation.LayoutTransition;
+<<<<<<< HEAD
 import android.app.ActivityOptions;
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -60,17 +61,41 @@ import android.util.AttributeSet;
 import android.util.Slog;
 import android.util.Log;
 import android.view.HapticFeedbackConstants;
+=======
+import android.app.ActivityManagerNative;
+import android.app.ActivityOptions;
+import android.app.SearchManager;
+import android.content.ActivityNotFoundException;
+import android.content.ComponentName;
+import android.content.Context;
+import android.content.Intent;
+import android.content.res.Resources;
+import android.os.RemoteException;
+import android.os.ServiceManager;
+import android.os.UserHandle;
+import android.os.Vibrator;
+import android.provider.Settings;
+import android.util.AttributeSet;
+import android.util.Slog;
+import android.view.IWindowManager;
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
 import android.view.ViewTreeObserver.OnPreDrawListener;
 import android.widget.FrameLayout;
+<<<<<<< HEAD
 import android.widget.Toast;
 
 import com.android.internal.widget.multiwaveview.GlowPadView;
 import com.android.internal.widget.multiwaveview.GlowPadView.OnTriggerListener;
 import com.android.internal.widget.multiwaveview.TargetDrawable;
+=======
+
+import com.android.internal.widget.multiwaveview.GlowPadView;
+import com.android.internal.widget.multiwaveview.GlowPadView.OnTriggerListener;
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 import com.android.systemui.R;
 import com.android.systemui.recent.StatusBarTouchProxy;
 import com.android.systemui.statusbar.BaseStatusBar;
@@ -78,12 +103,15 @@ import com.android.systemui.statusbar.CommandQueue;
 import com.android.systemui.statusbar.phone.PhoneStatusBar;
 import com.android.systemui.statusbar.tablet.StatusBarPanel;
 import com.android.systemui.statusbar.tablet.TabletStatusBar;
+<<<<<<< HEAD
 import com.android.internal.widget.multiwaveview.TargetDrawable;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+=======
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 
 public class SearchPanelView extends FrameLayout implements
         StatusBarPanel, ActivityOptions.OnAnimationStartedListener {
@@ -99,6 +127,7 @@ public class SearchPanelView extends FrameLayout implements
     private boolean mShowing;
     private View mSearchTargetsContainer;
     private GlowPadView mGlowPadView;
+<<<<<<< HEAD
 
     private PackageManager mPackageManager;
     private Resources mResources;
@@ -108,6 +137,9 @@ public class SearchPanelView extends FrameLayout implements
 
     private int mNavRingAmount;
     private boolean mTabletui;
+=======
+    private IWindowManager mWm;
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 
     public SearchPanelView(Context context, AttributeSet attrs) {
         this(context, attrs, 0);
@@ -116,6 +148,7 @@ public class SearchPanelView extends FrameLayout implements
     public SearchPanelView(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
         mContext = context;
+<<<<<<< HEAD
         mPackageManager = mContext.getPackageManager();
         mResources = mContext.getResources();
 
@@ -280,6 +313,55 @@ public class SearchPanelView extends FrameLayout implements
             return true;
         }
     return false;
+=======
+        mWm = IWindowManager.Stub.asInterface(ServiceManager.getService("window"));
+    }
+
+    private void startAssistActivity() {
+        if (!mBar.isDeviceProvisioned()) return;
+
+        // Close Recent Apps if needed
+        mBar.animateCollapsePanels(CommandQueue.FLAG_EXCLUDE_SEARCH_PANEL);
+        boolean isKeyguardShowing = false;
+        try {
+            isKeyguardShowing = mWm.isKeyguardLocked();
+        } catch (RemoteException e) {
+
+        }
+
+        if (isKeyguardShowing) {
+            // Have keyguard show the bouncer and launch the activity if the user succeeds.
+            try {
+                mWm.showAssistant();
+            } catch (RemoteException e) {
+                // too bad, so sad...
+            }
+            onAnimationStarted();
+        } else {
+            // Otherwise, keyguard isn't showing so launch it from here.
+            Intent intent = ((SearchManager) mContext.getSystemService(Context.SEARCH_SERVICE))
+                    .getAssistIntent(mContext, UserHandle.USER_CURRENT);
+            if (intent == null) return;
+
+            try {
+                ActivityManagerNative.getDefault().dismissKeyguardOnNextActivity();
+            } catch (RemoteException e) {
+                // too bad, so sad...
+            }
+
+            try {
+                ActivityOptions opts = ActivityOptions.makeCustomAnimation(mContext,
+                        R.anim.search_launch_enter, R.anim.search_launch_exit,
+                        getHandler(), this);
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                mContext.startActivityAsUser(intent, opts.toBundle(),
+                        new UserHandle(UserHandle.USER_CURRENT));
+            } catch (ActivityNotFoundException e) {
+                Slog.w(TAG, "Activity not found for " + intent.getAction());
+                onAnimationStarted();
+            }
+        }
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     }
 
     class GlowPadTriggerListener implements GlowPadView.OnTriggerListener {
@@ -299,9 +381,12 @@ public class SearchPanelView extends FrameLayout implements
 
         public void onTrigger(View v, final int target) {
             final int resId = mGlowPadView.getResourceIdForTarget(target);
+<<<<<<< HEAD
 
             boolean launch = launchTarget(target);
 
+=======
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
             switch (resId) {
                 case com.android.internal.R.drawable.ic_action_assist_generic:
                     mWaitingForLaunch = true;
@@ -335,6 +420,7 @@ public class SearchPanelView extends FrameLayout implements
         // TODO: fetch views
         mGlowPadView = (GlowPadView) findViewById(R.id.glow_pad_view);
         mGlowPadView.setOnTriggerListener(mGlowPadViewListener);
+<<<<<<< HEAD
 
         setDrawables();
     }
@@ -470,6 +556,13 @@ public class SearchPanelView extends FrameLayout implements
 
     private void maybeSwapSearchIcon() {
         Intent intent = SearchManager.getAssistIntent(mContext);
+=======
+    }
+
+    private void maybeSwapSearchIcon() {
+        Intent intent = ((SearchManager) mContext.getSystemService(Context.SEARCH_SERVICE))
+                .getAssistIntent(mContext, UserHandle.USER_CURRENT);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         if (intent != null) {
             ComponentName component = intent.getComponent();
             if (component == null || !mGlowPadView.replaceTargetDrawablesIfPresent(component,
@@ -509,10 +602,18 @@ public class SearchPanelView extends FrameLayout implements
 
     private void vibrate() {
         Context context = getContext();
+<<<<<<< HEAD
         if (Settings.System.getInt(context.getContentResolver(),
                 Settings.System.HAPTIC_FEEDBACK_ENABLED, 1) != 0) {
             Vibrator vibrator = (Vibrator) context.getSystemService(Context.VIBRATOR_SERVICE);
             vibrator.vibrate(mResources.getInteger(R.integer.config_search_panel_view_vibration_duration));
+=======
+        if (Settings.System.getIntForUser(context.getContentResolver(),
+                Settings.System.HAPTIC_FEEDBACK_ENABLED, 1, UserHandle.USER_CURRENT) != 0) {
+            Resources res = context.getResources();
+            Vibrator vibrator = (Vibrator) context.getSystemService(Context.VIBRATOR_SERVICE);
+            vibrator.vibrate(res.getInteger(R.integer.config_search_panel_view_vibration_duration));
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         }
     }
 
@@ -544,7 +645,11 @@ public class SearchPanelView extends FrameLayout implements
     public void hide(boolean animate) {
         if (mBar != null) {
             // This will indirectly cause show(false, ...) to get called
+<<<<<<< HEAD
             mBar.animateCollapse(CommandQueue.FLAG_EXCLUDE_NONE);
+=======
+            mBar.animateCollapsePanels(CommandQueue.FLAG_EXCLUDE_NONE);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         } else {
             setVisibility(View.INVISIBLE);
         }
@@ -605,6 +710,7 @@ public class SearchPanelView extends FrameLayout implements
     }
 
     public boolean isAssistantAvailable() {
+<<<<<<< HEAD
         return SearchManager.getAssistIntent(mContext) != null;
     }
 
@@ -804,3 +910,9 @@ public class SearchPanelView extends FrameLayout implements
     }
 
 }
+=======
+        return ((SearchManager) mContext.getSystemService(Context.SEARCH_SERVICE))
+                .getAssistIntent(mContext, UserHandle.USER_CURRENT) != null;
+    }
+}
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a

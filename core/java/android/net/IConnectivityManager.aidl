@@ -26,6 +26,10 @@ import android.os.ParcelFileDescriptor;
 
 import com.android.internal.net.LegacyVpnInfo;
 import com.android.internal.net.VpnConfig;
+<<<<<<< HEAD
+=======
+import com.android.internal.net.VpnProfile;
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 
 /**
  * Interface that answers queries about, and allows changing, the
@@ -118,7 +122,17 @@ interface IConnectivityManager
 
     ParcelFileDescriptor establishVpn(in VpnConfig config);
 
+<<<<<<< HEAD
     void startLegacyVpn(in VpnConfig config, in String[] racoon, in String[] mtpd);
 
     LegacyVpnInfo getLegacyVpnInfo();
+=======
+    void startLegacyVpn(in VpnProfile profile);
+
+    LegacyVpnInfo getLegacyVpnInfo();
+
+    boolean updateLockdownVpn();
+
+    void captivePortalCheckComplete(in NetworkInfo info);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 }

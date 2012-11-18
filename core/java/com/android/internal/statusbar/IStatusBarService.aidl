@@ -24,14 +24,24 @@ import com.android.internal.statusbar.StatusBarNotification;
 /** @hide */
 interface IStatusBarService
 {
+<<<<<<< HEAD
     void expand();
     void collapse();
+=======
+    void expandNotificationsPanel();
+    void collapsePanels();
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     void disable(int what, IBinder token, String pkg);
     void setIcon(String slot, String iconPackage, int iconId, int iconLevel, String contentDescription);
     void setIconVisibility(String slot, boolean visible);
     void removeIcon(String slot);
     void topAppWindowChanged(boolean menuVisible);
     void setImeWindowStatus(in IBinder token, int vis, int backDisposition);
+<<<<<<< HEAD
+=======
+    void expandSettingsPanel();
+    void setCurrentUser(int newUserId);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 
     // ---- Methods below are for use by the status bar policy services ----
     // You need the STATUS_BAR_SERVICE permission
@@ -46,7 +56,10 @@ interface IStatusBarService
     void onNotificationClear(String pkg, String tag, int id);
     void setSystemUiVisibility(int vis, int mask);
     void setHardKeyboardEnabled(boolean enabled);
+<<<<<<< HEAD
     void toggleNotificationShade();
+=======
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     void toggleRecentApps();
     void preloadRecentApps();
     void cancelPreloadRecentApps();

@@ -26,6 +26,10 @@ import android.media.MediaPlayer;
 import android.media.Metadata;
 import android.media.MediaPlayer.OnCompletionListener;
 import android.media.MediaPlayer.OnErrorListener;
+<<<<<<< HEAD
+=======
+import android.media.MediaPlayer.OnInfoListener;
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 import android.net.Uri;
 import android.util.AttributeSet;
 import android.util.Log;
@@ -79,13 +83,20 @@ public class VideoView extends SurfaceView implements MediaPlayerControl {
     private int         mVideoHeight;
     private int         mSurfaceWidth;
     private int         mSurfaceHeight;
+<<<<<<< HEAD
     private int         mPreviousWidth;
     private int         mPreviousHeight;
+=======
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     private MediaController mMediaController;
     private OnCompletionListener mOnCompletionListener;
     private MediaPlayer.OnPreparedListener mOnPreparedListener;
     private int         mCurrentBufferPercentage;
     private OnErrorListener mOnErrorListener;
+<<<<<<< HEAD
+=======
+    private OnInfoListener  mOnInfoListener;
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     private int         mSeekWhenPrepared;  // recording the seek position while preparing
     private boolean     mCanPause;
     private boolean     mCanSeekBack;
@@ -123,6 +134,7 @@ public class VideoView extends SurfaceView implements MediaPlayerControl {
                         //width+"/"+height+"="+
                         //mVideoWidth+"/"+mVideoHeight);
             }
+<<<<<<< HEAD
             mPreviousWidth = mVideoWidth;
             mPreviousHeight = mVideoHeight;
         } else if (mPreviousWidth > 0 && mPreviousHeight > 0) {
@@ -135,6 +147,8 @@ public class VideoView extends SurfaceView implements MediaPlayerControl {
                Log.i("VideoView", "image too wide, correcting");
                width = height * mPreviousWidth / mPreviousHeight;
             }
+=======
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         }
         //Log.i("@@@@@@@@@@", "setting size: " + width + 'x' + height);
         setMeasuredDimension(width, height);
@@ -244,6 +258,10 @@ public class VideoView extends SurfaceView implements MediaPlayerControl {
             mDuration = -1;
             mMediaPlayer.setOnCompletionListener(mCompletionListener);
             mMediaPlayer.setOnErrorListener(mErrorListener);
+<<<<<<< HEAD
+=======
+            mMediaPlayer.setOnInfoListener(mOnInfoListener);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
             mMediaPlayer.setOnBufferingUpdateListener(mBufferingUpdateListener);
             mCurrentBufferPercentage = 0;
             mMediaPlayer.setDataSource(mContext, mUri, mHeaders);
@@ -295,6 +313,10 @@ public class VideoView extends SurfaceView implements MediaPlayerControl {
                 mVideoHeight = mp.getVideoHeight();
                 if (mVideoWidth != 0 && mVideoHeight != 0) {
                     getHolder().setFixedSize(mVideoWidth, mVideoHeight);
+<<<<<<< HEAD
+=======
+                    requestLayout();
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
                 }
             }
     };
@@ -469,6 +491,19 @@ public class VideoView extends SurfaceView implements MediaPlayerControl {
         mOnErrorListener = l;
     }
 
+<<<<<<< HEAD
+=======
+    /**
+     * Register a callback to be invoked when an informational event
+     * occurs during playback or setup.
+     *
+     * @param l The callback that will be run
+     */
+    public void setOnInfoListener(OnInfoListener l) {
+        mOnInfoListener = l;
+    }
+
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     SurfaceHolder.Callback mSHCallback = new SurfaceHolder.Callback()
     {
         public void surfaceChanged(SurfaceHolder holder, int format,

@@ -415,6 +415,7 @@ public class PreferenceManager {
     }
     
     /**
+<<<<<<< HEAD
      * Sets the default values from a preference hierarchy in XML. This should
      * be called by the application's main activity.
      * <p>
@@ -428,6 +429,22 @@ public class PreferenceManager {
      * @param resId The resource ID of the preference hierarchy XML file.
      * @param readAgain Whether to re-read the default values.
      *            <p>
+=======
+     * Sets the default values from an XML preference file by reading the values defined
+     * by each {@link Preference} item's {@code android:defaultValue} attribute. This should
+     * be called by the application's main activity.
+     * <p>
+     * 
+     * @param context The context of the shared preferences.
+     * @param resId The resource ID of the preference XML file.
+     * @param readAgain Whether to re-read the default values.
+     * If false, this method sets the default values only if this
+     * method has never been called in the past (or if the
+     * {@link #KEY_HAS_SET_DEFAULT_VALUES} in the default value shared
+     * preferences file is false). To attempt to set the default values again
+     * bypassing this check, set {@code readAgain} to true.
+     *            <p class="note">
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
      *            Note: this will NOT reset preferences back to their default
      *            values. For that functionality, use
      *            {@link PreferenceManager#getDefaultSharedPreferences(Context)}
@@ -445,6 +462,28 @@ public class PreferenceManager {
      * Similar to {@link #setDefaultValues(Context, int, boolean)} but allows
      * the client to provide the filename and mode of the shared preferences
      * file.
+<<<<<<< HEAD
+=======
+     *
+     * @param context The context of the shared preferences.
+     * @param sharedPreferencesName A custom name for the shared preferences file.
+     * @param sharedPreferencesMode The file creation mode for the shared preferences file, such
+     * as {@link android.content.Context#MODE_PRIVATE} or {@link
+     * android.content.Context#MODE_PRIVATE}
+     * @param resId The resource ID of the preference XML file.
+     * @param readAgain Whether to re-read the default values.
+     * If false, this method will set the default values only if this
+     * method has never been called in the past (or if the
+     * {@link #KEY_HAS_SET_DEFAULT_VALUES} in the default value shared
+     * preferences file is false). To attempt to set the default values again
+     * bypassing this check, set {@code readAgain} to true.
+     *            <p class="note">
+     *            Note: this will NOT reset preferences back to their default
+     *            values. For that functionality, use
+     *            {@link PreferenceManager#getDefaultSharedPreferences(Context)}
+     *            and clear it followed by a call to this method with this
+     *            parameter set to true.
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
      * 
      * @see #setDefaultValues(Context, int, boolean)
      * @see #setSharedPreferencesName(String)

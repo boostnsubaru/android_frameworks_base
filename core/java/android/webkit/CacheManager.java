@@ -32,6 +32,10 @@ import java.util.Map;
 /**
  * Manages the HTTP cache used by an application's {@link WebView} instances.
  * @deprecated Access to the HTTP cache will be removed in a future release.
+<<<<<<< HEAD
+=======
+ * @hide Since {@link android.os.Build.VERSION_CODES#JELLY_BEAN_MR1}
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
  */
 // The class CacheManager provides the persistent cache of content that is
 // received over the network. The component handles parsing of HTTP headers and

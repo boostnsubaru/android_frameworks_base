@@ -68,6 +68,10 @@ extern int register_android_graphics_YuvImage(JNIEnv* env);
 
 extern int register_com_google_android_gles_jni_EGLImpl(JNIEnv* env);
 extern int register_com_google_android_gles_jni_GLImpl(JNIEnv* env);
+<<<<<<< HEAD
+=======
+extern int register_android_opengl_jni_EGL14(JNIEnv* env);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 extern int register_android_opengl_jni_GLES10(JNIEnv* env);
 extern int register_android_opengl_jni_GLES10Ext(JNIEnv* env);
 extern int register_android_opengl_jni_GLES11(JNIEnv* env);
@@ -115,12 +119,19 @@ extern int register_android_graphics_Region(JNIEnv* env);
 extern int register_android_graphics_SurfaceTexture(JNIEnv* env);
 extern int register_android_graphics_Xfermode(JNIEnv* env);
 extern int register_android_graphics_PixelFormat(JNIEnv* env);
+<<<<<<< HEAD
 extern int register_android_view_Display(JNIEnv* env);
+=======
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 extern int register_android_view_DisplayEventReceiver(JNIEnv* env);
 extern int register_android_view_GLES20DisplayList(JNIEnv* env);
 extern int register_android_view_GLES20Canvas(JNIEnv* env);
 extern int register_android_view_HardwareRenderer(JNIEnv* env);
 extern int register_android_view_Surface(JNIEnv* env);
+<<<<<<< HEAD
+=======
+extern int register_android_view_SurfaceSession(JNIEnv* env);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 extern int register_android_view_TextureView(JNIEnv* env);
 extern int register_android_database_CursorWindow(JNIEnv* env);
 extern int register_android_database_SQLiteConnection(JNIEnv* env);
@@ -133,7 +144,11 @@ extern int register_android_os_Debug(JNIEnv* env);
 extern int register_android_os_MessageQueue(JNIEnv* env);
 extern int register_android_os_Parcel(JNIEnv* env);
 extern int register_android_os_ParcelFileDescriptor(JNIEnv *env);
+<<<<<<< HEAD
 extern int register_android_os_StatFs(JNIEnv *env);
+=======
+extern int register_android_os_SELinux(JNIEnv* env);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 extern int register_android_os_SystemProperties(JNIEnv *env);
 extern int register_android_os_SystemClock(JNIEnv* env);
 extern int register_android_os_Trace(JNIEnv* env);
@@ -148,12 +163,15 @@ extern int register_android_net_wifi_WifiManager(JNIEnv* env);
 extern int register_android_text_AndroidCharacter(JNIEnv *env);
 extern int register_android_text_AndroidBidi(JNIEnv *env);
 extern int register_android_opengl_classes(JNIEnv *env);
+<<<<<<< HEAD
 extern int register_android_bluetooth_HeadsetBase(JNIEnv* env);
 extern int register_android_bluetooth_BluetoothAudioGateway(JNIEnv* env);
 extern int register_android_bluetooth_BluetoothSocket(JNIEnv *env);
 extern int register_android_server_BluetoothService(JNIEnv* env);
 extern int register_android_server_BluetoothEventLoop(JNIEnv *env);
 extern int register_android_server_BluetoothA2dpService(JNIEnv* env);
+=======
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 extern int register_android_server_NetworkManagementSocketTagger(JNIEnv* env);
 extern int register_android_server_Watchdog(JNIEnv* env);
 extern int register_android_ddm_DdmHandleNativeHeap(JNIEnv *env);
@@ -165,6 +183,10 @@ extern int register_android_backup_BackupHelperDispatcher(JNIEnv *env);
 extern int register_android_app_backup_FullBackup(JNIEnv *env);
 extern int register_android_app_ActivityThread(JNIEnv *env);
 extern int register_android_app_NativeActivity(JNIEnv *env);
+<<<<<<< HEAD
+=======
+extern int register_android_media_RemoteDisplay(JNIEnv *env);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 extern int register_android_view_InputChannel(JNIEnv* env);
 extern int register_android_view_InputDevice(JNIEnv* env);
 extern int register_android_view_InputEventReceiver(JNIEnv* env);
@@ -177,10 +199,13 @@ extern int register_android_content_res_ObbScanner(JNIEnv* env);
 extern int register_android_content_res_Configuration(JNIEnv* env);
 extern int register_android_animation_PropertyValuesHolder(JNIEnv *env);
 extern int register_com_android_internal_content_NativeLibraryHelper(JNIEnv *env);
+<<<<<<< HEAD
 extern int register_android_content_res_PackageRedirectionMap(JNIEnv* env);
 #ifdef QCOM_HARDWARE
 extern int register_com_android_internal_app_ActivityTrigger(JNIEnv *env);
 #endif
+=======
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 
 static AndroidRuntime* gCurRuntime = NULL;
 
@@ -461,6 +486,12 @@ int AndroidRuntime::startVm(JavaVM** pJavaVM, JNIEnv** pEnv)
     char heapstartsizeOptsBuf[sizeof("-Xms")-1 + PROPERTY_VALUE_MAX];
     char heapsizeOptsBuf[sizeof("-Xmx")-1 + PROPERTY_VALUE_MAX];
     char heapgrowthlimitOptsBuf[sizeof("-XX:HeapGrowthLimit=")-1 + PROPERTY_VALUE_MAX];
+<<<<<<< HEAD
+=======
+    char heapminfreeOptsBuf[sizeof("-XX:HeapMinFree=")-1 + PROPERTY_VALUE_MAX];
+    char heapmaxfreeOptsBuf[sizeof("-XX:HeapMaxFree=")-1 + PROPERTY_VALUE_MAX];
+    char heaptargetutilizationOptsBuf[sizeof("-XX:HeapTargetUtilization=")-1 + PROPERTY_VALUE_MAX];
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     char extraOptsBuf[PROPERTY_VALUE_MAX];
     char* stackTraceFile = NULL;
     bool checkJni = false;
@@ -563,6 +594,30 @@ int AndroidRuntime::startVm(JavaVM** pJavaVM, JNIEnv** pEnv)
         mOptions.add(opt);
     }
 
+<<<<<<< HEAD
+=======
+    strcpy(heapminfreeOptsBuf, "-XX:HeapMinFree=");
+    property_get("dalvik.vm.heapminfree", heapminfreeOptsBuf+16, "");
+    if (heapminfreeOptsBuf[16] != '\0') {
+        opt.optionString = heapminfreeOptsBuf;
+        mOptions.add(opt);
+    }
+
+    strcpy(heapmaxfreeOptsBuf, "-XX:HeapMaxFree=");
+    property_get("dalvik.vm.heapmaxfree", heapmaxfreeOptsBuf+16, "");
+    if (heapmaxfreeOptsBuf[16] != '\0') {
+        opt.optionString = heapmaxfreeOptsBuf;
+        mOptions.add(opt);
+    }
+
+    strcpy(heaptargetutilizationOptsBuf, "-XX:HeapTargetUtilization=");
+    property_get("dalvik.vm.heaptargetutilization", heaptargetutilizationOptsBuf+26, "");
+    if (heaptargetutilizationOptsBuf[26] != '\0') {
+        opt.optionString = heaptargetutilizationOptsBuf;
+        mOptions.add(opt);
+    }
+
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     /*
      * Enable or disable dexopt features, such as bytecode verification and
      * calculation of register maps for precise GC.
@@ -1096,7 +1151,10 @@ static const RegJNIRec gRegJNI[] = {
     REG_JNI(register_android_os_SystemProperties),
     REG_JNI(register_android_os_Binder),
     REG_JNI(register_android_os_Parcel),
+<<<<<<< HEAD
     REG_JNI(register_android_view_Display),
+=======
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     REG_JNI(register_android_view_DisplayEventReceiver),
     REG_JNI(register_android_nio_utils),
     REG_JNI(register_android_graphics_PixelFormat),
@@ -1105,9 +1163,17 @@ static const RegJNIRec gRegJNI[] = {
     REG_JNI(register_android_view_GLES20Canvas),
     REG_JNI(register_android_view_HardwareRenderer),
     REG_JNI(register_android_view_Surface),
+<<<<<<< HEAD
     REG_JNI(register_android_view_TextureView),
     REG_JNI(register_com_google_android_gles_jni_EGLImpl),
     REG_JNI(register_com_google_android_gles_jni_GLImpl),
+=======
+    REG_JNI(register_android_view_SurfaceSession),
+    REG_JNI(register_android_view_TextureView),
+    REG_JNI(register_com_google_android_gles_jni_EGLImpl),
+    REG_JNI(register_com_google_android_gles_jni_GLImpl),
+    REG_JNI(register_android_opengl_jni_EGL14),
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     REG_JNI(register_android_opengl_jni_GLES10),
     REG_JNI(register_android_opengl_jni_GLES10Ext),
     REG_JNI(register_android_opengl_jni_GLES11),
@@ -1150,7 +1216,11 @@ static const RegJNIRec gRegJNI[] = {
     REG_JNI(register_android_os_FileUtils),
     REG_JNI(register_android_os_MessageQueue),
     REG_JNI(register_android_os_ParcelFileDescriptor),
+<<<<<<< HEAD
     REG_JNI(register_android_os_StatFs),
+=======
+    REG_JNI(register_android_os_SELinux),
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     REG_JNI(register_android_os_Trace),
     REG_JNI(register_android_os_UEventObserver),
     REG_JNI(register_android_net_LocalSocketImpl),
@@ -1169,6 +1239,7 @@ static const RegJNIRec gRegJNI[] = {
     REG_JNI(register_android_media_AudioSystem),
     REG_JNI(register_android_media_AudioTrack),
     REG_JNI(register_android_media_JetPlayer),
+<<<<<<< HEAD
     REG_JNI(register_android_media_ToneGenerator),
 
     REG_JNI(register_android_opengl_classes),
@@ -1178,6 +1249,12 @@ static const RegJNIRec gRegJNI[] = {
     REG_JNI(register_android_server_BluetoothService),
     REG_JNI(register_android_server_BluetoothEventLoop),
     REG_JNI(register_android_server_BluetoothA2dpService),
+=======
+    REG_JNI(register_android_media_RemoteDisplay),
+    REG_JNI(register_android_media_ToneGenerator),
+
+    REG_JNI(register_android_opengl_classes),
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     REG_JNI(register_android_server_NetworkManagementSocketTagger),
     REG_JNI(register_android_server_Watchdog),
     REG_JNI(register_android_ddm_DdmHandleNativeHeap),
@@ -1200,12 +1277,15 @@ static const RegJNIRec gRegJNI[] = {
 
     REG_JNI(register_android_animation_PropertyValuesHolder),
     REG_JNI(register_com_android_internal_content_NativeLibraryHelper),
+<<<<<<< HEAD
     REG_JNI(register_android_content_res_PackageRedirectionMap),
 
 #ifdef QCOM_HARDWARE
     REG_JNI(register_com_android_internal_app_ActivityTrigger),
 #endif
 
+=======
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 };
 
 /*

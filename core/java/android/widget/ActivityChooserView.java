@@ -497,7 +497,11 @@ public class ActivityChooserView extends ViewGroup implements ActivityChooserMod
         // Default activity button.
         final int activityCount = mAdapter.getActivityCount();
         final int historySize = mAdapter.getHistorySize();
+<<<<<<< HEAD
         if (activityCount > 0 && historySize > 0) {
+=======
+        if (activityCount==1 || activityCount > 1 && historySize > 0) {
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
             mDefaultActivityButton.setVisibility(VISIBLE);
             ResolveInfo activity = mAdapter.getDefaultActivity();
             PackageManager packageManager = mContext.getPackageManager();

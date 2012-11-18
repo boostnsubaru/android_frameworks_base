@@ -33,8 +33,13 @@
               android:gravity="center"
               android:minLines="2"
               android:maxLines="2"
+<<<<<<< HEAD
               android:paddingLeft="4dip"
               android:paddingRight="4dip" />
+=======
+              android:paddingStart="4dip"
+              android:paddingEnd="4dip" />
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 
     <!-- Activity icon when presenting dialog
          Size will be filled in by ResolverActivity -->
@@ -51,7 +56,12 @@
               android:gravity="center"
               android:minLines="2"
               android:maxLines="2"
+<<<<<<< HEAD
               android:paddingLeft="4dip"
               android:paddingRight="4dip" />
+=======
+              android:paddingStart="4dip"
+              android:paddingEnd="4dip" />
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 </LinearLayout>
 

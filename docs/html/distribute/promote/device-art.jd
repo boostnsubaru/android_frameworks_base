@@ -18,7 +18,13 @@ feature image or screenshots for your Google Play app listing.</p>
     <p>Drag a screenshot from your desktop onto a device to the right.</p>
   </div>
   <div class="layout-content-col span-10">
+<<<<<<< HEAD
     <ul id="device-list"></ul>
+=======
+    <ul class="device-list primary"></ul>
+    <a href="#" id="archive-expando">Older devices</a>
+    <ul class="device-list archive"></ul>
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
   </div>
 </div>
 
@@ -57,12 +63,20 @@ feature image or screenshots for your Google Play app listing.</p>
     text-transform: uppercase;
   }
 
+<<<<<<< HEAD
   #device-list {
+=======
+  .device-list {
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     padding: 0;
     margin: 0;
   }
 
+<<<<<<< HEAD
   #device-list li {
+=======
+  .device-list li {
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     display: inline-block;
     vertical-align: bottom;
     margin: 0;
@@ -70,11 +84,19 @@ feature image or screenshots for your Google Play app listing.</p>
     text-align: center;
   }
 
+<<<<<<< HEAD
   #device-list li .thumb-container {
     display: inline-block;
   }
 
   #device-list li .thumb-container img {
+=======
+  .device-list li .thumb-container {
+    display: inline-block;
+  }
+
+  .device-list li .thumb-container img {
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     margin-bottom: 8px;
     opacity: 0.6;
 
@@ -83,7 +105,11 @@ feature image or screenshots for your Google Play app listing.</p>
             transition:         transform 0.2s, opacity 0.2s;
   }
 
+<<<<<<< HEAD
   #device-list li.drag-hover .thumb-container img {
+=======
+  .device-list li.drag-hover .thumb-container img {
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     opacity: 1;
 
     -webkit-transform: scale(1.1);
@@ -91,16 +117,46 @@ feature image or screenshots for your Google Play app listing.</p>
             transform: scale(1.1);
   }
 
+<<<<<<< HEAD
   #device-list li .device-details {
+=======
+  .device-list li .device-details {
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     font-size: 13px;
     line-height: 16px;
     color: #888;
   }
 
+<<<<<<< HEAD
   #device-list li .device-url {
     font-weight: bold;
   }
 
+=======
+  .device-list li .device-url {
+    font-weight: bold;
+  }
+
+  #archive-expando {
+    display: block;
+    font-size: 13px;
+    font-weight: bold;
+    color: #333;
+    text-transform: uppercase;
+    margin-top: 16px;
+    padding-top: 16px;
+    padding-left: 28px;
+    border-top: 1px solid transparent;
+    background: transparent url({@docRoot}assets/images/styles/disclosure_down.png)
+                no-repeat scroll 0 8px;
+  }
+
+  #archive-expando.expanded {
+    background-image: url({@docRoot}assets/images/styles/disclosure_up.png);
+    border-top: 1px solid #ccc;
+  }
+
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
   #output {
     color: #f44;
     font-style: italic;
@@ -117,7 +173,11 @@ feature image or screenshots for your Google Play app listing.</p>
 
   // Global constants
   var MSG_INVALID_INPUT_IMAGE = 'Invalid screenshot provided. Screenshots must be PNG files '
+<<<<<<< HEAD
       + 'matching the target device\'s screen resolution in either portrait or landscape.';
+=======
+      + 'matching the target device\'s screen aspect ratio in either portrait or landscape.';
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
   var MSG_NO_INPUT_IMAGE = 'Drag a screenshot (in PNG format) from your desktop onto a '
       + 'target device above.'
   var MSG_GENERATING_IMAGE = 'Generating device art&hellip;';
@@ -127,6 +187,7 @@ feature image or screenshots for your Google Play app listing.</p>
   // Device manifest.
   var DEVICES = [
     {
+<<<<<<< HEAD
       id: 'nexus_7',
       title: 'Nexus 7',
       url: 'http://www.android.com/devices/detail/nexus-7',
@@ -138,6 +199,46 @@ feature image or screenshots for your Google Play app listing.</p>
       portRes: ['shadow', 'back', 'fore'],
       portOffset: [265,341],
       portSize: [800,1280],
+=======
+      id: 'nexus_4',
+      title: 'Nexus 4',
+      url: 'http://www.google.com/nexus/4/',
+      physicalSize: 4.7,
+      physicalHeight: 5.23,
+      density: 'XHDPI',
+      landRes: ['shadow', 'back', 'fore'],
+      landOffset: [349,214],
+      portRes: ['shadow', 'back', 'fore'],
+      portOffset: [213,350],
+      portSize: [768,1280]
+    },
+    {
+      id: 'nexus_7',
+      title: 'Nexus 7',
+      url: 'http://www.google.com/nexus/7/',
+      physicalSize: 7,
+      physicalHeight: 7.81,
+      density: '213dpi',
+      landRes: ['shadow', 'back', 'fore'],
+      landOffset: [315,270],
+      portRes: ['shadow', 'back', 'fore'],
+      portOffset: [264,311],
+      portSize: [800,1280]
+    },
+    {
+      id: 'nexus_10',
+      title: 'Nexus 10',
+      url: 'http://www.google.com/nexus/10/',
+      physicalSize: 10,
+      physicalHeight: 7,
+      actualResolution: [1600,2560],
+      density: 'XHDPI',
+      landRes: ['shadow', 'back', 'fore'],
+      landOffset: [227,217],
+      portRes: ['shadow', 'back', 'fore'],
+      portOffset: [217,223],
+      portSize: [800,1280]
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     },
     {
       id: 'xoom',
@@ -145,12 +246,20 @@ feature image or screenshots for your Google Play app listing.</p>
       url: 'http://www.google.com/phone/detail/motorola-xoom',
       physicalSize: 10,
       physicalHeight: 6.61,
+<<<<<<< HEAD
       density: 160,
+=======
+      density: 'MDPI',
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
       landRes: ['shadow', 'back', 'fore'],
       landOffset: [218,191],
       portRes: ['shadow', 'back', 'fore'],
       portOffset: [199,200],
       portSize: [800,1280],
+<<<<<<< HEAD
+=======
+      archived: true
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     },
     {
       id: 'galaxy_nexus',
@@ -158,12 +267,20 @@ feature image or screenshots for your Google Play app listing.</p>
       url: 'http://www.android.com/devices/detail/galaxy-nexus',
       physicalSize: 4.65,
       physicalHeight: 5.33,
+<<<<<<< HEAD
       density: 320,
+=======
+      density: 'XHDPI',
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
       landRes: ['shadow', 'back', 'fore'],
       landOffset: [371,199],
       portRes: ['shadow', 'back', 'fore'],
       portOffset: [216,353],
       portSize: [720,1280],
+<<<<<<< HEAD
+=======
+      archived: true
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     },
     {
       id: 'nexus_s',
@@ -171,12 +288,20 @@ feature image or screenshots for your Google Play app listing.</p>
       url: 'http://www.google.com/phone/detail/nexus-s',
       physicalSize: 4.0,
       physicalHeight: 4.88,
+<<<<<<< HEAD
       density: 240,
+=======
+      density: 'HDPI',
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
       landRes: ['shadow', 'back', 'fore'],
       landOffset: [247,135],
       portRes: ['shadow', 'back', 'fore'],
       portOffset: [134,247],
       portSize: [480,800],
+<<<<<<< HEAD
+=======
+      archived: true
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     }
   ];
 
@@ -250,13 +375,32 @@ feature image or screenshots for your Google Play app listing.</p>
     $('#output').html(MSG_NO_INPUT_IMAGE);
 
     $('#frame-customizations').hide();
+<<<<<<< HEAD
 
     $('#output-shadow, #output-glare').click(function() {
       createFrame(g_currentDevice, g_currentImage);
+=======
+    $('.device-list.archive').hide();
+
+    $('#output-shadow, #output-glare').click(function() {
+      createFrame();
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     });
 
     // Build device list.
     $.each(DEVICES, function() {
+<<<<<<< HEAD
+=======
+      var resolution = this.actualResolution || this.portSize;
+      var scaleFactorText = '';
+      if (resolution[0] != this.portSize[0]) {
+        scaleFactorText = '<br>' + (100 * (this.portSize[0] / resolution[0])).toFixed(0) +
+            '% size output';
+      } else {
+        scaleFactorText = '<br>&nbsp;';
+      }
+
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
       $('<li>')
           .append($('<div>')
               .addClass('thumb-container')
@@ -269,6 +413,7 @@ feature image or screenshots for your Google Play app listing.</p>
               .html((this.url
                   ? ('<a class="device-url" href="' + this.url + '">' + this.title + '</a>')
                   : this.title) +
+<<<<<<< HEAD
                 '<br>' +  this.physicalSize + '" @ ' + this.density + 'dpi' +
                 '<br>' + this.portSize[0] + 'x' + this.portSize[1]))
           .data('deviceId', this.id)
@@ -277,6 +422,28 @@ feature image or screenshots for your Google Play app listing.</p>
 
     // Set up drag and drop.
     $('#device-list li')
+=======
+                  '<br>' +  this.physicalSize + '" @ ' + this.density +
+                  '<br>' + (resolution[0] + 'x' + resolution[1]) + scaleFactorText))
+          .data('deviceId', this.id)
+          .appendTo(this.archived ? '.device-list.archive' : '.device-list.primary');
+    });
+
+    // Set up "older devices" expando.
+    $('#archive-expando').click(function() {
+      if ($(this).hasClass('expanded')) {
+        $(this).removeClass('expanded');
+        $('.device-list.archive').hide();
+      } else {
+        $(this).addClass('expanded');
+        $('.device-list.archive').show();
+      }
+      return false;
+    });
+
+    // Set up drag and drop.
+    $('.device-list li')
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         .live('dragover', function(evt) {
           $(this).addClass('drag-hover');
           evt.dataTransfer.dropEffect = 'link';
@@ -299,6 +466,11 @@ feature image or screenshots for your Google Play app listing.</p>
               g_currentFilename = data.name;
               g_currentImage = img;
               createFrame();
+<<<<<<< HEAD
+=======
+              // Send the event to Analytics
+              _gaq.push(['_trackEvent', 'Distribute', 'Create Device Art', g_currentDevice.title]);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
             });
           });
         });
@@ -333,6 +505,7 @@ feature image or screenshots for your Google Play app listing.</p>
    */
   function createFrame() {
     var port;
+<<<<<<< HEAD
     if (g_currentImage.naturalWidth  == g_currentDevice.portSize[0] &&
         g_currentImage.naturalHeight == g_currentDevice.portSize[1]) {
       if (!g_currentDevice.portRes) {
@@ -354,6 +527,21 @@ feature image or screenshots for your Google Play app listing.</p>
           g_currentDevice.portSize[0] + 'x' + g_currentDevice.portSize[1] +
           ' or ' +
           g_currentDevice.portSize[1] + 'x' + g_currentDevice.portSize[0] + '.');
+=======
+
+    var aspect1 = g_currentImage.naturalWidth / g_currentImage.naturalHeight;
+    var aspect2 = g_currentDevice.portSize[0] / g_currentDevice.portSize[1];
+
+    if (aspect1 == aspect2) {
+      port = true;
+    } else if (aspect1 == 1 / aspect2) {
+      port = false;
+    } else {
+      alert('The screenshot must have an aspect ratio of ' +
+          aspect2.toFixed(3) + ' or ' + (1 / aspect2).toFixed(3) +
+          ' (ideally ' + g_currentDevice.portSize[0] + 'x' + g_currentDevice.portSize[1] +
+          ' or ' + g_currentDevice.portSize[1] + 'x' + g_currentDevice.portSize[0] + ').');
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
       $('#output').html(MSG_INVALID_INPUT_IMAGE);
       return;
     }
@@ -376,6 +564,12 @@ feature image or screenshots for your Google Play app listing.</p>
       var width = resourceImages['back'].naturalWidth;
       var height = resourceImages['back'].naturalHeight;
       var offset = port ? g_currentDevice.portOffset : g_currentDevice.landOffset;
+<<<<<<< HEAD
+=======
+      var size = port
+          ? g_currentDevice.portSize
+          : [g_currentDevice.portSize[1], g_currentDevice.portSize[0]];
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 
       var canvas = document.createElement('canvas');
       canvas.width = width;
@@ -386,7 +580,13 @@ feature image or screenshots for your Google Play app listing.</p>
         ctx.drawImage(resourceImages['shadow'], 0, 0);
       }
       ctx.drawImage(resourceImages['back'], 0, 0);
+<<<<<<< HEAD
       ctx.drawImage(g_currentImage, offset[0], offset[1]);
+=======
+      ctx.fillStyle = '#000';
+      ctx.fillRect(offset[0], offset[1], size[0], size[1]);
+      ctx.drawImage(g_currentImage, offset[0], offset[1], size[0], size[1]);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
       if (resourceImages['fore'] && $('#output-glare').is(':checked')) {
         ctx.drawImage(resourceImages['fore'], 0, 0);
       }

@@ -16,6 +16,10 @@
 
 package android.net;
 
+<<<<<<< HEAD
+=======
+import java.io.Closeable;
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 import java.io.FileDescriptor;
 import java.io.IOException;
 import java.io.InputStream;
@@ -26,7 +30,11 @@ import java.net.SocketOptions;
  * Creates a (non-server) socket in the UNIX-domain namespace. The interface
  * here is not entirely unlike that of java.net.Socket
  */
+<<<<<<< HEAD
 public class LocalSocket {
+=======
+public class LocalSocket implements Closeable {
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 
     private LocalSocketImpl impl;
     private volatile boolean implCreated;
@@ -42,6 +50,18 @@ public class LocalSocket {
         isBound = false;
         isConnected = false;
     }
+<<<<<<< HEAD
+=======
+    /**
+     * Creates a AF_LOCAL/UNIX domain stream socket with FileDescriptor.
+     * @hide
+     */
+    public LocalSocket(FileDescriptor fd) throws IOException {
+        this(new LocalSocketImpl(fd));
+        isBound = true;
+        isConnected = true;
+    }
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 
     /**
      * for use with AndroidServerSocket
@@ -158,6 +178,10 @@ public class LocalSocket {
      *
      * @throws IOException
      */
+<<<<<<< HEAD
+=======
+    @Override
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     public void close() throws IOException {
         implCreateIfNeeded();
         impl.close();

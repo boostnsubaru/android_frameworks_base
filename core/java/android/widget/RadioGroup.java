@@ -376,7 +376,11 @@ public class RadioGroup extends LinearLayout {
                 int id = child.getId();
                 // generates an id if it's missing
                 if (id == View.NO_ID) {
+<<<<<<< HEAD
                     id = child.hashCode();
+=======
+                    id = View.generateViewId();
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
                     child.setId(id);
                 }
                 ((RadioButton) child).setOnCheckedChangeWidgetListener(

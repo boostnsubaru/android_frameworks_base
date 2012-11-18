@@ -16,5 +16,8 @@
 
 <resources>
     <bool name="action_bar_expanded_action_views_exclusive">false</bool>
+<<<<<<< HEAD
     <bool name="show_ongoing_ime_switcher">false</bool>
+=======
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 </resources>

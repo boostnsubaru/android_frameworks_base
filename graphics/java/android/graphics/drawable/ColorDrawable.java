@@ -20,6 +20,10 @@ import android.graphics.*;
 import android.content.res.Resources;
 import android.content.res.TypedArray;
 import android.util.AttributeSet;
+<<<<<<< HEAD
+=======
+import android.view.ViewDebug;
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
 
@@ -34,8 +38,15 @@ import java.io.IOException;
  * @attr ref android.R.styleable#ColorDrawable_color
  */
 public class ColorDrawable extends Drawable {
+<<<<<<< HEAD
     private ColorState mState;
     private final Paint mPaint = new Paint();
+=======
+    @ViewDebug.ExportedProperty(deepExport = true, prefix = "state_")
+    private ColorState mState;
+    private final Paint mPaint = new Paint();
+    private boolean mMutated;
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 
     /**
      * Creates a new black ColorDrawable.
@@ -63,6 +74,24 @@ public class ColorDrawable extends Drawable {
         return super.getChangingConfigurations() | mState.mChangingConfigurations;
     }
 
+<<<<<<< HEAD
+=======
+    /**
+     * A mutable BitmapDrawable still shares its Bitmap with any other Drawable
+     * that comes from the same resource.
+     *
+     * @return This drawable.
+     */
+    @Override
+    public Drawable mutate() {
+        if (!mMutated && super.mutate() == this) {
+            mState = new ColorState(mState);
+            mMutated = true;
+        }
+        return this;
+    }
+
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     @Override
     public void draw(Canvas canvas) {
         if ((mState.mUseColor >>> 24) != 0) {
@@ -158,6 +187,10 @@ public class ColorDrawable extends Drawable {
 
     final static class ColorState extends ConstantState {
         int mBaseColor; // base color, independent of setAlpha()
+<<<<<<< HEAD
+=======
+        @ViewDebug.ExportedProperty
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         int mUseColor;  // basecolor modulated by setAlpha()
         int mChangingConfigurations;
 
@@ -165,6 +198,10 @@ public class ColorDrawable extends Drawable {
             if (state != null) {
                 mBaseColor = state.mBaseColor;
                 mUseColor = state.mUseColor;
+<<<<<<< HEAD
+=======
+                mChangingConfigurations = state.mChangingConfigurations;
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
             }
         }
 

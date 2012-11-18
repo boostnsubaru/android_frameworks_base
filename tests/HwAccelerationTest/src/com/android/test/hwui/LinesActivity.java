@@ -153,6 +153,17 @@ public class LinesActivity extends Activity {
             canvas.drawLine(10.0f, 45.0f, 20.0f, 55.0f, mSmallPaint);
             canvas.drawLine(10.0f, 60.0f, 50.0f, 60.0f, mHairLinePaint);
             canvas.restore();
+<<<<<<< HEAD
+=======
+
+            canvas.save();
+            canvas.scale(10.0f, 50.0f);
+            mSmallPaint.setStrokeWidth(0.0f);
+            canvas.drawLine(20.0f, 9.0f, 30.0f, 11.0f, mSmallPaint);
+            mSmallPaint.setStrokeWidth(1.0f);
+            canvas.drawLine(30.0f, 9.0f, 40.0f, 11.0f, mSmallPaint);
+            canvas.restore();
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         }
     }
 }

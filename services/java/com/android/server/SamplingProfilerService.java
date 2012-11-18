@@ -90,7 +90,11 @@ public class SamplingProfilerService extends Binder {
     private void registerSettingObserver(Context context) {
         ContentResolver contentResolver = context.getContentResolver();
         contentResolver.registerContentObserver(
+<<<<<<< HEAD
                 Settings.Secure.getUriFor(Settings.Secure.SAMPLING_PROFILER_MS),
+=======
+                Settings.Global.getUriFor(Settings.Global.SAMPLING_PROFILER_MS),
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
                 false, new SamplingProfilerSettingsObserver(contentResolver));
     }
 
@@ -111,8 +115,13 @@ public class SamplingProfilerService extends Binder {
         }
         @Override
         public void onChange(boolean selfChange) {
+<<<<<<< HEAD
             Integer samplingProfilerMs = Settings.Secure.getInt(
                     mContentResolver, Settings.Secure.SAMPLING_PROFILER_MS, 0);
+=======
+            Integer samplingProfilerMs = Settings.Global.getInt(
+                    mContentResolver, Settings.Global.SAMPLING_PROFILER_MS, 0);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
             // setting this secure property will start or stop sampling profiler,
             // as well as adjust the the time between taking snapshots.
             SystemProperties.set("persist.sys.profiler_ms", samplingProfilerMs.toString());

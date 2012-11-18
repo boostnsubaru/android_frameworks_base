@@ -42,11 +42,19 @@
             <include layout="@layout/keyguard_screen_status_land"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+<<<<<<< HEAD
                 android:layout_marginLeft="50dip"
                 android:layout_marginTop="50dip"
                 android:layout_marginRight="64dip"
                 android:layout_alignParentTop="true"
                 android:layout_alignParentLeft="true"/>
+=======
+                android:layout_marginStart="50dip"
+                android:layout_marginTop="50dip"
+                android:layout_marginEnd="64dip"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentStart="true"/>
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 
             <!-- Music transport control -->
             <include android:id="@+id/transport"
@@ -78,7 +86,11 @@
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:gravity="center"
             android:layout_marginTop="12dip"
+<<<<<<< HEAD
             android:layout_alignParentLeft="true"
+=======
+            android:layout_alignParentStart="true"
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
             android:layout_alignParentTop="true"
             android:drawablePadding="4dip"/>
 
@@ -87,7 +99,11 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_rowSpan="7"
+<<<<<<< HEAD
             android:layout_gravity="center_vertical|right"
+=======
+            android:layout_gravity="center_vertical|end"
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
             android:gravity="center"
             android:focusable="true"
 
@@ -110,15 +126,25 @@
             android:id="@+id/emergencyCallButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+<<<<<<< HEAD
             android:layout_marginRight="80dip"
             android:layout_marginBottom="80dip"
             android:layout_alignParentRight="true"
+=======
+            android:layout_marginEnd="80dip"
+            android:layout_marginBottom="80dip"
+            android:layout_alignParentEnd="true"
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
             android:layout_alignParentBottom="true"
             android:drawableLeft="@drawable/ic_emergency"
             style="@style/Widget.Button.Transparent"
             android:drawablePadding="8dip"
             android:visibility="gone"/>
 
+<<<<<<< HEAD
     </RelativeLayout>>
+=======
+    </RelativeLayout>
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 
 </LinearLayout>

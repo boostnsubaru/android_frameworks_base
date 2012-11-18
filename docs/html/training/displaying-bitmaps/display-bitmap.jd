@@ -103,7 +103,12 @@ public class ImageDetailActivity extends FragmentActivity {
 }
 </pre>
 
+<<<<<<< HEAD
 <p>The details {@link android.app.Fragment} holds the {@link android.widget.ImageView} children:</p>
+=======
+<p>Here is an implementation of the details {@link android.app.Fragment} which holds the {@link android.widget.ImageView} children. This might seem like a perfectly reasonable approach, but can
+you see the drawbacks of this implementation? How could it be improved?</p>
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 
 <pre>
 public class ImageDetailFragment extends Fragment {
@@ -146,11 +151,19 @@ public class ImageDetailFragment extends Fragment {
 }
 </pre>
 
+<<<<<<< HEAD
 <p>Hopefully you noticed the issue with this implementation; The images are being read from
 resources on the UI thread which can lead to an application hanging and being force closed. Using an
 {@link android.os.AsyncTask} as described in the <a href="process-bitmap.html">Processing Bitmaps Off
 the UI Thread</a> lesson, it’s straightforward to move image loading and processing to a background
 thread:</p>
+=======
+<p>Hopefully you noticed the issue: the images are being read from resources on the UI thread,
+which can lead to an application hanging and being force closed. Using an
+{@link android.os.AsyncTask} as described in the <a href="process-bitmap.html">Processing Bitmaps
+Off the UI Thread</a> lesson, it’s straightforward to move image loading and processing to a
+background thread:</p>
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 
 <pre>
 public class ImageDetailActivity extends FragmentActivity {
@@ -190,7 +203,11 @@ modifications for a memory cache:</p>
 <pre>
 public class ImageDetailActivity extends FragmentActivity {
     ...
+<<<<<<< HEAD
     private LruCache<String, Bitmap> mMemoryCache;
+=======
+    private LruCache&lt;String, Bitmap&gt; mMemoryCache;
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 
     &#64;Override
     public void onCreate(Bundle savedInstanceState) {
@@ -229,7 +246,12 @@ UI remains fluid, memory usage remains under control and concurrency is handled 
 the way {@link android.widget.GridView} recycles its children views).</p>
 
 <p>To start with, here is a standard {@link android.widget.GridView} implementation with {@link
+<<<<<<< HEAD
 android.widget.ImageView} children placed inside a {@link android.app.Fragment}:</p>
+=======
+android.widget.ImageView} children placed inside a {@link android.app.Fragment}. Again, this might
+seem like a perfectly reasonable approach, but what would make it better?</p>
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 
 <pre>
 public class ImageGridFragment extends Fragment implements AdapterView.OnItemClickListener {
@@ -261,7 +283,11 @@ public class ImageGridFragment extends Fragment implements AdapterView.OnItemCli
     }
 
     &#64;Override
+<<<<<<< HEAD
     public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
+=======
+    public void onItemClick(AdapterView&lt;?&gt; parent, View v, int position, long id) {
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         final Intent i = new Intent(getActivity(), ImageDetailActivity.class);
         i.putExtra(ImageDetailActivity.EXTRA_IMAGE, position);
         startActivity(i);
@@ -345,13 +371,21 @@ public class ImageGridFragment extends Fragment implements AdapterView.OnItemCli
     }
 
     static class AsyncDrawable extends BitmapDrawable {
+<<<<<<< HEAD
         private final WeakReference<BitmapWorkerTask> bitmapWorkerTaskReference;
+=======
+        private final WeakReference&lt;BitmapWorkerTask&gt; bitmapWorkerTaskReference;
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 
         public AsyncDrawable(Resources res, Bitmap bitmap,
                 BitmapWorkerTask bitmapWorkerTask) {
             super(res, bitmap);
             bitmapWorkerTaskReference =
+<<<<<<< HEAD
                 new WeakReference<BitmapWorkerTask>(bitmapWorkerTask);
+=======
+                new WeakReference&lt;BitmapWorkerTask&gt;(bitmapWorkerTask);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         }
 
         public BitmapWorkerTask getBitmapWorkerTask() {

@@ -132,6 +132,11 @@ public final class WebViewCore {
     private int mRestoredX = 0;
     private int mRestoredY = 0;
 
+<<<<<<< HEAD
+=======
+    private MockGeolocation mMockGeolocation = new MockGeolocation(this);
+
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     private DeviceMotionAndOrientationManager mDeviceMotionAndOrientationManager =
             new DeviceMotionAndOrientationManager(this);
     private DeviceMotionService mDeviceMotionService;
@@ -441,7 +446,11 @@ public final class WebViewCore {
     }
 
     /**
+<<<<<<< HEAD
      * Notify the browser that the origin has exceeded it's database quota.
+=======
+     * Notify the embedding application that the origin has exceeded it's database quota.
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
      * @param url The URL that caused the overflow.
      * @param databaseIdentifier The identifier of the database.
      * @param quota The current quota for the origin.
@@ -466,12 +475,24 @@ public final class WebViewCore {
     }
 
     /**
+<<<<<<< HEAD
      * Notify the browser that the appcache has exceeded its max size.
      * @param requiredStorage is the amount of storage, in bytes, that would be
      * needed in order for the last appcache operation to succeed.
      */
     protected void reachedMaxAppCacheSize(long requiredStorage) {
         mCallbackProxy.onReachedMaxAppCacheSize(requiredStorage, getUsedQuota(),
+=======
+     * Notify the embedding application that the appcache has reached or exceeded its maximum
+     * allowed storage size.
+     *
+     * @param requiredStorage is the amount of storage, in bytes, that would be
+     * needed in order for the last appcache operation to succeed.
+     * @param maxSize maximum allowed Application Cache database size, in bytes.
+     */
+    protected void reachedMaxAppCacheSize(long requiredStorage, long maxSize) {
+        mCallbackProxy.onReachedMaxAppCacheSize(requiredStorage, maxSize,
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
                 new WebStorage.QuotaUpdater() {
                     @Override
                     public void updateQuota(long newQuota) {
@@ -560,6 +581,7 @@ public final class WebViewCore {
     }
 
     /**
+<<<<<<< HEAD
      * Notify the webview that this is an installable web app.
      */
     protected void setInstallableWebApp() {
@@ -578,6 +600,8 @@ public final class WebViewCore {
     }
 
     /**
+=======
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
      * Notify the webview that we want to exit the video fullscreen.
      * This is called through JNI by webcore.
      */
@@ -619,8 +643,11 @@ public final class WebViewCore {
      */
     private native void nativeNotifyAnimationStarted(int nativeClass);
 
+<<<<<<< HEAD
     private native boolean nativeFocusBoundsChanged(int nativeClass);
 
+=======
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     private native boolean nativeKey(int nativeClass, int keyCode,
             int unichar, int repeatCount, boolean isShift, boolean isAlt,
             boolean isSym, boolean isDown);
@@ -839,6 +866,10 @@ public final class WebViewCore {
     static class JSInterfaceData {
         Object mObject;
         String mInterfaceName;
+<<<<<<< HEAD
+=======
+        boolean mRequireAnnotation;
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     }
 
     static class JSKeyData {
@@ -960,7 +991,11 @@ public final class WebViewCore {
         public int mMaxLength;
         public Rect mContentBounds;
         public int mNodeLayerId;
+<<<<<<< HEAD
         public Rect mContentRect;
+=======
+        public Rect mClientRect;
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     }
 
     // mAction of TouchEventData can be MotionEvent.getAction() which uses the
@@ -1199,6 +1234,10 @@ public final class WebViewCore {
         static final int SET_INITIAL_FOCUS = 224;
 
         static final int SAVE_VIEW_STATE = 225;
+<<<<<<< HEAD
+=======
+        static final int SET_USE_MOCK_GEOLOCATION = 226;
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 
         // Private handler for WebCore messages.
         private Handler mHandler;
@@ -1306,6 +1345,7 @@ public final class WebViewCore {
                             } else {
                                 xPercent = ((Float) msg.obj).floatValue();
                             }
+<<<<<<< HEAD
                             Rect contentBounds = new Rect();
                             nativeScrollFocusedTextInput(mNativeClass, xPercent,
                                     msg.arg2, contentBounds);
@@ -1313,6 +1353,10 @@ public final class WebViewCore {
                                     mWebViewClassic.mPrivateHandler,
                                     WebViewClassic.UPDATE_CONTENT_BOUNDS,
                                     contentBounds).sendToTarget();
+=======
+                            nativeScrollFocusedTextInput(mNativeClass, xPercent,
+                                    msg.arg2);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
                             break;
 
                         case LOAD_URL: {
@@ -1508,7 +1552,11 @@ public final class WebViewCore {
                         case ADD_JS_INTERFACE:
                             JSInterfaceData jsData = (JSInterfaceData) msg.obj;
                             mBrowserFrame.addJavascriptInterface(jsData.mObject,
+<<<<<<< HEAD
                                     jsData.mInterfaceName);
+=======
+                                    jsData.mInterfaceName, jsData.mRequireAnnotation);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
                             break;
 
                         case REMOVE_JS_INTERFACE:
@@ -1660,6 +1708,13 @@ public final class WebViewCore {
                                     (Set<String>) msg.obj);
                             break;
 
+<<<<<<< HEAD
+=======
+                        case SET_USE_MOCK_GEOLOCATION:
+                            setUseMockGeolocation();
+                            break;
+
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
                         case SET_USE_MOCK_DEVICE_ORIENTATION:
                             setUseMockDeviceOrientation();
                             break;
@@ -1708,6 +1763,7 @@ public final class WebViewCore {
                             nativeInsertText(mNativeClass, (String) msg.obj);
                             break;
                         case SELECT_TEXT: {
+<<<<<<< HEAD
                             int[] args = (int[]) msg.obj;
                             if (args == null) {
                                 nativeClearTextSelection(mNativeClass);
@@ -1715,6 +1771,11 @@ public final class WebViewCore {
                                 nativeSelectText(mNativeClass, args[0],
                                         args[1], args[2], args[3]);
                             }
+=======
+                            int handleId = (Integer) msg.obj;
+                            nativeSelectText(mNativeClass, handleId,
+                                    msg.arg1, msg.arg2);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
                             break;
                         }
                         case SELECT_WORD_AT: {
@@ -2139,8 +2200,13 @@ public final class WebViewCore {
         return width;
     }
 
+<<<<<<< HEAD
     // Utility method for exceededDatabaseQuota and reachedMaxAppCacheSize
     // callbacks. Computes the sum of database quota for all origins.
+=======
+    // Utility method for exceededDatabaseQuota callback. Computes the sum
+    // of WebSQL database quota for all origins.
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     private long getUsedQuota() {
         WebStorageClassic webStorage = WebStorageClassic.getInstance();
         Collection<WebStorage.Origin> origins = webStorage.getOriginsSync();
@@ -2192,7 +2258,10 @@ public final class WebViewCore {
         // only non-null if it is for the first picture set after the first layout
         ViewState mViewState;
         boolean mFirstLayoutForNonStandardLoad;
+<<<<<<< HEAD
         boolean mFocusSizeChanged;
+=======
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     }
 
     DrawData mLastDrawData = null;
@@ -2247,7 +2316,10 @@ public final class WebViewCore {
 
     private void webkitDraw(DrawData draw) {
         if (mWebViewClassic != null) {
+<<<<<<< HEAD
             draw.mFocusSizeChanged = nativeFocusBoundsChanged(mNativeClass);
+=======
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
             draw.mViewSize = new Point(mCurrentViewWidth, mCurrentViewHeight);
             if (mSettings.getUseWideViewPort()) {
                 draw.mMinPrefWidth = Math.max(
@@ -2330,7 +2402,10 @@ public final class WebViewCore {
                     Log.w(LOGTAG, "Cannot pauseUpdatePicture, core destroyed or not initialized!");
                     return;
                 }
+<<<<<<< HEAD
                 core.nativeSetIsPaused(core.mNativeClass, true);
+=======
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
                 core.mDrawIsPaused = true;
             }
         }
@@ -2348,7 +2423,10 @@ public final class WebViewCore {
                     Log.w(LOGTAG, "Cannot resumeUpdatePicture, core destroyed!");
                     return;
                 }
+<<<<<<< HEAD
                 core.nativeSetIsPaused(core.mNativeClass, false);
+=======
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
                 core.mDrawIsPaused = false;
                 // always redraw on resume to reenable gif animations
                 core.mDrawIsScheduled = false;
@@ -2363,13 +2441,21 @@ public final class WebViewCore {
     //////////////////////////////////////////////////////////////////////////
 
     private void restoreState(int index) {
+<<<<<<< HEAD
         WebBackForwardList list = mCallbackProxy.getBackForwardList();
+=======
+        WebBackForwardListClassic list = mCallbackProxy.getBackForwardList();
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         int size = list.getSize();
         for (int i = 0; i < size; i++) {
             list.getItemAtIndex(i).inflate(mBrowserFrame.mNativeFrame);
         }
         mBrowserFrame.mLoadInitFromJava = true;
+<<<<<<< HEAD
         list.restoreIndex(mBrowserFrame.mNativeFrame, index);
+=======
+        WebBackForwardListClassic.restoreIndex(mBrowserFrame.mNativeFrame, index);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         mBrowserFrame.mLoadInitFromJava = false;
     }
 
@@ -2501,6 +2587,16 @@ public final class WebViewCore {
         setupViewport(true);
     }
 
+<<<<<<< HEAD
+=======
+    static float getFixedDisplayDensity(Context context) {
+        // We make bad assumptions about multiplying and dividing density by 100,
+        // force them to be true with this hack
+        float density = context.getResources().getDisplayMetrics().density;
+        return ((int) (density * 100)) / 100.0f;
+    }
+
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     private void setupViewport(boolean updateViewState) {
         if (mWebViewClassic == null || mSettings == null) {
             // We've been destroyed or are being destroyed, return early
@@ -2545,11 +2641,21 @@ public final class WebViewCore {
         // adjust the default scale to match the densityDpi
         float adjust = 1.0f;
         if (mViewportDensityDpi == -1) {
+<<<<<<< HEAD
             adjust = mContext.getResources().getDisplayMetrics().density;
         } else if (mViewportDensityDpi > 0) {
             adjust = (float) mContext.getResources().getDisplayMetrics().densityDpi
                     / mViewportDensityDpi;
         }
+=======
+            adjust = getFixedDisplayDensity(mContext);
+        } else if (mViewportDensityDpi > 0) {
+            adjust = (float) mContext.getResources().getDisplayMetrics().densityDpi
+                    / mViewportDensityDpi;
+            adjust = ((int) (adjust * 100)) / 100.0f;
+        }
+
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         // Remove any update density messages in flight.
         // If the density is indeed different from WebView's default scale,
         // a new message will be queued.
@@ -2787,6 +2893,7 @@ public final class WebViewCore {
     }
 
     // called by JNI
+<<<<<<< HEAD
     private void updateTextfield(int ptr, boolean changeToPassword,
             String text, int textGeneration) {
         if (mWebViewClassic != null) {
@@ -2795,6 +2902,13 @@ public final class WebViewCore {
                     textGeneration, text);
             msg.getData().putBoolean("password", changeToPassword);
             msg.sendToTarget();
+=======
+    private void updateTextfield(int ptr, String text, int textGeneration) {
+        if (mWebViewClassic != null) {
+            Message.obtain(mWebViewClassic.mPrivateHandler,
+                    WebViewClassic.UPDATE_TEXTFIELD_TEXT_MSG_ID, ptr,
+                    textGeneration, text).sendToTarget();
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         }
     }
 
@@ -2855,7 +2969,11 @@ public final class WebViewCore {
      * Scroll the focused textfield to (xPercent, y) in document space
      */
     private native void nativeScrollFocusedTextInput(int nativeClass,
+<<<<<<< HEAD
             float xPercent, int y, Rect contentBounds);
+=======
+            float xPercent, int y);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 
     // these must be in document space (i.e. not scaled/zoomed).
     private native void nativeSetScrollOffset(int nativeClass,
@@ -3063,6 +3181,25 @@ public final class WebViewCore {
         mDeviceMotionAndOrientationManager.setUseMock();
     }
 
+<<<<<<< HEAD
+=======
+    private void setUseMockGeolocation() {
+        mMockGeolocation.setUseMock();
+    }
+
+    public void setMockGeolocationPosition(double latitude, double longitude, double accuracy) {
+        mMockGeolocation.setPosition(latitude, longitude, accuracy);
+    }
+
+    public void setMockGeolocationError(int code, String message) {
+        mMockGeolocation.setError(code, message);
+    }
+
+    public void setMockGeolocationPermission(boolean allow) {
+        mMockGeolocation.setPermission(allow);
+    }
+
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     public void setMockDeviceOrientation(boolean canProvideAlpha, double alpha,
             boolean canProvideBeta, double beta, boolean canProvideGamma, double gamma) {
         mDeviceMotionAndOrientationManager.setMockOrientation(canProvideAlpha, alpha,
@@ -3089,7 +3226,10 @@ public final class WebViewCore {
         sShouldMonitorWebCoreThread = true;
     }
 
+<<<<<<< HEAD
     private native void nativeSetIsPaused(int nativeClass, boolean isPaused);
+=======
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     private native void nativePause(int nativeClass);
     private native void nativeResume(int nativeClass);
     private native void nativeFreeMemory(int nativeClass);
@@ -3135,7 +3275,11 @@ public final class WebViewCore {
     private native String nativeGetText(int nativeClass,
             int startX, int startY, int endX, int endY);
     private native void nativeSelectText(int nativeClass,
+<<<<<<< HEAD
             int startX, int startY, int endX, int endY);
+=======
+            int handleId, int x, int y);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     private native void nativeClearTextSelection(int nativeClass);
     private native boolean nativeSelectWordAt(int nativeClass, int x, int y);
     private native void nativeSelectAll(int nativeClass);

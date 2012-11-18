@@ -73,7 +73,25 @@ public final class ProviderInfo extends ComponentInfo
     /** Used to control initialization order of single-process providers
      *  running in the same process.  Higher goes first. */
     public int initOrder = 0;
+<<<<<<< HEAD
     
+=======
+
+    /**
+     * Bit in {@link #flags}: If set, a single instance of the provider will
+     * run for all users on the device.  Set from the
+     * {@link android.R.attr#singleUser} attribute.
+     */
+    public static final int FLAG_SINGLE_USER = 0x40000000;
+
+    /**
+     * Options that have been set in the provider declaration in the
+     * manifest.
+     * These include: {@link #FLAG_SINGLE_USER}.
+     */
+    public int flags = 0;
+
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     /**
      * Whether or not this provider is syncable.
      * @deprecated This flag is now being ignored. The current way to make a provider
@@ -95,6 +113,10 @@ public final class ProviderInfo extends ComponentInfo
         pathPermissions = orig.pathPermissions;
         multiprocess = orig.multiprocess;
         initOrder = orig.initOrder;
+<<<<<<< HEAD
+=======
+        flags = orig.flags;
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         isSyncable = orig.isSyncable;
     }
     
@@ -112,6 +134,10 @@ public final class ProviderInfo extends ComponentInfo
         out.writeTypedArray(pathPermissions, parcelableFlags);
         out.writeInt(multiprocess ? 1 : 0);
         out.writeInt(initOrder);
+<<<<<<< HEAD
+=======
+        out.writeInt(flags);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         out.writeInt(isSyncable ? 1 : 0);
     }
 
@@ -127,8 +153,12 @@ public final class ProviderInfo extends ComponentInfo
     };
 
     public String toString() {
+<<<<<<< HEAD
         return "ContentProviderInfo{name=" + authority + " className=" + name
             + " isSyncable=" + (isSyncable ? "true" : "false") + "}";
+=======
+        return "ContentProviderInfo{name=" + authority + " className=" + name + "}";
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     }
 
     private ProviderInfo(Parcel in) {
@@ -141,6 +171,10 @@ public final class ProviderInfo extends ComponentInfo
         pathPermissions = in.createTypedArray(PathPermission.CREATOR);
         multiprocess = in.readInt() != 0;
         initOrder = in.readInt();
+<<<<<<< HEAD
+=======
+        flags = in.readInt();
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         isSyncable = in.readInt() != 0;
     }
 }

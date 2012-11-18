@@ -1,6 +1,9 @@
 /*
  * Copyright (C) 2006 The Android Open Source Project
+<<<<<<< HEAD
  * This code has been modified.  Portions copyright (C) 2010, T-Mobile USA, Inc.
+=======
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -33,8 +36,11 @@ public class SystemProperties
     public static final int PROP_NAME_MAX = 31;
     public static final int PROP_VALUE_MAX = 91;
 
+<<<<<<< HEAD
     public static final boolean QCOM_HARDWARE = native_get_boolean("com.qc.hardware", false);
 
+=======
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     private static final ArrayList<Runnable> sChangeCallbacks = new ArrayList<Runnable>();
 
     private static native String native_get(String key);
@@ -156,6 +162,7 @@ public class SystemProperties
             }
         }
     }
+<<<<<<< HEAD
 
     /**
      * Get the value for the given key.
@@ -201,4 +208,6 @@ public class SystemProperties
         }
     }
 
+=======
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 }

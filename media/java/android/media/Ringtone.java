@@ -1,6 +1,9 @@
 /*
  * Copyright (C) 2006 The Android Open Source Project
+<<<<<<< HEAD
  * This code has been modified.  Portions copyright (C) 2010, T-Mobile USA, Inc.
+=======
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -110,6 +113,7 @@ public class Ringtone {
         return mTitle = getTitle(context, mUri, true);
     }
 
+<<<<<<< HEAD
     private static String stringForQuery(Cursor cursor) {
         if (cursor != null) {
             try {
@@ -123,6 +127,8 @@ public class Ringtone {
         return null;
     }
 
+=======
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     private static String getTitle(Context context, Uri uri, boolean followSettingsUri) {
         Cursor cursor = null;
         ContentResolver res = context.getContentResolver();
@@ -141,6 +147,7 @@ public class Ringtone {
                             .getString(com.android.internal.R.string.ringtone_default_with_actual,
                                     actualTitle);
                 }
+<<<<<<< HEAD
             } else if (RingtoneManager.THEME_AUTHORITY.equals(authority)) {
                 Uri themes = Uri.parse("content://com.tmobile.thememanager.themes/themes");
                 title = stringForQuery(res.query(themes, new String[] { "ringtone_name" },
@@ -149,6 +156,8 @@ public class Ringtone {
                     title = stringForQuery(res.query(themes, new String[] { "notif_ringtone_name" },
                             "notif_ringtone_uri = ?", new String[] { uri.toString() }, null));
                 }
+=======
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
             } else {
                 try {
                     if (DrmStore.AUTHORITY.equals(authority)) {
@@ -247,8 +256,14 @@ public class Ringtone {
                 mLocalPlayer.start();
             }
         } else if (mAllowRemote) {
+<<<<<<< HEAD
             try {
                 mRemotePlayer.play(mRemoteToken, mUri, mStreamType);
+=======
+            final Uri canonicalUri = mUri.getCanonicalUri();
+            try {
+                mRemotePlayer.play(mRemoteToken, canonicalUri, mStreamType);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
             } catch (RemoteException e) {
                 Log.w(TAG, "Problem playing ringtone: " + e);
             }

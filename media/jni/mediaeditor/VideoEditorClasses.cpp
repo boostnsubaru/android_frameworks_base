@@ -1853,6 +1853,12 @@ videoEditClasses_getEditSettings(
                             // Get the clip settings.
                             videoEditClasses_getClipSettings(pResult, pEnv, clipSettings,
                                 &pSettings->pClipList[i]);
+<<<<<<< HEAD
+=======
+
+                            // Free the local references to avoid memory leaks
+                            pEnv->DeleteLocalRef(clipSettings);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
                         }
                     }
                 }
@@ -1877,6 +1883,12 @@ videoEditClasses_getEditSettings(
                             // Get the transition settings.
                             videoEditClasses_getTransitionSettings(pResult, pEnv,
                                     transitionSettings, &pSettings->pTransitionList[i]);
+<<<<<<< HEAD
+=======
+
+                            // Free the local references to avoid memory leaks
+                            pEnv->DeleteLocalRef(transitionSettings);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
                         }
                     }
                 }
@@ -1900,6 +1912,12 @@ videoEditClasses_getEditSettings(
                             // Get the effect settings.
                             videoEditClasses_getEffectSettings(pResult, pEnv, effectSettings,
                                     &pSettings->Effects[i]);
+<<<<<<< HEAD
+=======
+
+                            // Free the local references to avoid memory leaks
+                            pEnv->DeleteLocalRef(effectSettings);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
                         }
                     }
                 }

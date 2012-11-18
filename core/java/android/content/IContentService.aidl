@@ -30,12 +30,37 @@ import android.database.IContentObserver;
  * @hide
  */
 interface IContentService {
+<<<<<<< HEAD
     void registerContentObserver(in Uri uri, boolean notifyForDescendentsn,
             IContentObserver observer);
     void unregisterContentObserver(IContentObserver observer);
 
     void notifyChange(in Uri uri, IContentObserver observer,
             boolean observerWantsSelfNotifications, boolean syncToNetwork);
+=======
+    void unregisterContentObserver(IContentObserver observer);
+
+    /**
+     * Register a content observer tied to a specific user's view of the provider.
+     * @param userHandle the user whose view of the provider is to be observed.  May be
+     *     the calling user without requiring any permission, otherwise the caller needs to
+     *     hold the INTERACT_ACROSS_USERS_FULL permission.  Pseudousers USER_ALL and
+     *     USER_CURRENT are properly handled.
+     */
+    void registerContentObserver(in Uri uri, boolean notifyForDescendants,
+            IContentObserver observer, int userHandle);
+
+    /**
+     * Notify observers of a particular user's view of the provider.
+     * @param userHandle the user whose view of the provider is to be notified.  May be
+     *     the calling user without requiring any permission, otherwise the caller needs to
+     *     hold the INTERACT_ACROSS_USERS_FULL permission.  Pseudousers USER_ALL
+     *     USER_CURRENT are properly interpreted.
+     */
+    void notifyChange(in Uri uri, IContentObserver observer,
+            boolean observerWantsSelfNotifications, boolean syncToNetwork,
+            int userHandle);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 
     void requestSync(in Account account, String authority, in Bundle extras);
     void cancelSync(in Account account, String authority);

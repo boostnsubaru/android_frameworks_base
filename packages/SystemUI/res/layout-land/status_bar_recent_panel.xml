@@ -26,11 +26,14 @@
     android:layout_width="match_parent"
     systemui:recentItemLayout="@layout/status_bar_recent_item"
     >
+<<<<<<< HEAD
     <View
         android:id="@+id/recents_transition_background"
         android:layout_height="match_parent"
         android:layout_width="match_parent"
         android:visibility="invisible" />
+=======
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     <FrameLayout
         android:id="@+id/recents_bg_protect"
         android:background="@drawable/status_bar_recents_background"
@@ -40,6 +43,7 @@
         android:clipToPadding="false"
         android:clipChildren="false">
 
+<<<<<<< HEAD
         <ImageView
             android:id="@+id/recents_transition_placeholder_icon"
             android:layout_width="wrap_content"
@@ -59,17 +63,31 @@
             android:orientation="horizontal"
             android:clipToPadding="false"
             android:clipChildren="false">
+=======
+        <com.android.systemui.recent.RecentsHorizontalScrollView android:id="@+id/recents_container"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:fadingEdge="horizontal"
+            android:scrollbars="none"
+            android:layout_gravity="right"
+            android:fadingEdgeLength="@dimen/status_bar_recents_scroll_fading_edge_length">
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 
             <LinearLayout android:id="@+id/recents_linear_layout"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
+<<<<<<< HEAD
                 android:orientation="horizontal"
                 android:clipToPadding="false"
                 android:clipChildren="false">
+=======
+                android:orientation="horizontal">
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
             </LinearLayout>
 
         </com.android.systemui.recent.RecentsHorizontalScrollView>
 
+<<<<<<< HEAD
         <Button android:id="@+id/recents_kill_all_button"
             android:layout_gravity="bottom|right"
             android:layout_marginTop="5dp"
@@ -78,6 +96,8 @@
             android:layout_width="wrap_content"
             android:text="@string/recents_kill_all_button_text"/>
 
+=======
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     </FrameLayout>
 
     <include layout="@layout/status_bar_no_recent_apps"

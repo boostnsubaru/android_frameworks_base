@@ -29,8 +29,14 @@ import android.net.NetworkStatsHistory;
 import android.net.NetworkTemplate;
 import android.net.TrafficStats;
 import android.text.format.DateUtils;
+<<<<<<< HEAD
 
 import com.android.internal.os.AtomicFile;
+=======
+import android.util.AtomicFile;
+
+import com.android.internal.util.ArrayUtils;
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 import com.android.internal.util.FileRotator;
 import com.android.internal.util.IndentingPrintWriter;
 import com.android.internal.util.Objects;
@@ -431,13 +437,21 @@ public class NetworkStatsCollection implements FileRotator.Reader {
      * moving any {@link NetworkStats#TAG_NONE} series to
      * {@link TrafficStats#UID_REMOVED}.
      */
+<<<<<<< HEAD
     public void removeUid(int uid) {
+=======
+    public void removeUids(int[] uids) {
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         final ArrayList<Key> knownKeys = Lists.newArrayList();
         knownKeys.addAll(mStats.keySet());
 
         // migrate all UID stats into special "removed" bucket
         for (Key key : knownKeys) {
+<<<<<<< HEAD
             if (key.uid == uid) {
+=======
+            if (ArrayUtils.contains(uids, key.uid)) {
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
                 // only migrate combined TAG_NONE history
                 if (key.tag == TAG_NONE) {
                     final NetworkStatsHistory uidHistory = mStats.get(key);

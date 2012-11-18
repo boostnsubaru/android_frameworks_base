@@ -108,9 +108,13 @@ bool Patch::matches(const int32_t* xDivs, const int32_t* yDivs, const uint32_t c
 
 void Patch::updateVertices(const float bitmapWidth, const float bitmapHeight,
         float left, float top, float right, float bottom) {
+<<<<<<< HEAD
 #if RENDER_LAYERS_AS_REGIONS
     if (hasEmptyQuads) quads.clear();
 #endif
+=======
+    if (hasEmptyQuads) quads.clear();
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 
     // Reset the vertices count here, we will count exactly how many
     // vertices we actually need when generating the quads
@@ -120,7 +124,14 @@ void Patch::updateVertices(const float bitmapWidth, const float bitmapHeight,
     const uint32_t yStretchCount = (mYCount + 1) >> 1;
 
     float stretchX = 0.0f;
+<<<<<<< HEAD
     float stretchY = 0.0;
+=======
+    float stretchY = 0.0f;
+
+    float rescaleX = 1.0f;
+    float rescaleY = 1.0f;
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 
     const float meshWidth = right - left;
 
@@ -131,8 +142,14 @@ void Patch::updateVertices(const float bitmapWidth, const float bitmapHeight,
         }
         const float xStretchTex = stretchSize;
         const float fixed = bitmapWidth - stretchSize;
+<<<<<<< HEAD
         const float xStretch = right - left - fixed;
         stretchX = xStretch / xStretchTex;
+=======
+        const float xStretch = fmaxf(right - left - fixed, 0.0f);
+        stretchX = xStretch / xStretchTex;
+        rescaleX = fixed == 0.0f ? 0.0f : fminf(fmaxf(right - left, 0.0f) / fixed, 1.0f);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     }
 
     if (yStretchCount > 0) {
@@ -142,8 +159,14 @@ void Patch::updateVertices(const float bitmapWidth, const float bitmapHeight,
         }
         const float yStretchTex = stretchSize;
         const float fixed = bitmapHeight - stretchSize;
+<<<<<<< HEAD
         const float yStretch = bottom - top - fixed;
         stretchY = yStretch / yStretchTex;
+=======
+        const float yStretch = fmaxf(bottom - top - fixed, 0.0f);
+        stretchY = yStretch / yStretchTex;
+        rescaleY = fixed == 0.0f ? 0.0f : fminf(fmaxf(bottom - top, 0.0f) / fixed, 1.0f);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     }
 
     TextureVertex* vertex = mVertices;
@@ -162,7 +185,11 @@ void Patch::updateVertices(const float bitmapWidth, const float bitmapHeight,
         if (i & 1) {
             y2 = y1 + floorf(segment * stretchY + 0.5f);
         } else {
+<<<<<<< HEAD
             y2 = y1 + segment;
+=======
+            y2 = y1 + segment * rescaleY;
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         }
 
         float vOffset = y1 == y2 ? 0.0f : 0.5 - (0.5 * segment / (y2 - y1));
@@ -174,7 +201,11 @@ void Patch::updateVertices(const float bitmapWidth, const float bitmapHeight,
             y1 += i * EXPLODE_GAP;
             y2 += i * EXPLODE_GAP;
 #endif
+<<<<<<< HEAD
             generateRow(vertex, y1, y2, v1, v2, stretchX, right - left,
+=======
+            generateRow(vertex, y1, y2, v1, v2, stretchX, rescaleX, right - left,
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
                     bitmapWidth, quadCount);
 #if DEBUG_EXPLODE_PATCHES
             y2 -= i * EXPLODE_GAP;
@@ -193,7 +224,12 @@ void Patch::updateVertices(const float bitmapWidth, const float bitmapHeight,
         y1 += mYCount * EXPLODE_GAP;
         y2 += mYCount * EXPLODE_GAP;
 #endif
+<<<<<<< HEAD
         generateRow(vertex, y1, y2, v1, 1.0f, stretchX, right - left, bitmapWidth, quadCount);
+=======
+        generateRow(vertex, y1, y2, v1, 1.0f, stretchX, rescaleX, right - left,
+                bitmapWidth, quadCount);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     }
 
     if (verticesCount > 0) {
@@ -214,7 +250,11 @@ void Patch::updateVertices(const float bitmapWidth, const float bitmapHeight,
 }
 
 void Patch::generateRow(TextureVertex*& vertex, float y1, float y2, float v1, float v2,
+<<<<<<< HEAD
         float stretchX, float width, float bitmapWidth, uint32_t& quadCount) {
+=======
+        float stretchX, float rescaleX, float width, float bitmapWidth, uint32_t& quadCount) {
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     float previousStepX = 0.0f;
 
     float x1 = 0.0f;
@@ -229,7 +269,11 @@ void Patch::generateRow(TextureVertex*& vertex, float y1, float y2, float v1, fl
         if (i & 1) {
             x2 = x1 + floorf(segment * stretchX + 0.5f);
         } else {
+<<<<<<< HEAD
             x2 = x1 + segment;
+=======
+            x2 = x1 + segment * rescaleX;
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         }
 
         float uOffset = x1 == x2 ? 0.0f : 0.5 - (0.5 * segment / (x2 - x1));
@@ -268,8 +312,18 @@ void Patch::generateQuad(TextureVertex*& vertex, float x1, float y1, float x2, f
     const uint32_t oldQuadCount = quadCount;
     quadCount++;
 
+<<<<<<< HEAD
     // Skip degenerate and transparent (empty) quads
     if ((mColorKey >> oldQuadCount) & 0x1) {
+=======
+    if (x1 < 0.0f) x1 = 0.0f;
+    if (x2 < 0.0f) x2 = 0.0f;
+    if (y1 < 0.0f) y1 = 0.0f;
+    if (y2 < 0.0f) y2 = 0.0f;
+
+    // Skip degenerate and transparent (empty) quads
+    if (((mColorKey >> oldQuadCount) & 0x1) || x1 >= x2 || y1 >= y2) {
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 #if DEBUG_PATCHES_EMPTY_VERTICES
         PATCH_LOGD("    quad %d (empty)", oldQuadCount);
         PATCH_LOGD("        left,  top    = %.2f, %.2f\t\tu1, v1 = %.4f, %.4f", x1, y1, u1, v1);
@@ -278,13 +332,19 @@ void Patch::generateQuad(TextureVertex*& vertex, float x1, float y1, float x2, f
         return;
     }
 
+<<<<<<< HEAD
 #if RENDER_LAYERS_AS_REGIONS
+=======
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     // Record all non empty quads
     if (hasEmptyQuads) {
         Rect bounds(x1, y1, x2, y2);
         quads.add(bounds);
     }
+<<<<<<< HEAD
 #endif
+=======
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 
     // Left triangle
     TextureVertex::set(vertex++, x1, y1, u1, v1);

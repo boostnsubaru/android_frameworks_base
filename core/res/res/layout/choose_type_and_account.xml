@@ -27,11 +27,19 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceMedium"
+<<<<<<< HEAD
         android:layout_gravity="left|center_vertical"
         android:paddingTop="16dip"
         android:paddingBottom="16dip"
         android:paddingLeft="16dip"
         android:paddingRight="16dip"
+=======
+        android:layout_gravity="start|center_vertical"
+        android:paddingTop="16dip"
+        android:paddingBottom="16dip"
+        android:paddingStart="16dip"
+        android:paddingEnd="16dip"
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     />
 
     <!-- List of accounts, with "Add new account" as the last item -->

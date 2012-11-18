@@ -99,6 +99,13 @@ public class EthernetDataTracker implements NetworkStateTracker {
         public void limitReached(String limitName, String iface) {
             // Ignored.
         }
+<<<<<<< HEAD
+=======
+
+        public void interfaceClassDataActivityChanged(String label, boolean active) {
+            // Ignored.
+        }
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     }
 
     private EthernetDataTracker() {
@@ -223,13 +230,24 @@ public class EthernetDataTracker implements NetworkStateTracker {
                     mIface = iface;
                     mNMService.setInterfaceUp(iface);
                     InterfaceConfiguration config = mNMService.getInterfaceConfig(iface);
+<<<<<<< HEAD
                     mLinkUp = config.isActive();
+=======
+                    mLinkUp = config.hasFlag("up");
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
                     if (config != null && mHwAddr == null) {
                         mHwAddr = config.getHardwareAddress();
                         if (mHwAddr != null) {
                             mNetworkInfo.setExtraInfo(mHwAddr);
                         }
                     }
+<<<<<<< HEAD
+=======
+
+                    // if a DHCP client had previously been started for this interface, then stop it
+                    NetworkUtils.stopDhcp(mIface);
+
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
                     reconnect();
                     break;
                 }
@@ -266,6 +284,14 @@ public class EthernetDataTracker implements NetworkStateTracker {
         return mLinkUp;
     }
 
+<<<<<<< HEAD
+=======
+    @Override
+    public void captivePortalCheckComplete() {
+        // not implemented
+    }
+
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     /**
      * Turn the wireless radio off for a network.
      * @param turnOn {@code true} to turn the radio on, {@code false}

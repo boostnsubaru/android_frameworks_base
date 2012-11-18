@@ -23,6 +23,7 @@ import android.os.WorkSource;
 
 interface IPowerManager
 {
+<<<<<<< HEAD
     // WARNING: changes in acquireWakeLock() signature must be reflected in IPowerManager.cpp/h
     void acquireWakeLock(int flags, IBinder lock, String tag, in WorkSource ws);
     void updateWakeLockWorkSource(IBinder lock, in WorkSource ws);
@@ -55,4 +56,34 @@ interface IPowerManager
     int getLightSensorKeyboardBrightness();
 
     void cpuBoost(int duration);
+=======
+    // WARNING: The first two methods must remain the first two methods because their
+    // transaction numbers must not change unless IPowerManager.cpp is also updated.
+    void acquireWakeLock(IBinder lock, int flags, String tag, in WorkSource ws);
+    void releaseWakeLock(IBinder lock, int flags);
+
+    void updateWakeLockWorkSource(IBinder lock, in WorkSource ws);
+    boolean isWakeLockLevelSupported(int level);
+
+    void userActivity(long time, int event, int flags);
+    void wakeUp(long time);
+    void goToSleep(long time, int reason);
+    void nap(long time);
+
+    boolean isScreenOn();
+    void reboot(boolean confirm, String reason, boolean wait);
+    void shutdown(boolean confirm, boolean wait);
+    void crash(String message);
+
+    void setStayOnSetting(int val);
+    void setMaximumScreenOffTimeoutFromDeviceAdmin(int timeMs);
+
+    // temporarily overrides the screen brightness settings to allow the user to
+    // see the effect of a settings change without applying it immediately
+    void setTemporaryScreenBrightnessSettingOverride(int brightness);
+    void setTemporaryScreenAutoBrightnessAdjustmentSettingOverride(float adj);
+
+    // sets the attention light (used by phone app only)
+    void setAttentionLight(boolean on, int color);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 }

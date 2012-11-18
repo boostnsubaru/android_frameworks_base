@@ -18,8 +18,13 @@
     android:id="@+id/list_item"
     android:layout_width="match_parent"
     android:layout_height="?android:attr/dropdownListPreferredItemHeight"
+<<<<<<< HEAD
     android:paddingLeft="16dip"
     android:paddingRight="16dip"
+=======
+    android:paddingStart="16dip"
+    android:paddingEnd="16dip"
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     android:minWidth="196dip"
     android:background="?android:attr/activatedBackgroundIndicator"
     android:orientation="vertical" >
@@ -34,7 +39,11 @@
             android:layout_width="32dip"
             android:layout_height="32dip"
             android:layout_gravity="center_vertical"
+<<<<<<< HEAD
             android:layout_marginRight="8dip"
+=======
+            android:layout_marginEnd="8dip"
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
             android:duplicateParentState="true" />
 
         <TextView

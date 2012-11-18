@@ -74,7 +74,10 @@ public class ConnectionUtil {
     private int mWifiState;
     private NetworkInfo mWifiNetworkInfo;
     private WifiManager mWifiManager;
+<<<<<<< HEAD
     private WifiManager.Channel mChannel;
+=======
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     private Context mContext;
     // Verify connectivity state
     private static final int NUM_NETWORK_TYPES = ConnectivityManager.MAX_NETWORK_TYPE + 1;
@@ -115,7 +118,10 @@ public class ConnectionUtil {
 
         // Get an instance of WifiManager
         mWifiManager =(WifiManager)mContext.getSystemService(Context.WIFI_SERVICE);
+<<<<<<< HEAD
         mChannel = mWifiManager.initialize(mContext, mContext.getMainLooper(), null);
+=======
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 
         mDownloadManager = (DownloadManager)mContext.getSystemService(Context.DOWNLOAD_SERVICE);
 
@@ -574,7 +580,11 @@ public class ConnectionUtil {
                         Log.v(LOG_TAG, "Found " + ssid + " in the scan result list.");
                         Log.v(LOG_TAG, "Retry: " + retry);
                         foundApInScanResults = true;
+<<<<<<< HEAD
                         mWifiManager.connect(mChannel, config, new WifiManager.ActionListener() {
+=======
+                        mWifiManager.connect(config, new WifiManager.ActionListener() {
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
                                 public void onSuccess() {
                                 }
                                 public void onFailure(int reason) {
@@ -628,7 +638,11 @@ public class ConnectionUtil {
         for (WifiConfiguration wifiConfig: wifiConfigList) {
             Log.v(LOG_TAG, "Remove wifi configuration: " + wifiConfig.networkId);
             int netId = wifiConfig.networkId;
+<<<<<<< HEAD
             mWifiManager.forget(mChannel, netId, new WifiManager.ActionListener() {
+=======
+            mWifiManager.forget(netId, new WifiManager.ActionListener() {
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
                     public void onSuccess() {
                     }
                     public void onFailure(int reason) {

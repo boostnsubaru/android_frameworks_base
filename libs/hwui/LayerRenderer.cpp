@@ -18,14 +18,22 @@
 
 #include <ui/Rect.h>
 
+<<<<<<< HEAD
+=======
+#include <private/hwui/DrawGlInfo.h>
+
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 #include "LayerCache.h"
 #include "LayerRenderer.h"
 #include "Matrix.h"
 #include "Properties.h"
 #include "Rect.h"
+<<<<<<< HEAD
 #ifdef QCOM_HARDWARE
 #include "tilerenderer.h"
 #endif
+=======
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 
 namespace android {
 namespace uirenderer {
@@ -40,6 +48,7 @@ LayerRenderer::LayerRenderer(Layer* layer): mLayer(layer) {
 LayerRenderer::~LayerRenderer() {
 }
 
+<<<<<<< HEAD
 int LayerRenderer::prepareDirty(float left, float top, float right, float bottom, bool opaque) {
 #ifdef QCOM_HARDWARE
     GLuint previousFbo;
@@ -50,11 +59,25 @@ int LayerRenderer::prepareDirty(float left, float top, float right, float bottom
 #ifdef QCOM_HARDWARE
     TILERENDERING_END(previousFbo, mLayer->getFbo());
 #endif
+=======
+void LayerRenderer::setViewport(int width, int height) {
+    initViewport(width, height);
+}
+
+status_t LayerRenderer::prepareDirty(float left, float top, float right, float bottom,
+        bool opaque) {
+    LAYER_RENDERER_LOGD("Rendering into layer, fbo = %d", mLayer->getFbo());
+
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     glBindFramebuffer(GL_FRAMEBUFFER, mLayer->getFbo());
 
     const float width = mLayer->layer.getWidth();
     const float height = mLayer->layer.getHeight();
+<<<<<<< HEAD
 #if RENDER_LAYERS_AS_REGIONS
+=======
+
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     Rect dirty(left, top, right, bottom);
     if (dirty.isEmpty() || (dirty.left <= 0 && dirty.top <= 0 &&
             dirty.right >= width && dirty.bottom >= height)) {
@@ -65,6 +88,7 @@ int LayerRenderer::prepareDirty(float left, float top, float right, float bottom
         android::Rect r(dirty.left, dirty.top, dirty.right, dirty.bottom);
         mLayer->region.subtractSelf(r);
     }
+<<<<<<< HEAD
 #ifdef QCOM_HARDWARE
     TILERENDERING_START(mLayer->getFbo(), previousFbo, dirty.left, dirty.top,
                         dirty.right, dirty.bottom, width, height);
@@ -76,6 +100,24 @@ int LayerRenderer::prepareDirty(float left, float top, float right, float bottom
 #endif
     return OpenGLRenderer::prepareDirty(0.0f, 0.0f, width, height, opaque);
 #endif
+=======
+
+    return OpenGLRenderer::prepareDirty(dirty.left, dirty.top, dirty.right, dirty.bottom, opaque);
+}
+
+status_t LayerRenderer::clear(float left, float top, float right, float bottom, bool opaque) {
+    if (mLayer->isDirty()) {
+        getCaches().disableScissor();
+        glClear(GL_COLOR_BUFFER_BIT);
+
+        getCaches().resetScissor();
+        mLayer->setDirty(false);
+
+        return DrawGlInfo::kStatusDone;
+    }
+
+    return OpenGLRenderer::clear(left, top, right, bottom, opaque);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 }
 
 void LayerRenderer::finish() {
@@ -93,6 +135,13 @@ GLint LayerRenderer::getTargetFbo() {
     return mLayer->getFbo();
 }
 
+<<<<<<< HEAD
+=======
+bool LayerRenderer::suppressErrorChecks() {
+    return true;
+}
+
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 ///////////////////////////////////////////////////////////////////////////////
 // Dirty region tracking
 ///////////////////////////////////////////////////////////////////////////////
@@ -102,14 +151,20 @@ bool LayerRenderer::hasLayer() {
 }
 
 Region* LayerRenderer::getRegion() {
+<<<<<<< HEAD
 #if RENDER_LAYERS_AS_REGIONS
+=======
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     if (getSnapshot()->flags & Snapshot::kFlagFboTarget) {
         return OpenGLRenderer::getRegion();
     }
     return &mLayer->region;
+<<<<<<< HEAD
 #else
     return OpenGLRenderer::getRegion();
 #endif
+=======
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 }
 
 // TODO: This implementation is flawed and can generate T-junctions
@@ -120,7 +175,10 @@ Region* LayerRenderer::getRegion() {
 //       In practice, T-junctions do not appear often so this has yet
 //       to be fixed.
 void LayerRenderer::generateMesh() {
+<<<<<<< HEAD
 #if RENDER_LAYERS_AS_REGIONS
+=======
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     if (mLayer->region.isRect() || mLayer->region.isEmpty()) {
         if (mLayer->mesh) {
             delete mLayer->mesh;
@@ -187,7 +245,10 @@ void LayerRenderer::generateMesh() {
             indices[index + 5] = quad + 3;   // bottom-right
         }
     }
+<<<<<<< HEAD
 #endif
+=======
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -218,14 +279,21 @@ Layer* LayerRenderer::createLayer(uint32_t width, uint32_t height, bool isOpaque
     layer->setAlpha(255, SkXfermode::kSrcOver_Mode);
     layer->setBlend(!isOpaque);
     layer->setColorFilter(NULL);
+<<<<<<< HEAD
+=======
+    layer->setDirty(true);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     layer->region.clear();
 
     GLuint previousFbo;
     glGetIntegerv(GL_FRAMEBUFFER_BINDING, (GLint*) &previousFbo);
 
+<<<<<<< HEAD
 #ifdef QCOM_HARDWARE
     TILERENDERING_END(previousFbo, layer->getFbo());
 #endif
+=======
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     glBindFramebuffer(GL_FRAMEBUFFER, layer->getFbo());
     layer->bindTexture();
 
@@ -237,6 +305,7 @@ Layer* LayerRenderer::createLayer(uint32_t width, uint32_t height, bool isOpaque
         if (glGetError() != GL_NO_ERROR) {
             ALOGD("Could not allocate texture for layer (fbo=%d %dx%d)",
                     fbo, width, height);
+<<<<<<< HEAD
             glBindFramebuffer(GL_FRAMEBUFFER, previousFbo);
 #ifdef QCOM_HARDWARE
             TILERENDERING_START(previousFbo, layer->getFbo());
@@ -246,6 +315,12 @@ Layer* LayerRenderer::createLayer(uint32_t width, uint32_t height, bool isOpaque
 
             layer->deleteTexture();
             delete layer;
+=======
+
+            glBindFramebuffer(GL_FRAMEBUFFER, previousFbo);
+
+            Caches::getInstance().resourceCache.decrementRefcount(layer);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 
             return NULL;
         }
@@ -254,6 +329,7 @@ Layer* LayerRenderer::createLayer(uint32_t width, uint32_t height, bool isOpaque
     glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D,
             layer->getTexture(), 0);
 
+<<<<<<< HEAD
     glDisable(GL_SCISSOR_TEST);
     glClear(GL_COLOR_BUFFER_BIT);
     glEnable(GL_SCISSOR_TEST);
@@ -262,6 +338,9 @@ Layer* LayerRenderer::createLayer(uint32_t width, uint32_t height, bool isOpaque
 #ifdef QCOM_HARDWARE
     TILERENDERING_START(previousFbo, layer->getFbo(), true);
 #endif
+=======
+    glBindFramebuffer(GL_FRAMEBUFFER, previousFbo);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 
     return layer;
 }
@@ -275,8 +354,12 @@ bool LayerRenderer::resizeLayer(Layer* layer, uint32_t width, uint32_t height) {
             layer->texCoords.set(0.0f, height / float(layer->getHeight()),
                     width / float(layer->getWidth()), 0.0f);
         } else {
+<<<<<<< HEAD
             layer->deleteTexture();
             delete layer;
+=======
+            Caches::getInstance().resourceCache.decrementRefcount(layer);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
             return false;
         }
     }
@@ -329,6 +412,7 @@ void LayerRenderer::destroyLayer(Layer* layer) {
         LAYER_RENDERER_LOGD("Recycling layer, %dx%d fbo = %d",
                 layer->getWidth(), layer->getHeight(), layer->getFbo());
 
+<<<<<<< HEAD
         GLuint fbo = layer->getFbo();
         if (fbo) {
             flushLayer(layer);
@@ -343,11 +427,20 @@ void LayerRenderer::destroyLayer(Layer* layer) {
             LAYER_RENDERER_LOGD("  Destroyed!");
             layer->deleteTexture();
             delete layer;
+=======
+        if (!Caches::getInstance().layerCache.put(layer)) {
+            LAYER_RENDERER_LOGD("  Destroyed!");
+            Caches::getInstance().resourceCache.decrementRefcount(layer);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         } else {
             LAYER_RENDERER_LOGD("  Cached!");
 #if DEBUG_LAYER_RENDERER
             Caches::getInstance().layerCache.dump();
 #endif
+<<<<<<< HEAD
+=======
+            layer->removeFbo();
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
             layer->region.clear();
         }
     }
@@ -362,7 +455,11 @@ void LayerRenderer::destroyLayerDeferred(Layer* layer) {
 }
 
 void LayerRenderer::flushLayer(Layer* layer) {
+<<<<<<< HEAD
 #if defined(GL_EXT_discard_framebuffer) && !defined(DONT_DISCARD_FRAMEBUFFER)
+=======
+#ifdef GL_EXT_discard_framebuffer
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     GLuint fbo = layer->getFbo();
     if (layer && fbo) {
         // If possible, discard any enqueud operations on deferred
@@ -370,10 +467,17 @@ void LayerRenderer::flushLayer(Layer* layer) {
         if (Caches::getInstance().extensions.hasDiscardFramebuffer()) {
             GLuint previousFbo;
             glGetIntegerv(GL_FRAMEBUFFER_BINDING, (GLint*) &previousFbo);
+<<<<<<< HEAD
 
             GLenum attachments = GL_COLOR_ATTACHMENT0;
             if (fbo != previousFbo) glBindFramebuffer(GL_FRAMEBUFFER, fbo);
             glDiscardFramebufferEXT(GL_FRAMEBUFFER, 1, &attachments);
+=======
+            if (fbo != previousFbo) glBindFramebuffer(GL_FRAMEBUFFER, fbo);
+
+            const GLenum attachments[] = { GL_COLOR_ATTACHMENT0 };
+            glDiscardFramebufferEXT(GL_FRAMEBUFFER, 1, attachments);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 
             if (fbo != previousFbo) glBindFramebuffer(GL_FRAMEBUFFER, previousFbo);
         }
@@ -383,7 +487,11 @@ void LayerRenderer::flushLayer(Layer* layer) {
 
 bool LayerRenderer::copyLayer(Layer* layer, SkBitmap* bitmap) {
     Caches& caches = Caches::getInstance();
+<<<<<<< HEAD
     if (layer && layer->isTextureLayer() && bitmap->width() <= caches.maxTextureSize &&
+=======
+    if (layer && bitmap->width() <= caches.maxTextureSize &&
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
             bitmap->height() <= caches.maxTextureSize) {
 
         GLuint fbo = caches.fboCache.get();
@@ -396,6 +504,10 @@ bool LayerRenderer::copyLayer(Layer* layer, SkBitmap* bitmap) {
 
         GLuint texture;
         GLuint previousFbo;
+<<<<<<< HEAD
+=======
+        GLuint previousViewport[4];
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 
         GLenum format;
         GLenum type;
@@ -425,11 +537,16 @@ bool LayerRenderer::copyLayer(Layer* layer, SkBitmap* bitmap) {
 
         float alpha = layer->getAlpha();
         SkXfermode::Mode mode = layer->getMode();
+<<<<<<< HEAD
+=======
+        GLuint previousLayerFbo = layer->getFbo();
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 
         layer->setAlpha(255, SkXfermode::kSrc_Mode);
         layer->setFbo(fbo);
 
         glGetIntegerv(GL_FRAMEBUFFER_BINDING, (GLint*) &previousFbo);
+<<<<<<< HEAD
 #ifdef QCOM_HARDWARE
         TILERENDERING_END(previousFbo, fbo);
 #endif
@@ -438,12 +555,22 @@ bool LayerRenderer::copyLayer(Layer* layer, SkBitmap* bitmap) {
         TILERENDERING_START(fbo, previousFbo, 0, 0, bitmap->width(), bitmap->height(),
                             bitmap->width(), bitmap->height());
 #endif
+=======
+        glGetIntegerv(GL_VIEWPORT, (GLint*) &previousViewport);
+        glBindFramebuffer(GL_FRAMEBUFFER, fbo);
+
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         glGenTextures(1, &texture);
         if ((error = glGetError()) != GL_NO_ERROR) goto error;
 
         caches.activeTexture(0);
         glBindTexture(GL_TEXTURE_2D, texture);
 
+<<<<<<< HEAD
+=======
+        glPixelStorei(GL_PACK_ALIGNMENT, bitmap->bytesPerPixel());
+
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 
@@ -464,7 +591,11 @@ bool LayerRenderer::copyLayer(Layer* layer, SkBitmap* bitmap) {
             renderer.OpenGLRenderer::prepareDirty(0.0f, 0.0f,
                     bitmap->width(), bitmap->height(), !layer->isBlend());
 
+<<<<<<< HEAD
             glDisable(GL_SCISSOR_TEST);
+=======
+            caches.disableScissor();
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
             renderer.translate(0.0f, bitmap->height());
             renderer.scale(1.0f, -1.0f);
 
@@ -493,13 +624,17 @@ bool LayerRenderer::copyLayer(Layer* layer, SkBitmap* bitmap) {
         }
 
 error:
+<<<<<<< HEAD
         glEnable(GL_SCISSOR_TEST);
 
+=======
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 #if DEBUG_OPENGL
         if (error != GL_NO_ERROR) {
             ALOGD("GL error while copying layer into bitmap = 0x%x", error);
         }
 #endif
+<<<<<<< HEAD
 #ifdef QCOM_HARDWARE
         TILERENDERING_END(fbo, previousFbo, true);
 #endif
@@ -511,6 +646,16 @@ error:
         layer->setFbo(0);
         glDeleteTextures(1, &texture);
         caches.fboCache.put(fbo);
+=======
+
+        glBindFramebuffer(GL_FRAMEBUFFER, previousFbo);
+        layer->setAlpha(alpha, mode);
+        layer->setFbo(previousLayerFbo);
+        glDeleteTextures(1, &texture);
+        caches.fboCache.put(fbo);
+        glViewport(previousViewport[0], previousViewport[1],
+                previousViewport[2], previousViewport[3]);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 
         return status;
     }

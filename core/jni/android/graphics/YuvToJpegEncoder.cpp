@@ -90,8 +90,14 @@ void Yuv420SpToJpegEncoder::compress(jpeg_compress_struct* cinfo,
     // process 16 lines of Y and 8 lines of U/V each time.
     while (cinfo->next_scanline < cinfo->image_height) {
         //deitnerleave u and v
+<<<<<<< HEAD
         deinterleave(vuPlanar, uRows, vRows, cinfo->next_scanline, width);
 
+=======
+        deinterleave(vuPlanar, uRows, vRows, cinfo->next_scanline, width, height);
+
+        // Jpeg library ignores the rows whose indices are greater than height.
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         for (int i = 0; i < 16; i++) {
             // y row
             y[i] = yPlanar + (cinfo->next_scanline + i) * fStrides[0];
@@ -112,8 +118,15 @@ void Yuv420SpToJpegEncoder::compress(jpeg_compress_struct* cinfo,
 }
 
 void Yuv420SpToJpegEncoder::deinterleave(uint8_t* vuPlanar, uint8_t* uRows,
+<<<<<<< HEAD
         uint8_t* vRows, int rowIndex, int width) {
     for (int row = 0; row < 8; ++row) {
+=======
+        uint8_t* vRows, int rowIndex, int width, int height) {
+    int numRows = (height - rowIndex) / 2;
+    if (numRows > 8) numRows = 8;
+    for (int row = 0; row < numRows; ++row) {
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         int offset = ((rowIndex >> 1) + row) * fStrides[1];
         uint8_t* vu = vuPlanar + offset;
         for (int i = 0; i < (width >> 1); ++i) {
@@ -164,6 +177,10 @@ void Yuv422IToJpegEncoder::compress(jpeg_compress_struct* cinfo,
     while (cinfo->next_scanline < cinfo->image_height) {
         deinterleave(yuvOffset, yRows, uRows, vRows, cinfo->next_scanline, width, height);
 
+<<<<<<< HEAD
+=======
+        // Jpeg library ignores the rows whose indices are greater than height.
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         for (int i = 0; i < 16; i++) {
             // y row
             y[i] = yRows + i * width;
@@ -185,7 +202,13 @@ void Yuv422IToJpegEncoder::compress(jpeg_compress_struct* cinfo,
 
 void Yuv422IToJpegEncoder::deinterleave(uint8_t* yuv, uint8_t* yRows, uint8_t* uRows,
         uint8_t* vRows, int rowIndex, int width, int height) {
+<<<<<<< HEAD
     for (int row = 0; row < 16; ++row) {
+=======
+    int numRows = height - rowIndex;
+    if (numRows > 16) numRows = 16;
+    for (int row = 0; row < numRows; ++row) {
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         uint8_t* yuvSeg = yuv + (rowIndex + row) * fStrides[0];
         for (int i = 0; i < (width >> 1); ++i) {
             int indexY = row * width + (i << 1);

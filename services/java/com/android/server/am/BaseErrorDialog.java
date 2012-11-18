@@ -33,7 +33,13 @@ class BaseErrorDialog extends AlertDialog {
         getWindow().setType(WindowManager.LayoutParams.TYPE_SYSTEM_ALERT);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_ALT_FOCUSABLE_IM,
                 WindowManager.LayoutParams.FLAG_ALT_FOCUSABLE_IM);
+<<<<<<< HEAD
         getWindow().setTitle("Error Dialog");
+=======
+        WindowManager.LayoutParams attrs = getWindow().getAttributes();
+        attrs.setTitle("Error Dialog");
+        getWindow().setAttributes(attrs);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         setIconAttribute(R.attr.alertDialogIcon);
     }
 

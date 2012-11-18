@@ -624,6 +624,7 @@ public class KeyEvent extends InputEvent implements Parcelable {
      * Launches the global assist activity.  Not delivered to applications. */
     public static final int KEYCODE_ASSIST          = 219;
 
+<<<<<<< HEAD
     /** @hide */
     public static final int KEYCODE_TOGGLE_WIFI     = 220;
     /** @hide */
@@ -640,6 +641,9 @@ public class KeyEvent extends InputEvent implements Parcelable {
     public static final int KEYCODE_SCREENSHOT      = 226;
 
     private static final int LAST_KEYCODE           = KEYCODE_SCREENSHOT;
+=======
+    private static final int LAST_KEYCODE           = KEYCODE_ASSIST;
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 
     // NOTE: If you add a new keycode here you must also add it to:
     //  isSystem()
@@ -881,6 +885,7 @@ public class KeyEvent extends InputEvent implements Parcelable {
         names.append(KEYCODE_RO, "KEYCODE_RO");
         names.append(KEYCODE_KANA, "KEYCODE_KANA");
         names.append(KEYCODE_ASSIST, "KEYCODE_ASSIST");
+<<<<<<< HEAD
         names.append(KEYCODE_TOGGLE_WIFI, "KEYCODE_TOGGLE_WIFI");
         names.append(KEYCODE_TOGGLE_BT, "KEYCODE_TOGGLE_BT");
         names.append(KEYCODE_TOGGLE_TOUCHPAD, "KEYCODE_TOGGLE_TOUCHPAD");
@@ -888,6 +893,8 @@ public class KeyEvent extends InputEvent implements Parcelable {
         names.append(KEYCODE_BRIGHTNESS_UP, "KEYCODE_BRIGHTNESS_UP");
         names.append(KEYCODE_BRIGHTNESS_AUTO, "KEYCODE_BRIGHTNESS_AUTO");
         names.append(KEYCODE_SCREENSHOT, "KEYCODE_SCREENSHOT");
+=======
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     };
 
     // Symbolic names of all metakeys in bit order from least significant to most significant.

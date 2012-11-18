@@ -327,9 +327,28 @@ static jobject doDecode(JNIEnv* env, SkStream* stream, jobject padding,
         const float sx = scaledWidth / float(decoded->width());
         const float sy = scaledHeight / float(decoded->height());
 
+<<<<<<< HEAD
         bitmap->setConfig(decoded->getConfig(), scaledWidth, scaledHeight);
         bitmap->setIsOpaque(decoded->isOpaque());
         bitmap->allocPixels(&javaAllocator, NULL);
+=======
+        SkBitmap::Config config = decoded->config();
+        switch (config) {
+            case SkBitmap::kNo_Config:
+            case SkBitmap::kIndex8_Config:
+            case SkBitmap::kRLE_Index8_Config:
+                config = SkBitmap::kARGB_8888_Config;
+                break;
+            default:
+                break;
+        }
+
+        bitmap->setConfig(config, scaledWidth, scaledHeight);
+        bitmap->setIsOpaque(decoded->isOpaque());
+        if (!bitmap->allocPixels(&javaAllocator, NULL)) {
+            return nullObjectReturn("allocation failed for scaled bitmap");
+        }
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         bitmap->eraseColor(0);
 
         SkPaint paint;

@@ -1412,8 +1412,13 @@ public class StackView extends AdapterViewAnimator {
                 return null;
             }
 
+<<<<<<< HEAD
             Bitmap bitmap = Bitmap.createBitmap(v.getMeasuredWidth(), v.getMeasuredHeight(),
                     Bitmap.Config.ARGB_8888);
+=======
+            Bitmap bitmap = Bitmap.createBitmap(v.getResources().getDisplayMetrics(),
+                    v.getMeasuredWidth(), v.getMeasuredHeight(), Bitmap.Config.ARGB_8888);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
             mCanvas.setBitmap(bitmap);
 
             float rotationX = v.getRotationX();

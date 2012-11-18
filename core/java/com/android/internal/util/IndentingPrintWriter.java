@@ -28,7 +28,11 @@ public class IndentingPrintWriter extends PrintWriter {
     private final String mIndent;
 
     private StringBuilder mBuilder = new StringBuilder();
+<<<<<<< HEAD
     private String mCurrent = new String();
+=======
+    private char[] mCurrent;
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     private boolean mEmptyLine = true;
 
     public IndentingPrintWriter(Writer writer, String indent) {
@@ -38,12 +42,20 @@ public class IndentingPrintWriter extends PrintWriter {
 
     public void increaseIndent() {
         mBuilder.append(mIndent);
+<<<<<<< HEAD
         mCurrent = mBuilder.toString();
+=======
+        mCurrent = null;
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     }
 
     public void decreaseIndent() {
         mBuilder.delete(0, mIndent.length());
+<<<<<<< HEAD
         mCurrent = mBuilder.toString();
+=======
+        mCurrent = null;
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     }
 
     public void printPair(String key, Object value) {
@@ -51,6 +63,7 @@ public class IndentingPrintWriter extends PrintWriter {
     }
 
     @Override
+<<<<<<< HEAD
     public void println() {
         super.println();
         mEmptyLine = true;
@@ -63,5 +76,37 @@ public class IndentingPrintWriter extends PrintWriter {
             super.print(mCurrent);
         }
         super.write(buf, offset, count);
+=======
+    public void write(char[] buf, int offset, int count) {
+        final int bufferEnd = offset + count;
+        int lineStart = offset;
+        int lineEnd = offset;
+        while (lineEnd < bufferEnd) {
+            char ch = buf[lineEnd++];
+            if (ch == '\n') {
+                writeIndent();
+                super.write(buf, lineStart, lineEnd - lineStart);
+                lineStart = lineEnd;
+                mEmptyLine = true;
+            }
+        }
+
+        if (lineStart != lineEnd) {
+            writeIndent();
+            super.write(buf, lineStart, lineEnd - lineStart);
+        }
+    }
+
+    private void writeIndent() {
+        if (mEmptyLine) {
+            mEmptyLine = false;
+            if (mBuilder.length() != 0) {
+                if (mCurrent == null) {
+                    mCurrent = mBuilder.toString().toCharArray();
+                }
+                super.write(mCurrent, 0, mCurrent.length);
+            }
+        }
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     }
 }

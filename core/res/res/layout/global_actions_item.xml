@@ -22,16 +22,28 @@
     android:minHeight="?android:attr/listPreferredItemHeight"
     android:orientation="horizontal"
 
+<<<<<<< HEAD
     android:paddingLeft="16dip"
+=======
+    android:paddingStart="8dip"
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     android:paddingTop="6dip"
     android:paddingBottom="6dip"
     >
     <ImageView android:id="@+id/icon"
+<<<<<<< HEAD
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:layout_gravity="center"
         android:layout_marginRight="16dip"
         />
+=======
+        android:layout_width="56dp"
+        android:layout_height="56dp"
+        android:layout_gravity="center"
+        android:layout_marginEnd="8dip"
+        android:scaleType="center"/>
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 
     <LinearLayout
         android:orientation="vertical"

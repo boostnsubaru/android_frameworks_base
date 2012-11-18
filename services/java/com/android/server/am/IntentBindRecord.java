@@ -16,6 +16,10 @@
 
 package com.android.server.am;
 
+<<<<<<< HEAD
+=======
+import android.content.Context;
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 import android.content.Intent;
 import android.os.IBinder;
 
@@ -78,6 +82,23 @@ class IntentBindRecord {
         intent = _intent;
     }
 
+<<<<<<< HEAD
+=======
+    int collectFlags() {
+        int flags = 0;
+        if (apps.size() > 0) {
+            for (AppBindRecord app : apps.values()) {
+                if (app.connections.size() > 0) {
+                    for (ConnectionRecord conn : app.connections) {
+                        flags |= conn.flags;
+                    }
+                }
+            }
+        }
+        return flags;
+    }
+
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     public String toString() {
         if (stringName != null) {
             return stringName;
@@ -86,6 +107,12 @@ class IntentBindRecord {
         sb.append("IntentBindRecord{");
         sb.append(Integer.toHexString(System.identityHashCode(this)));
         sb.append(' ');
+<<<<<<< HEAD
+=======
+        if ((collectFlags()&Context.BIND_AUTO_CREATE) != 0) {
+            sb.append("CR ");
+        }
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         sb.append(service.shortName);
         sb.append(':');
         if (intent != null) {

@@ -1,6 +1,9 @@
 /*
  * Copyright (C) 2007 The Android Open Source Project
+<<<<<<< HEAD
  * This code has been modified.  Portions copyright (C) 2010, T-Mobile USA, Inc.
+=======
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -29,7 +32,11 @@ import android.os.Binder;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.PatternMatcher;
+<<<<<<< HEAD
 import android.os.UserId;
+=======
+import android.os.UserHandle;
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 import android.util.AttributeSet;
 import android.util.Base64;
 import android.util.DisplayMetrics;
@@ -204,11 +211,22 @@ public class PackageParser {
      */
     public static class PackageLite {
         public final String packageName;
+<<<<<<< HEAD
         public final int installLocation;
         public final VerifierInfo[] verifiers;
 
         public PackageLite(String packageName, int installLocation, List<VerifierInfo> verifiers) {
             this.packageName = packageName;
+=======
+        public final int versionCode;
+        public final int installLocation;
+        public final VerifierInfo[] verifiers;
+
+        public PackageLite(String packageName, int versionCode,
+                int installLocation, List<VerifierInfo> verifiers) {
+            this.packageName = packageName;
+            this.versionCode = versionCode;
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
             this.installLocation = installLocation;
             this.verifiers = verifiers.toArray(new VerifierInfo[verifiers.size()]);
         }
@@ -244,6 +262,7 @@ public class PackageParser {
         return name.endsWith(".apk");
     }
 
+<<<<<<< HEAD
     public static PackageInfo generatePackageInfo(PackageParser.Package p,
             int gids[], int flags, long firstInstallTime, long lastUpdateTime,
             HashSet<String> grantedPermissions) {
@@ -263,6 +282,17 @@ public class PackageParser {
             return path + ".locked.zip";
         }
     }
+=======
+    /*
+    public static PackageInfo generatePackageInfo(PackageParser.Package p,
+            int gids[], int flags, long firstInstallTime, long lastUpdateTime,
+            HashSet<String> grantedPermissions) {
+        PackageUserState state = new PackageUserState();
+        return generatePackageInfo(p, gids, flags, firstInstallTime, lastUpdateTime,
+                grantedPermissions, state, UserHandle.getCallingUserId());
+    }
+    */
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 
     /**
      * Generate and return the {@link PackageInfo} for a parsed package.
@@ -272,22 +302,42 @@ public class PackageParser {
      */
     public static PackageInfo generatePackageInfo(PackageParser.Package p,
             int gids[], int flags, long firstInstallTime, long lastUpdateTime,
+<<<<<<< HEAD
             HashSet<String> grantedPermissions, boolean stopped, int enabledState) {
 
         return generatePackageInfo(p, gids, flags, firstInstallTime, lastUpdateTime,
                 grantedPermissions, stopped, enabledState, UserId.getCallingUserId());
+=======
+            HashSet<String> grantedPermissions, PackageUserState state) {
+
+        return generatePackageInfo(p, gids, flags, firstInstallTime, lastUpdateTime,
+                grantedPermissions, state, UserHandle.getCallingUserId());
+    }
+
+    private static boolean checkUseInstalled(int flags, PackageUserState state) {
+        return state.installed || ((flags & PackageManager.GET_UNINSTALLED_PACKAGES) != 0);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     }
 
     public static PackageInfo generatePackageInfo(PackageParser.Package p,
             int gids[], int flags, long firstInstallTime, long lastUpdateTime,
+<<<<<<< HEAD
             HashSet<String> grantedPermissions, boolean stopped, int enabledState, int userId) {
 
+=======
+            HashSet<String> grantedPermissions, PackageUserState state, int userId) {
+
+        if (!checkUseInstalled(flags, state)) {
+            return null;
+        }
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         PackageInfo pi = new PackageInfo();
         pi.packageName = p.packageName;
         pi.versionCode = p.mVersionCode;
         pi.versionName = p.mVersionName;
         pi.sharedUserId = p.mSharedUserId;
         pi.sharedUserLabel = p.mSharedUserLabel;
+<<<<<<< HEAD
         pi.isThemeApk = p.mIsThemeApk;
         pi.setDrmProtectedThemeApk(false);
         if (pi.isThemeApk) {
@@ -304,6 +354,9 @@ public class PackageParser {
             }
         }
         pi.applicationInfo = generateApplicationInfo(p, flags, stopped, enabledState, userId);
+=======
+        pi.applicationInfo = generateApplicationInfo(p, flags, state, userId);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         pi.installLocation = p.installLocation;
         pi.firstInstallTime = firstInstallTime;
         pi.lastUpdateTime = lastUpdateTime;
@@ -339,7 +392,11 @@ public class PackageParser {
                     if (activity.info.enabled
                         || (flags&PackageManager.GET_DISABLED_COMPONENTS) != 0) {
                         pi.activities[j++] = generateActivityInfo(p.activities.get(i), flags,
+<<<<<<< HEAD
                                 stopped, enabledState, userId);
+=======
+                                state, userId);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
                     }
                 }
             }
@@ -361,7 +418,11 @@ public class PackageParser {
                     if (activity.info.enabled
                         || (flags&PackageManager.GET_DISABLED_COMPONENTS) != 0) {
                         pi.receivers[j++] = generateActivityInfo(p.receivers.get(i), flags,
+<<<<<<< HEAD
                                 stopped, enabledState, userId);
+=======
+                                state, userId);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
                     }
                 }
             }
@@ -382,8 +443,13 @@ public class PackageParser {
                     final Service service = p.services.get(i);
                     if (service.info.enabled
                         || (flags&PackageManager.GET_DISABLED_COMPONENTS) != 0) {
+<<<<<<< HEAD
                         pi.services[j++] = generateServiceInfo(p.services.get(i), flags, stopped,
                                 enabledState, userId);
+=======
+                        pi.services[j++] = generateServiceInfo(p.services.get(i), flags,
+                                state, userId);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
                     }
                 }
             }
@@ -404,8 +470,13 @@ public class PackageParser {
                     final Provider provider = p.providers.get(i);
                     if (provider.info.enabled
                         || (flags&PackageManager.GET_DISABLED_COMPONENTS) != 0) {
+<<<<<<< HEAD
                         pi.providers[j++] = generateProviderInfo(p.providers.get(i), flags, stopped,
                                 enabledState, userId);
+=======
+                        pi.providers[j++] = generateProviderInfo(p.providers.get(i), flags,
+                                state, userId);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
                     }
                 }
             }
@@ -867,11 +938,25 @@ public class PackageParser {
             return null;
         }
         int installLocation = PARSE_DEFAULT_INSTALL_LOCATION;
+<<<<<<< HEAD
+=======
+        int versionCode = 0;
+        int numFound = 0;
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         for (int i = 0; i < attrs.getAttributeCount(); i++) {
             String attr = attrs.getAttributeName(i);
             if (attr.equals("installLocation")) {
                 installLocation = attrs.getAttributeIntValue(i,
                         PARSE_DEFAULT_INSTALL_LOCATION);
+<<<<<<< HEAD
+=======
+                numFound++;
+            } else if (attr.equals("versionCode")) {
+                versionCode = attrs.getAttributeIntValue(i, 0);
+                numFound++;
+            }
+            if (numFound >= 2) {
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
                 break;
             }
         }
@@ -894,7 +979,11 @@ public class PackageParser {
             }
         }
 
+<<<<<<< HEAD
         return new PackageLite(pkgName.intern(), installLocation, verifiers);
+=======
+        return new PackageLite(pkgName.intern(), versionCode, installLocation, verifiers);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     }
 
     /**
@@ -1295,10 +1384,14 @@ public class PackageParser {
                 // Just skip this tag
                 XmlUtils.skipCurrentTag(parser);
                 continue;
+<<<<<<< HEAD
             } else if (tagName.equals("theme")) {
                 // this is a theme apk.
                 pkg.mIsThemeApk = true;
                 pkg.mThemeInfos.add(new ThemeInfo(parser, res, attrs));
+=======
+                
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
             } else if (RIGID_PARSER) {
                 outError[0] = "Bad element under <manifest>: "
                     + parser.getName();
@@ -1389,9 +1482,12 @@ public class PackageParser {
                         >= android.os.Build.VERSION_CODES.DONUT)) {
             pkg.applicationInfo.flags |= ApplicationInfo.FLAG_SUPPORTS_SCREEN_DENSITIES;
         }
+<<<<<<< HEAD
         if (pkg.mIsThemeApk) {
             pkg.applicationInfo.isThemeable = false;
         }
+=======
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 
         return pkg;
     }
@@ -1501,7 +1597,12 @@ public class PackageParser {
         perm.info.descriptionRes = sa.getResourceId(
                 com.android.internal.R.styleable.AndroidManifestPermissionGroup_description,
                 0);
+<<<<<<< HEAD
         perm.info.flags = 0;
+=======
+        perm.info.flags = sa.getInt(
+                com.android.internal.R.styleable.AndroidManifestPermissionGroup_permissionGroupFlags, 0);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         perm.info.priority = sa.getInt(
                 com.android.internal.R.styleable.AndroidManifestPermissionGroup_priority, 0);
         if (perm.info.priority > 0 && (flags&PARSE_IS_SYSTEM) == 0) {
@@ -1556,6 +1657,12 @@ public class PackageParser {
                 com.android.internal.R.styleable.AndroidManifestPermission_protectionLevel,
                 PermissionInfo.PROTECTION_NORMAL);
 
+<<<<<<< HEAD
+=======
+        perm.info.flags = sa.getInt(
+                com.android.internal.R.styleable.AndroidManifestPermission_permissionFlags, 0);
+
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         sa.recycle();
 
         if (perm.info.protectionLevel == -1) {
@@ -1693,6 +1800,7 @@ public class PackageParser {
         return a;
     }
 
+<<<<<<< HEAD
     private void parseApplicationThemeAttributes(XmlPullParser parser, AttributeSet attrs,
             ApplicationInfo appInfo) {
         for (int i = 0; i < attrs.getAttributeCount(); i++) {
@@ -1720,16 +1828,21 @@ public class PackageParser {
         }
     }
 
+=======
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     private boolean parseApplication(Package owner, Resources res,
             XmlPullParser parser, AttributeSet attrs, int flags, String[] outError)
         throws XmlPullParserException, IOException {
         final ApplicationInfo ai = owner.applicationInfo;
         final String pkgName = owner.applicationInfo.packageName;
 
+<<<<<<< HEAD
         // assume that this package is themeable unless explicitly set to false.
         ai.isThemeable = true;
         parseApplicationThemeAttributes(parser, attrs, ai);
 
+=======
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         TypedArray sa = res.obtainAttributes(attrs,
                 com.android.internal.R.styleable.AndroidManifestApplication);
 
@@ -2104,7 +2217,11 @@ public class PackageParser {
             return null;
         }
 
+<<<<<<< HEAD
         final boolean setExported = sa.hasValue(
+=======
+        boolean setExported = sa.hasValue(
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
                 com.android.internal.R.styleable.AndroidManifestActivity_exported);
         if (setExported) {
             a.info.exported = sa.getBoolean(
@@ -2201,11 +2318,24 @@ public class PackageParser {
         }
 
         if (sa.getBoolean(
+<<<<<<< HEAD
+=======
+                com.android.internal.R.styleable.AndroidManifestActivity_showOnLockScreen,
+                false)) {
+            a.info.flags |= ActivityInfo.FLAG_SHOW_ON_LOCK_SCREEN;
+        }
+
+        if (sa.getBoolean(
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
                 com.android.internal.R.styleable.AndroidManifestActivity_immersive,
                 false)) {
             a.info.flags |= ActivityInfo.FLAG_IMMERSIVE;
         }
+<<<<<<< HEAD
         
+=======
+
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         if (!receiver) {
             if (sa.getBoolean(
                     com.android.internal.R.styleable.AndroidManifestActivity_hardwareAccelerated,
@@ -2230,6 +2360,29 @@ public class PackageParser {
             a.info.configChanges = 0;
         }
 
+<<<<<<< HEAD
+=======
+        if (receiver) {
+            if (sa.getBoolean(
+                    com.android.internal.R.styleable.AndroidManifestActivity_singleUser,
+                    false)) {
+                a.info.flags |= ActivityInfo.FLAG_SINGLE_USER;
+                if (a.info.exported) {
+                    Slog.w(TAG, "Activity exported request ignored due to singleUser: "
+                            + a.className + " at " + mArchiveSourcePath + " "
+                            + parser.getPositionDescription());
+                    a.info.exported = false;
+                }
+                setExported = true;
+            }
+            if (sa.getBoolean(
+                    com.android.internal.R.styleable.AndroidManifestActivity_primaryUserOnly,
+                    false)) {
+                a.info.flags |= ActivityInfo.FLAG_PRIMARY_USER_ONLY;
+            }
+        }
+
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         sa.recycle();
 
         if (receiver && (owner.applicationInfo.flags&ApplicationInfo.FLAG_CANT_SAVE_STATE) != 0) {
@@ -2244,8 +2397,11 @@ public class PackageParser {
             return null;
         }
 
+<<<<<<< HEAD
         parseActivityThemeAttributes(parser, attrs, a.info);
 
+=======
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         int outerDepth = parser.getDepth();
         int type;
         while ((type=parser.next()) != XmlPullParser.END_DOCUMENT
@@ -2494,8 +2650,23 @@ public class PackageParser {
             return null;
         }
 
+<<<<<<< HEAD
         p.info.exported = sa.getBoolean(
                 com.android.internal.R.styleable.AndroidManifestProvider_exported, true);
+=======
+        boolean providerExportedDefault = false;
+
+        if (owner.applicationInfo.targetSdkVersion < Build.VERSION_CODES.JELLY_BEAN_MR1) {
+            // For compatibility, applications targeting API level 16 or lower
+            // should have their content providers exported by default, unless they
+            // specify otherwise.
+            providerExportedDefault = true;
+        }
+
+        p.info.exported = sa.getBoolean(
+                com.android.internal.R.styleable.AndroidManifestProvider_exported,
+                providerExportedDefault);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 
         String cpname = sa.getNonConfigurationString(
                 com.android.internal.R.styleable.AndroidManifestProvider_authorities, 0);
@@ -2541,6 +2712,23 @@ public class PackageParser {
                 com.android.internal.R.styleable.AndroidManifestProvider_initOrder,
                 0);
 
+<<<<<<< HEAD
+=======
+        p.info.flags = 0;
+
+        if (sa.getBoolean(
+                com.android.internal.R.styleable.AndroidManifestProvider_singleUser,
+                false)) {
+            p.info.flags |= ProviderInfo.FLAG_SINGLE_USER;
+            if (p.info.exported) {
+                Slog.w(TAG, "Provider exported request ignored due to singleUser: "
+                        + p.className + " at " + mArchiveSourcePath + " "
+                        + parser.getPositionDescription());
+                p.info.exported = false;
+            }
+        }
+
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         sa.recycle();
 
         if ((owner.applicationInfo.flags&ApplicationInfo.FLAG_CANT_SAVE_STATE) != 0) {
@@ -2553,7 +2741,11 @@ public class PackageParser {
         }
         
         if (cpname == null) {
+<<<<<<< HEAD
             outError[0] = "<provider> does not incude authorities attribute";
+=======
+            outError[0] = "<provider> does not include authorities attribute";
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
             return null;
         }
         p.info.authority = cpname.intern();
@@ -2769,7 +2961,11 @@ public class PackageParser {
             return null;
         }
 
+<<<<<<< HEAD
         final boolean setExported = sa.hasValue(
+=======
+        boolean setExported = sa.hasValue(
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
                 com.android.internal.R.styleable.AndroidManifestService_exported);
         if (setExported) {
             s.info.exported = sa.getBoolean(
@@ -2795,6 +2991,21 @@ public class PackageParser {
                 false)) {
             s.info.flags |= ServiceInfo.FLAG_ISOLATED_PROCESS;
         }
+<<<<<<< HEAD
+=======
+        if (sa.getBoolean(
+                com.android.internal.R.styleable.AndroidManifestService_singleUser,
+                false)) {
+            s.info.flags |= ServiceInfo.FLAG_SINGLE_USER;
+            if (s.info.exported) {
+                Slog.w(TAG, "Service exported request ignored due to singleUser: "
+                        + s.className + " at " + mArchiveSourcePath + " "
+                        + parser.getPositionDescription());
+                s.info.exported = false;
+            }
+            setExported = true;
+        }
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 
         sa.recycle();
 
@@ -3203,12 +3414,15 @@ public class PackageParser {
         
         // For use by package manager to keep track of where it has done dexopt.
         public boolean mDidDexOpt;
+<<<<<<< HEAD
 
         // Is Theme Apk
         public boolean mIsThemeApk = false;
 
         // Theme info
         public final ArrayList<ThemeInfo> mThemeInfos = new ArrayList<ThemeInfo>(0);
+=======
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         
         // // User set enabled state.
         // public int mSetEnabled = PackageManager.COMPONENT_ENABLED_STATE_DEFAULT;
@@ -3479,13 +3693,34 @@ public class PackageParser {
         }
     }
 
+<<<<<<< HEAD
     private static boolean copyNeeded(int flags, Package p, int enabledState, Bundle metaData) {
         if (enabledState != PackageManager.COMPONENT_ENABLED_STATE_DEFAULT) {
             boolean enabled = enabledState == PackageManager.COMPONENT_ENABLED_STATE_ENABLED;
+=======
+    private static boolean copyNeeded(int flags, Package p,
+            PackageUserState state, Bundle metaData, int userId) {
+        if (userId != 0) {
+            // We always need to copy for other users, since we need
+            // to fix up the uid.
+            return true;
+        }
+        if (state.enabled != PackageManager.COMPONENT_ENABLED_STATE_DEFAULT) {
+            boolean enabled = state.enabled == PackageManager.COMPONENT_ENABLED_STATE_ENABLED;
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
             if (p.applicationInfo.enabled != enabled) {
                 return true;
             }
         }
+<<<<<<< HEAD
+=======
+        if (!state.installed) {
+            return true;
+        }
+        if (state.stopped) {
+            return true;
+        }
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         if ((flags & PackageManager.GET_META_DATA) != 0
                 && (metaData != null || p.mAppMetaData != null)) {
             return true;
@@ -3497,6 +3732,7 @@ public class PackageParser {
         return false;
     }
 
+<<<<<<< HEAD
     public static ApplicationInfo generateApplicationInfo(Package p, int flags, boolean stopped,
             int enabledState) {
         return generateApplicationInfo(p, flags, stopped, enabledState, UserId.getCallingUserId());
@@ -3506,11 +3742,26 @@ public class PackageParser {
             boolean stopped, int enabledState, int userId) {
         if (p == null) return null;
         if (!copyNeeded(flags, p, enabledState, null) && userId == 0) {
+=======
+    public static ApplicationInfo generateApplicationInfo(Package p, int flags,
+            PackageUserState state) {
+        return generateApplicationInfo(p, flags, state, UserHandle.getCallingUserId());
+    }
+
+    public static ApplicationInfo generateApplicationInfo(Package p, int flags,
+            PackageUserState state, int userId) {
+        if (p == null) return null;
+        if (!checkUseInstalled(flags, state)) {
+            return null;
+        }
+        if (!copyNeeded(flags, p, state, null, userId)) {
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
             // CompatibilityMode is global state. It's safe to modify the instance
             // of the package.
             if (!sCompatibilityModeEnabled) {
                 p.applicationInfo.disableCompatibilityMode();
             }
+<<<<<<< HEAD
             if (stopped) {
                 p.applicationInfo.flags |= ApplicationInfo.FLAG_STOPPED;
             } else {
@@ -3523,13 +3774,30 @@ public class PackageParser {
                 p.applicationInfo.enabled = false;
             }
             p.applicationInfo.enabledSetting = enabledState;
+=======
+            // Make sure we report as installed.  Also safe to do, since the
+            // default state should be installed (we will always copy if we
+            // need to report it is not installed).
+            p.applicationInfo.flags |= ApplicationInfo.FLAG_INSTALLED;
+            if (state.enabled == PackageManager.COMPONENT_ENABLED_STATE_ENABLED) {
+                p.applicationInfo.enabled = true;
+            } else if (state.enabled == PackageManager.COMPONENT_ENABLED_STATE_DISABLED
+                    || state.enabled == PackageManager.COMPONENT_ENABLED_STATE_DISABLED_USER) {
+                p.applicationInfo.enabled = false;
+            }
+            p.applicationInfo.enabledSetting = state.enabled;
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
             return p.applicationInfo;
         }
 
         // Make shallow copy so we can store the metadata/libraries safely
         ApplicationInfo ai = new ApplicationInfo(p.applicationInfo);
         if (userId != 0) {
+<<<<<<< HEAD
             ai.uid = UserId.getUid(userId, ai.uid);
+=======
+            ai.uid = UserHandle.getUid(userId, ai.uid);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
             ai.dataDir = PackageManager.getDataDirForUser(userId, ai.packageName);
         }
         if ((flags & PackageManager.GET_META_DATA) != 0) {
@@ -3541,11 +3809,16 @@ public class PackageParser {
         if (!sCompatibilityModeEnabled) {
             ai.disableCompatibilityMode();
         }
+<<<<<<< HEAD
         if (stopped) {
+=======
+        if (state.stopped) {
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
             ai.flags |= ApplicationInfo.FLAG_STOPPED;
         } else {
             ai.flags &= ~ApplicationInfo.FLAG_STOPPED;
         }
+<<<<<<< HEAD
         if (enabledState == PackageManager.COMPONENT_ENABLED_STATE_ENABLED) {
             ai.enabled = true;
         } else if (enabledState == PackageManager.COMPONENT_ENABLED_STATE_DISABLED
@@ -3553,6 +3826,20 @@ public class PackageParser {
             ai.enabled = false;
         }
         ai.enabledSetting = enabledState;
+=======
+        if (state.installed) {
+            ai.flags |= ApplicationInfo.FLAG_INSTALLED;
+        } else {
+            ai.flags &= ~ApplicationInfo.FLAG_INSTALLED;
+        }
+        if (state.enabled == PackageManager.COMPONENT_ENABLED_STATE_ENABLED) {
+            ai.enabled = true;
+        } else if (state.enabled == PackageManager.COMPONENT_ENABLED_STATE_DISABLED
+                || state.enabled == PackageManager.COMPONENT_ENABLED_STATE_DISABLED_USER) {
+            ai.enabled = false;
+        }
+        ai.enabledSetting = state.enabled;
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         return ai;
     }
 
@@ -3599,16 +3886,30 @@ public class PackageParser {
         }
     }
 
+<<<<<<< HEAD
     public static final ActivityInfo generateActivityInfo(Activity a, int flags, boolean stopped,
             int enabledState, int userId) {
         if (a == null) return null;
         if (!copyNeeded(flags, a.owner, enabledState, a.metaData) && userId == 0) {
+=======
+    public static final ActivityInfo generateActivityInfo(Activity a, int flags,
+            PackageUserState state, int userId) {
+        if (a == null) return null;
+        if (!checkUseInstalled(flags, state)) {
+            return null;
+        }
+        if (!copyNeeded(flags, a.owner, state, a.metaData, userId)) {
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
             return a.info;
         }
         // Make shallow copies so we can store the metadata safely
         ActivityInfo ai = new ActivityInfo(a.info);
         ai.metaData = a.metaData;
+<<<<<<< HEAD
         ai.applicationInfo = generateApplicationInfo(a.owner, flags, stopped, enabledState, userId);
+=======
+        ai.applicationInfo = generateApplicationInfo(a.owner, flags, state, userId);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         return ai;
     }
 
@@ -3633,17 +3934,31 @@ public class PackageParser {
         }
     }
 
+<<<<<<< HEAD
     public static final ServiceInfo generateServiceInfo(Service s, int flags, boolean stopped,
             int enabledState, int userId) {
         if (s == null) return null;
         if (!copyNeeded(flags, s.owner, enabledState, s.metaData)
                 && userId == UserId.getUserId(s.info.applicationInfo.uid)) {
+=======
+    public static final ServiceInfo generateServiceInfo(Service s, int flags,
+            PackageUserState state, int userId) {
+        if (s == null) return null;
+        if (!checkUseInstalled(flags, state)) {
+            return null;
+        }
+        if (!copyNeeded(flags, s.owner, state, s.metaData, userId)) {
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
             return s.info;
         }
         // Make shallow copies so we can store the metadata safely
         ServiceInfo si = new ServiceInfo(s.info);
         si.metaData = s.metaData;
+<<<<<<< HEAD
         si.applicationInfo = generateApplicationInfo(s.owner, flags, stopped, enabledState, userId);
+=======
+        si.applicationInfo = generateApplicationInfo(s.owner, flags, state, userId);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         return si;
     }
 
@@ -3676,6 +3991,7 @@ public class PackageParser {
         }
     }
 
+<<<<<<< HEAD
     public static final ProviderInfo generateProviderInfo(Provider p, int flags, boolean stopped,
             int enabledState, int userId) {
         if (p == null) return null;
@@ -3683,6 +3999,17 @@ public class PackageParser {
                 && ((flags & PackageManager.GET_URI_PERMISSION_PATTERNS) != 0
                         || p.info.uriPermissionPatterns == null)
                 && userId == 0) {
+=======
+    public static final ProviderInfo generateProviderInfo(Provider p, int flags,
+            PackageUserState state, int userId) {
+        if (p == null) return null;
+        if (!checkUseInstalled(flags, state)) {
+            return null;
+        }
+        if (!copyNeeded(flags, p.owner, state, p.metaData, userId)
+                && ((flags & PackageManager.GET_URI_PERMISSION_PATTERNS) != 0
+                        || p.info.uriPermissionPatterns == null)) {
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
             return p.info;
         }
         // Make shallow copies so we can store the metadata safely
@@ -3691,7 +4018,11 @@ public class PackageParser {
         if ((flags & PackageManager.GET_URI_PERMISSION_PATTERNS) == 0) {
             pi.uriPermissionPatterns = null;
         }
+<<<<<<< HEAD
         pi.applicationInfo = generateApplicationInfo(p.owner, flags, stopped, enabledState, userId);
+=======
+        pi.applicationInfo = generateApplicationInfo(p.owner, flags, state, userId);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         return pi;
     }
 

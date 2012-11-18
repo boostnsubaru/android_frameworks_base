@@ -49,6 +49,18 @@ enum {
 };
 
 enum {
+<<<<<<< HEAD
+=======
+    /* Used when a motion event is not associated with any display.
+     * Typically used for non-pointer events. */
+    ADISPLAY_ID_NONE = -1,
+
+    /* The default display id. */
+    ADISPLAY_ID_DEFAULT = 0,
+};
+
+enum {
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     /*
      * Indicates that an input device has switches.
      * This input source flag is hidden from the API because switches are only used by the system

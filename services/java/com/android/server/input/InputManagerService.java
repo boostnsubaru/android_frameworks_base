@@ -19,6 +19,11 @@ package com.android.server.input;
 import com.android.internal.R;
 import com.android.internal.util.XmlUtils;
 import com.android.server.Watchdog;
+<<<<<<< HEAD
+=======
+import com.android.server.display.DisplayManagerService;
+import com.android.server.display.DisplayViewport;
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 
 import org.xmlpull.v1.XmlPullParser;
 
@@ -42,8 +47,13 @@ import android.content.res.Resources.NotFoundException;
 import android.content.res.TypedArray;
 import android.content.res.XmlResourceParser;
 import android.database.ContentObserver;
+<<<<<<< HEAD
 import android.hardware.input.IInputManager;
 import android.hardware.input.IInputDevicesChangedListener;
+=======
+import android.hardware.input.IInputDevicesChangedListener;
+import android.hardware.input.IInputManager;
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 import android.hardware.input.InputManager;
 import android.hardware.input.KeyboardLayout;
 import android.os.Binder;
@@ -51,23 +61,41 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
 import android.os.IBinder;
+<<<<<<< HEAD
+=======
+import android.os.Looper;
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 import android.os.Message;
 import android.os.MessageQueue;
 import android.os.Process;
 import android.os.RemoteException;
+<<<<<<< HEAD
 import android.provider.Settings;
 import android.provider.Settings.SettingNotFoundException;
 import android.server.BluetoothService;
+=======
+import android.os.UserHandle;
+import android.provider.Settings;
+import android.provider.Settings.SettingNotFoundException;
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 import android.util.Log;
 import android.util.Slog;
 import android.util.SparseArray;
 import android.util.Xml;
+<<<<<<< HEAD
+=======
+import android.view.IInputFilter;
+import android.view.IInputFilterHost;
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 import android.view.InputChannel;
 import android.view.InputDevice;
 import android.view.InputEvent;
 import android.view.KeyEvent;
 import android.view.PointerIcon;
+<<<<<<< HEAD
 import android.view.Surface;
+=======
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 import android.view.ViewConfiguration;
 import android.view.WindowManagerPolicy;
 import android.widget.Toast;
@@ -89,7 +117,12 @@ import libcore.util.Objects;
 /*
  * Wraps the C++ InputManager and provides its callbacks.
  */
+<<<<<<< HEAD
 public class InputManagerService extends IInputManager.Stub implements Watchdog.Monitor {
+=======
+public class InputManagerService extends IInputManager.Stub
+        implements Watchdog.Monitor, DisplayManagerService.InputManagerFuncs {
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     static final String TAG = "InputManager";
     static final boolean DEBUG = false;
 
@@ -105,10 +138,18 @@ public class InputManagerService extends IInputManager.Stub implements Watchdog.
     private final int mPtr;
 
     private final Context mContext;
+<<<<<<< HEAD
     private final Callbacks mCallbacks;
     private final InputManagerHandler mHandler;
     private boolean mSystemReady;
     private BluetoothService mBluetoothService;
+=======
+    private final InputManagerHandler mHandler;
+
+    private WindowManagerCallbacks mWindowManagerCallbacks;
+    private WiredAccessoryCallbacks mWiredAccessoryCallbacks;
+    private boolean mSystemReady;
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     private NotificationManager mNotificationManager;
 
     // Persistent data store.  Must be locked each time during use.
@@ -137,17 +178,30 @@ public class InputManagerService extends IInputManager.Stub implements Watchdog.
 
     // State for the currently installed input filter.
     final Object mInputFilterLock = new Object();
+<<<<<<< HEAD
     InputFilter mInputFilter; // guarded by mInputFilterLock
+=======
+    IInputFilter mInputFilter; // guarded by mInputFilterLock
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     InputFilterHost mInputFilterHost; // guarded by mInputFilterLock
 
     private static native int nativeInit(InputManagerService service,
             Context context, MessageQueue messageQueue);
     private static native void nativeStart(int ptr);
+<<<<<<< HEAD
     private static native void nativeSetDisplaySize(int ptr, int displayId,
             int width, int height, int externalWidth, int externalHeight);
     private static native void nativeSetDisplayOrientation(int ptr, int displayId,
             int rotation, int externalRotation);
     
+=======
+    private static native void nativeSetDisplayViewport(int ptr, boolean external,
+            int displayId, int rotation,
+            int logicalLeft, int logicalTop, int logicalRight, int logicalBottom,
+            int physicalLeft, int physicalTop, int physicalRight, int physicalBottom,
+            int deviceWidth, int deviceHeight);
+
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     private static native int nativeGetScanCodeState(int ptr,
             int deviceId, int sourceMask, int scanCode);
     private static native int nativeGetKeyCodeState(int ptr,
@@ -172,7 +226,10 @@ public class InputManagerService extends IInputManager.Stub implements Watchdog.
             InputChannel fromChannel, InputChannel toChannel);
     private static native void nativeSetPointerSpeed(int ptr, int speed);
     private static native void nativeSetShowTouches(int ptr, boolean enabled);
+<<<<<<< HEAD
     private static native void nativeSetStylusIconEnabled(int ptr, boolean enabled);
+=======
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     private static native void nativeVibrate(int ptr, int deviceId, long[] pattern,
             int repeat, int token);
     private static native void nativeCancelVibrate(int ptr, int deviceId, int token);
@@ -180,7 +237,10 @@ public class InputManagerService extends IInputManager.Stub implements Watchdog.
     private static native void nativeReloadDeviceAliases(int ptr);
     private static native String nativeDump(int ptr);
     private static native void nativeMonitor(int ptr);
+<<<<<<< HEAD
     private static native void nativeSetKeyLayout(int ptr, String deviceName, String keyLayout);
+=======
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 
     // Input event injection constants defined in InputDispatcher.h.
     private static final int INPUT_EVENT_INJECTION_SUCCEEDED = 0;
@@ -193,7 +253,11 @@ public class InputManagerService extends IInputManager.Stub implements Watchdog.
 
     // Key states (may be returned by queries about the current state of a
     // particular key code, scan code or switch).
+<<<<<<< HEAD
     
+=======
+
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     /** The key state is unknown or the requested key itself is not supported. */
     public static final int KEY_STATE_UNKNOWN = -1;
 
@@ -209,12 +273,17 @@ public class InputManagerService extends IInputManager.Stub implements Watchdog.
     /** Scan code: Mouse / trackball button. */
     public static final int BTN_MOUSE = 0x110;
 
+<<<<<<< HEAD
+=======
+    // Switch code values must match bionic/libc/kernel/common/linux/input.h
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     /** Switch code: Lid switch.  When set, lid is shut. */
     public static final int SW_LID = 0x00;
 
     /** Switch code: Keypad slide.  When set, keyboard is exposed. */
     public static final int SW_KEYPAD_SLIDE = 0x0a;
 
+<<<<<<< HEAD
     public InputManagerService(Context context, Callbacks callbacks) {
         this.mContext = context;
         this.mCallbacks = callbacks;
@@ -224,6 +293,47 @@ public class InputManagerService extends IInputManager.Stub implements Watchdog.
         mPtr = nativeInit(this, mContext, mHandler.getLooper().getQueue());
     }
 
+=======
+    /** Switch code: Headphone.  When set, headphone is inserted. */
+    public static final int SW_HEADPHONE_INSERT = 0x02;
+
+    /** Switch code: Microphone.  When set, microphone is inserted. */
+    public static final int SW_MICROPHONE_INSERT = 0x04;
+
+    /** Switch code: Headphone/Microphone Jack.  When set, something is inserted. */
+    public static final int SW_JACK_PHYSICAL_INSERT = 0x07;
+
+    public static final int SW_LID_BIT = 1 << SW_LID;
+    public static final int SW_KEYPAD_SLIDE_BIT = 1 << SW_KEYPAD_SLIDE;
+    public static final int SW_HEADPHONE_INSERT_BIT = 1 << SW_HEADPHONE_INSERT;
+    public static final int SW_MICROPHONE_INSERT_BIT = 1 << SW_MICROPHONE_INSERT;
+    public static final int SW_JACK_PHYSICAL_INSERT_BIT = 1 << SW_JACK_PHYSICAL_INSERT;
+    public static final int SW_JACK_BITS =
+            SW_HEADPHONE_INSERT_BIT | SW_MICROPHONE_INSERT_BIT | SW_JACK_PHYSICAL_INSERT_BIT;
+
+    /** Whether to use the dev/input/event or uevent subsystem for the audio jack. */
+    final boolean mUseDevInputEventForAudioJack;
+
+    public InputManagerService(Context context, Handler handler) {
+        this.mContext = context;
+        this.mHandler = new InputManagerHandler(handler.getLooper());
+
+        mUseDevInputEventForAudioJack =
+                context.getResources().getBoolean(R.bool.config_useDevInputEventForAudioJack);
+        Slog.i(TAG, "Initializing input manager, mUseDevInputEventForAudioJack="
+                + mUseDevInputEventForAudioJack);
+        mPtr = nativeInit(this, mContext, mHandler.getLooper().getQueue());
+    }
+
+    public void setWindowManagerCallbacks(WindowManagerCallbacks callbacks) {
+        mWindowManagerCallbacks = callbacks;
+    }
+
+    public void setWiredAccessoryCallbacks(WiredAccessoryCallbacks callbacks) {
+        mWiredAccessoryCallbacks = callbacks;
+    }
+
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     public void start() {
         Slog.i(TAG, "Starting input manager");
         nativeStart(mPtr);
@@ -233,6 +343,7 @@ public class InputManagerService extends IInputManager.Stub implements Watchdog.
 
         registerPointerSpeedSettingObserver();
         registerShowTouchesSettingObserver();
+<<<<<<< HEAD
         registerStylusIconEnabledSettingObserver();
 
         updatePointerSpeedFromSettings();
@@ -247,6 +358,26 @@ public class InputManagerService extends IInputManager.Stub implements Watchdog.
             Slog.d(TAG, "System ready.");
         }
         mBluetoothService = bluetoothService;
+=======
+
+        mContext.registerReceiver(new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                updatePointerSpeedFromSettings();
+                updateShowTouchesFromSettings();
+            }
+        }, new IntentFilter(Intent.ACTION_USER_SWITCHED), null, mHandler);
+
+        updatePointerSpeedFromSettings();
+        updateShowTouchesFromSettings();
+    }
+
+    // TODO(BT) Pass in paramter for bluetooth system
+    public void systemReady() {
+        if (DEBUG) {
+            Slog.d(TAG, "System ready.");
+        }
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         mNotificationManager = (NotificationManager)mContext.getSystemService(
                 Context.NOTIFICATION_SERVICE);
         mSystemReady = true;
@@ -288,6 +419,7 @@ public class InputManagerService extends IInputManager.Stub implements Watchdog.
         nativeReloadDeviceAliases(mPtr);
     }
 
+<<<<<<< HEAD
     public void setDisplaySize(int displayId, int width, int height,
             int externalWidth, int externalHeight) {
         if (width <= 0 || height <= 0 || externalWidth <= 0 || externalHeight <= 0) {
@@ -311,6 +443,30 @@ public class InputManagerService extends IInputManager.Stub implements Watchdog.
                     + " external rotation " + externalRotation);
         }
         nativeSetDisplayOrientation(mPtr, displayId, rotation, externalRotation);
+=======
+    @Override
+    public void setDisplayViewports(DisplayViewport defaultViewport,
+            DisplayViewport externalTouchViewport) {
+        if (defaultViewport.valid) {
+            setDisplayViewport(false, defaultViewport);
+        }
+
+        if (externalTouchViewport.valid) {
+            setDisplayViewport(true, externalTouchViewport);
+        } else if (defaultViewport.valid) {
+            setDisplayViewport(true, defaultViewport);
+        }
+    }
+
+    private void setDisplayViewport(boolean external, DisplayViewport viewport) {
+        nativeSetDisplayViewport(mPtr, external,
+                viewport.displayId, viewport.orientation,
+                viewport.logicalFrame.left, viewport.logicalFrame.top,
+                viewport.logicalFrame.right, viewport.logicalFrame.bottom,
+                viewport.physicalFrame.left, viewport.physicalFrame.top,
+                viewport.physicalFrame.right, viewport.physicalFrame.bottom,
+                viewport.deviceWidth, viewport.deviceHeight);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     }
 
     /**
@@ -325,7 +481,11 @@ public class InputManagerService extends IInputManager.Stub implements Watchdog.
     public int getKeyCodeState(int deviceId, int sourceMask, int keyCode) {
         return nativeGetKeyCodeState(mPtr, deviceId, sourceMask, keyCode);
     }
+<<<<<<< HEAD
     
+=======
+
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     /**
      * Gets the current state of a key or button by scan code.
      * @param deviceId The input device id, or -1 to consult all devices.
@@ -431,9 +591,15 @@ public class InputManagerService extends IInputManager.Stub implements Watchdog.
      *
      * @param filter The input filter, or null to remove the current filter.
      */
+<<<<<<< HEAD
     public void setInputFilter(InputFilter filter) {
         synchronized (mInputFilterLock) {
             final InputFilter oldFilter = mInputFilter;
+=======
+    public void setInputFilter(IInputFilter filter) {
+        synchronized (mInputFilterLock) {
+            final IInputFilter oldFilter = mInputFilter;
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
             if (oldFilter == filter) {
                 return; // nothing to do
             }
@@ -442,13 +608,29 @@ public class InputManagerService extends IInputManager.Stub implements Watchdog.
                 mInputFilter = null;
                 mInputFilterHost.disconnectLocked();
                 mInputFilterHost = null;
+<<<<<<< HEAD
                 oldFilter.uninstall();
+=======
+                try {
+                    oldFilter.uninstall();
+                } catch (RemoteException re) {
+                    /* ignore */
+                }
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
             }
 
             if (filter != null) {
                 mInputFilter = filter;
                 mInputFilterHost = new InputFilterHost();
+<<<<<<< HEAD
                 filter.install(mInputFilterHost);
+=======
+                try {
+                    filter.install(mInputFilterHost);
+                } catch (RemoteException re) {
+                    /* ignore */
+                }
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
             }
 
             nativeSetInputFilterEnabled(mPtr, filter != null);
@@ -495,7 +677,11 @@ public class InputManagerService extends IInputManager.Stub implements Watchdog.
 
     /**
      * Gets information about the input device with the specified id.
+<<<<<<< HEAD
      * @param id The device id.
+=======
+     * @param deviceId The device id.
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
      * @return The input device or null if not found.
      */
     @Override // Binder call
@@ -651,7 +837,12 @@ public class InputManagerService extends IInputManager.Stub implements Watchdog.
                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK
                         | Intent.FLAG_ACTIVITY_RESET_TASK_IF_NEEDED
                         | Intent.FLAG_ACTIVITY_CLEAR_TOP);
+<<<<<<< HEAD
                 mKeyboardLayoutIntent = PendingIntent.getActivity(mContext, 0, intent, 0);
+=======
+                mKeyboardLayoutIntent = PendingIntent.getActivityAsUser(mContext, 0,
+                        intent, 0, null, UserHandle.CURRENT);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
             }
 
             Resources r = mContext.getResources();
@@ -664,8 +855,14 @@ public class InputManagerService extends IInputManager.Stub implements Watchdog.
                     .setSmallIcon(R.drawable.ic_settings_language)
                     .setPriority(Notification.PRIORITY_LOW)
                     .build();
+<<<<<<< HEAD
             mNotificationManager.notify(R.string.select_keyboard_layout_notification_title,
                     notification);
+=======
+            mNotificationManager.notifyAsUser(null,
+                    R.string.select_keyboard_layout_notification_title,
+                    notification, UserHandle.ALL);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
             mKeyboardLayoutNotificationShown = true;
         }
     }
@@ -674,7 +871,13 @@ public class InputManagerService extends IInputManager.Stub implements Watchdog.
     private void hideMissingKeyboardLayoutNotification() {
         if (mKeyboardLayoutNotificationShown) {
             mKeyboardLayoutNotificationShown = false;
+<<<<<<< HEAD
             mNotificationManager.cancel(R.string.select_keyboard_layout_notification_title);
+=======
+            mNotificationManager.cancelAsUser(null,
+                    R.string.select_keyboard_layout_notification_title,
+                    UserHandle.ALL);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         }
     }
 
@@ -954,8 +1157,13 @@ public class InputManagerService extends IInputManager.Stub implements Watchdog.
     // Must be called on handler.
     private void handleSwitchKeyboardLayout(int deviceId, int direction) {
         final InputDevice device = getInputDevice(deviceId);
+<<<<<<< HEAD
         final String inputDeviceDescriptor = device.getDescriptor();
         if (device != null) {
+=======
+        if (device != null) {
+            final String inputDeviceDescriptor = device.getDescriptor();
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
             final boolean changed;
             final String keyboardLayoutDescriptor;
             synchronized (mDataStore) {
@@ -1059,19 +1267,29 @@ public class InputManagerService extends IInputManager.Stub implements Watchdog.
                     public void onChange(boolean selfChange) {
                         updatePointerSpeedFromSettings();
                     }
+<<<<<<< HEAD
                 });
+=======
+                }, UserHandle.USER_ALL);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     }
 
     private int getPointerSpeedSetting() {
         int speed = InputManager.DEFAULT_POINTER_SPEED;
         try {
+<<<<<<< HEAD
             speed = Settings.System.getInt(mContext.getContentResolver(),
                     Settings.System.POINTER_SPEED);
+=======
+            speed = Settings.System.getIntForUser(mContext.getContentResolver(),
+                    Settings.System.POINTER_SPEED, UserHandle.USER_CURRENT);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         } catch (SettingNotFoundException snfe) {
         }
         return speed;
     }
 
+<<<<<<< HEAD
     public void updateStylusIconEnabledFromSettings() {
         int enabled = getStylusIconEnabled(0);
         nativeSetStylusIconEnabled(mPtr, enabled != 0);
@@ -1098,6 +1316,8 @@ public class InputManagerService extends IInputManager.Stub implements Watchdog.
         return result;
     }
 
+=======
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     public void updateShowTouchesFromSettings() {
         int setting = getShowTouchesSetting(0);
         nativeSetShowTouches(mPtr, setting != 0);
@@ -1111,14 +1331,23 @@ public class InputManagerService extends IInputManager.Stub implements Watchdog.
                     public void onChange(boolean selfChange) {
                         updateShowTouchesFromSettings();
                     }
+<<<<<<< HEAD
                 });
+=======
+                }, UserHandle.USER_ALL);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     }
 
     private int getShowTouchesSetting(int defaultValue) {
         int result = defaultValue;
         try {
+<<<<<<< HEAD
             result = Settings.System.getInt(mContext.getContentResolver(),
                     Settings.System.SHOW_TOUCHES);
+=======
+            result = Settings.System.getIntForUser(mContext.getContentResolver(),
+                    Settings.System.SHOW_TOUCHES, UserHandle.USER_CURRENT);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         } catch (SettingNotFoundException snfe) {
         }
         return result;
@@ -1218,11 +1447,16 @@ public class InputManagerService extends IInputManager.Stub implements Watchdog.
     }
 
     // Called by the heartbeat to ensure locks are not held indefinitely (for deadlock detection).
+<<<<<<< HEAD
+=======
+    @Override
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     public void monitor() {
         synchronized (mInputFilterLock) { }
         nativeMonitor(mPtr);
     }
 
+<<<<<<< HEAD
     private void setKeyLayout(String deviceName, String keyLayout) {
         nativeSetKeyLayout(mPtr, deviceName, keyLayout);
     }
@@ -1262,6 +1496,11 @@ public class InputManagerService extends IInputManager.Stub implements Watchdog.
     // Native callback.
     private void notifyConfigurationChanged(long whenNanos) {
         mCallbacks.notifyConfigurationChanged();
+=======
+    // Native callback.
+    private void notifyConfigurationChanged(long whenNanos) {
+        mWindowManagerCallbacks.notifyConfigurationChanged();
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     }
 
     // Native callback.
@@ -1278,26 +1517,60 @@ public class InputManagerService extends IInputManager.Stub implements Watchdog.
     }
 
     // Native callback.
+<<<<<<< HEAD
     private void notifyLidSwitchChanged(long whenNanos, boolean lidOpen) {
         mCallbacks.notifyLidSwitchChanged(whenNanos, lidOpen);
+=======
+    private void notifySwitch(long whenNanos, int switchValues, int switchMask) {
+        if (DEBUG) {
+            Slog.d(TAG, "notifySwitch: values=" + Integer.toHexString(switchValues)
+                    + ", mask=" + Integer.toHexString(switchMask));
+        }
+
+        if ((switchMask & SW_LID_BIT) != 0) {
+            final boolean lidOpen = ((switchValues & SW_LID_BIT) == 0);
+            mWindowManagerCallbacks.notifyLidSwitchChanged(whenNanos, lidOpen);
+        }
+
+        if (mUseDevInputEventForAudioJack && (switchMask & SW_JACK_BITS) != 0) {
+            mWiredAccessoryCallbacks.notifyWiredAccessoryChanged(whenNanos, switchValues,
+                    switchMask);
+        }
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     }
 
     // Native callback.
     private void notifyInputChannelBroken(InputWindowHandle inputWindowHandle) {
+<<<<<<< HEAD
         mCallbacks.notifyInputChannelBroken(inputWindowHandle);
+=======
+        mWindowManagerCallbacks.notifyInputChannelBroken(inputWindowHandle);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     }
 
     // Native callback.
     private long notifyANR(InputApplicationHandle inputApplicationHandle,
             InputWindowHandle inputWindowHandle) {
+<<<<<<< HEAD
         return mCallbacks.notifyANR(inputApplicationHandle, inputWindowHandle);
+=======
+        return mWindowManagerCallbacks.notifyANR(inputApplicationHandle, inputWindowHandle);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     }
 
     // Native callback.
     final boolean filterInputEvent(InputEvent event, int policyFlags) {
         synchronized (mInputFilterLock) {
             if (mInputFilter != null) {
+<<<<<<< HEAD
                 mInputFilter.filterInputEvent(event, policyFlags);
+=======
+                try {
+                    mInputFilter.filterInputEvent(event, policyFlags);
+                } catch (RemoteException e) {
+                    /* ignore */
+                }
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
                 return false;
             }
         }
@@ -1307,25 +1580,41 @@ public class InputManagerService extends IInputManager.Stub implements Watchdog.
 
     // Native callback.
     private int interceptKeyBeforeQueueing(KeyEvent event, int policyFlags, boolean isScreenOn) {
+<<<<<<< HEAD
         return mCallbacks.interceptKeyBeforeQueueing(
+=======
+        return mWindowManagerCallbacks.interceptKeyBeforeQueueing(
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
                 event, policyFlags, isScreenOn);
     }
 
     // Native callback.
     private int interceptMotionBeforeQueueingWhenScreenOff(int policyFlags) {
+<<<<<<< HEAD
         return mCallbacks.interceptMotionBeforeQueueingWhenScreenOff(policyFlags);
+=======
+        return mWindowManagerCallbacks.interceptMotionBeforeQueueingWhenScreenOff(policyFlags);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     }
 
     // Native callback.
     private long interceptKeyBeforeDispatching(InputWindowHandle focus,
             KeyEvent event, int policyFlags) {
+<<<<<<< HEAD
         return mCallbacks.interceptKeyBeforeDispatching(focus, event, policyFlags);
+=======
+        return mWindowManagerCallbacks.interceptKeyBeforeDispatching(focus, event, policyFlags);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     }
 
     // Native callback.
     private KeyEvent dispatchUnhandledKey(InputWindowHandle focus,
             KeyEvent event, int policyFlags) {
+<<<<<<< HEAD
         return mCallbacks.dispatchUnhandledKey(focus, event, policyFlags);
+=======
+        return mWindowManagerCallbacks.dispatchUnhandledKey(focus, event, policyFlags);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     }
 
     // Native callback.
@@ -1408,7 +1697,11 @@ public class InputManagerService extends IInputManager.Stub implements Watchdog.
 
     // Native callback.
     private int getPointerLayer() {
+<<<<<<< HEAD
         return mCallbacks.getPointerLayer();
+=======
+        return mWindowManagerCallbacks.getPointerLayer();
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     }
 
     // Native callback.
@@ -1452,18 +1745,31 @@ public class InputManagerService extends IInputManager.Stub implements Watchdog.
 
     // Native callback.
     private String getDeviceAlias(String uniqueId) {
+<<<<<<< HEAD
         if (mBluetoothService != null &&
                 BluetoothAdapter.checkBluetoothAddress(uniqueId)) {
             return mBluetoothService.getRemoteAlias(uniqueId);
+=======
+        if (BluetoothAdapter.checkBluetoothAddress(uniqueId)) {
+            // TODO(BT) mBluetoothService.getRemoteAlias(uniqueId)
+            return null;
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         }
         return null;
     }
 
+<<<<<<< HEAD
 
     /**
      * Callback interface implemented by the Window Manager.
      */
     public interface Callbacks {
+=======
+    /**
+     * Callback interface implemented by the Window Manager.
+     */
+    public interface WindowManagerCallbacks {
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         public void notifyConfigurationChanged();
 
         public void notifyLidSwitchChanged(long whenNanos, boolean lidOpen);
@@ -1487,9 +1793,26 @@ public class InputManagerService extends IInputManager.Stub implements Watchdog.
     }
 
     /**
+<<<<<<< HEAD
      * Private handler for the input manager.
      */
     private final class InputManagerHandler extends Handler {
+=======
+     * Callback interface implemented by WiredAccessoryObserver.
+     */
+    public interface WiredAccessoryCallbacks {
+        public void notifyWiredAccessoryChanged(long whenNanos, int switchValues, int switchMask);
+    }
+
+    /**
+     * Private handler for the input manager.
+     */
+    private final class InputManagerHandler extends Handler {
+        public InputManagerHandler(Looper looper) {
+            super(looper, null, true /*async*/);
+        }
+
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         @Override
         public void handleMessage(Message msg) {
             switch (msg.what) {
@@ -1515,13 +1838,21 @@ public class InputManagerService extends IInputManager.Stub implements Watchdog.
     /**
      * Hosting interface for input filters to call back into the input manager.
      */
+<<<<<<< HEAD
     private final class InputFilterHost implements InputFilter.Host {
+=======
+    private final class InputFilterHost extends IInputFilterHost.Stub {
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         private boolean mDisconnected;
 
         public void disconnectLocked() {
             mDisconnected = true;
         }
 
+<<<<<<< HEAD
+=======
+        @Override
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         public void sendInputEvent(InputEvent event, int policyFlags) {
             if (event == null) {
                 throw new IllegalArgumentException("event must not be null");

@@ -41,12 +41,15 @@ public interface NetworkStateTracker {
      * -------------------------------------------------------------
      */
 
+<<<<<<< HEAD
     // Share the event space with ConnectivityService (which we can't see, but
     // must send events to).  If you change these, change ConnectivityService
     // too.
     static final int MIN_NETWORK_STATE_TRACKER_EVENT = 1;
     static final int MAX_NETWORK_STATE_TRACKER_EVENT = 100;
 
+=======
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     /**
      * The network state has changed and the NetworkInfo object
      * contains the new state.
@@ -129,6 +132,14 @@ public interface NetworkStateTracker {
     public boolean reconnect();
 
     /**
+<<<<<<< HEAD
+=======
+     * Ready to switch on to the network after captive portal check
+     */
+    public void captivePortalCheckComplete();
+
+    /**
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
      * Turn the wireless radio off for a network.
      * @param turnOn {@code true} to turn the radio on, {@code false}
      */

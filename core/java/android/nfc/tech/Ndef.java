@@ -140,8 +140,13 @@ public final class Ndef extends BasicTagTechnology {
      *
      * <p>Does not cause any RF activity and does not block.
      *
+<<<<<<< HEAD
      * @param tag an MIFARE Classic compatible tag
      * @return MIFARE Classic object
+=======
+     * @param tag an NDEF compatible tag
+     * @return Ndef object
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
      */
     public static Ndef get(Tag tag) {
         if (!tag.hasTech(TagTechnology.NDEF)) return null;

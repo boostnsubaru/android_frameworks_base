@@ -119,7 +119,11 @@ public class FakeApp extends Application {
                 WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE
                 | WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE
                 | WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
+<<<<<<< HEAD
         if (ActivityManager.isHighEndGfx(display)) {
+=======
+        if (ActivityManager.isHighEndGfx()) {
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
             lp.flags |= WindowManager.LayoutParams.FLAG_HARDWARE_ACCELERATED;
         }
         lp.width = ViewGroup.LayoutParams.MATCH_PARENT;

@@ -1,5 +1,9 @@
 /*
+<<<<<<< HEAD
  * Copyright (C) 2009 The Android Open Source Project
+=======
+ * Copyright (C) 2009-2012 The Android Open Source Project
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -59,6 +63,7 @@ public class Matrix2f {
     /**
     * Returns the value for a given row and column
     *
+<<<<<<< HEAD
     * @param i row of the value to return
     * @param j column of the value to return
     *
@@ -66,16 +71,33 @@ public class Matrix2f {
     */
     public float get(int i, int j) {
         return mMat[i*2 + j];
+=======
+    * @param x column of the value to return
+    * @param y row of the value to return
+    *
+    * @return value in the yth row and xth column
+    */
+    public float get(int x, int y) {
+        return mMat[x*2 + y];
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     }
 
     /**
     * Sets the value for a given row and column
     *
+<<<<<<< HEAD
     * @param i row of the value to set
     * @param j column of the value to set
     */
     public void set(int i, int j, float v) {
         mMat[i*2 + j] = v;
+=======
+    * @param x column of the value to set
+    * @param y row of the value to set
+    */
+    public void set(int x, int y, float v) {
+        mMat[x*2 + y] = v;
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     }
 
     /**

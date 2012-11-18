@@ -89,7 +89,12 @@ public class Resources {
             = new LongSparseArray<ColorStateList>();
     private static final LongSparseArray<Drawable.ConstantState> sPreloadedColorDrawables
             = new LongSparseArray<Drawable.ConstantState>();
+<<<<<<< HEAD
     private static boolean mPreloaded;
+=======
+    private static boolean sPreloaded;
+    private static int sPreloadedDensity;
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 
     /*package*/ final TypedValue mTmpValue = new TypedValue();
     /*package*/ final Configuration mTmpConfig = new Configuration();
@@ -693,9 +698,15 @@ public class Resources {
              */
             if (value.density > 0 && value.density != TypedValue.DENSITY_NONE) {
                 if (value.density == density) {
+<<<<<<< HEAD
                     value.density = DisplayMetrics.DENSITY_DEVICE;
                 } else {
                     value.density = (value.density * DisplayMetrics.DENSITY_DEVICE) / density;
+=======
+                    value.density = mMetrics.densityDpi;
+                } else {
+                    value.density = (value.density * mMetrics.densityDpi) / density;
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
                 }
             }
 
@@ -1120,8 +1131,13 @@ public class Resources {
          * Return a StyledAttributes holding the values defined by
          * <var>Theme</var> which are listed in <var>attrs</var>.
          * 
+<<<<<<< HEAD
          * <p>Be sure to call StyledAttributes.recycle() when you are done with
          * the array.
+=======
+         * <p>Be sure to call {@link TypedArray#recycle() TypedArray.recycle()} when you are done
+         * with the array.
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
          * 
          * @param attrs The desired attributes.
          *
@@ -1148,8 +1164,13 @@ public class Resources {
          * Return a StyledAttributes holding the values defined by the style
          * resource <var>resid</var> which are listed in <var>attrs</var>.
          * 
+<<<<<<< HEAD
          * <p>Be sure to call StyledAttributes.recycle() when you are done with
          * the array.
+=======
+         * <p>Be sure to call {@link TypedArray#recycle() TypedArray.recycle()} when you are done
+         * with the array.
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
          * 
          * @param resid The desired style resource.
          * @param attrs The desired attributes in the style.
@@ -1208,8 +1229,13 @@ public class Resources {
          * AttributeSet specifies a style class (through the "style" attribute),
          * that style will be applied on top of the base attributes it defines.
          * 
+<<<<<<< HEAD
          * <p>Be sure to call StyledAttributes.recycle() when you are done with
          * the array.
+=======
+         * <p>Be sure to call {@link TypedArray#recycle() TypedArray.recycle()} when you are done
+         * with the array.
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
          * 
          * <p>When determining the final value of a particular attribute, there
          * are four inputs that come into play:</p>
@@ -1434,6 +1460,7 @@ public class Resources {
             int configChanges = 0xfffffff;
             if (config != null) {
                 mTmpConfig.setTo(config);
+<<<<<<< HEAD
                 if (mCompatibilityInfo != null) {
                     mCompatibilityInfo.applyToConfiguration(mTmpConfig);
                 }
@@ -1453,6 +1480,29 @@ public class Resources {
             }
             if (mConfiguration.locale == null) {
                 mConfiguration.locale = Locale.getDefault();
+=======
+                int density = config.densityDpi;
+                if (density == Configuration.DENSITY_DPI_UNDEFINED) {
+                    density = mMetrics.noncompatDensityDpi;
+                }
+                if (mCompatibilityInfo != null) {
+                    mCompatibilityInfo.applyToConfiguration(density, mTmpConfig);
+                }
+                if (mTmpConfig.locale == null) {
+                    mTmpConfig.locale = Locale.getDefault();
+                    mTmpConfig.setLayoutDirection(mTmpConfig.locale);
+                }
+                configChanges = mConfiguration.updateFrom(mTmpConfig);
+                configChanges = ActivityInfo.activityInfoConfigToNative(configChanges);
+            }
+            if (mConfiguration.locale == null) {
+                mConfiguration.locale = Locale.getDefault();
+                mConfiguration.setLayoutDirection(mConfiguration.locale);
+            }
+            if (mConfiguration.densityDpi != Configuration.DENSITY_DPI_UNDEFINED) {
+                mMetrics.densityDpi = mConfiguration.densityDpi;
+                mMetrics.density = mConfiguration.densityDpi * DisplayMetrics.DENSITY_DEFAULT_SCALE;
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
             }
             mMetrics.scaledDensity = mMetrics.density * mConfiguration.fontScale;
 
@@ -1482,7 +1532,11 @@ public class Resources {
             mAssets.setConfiguration(mConfiguration.mcc, mConfiguration.mnc,
                     locale, mConfiguration.orientation,
                     mConfiguration.touchscreen,
+<<<<<<< HEAD
                     (int)(mMetrics.density*160), mConfiguration.keyboard,
+=======
+                    mConfiguration.densityDpi, mConfiguration.keyboard,
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
                     keyboardHidden, mConfiguration.navigation, width, height,
                     mConfiguration.smallestScreenWidthDp,
                     mConfiguration.screenWidthDp, mConfiguration.screenHeightDp,
@@ -1511,6 +1565,7 @@ public class Resources {
     private void clearDrawableCache(
             LongSparseArray<WeakReference<ConstantState>> cache,
             int configChanges) {
+<<<<<<< HEAD
         /*
          * Quick test to find out if the config change that occurred should
          * trigger a full cache wipe.
@@ -1523,6 +1578,8 @@ public class Resources {
             cache.clear();
             return;
         }
+=======
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         int N = cache.size();
         if (DEBUG_CONFIG) {
             Log.d(TAG, "Cleaning up drawables config changes: 0x"
@@ -1856,11 +1913,22 @@ public class Resources {
      */
     public final void startPreloading() {
         synchronized (mSync) {
+<<<<<<< HEAD
             if (mPreloaded) {
                 throw new IllegalStateException("Resources already preloaded");
             }
             mPreloaded = true;
             mPreloading = true;
+=======
+            if (sPreloaded) {
+                throw new IllegalStateException("Resources already preloaded");
+            }
+            sPreloaded = true;
+            mPreloading = true;
+            sPreloadedDensity = DisplayMetrics.DENSITY_DEVICE;
+            mConfiguration.densityDpi = sPreloadedDensity;
+            updateConfiguration(null, null);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         }
     }
     
@@ -1875,6 +1943,7 @@ public class Resources {
         }
     }
 
+<<<<<<< HEAD
     /**
      * @hide
      */
@@ -1884,6 +1953,25 @@ public class Resources {
         }
     }
  
+=======
+    private boolean verifyPreloadConfig(TypedValue value, String name) {
+        if ((value.changingConfigurations&~(ActivityInfo.CONFIG_FONT_SCALE
+                | ActivityInfo.CONFIG_DENSITY)) != 0) {
+            String resName;
+            try {
+                resName = getResourceName(value.resourceId);
+            } catch (NotFoundException e) {
+                resName = "?";
+            }
+            Log.w(TAG, "Preloaded " + name + " resource #0x"
+                    + Integer.toHexString(value.resourceId)
+                    + " (" + resName + ") that varies with configuration!!");
+            return false;
+        }
+        return true;
+    }
+
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     /*package*/ Drawable loadDrawable(TypedValue value, int id)
             throws NotFoundException {
 
@@ -1895,20 +1983,36 @@ public class Resources {
             }
         }
 
+<<<<<<< HEAD
         final long key = (((long) value.assetCookie) << 32) | value.data;
+=======
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         boolean isColorDrawable = false;
         if (value.type >= TypedValue.TYPE_FIRST_COLOR_INT &&
                 value.type <= TypedValue.TYPE_LAST_COLOR_INT) {
             isColorDrawable = true;
         }
+<<<<<<< HEAD
+=======
+        final long key = isColorDrawable ? value.data :
+                (((long) value.assetCookie) << 32) | value.data;
+
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         Drawable dr = getCachedDrawable(isColorDrawable ? mColorDrawableCache : mDrawableCache, key);
 
         if (dr != null) {
             return dr;
         }
 
+<<<<<<< HEAD
         Drawable.ConstantState cs = isColorDrawable ?
                 sPreloadedColorDrawables.get(key) : sPreloadedDrawables.get(key);
+=======
+        Drawable.ConstantState cs = isColorDrawable
+                ? sPreloadedColorDrawables.get(key)
+                : (sPreloadedDensity == mConfiguration.densityDpi
+                        ? sPreloadedDrawables.get(key) : null);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         if (cs != null) {
             dr = cs.newDrawable(this);
         } else {
@@ -1976,10 +2080,19 @@ public class Resources {
             cs = dr.getConstantState();
             if (cs != null) {
                 if (mPreloading) {
+<<<<<<< HEAD
                     if (isColorDrawable) {
                         sPreloadedColorDrawables.put(key, cs);
                     } else {
                         sPreloadedDrawables.put(key, cs);
+=======
+                    if (verifyPreloadConfig(value, "drawable")) {
+                        if (isColorDrawable) {
+                            sPreloadedColorDrawables.put(key, cs);
+                        } else {
+                            sPreloadedDrawables.put(key, cs);
+                        }
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
                     }
                 } else {
                     synchronized (mTmpValue) {
@@ -2044,7 +2157,13 @@ public class Resources {
 
             csl = ColorStateList.valueOf(value.data);
             if (mPreloading) {
+<<<<<<< HEAD
                 sPreloadedColorStateLists.put(key, csl);
+=======
+                if (verifyPreloadConfig(value, "color")) {
+                    sPreloadedColorStateLists.put(key, csl);
+                }
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
             }
 
             return csl;
@@ -2088,7 +2207,13 @@ public class Resources {
 
         if (csl != null) {
             if (mPreloading) {
+<<<<<<< HEAD
                 sPreloadedColorStateLists.put(key, csl);
+=======
+                if (verifyPreloadConfig(value, "color")) {
+                    sPreloadedColorStateLists.put(key, csl);
+                }
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
             } else {
                 synchronized (mTmpValue) {
                     //Log.i(TAG, "Saving cached color state list @ #" +

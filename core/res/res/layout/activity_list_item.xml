@@ -22,8 +22,13 @@
     android:layout_height="wrap_content"
     android:paddingTop="1dip"
     android:paddingBottom="1dip"
+<<<<<<< HEAD
     android:paddingLeft="8dip"
     android:paddingRight="8dip">
+=======
+    android:paddingStart="8dip"
+    android:paddingEnd="8dip">
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 
     <ImageView android:id="@+id/icon"
         android:layout_width="24dip"
@@ -33,6 +38,10 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
+<<<<<<< HEAD
         android:paddingLeft="?android:attr/listPreferredItemPaddingLeft" />
+=======
+        android:paddingStart="?android:attr/listPreferredItemPaddingStart" />
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 </LinearLayout>
 

@@ -73,7 +73,11 @@ public abstract class InputEventReceiver {
     @Override
     protected void finalize() throws Throwable {
         try {
+<<<<<<< HEAD
             dispose();
+=======
+            dispose(true);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         } finally {
             super.finalize();
         }
@@ -83,9 +87,23 @@ public abstract class InputEventReceiver {
      * Disposes the receiver.
      */
     public void dispose() {
+<<<<<<< HEAD
         if (mCloseGuard != null) {
             mCloseGuard.close();
         }
+=======
+        dispose(false);
+    }
+
+    private void dispose(boolean finalized) {
+        if (mCloseGuard != null) {
+            if (finalized) {
+                mCloseGuard.warnIfOpen();
+            }
+            mCloseGuard.close();
+        }
+
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         if (mReceiverPtr != 0) {
             nativeDispose(mReceiverPtr);
             mReceiverPtr = 0;

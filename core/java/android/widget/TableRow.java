@@ -226,7 +226,11 @@ public class TableRow extends LinearLayout {
                 final int childWidth = child.getMeasuredWidth();
                 lp.mOffset[LayoutParams.LOCATION_NEXT] = columnWidth - childWidth;
 
+<<<<<<< HEAD
                 final int layoutDirection = getResolvedLayoutDirection();
+=======
+                final int layoutDirection = getLayoutDirection();
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
                 final int absoluteGravity = Gravity.getAbsoluteGravity(gravity, layoutDirection);
                 switch (absoluteGravity & Gravity.HORIZONTAL_GRAVITY_MASK) {
                     case Gravity.LEFT:

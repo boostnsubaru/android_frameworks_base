@@ -19,8 +19,13 @@
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:layout_gravity="center_vertical"
+<<<<<<< HEAD
     android:layout_marginLeft="8dip"
     android:layout_marginRight="-8dip"
+=======
+    android:layout_marginStart="8dip"
+    android:layout_marginEnd="-8dip"
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     android:layout_marginTop="8dip"
     android:layout_marginBottom="8dip"
     android:scaleType="centerInside"

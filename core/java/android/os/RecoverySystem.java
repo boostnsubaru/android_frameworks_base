@@ -40,6 +40,10 @@ import java.util.Enumeration;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
+<<<<<<< HEAD
+=======
+import java.util.Locale;
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 
@@ -326,7 +330,12 @@ public class RecoverySystem {
         throws IOException {
         String filename = packageFile.getCanonicalPath();
         Log.w(TAG, "!!! REBOOTING TO INSTALL " + filename + " !!!");
+<<<<<<< HEAD
         String arg = "--update_package=" + filename;
+=======
+        String arg = "--update_package=" + filename +
+            "\n--locale=" + Locale.getDefault().toString();
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         bootCommand(context, arg);
     }
 
@@ -346,7 +355,12 @@ public class RecoverySystem {
         final ConditionVariable condition = new ConditionVariable();
 
         Intent intent = new Intent("android.intent.action.MASTER_CLEAR_NOTIFICATION");
+<<<<<<< HEAD
         context.sendOrderedBroadcast(intent, android.Manifest.permission.MASTER_CLEAR,
+=======
+        context.sendOrderedBroadcastAsUser(intent, UserHandle.OWNER,
+                android.Manifest.permission.MASTER_CLEAR,
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
                 new BroadcastReceiver() {
                     @Override
                     public void onReceive(Context context, Intent intent) {
@@ -357,7 +371,11 @@ public class RecoverySystem {
         // Block until the ordered broadcast has completed.
         condition.block();
 
+<<<<<<< HEAD
         bootCommand(context, "--wipe_data");
+=======
+        bootCommand(context, "--wipe_data\n--locale=" + Locale.getDefault().toString());
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     }
 
     /**
@@ -365,7 +383,11 @@ public class RecoverySystem {
      * @throws IOException if something goes wrong.
      */
     public static void rebootWipeCache(Context context) throws IOException {
+<<<<<<< HEAD
         bootCommand(context, "--wipe_cache");
+=======
+        bootCommand(context, "--wipe_cache\n--locale=" + Locale.getDefault().toString());
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     }
 
     /**

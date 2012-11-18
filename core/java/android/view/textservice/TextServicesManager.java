@@ -91,11 +91,19 @@ public final class TextServicesManager {
 
     /**
      * Get a spell checker session for the specified spell checker
+<<<<<<< HEAD
      * @param locale the locale for the spell checker. If {@param locale} is null and
      * referToSpellCheckerLanguageSettings is true, the locale specified in Settings will be
      * returned. If {@param locale} is not null and referToSpellCheckerLanguageSettings is true,
      * the locale specified in Settings will be returned only when it is same as {@param locale}.
      * Exceptionally, when referToSpellCheckerLanguageSettings is true and {@param locale} is
+=======
+     * @param locale the locale for the spell checker. If {@code locale} is null and
+     * referToSpellCheckerLanguageSettings is true, the locale specified in Settings will be
+     * returned. If {@code locale} is not null and referToSpellCheckerLanguageSettings is true,
+     * the locale specified in Settings will be returned only when it is same as {@code locale}.
+     * Exceptionally, when referToSpellCheckerLanguageSettings is true and {@code locale} is
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
      * only language (e.g. "en"), the specified locale in Settings (e.g. "en_US") will be
      * selected.
      * @param listener a spell checker session lister for getting results from a spell checker.
@@ -217,6 +225,15 @@ public final class TextServicesManager {
     public SpellCheckerSubtype getCurrentSpellCheckerSubtype(
             boolean allowImplicitlySelectedSubtype) {
         try {
+<<<<<<< HEAD
+=======
+            if (sService == null) {
+                // TODO: This is a workaround. Needs to investigate why sService could be null
+                // here.
+                Log.e(TAG, "sService is null.");
+                return null;
+            }
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
             // Passing null as a locale until we support multiple enabled spell checker subtypes.
             return sService.getCurrentSpellCheckerSubtype(null, allowImplicitlySelectedSubtype);
         } catch (RemoteException e) {

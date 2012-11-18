@@ -19,6 +19,10 @@
 
 #include <media/stagefright/foundation/ABase.h>
 #include <media/stagefright/MediaSource.h>
+<<<<<<< HEAD
+=======
+#include <media/stagefright/DataSource.h>
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 #include <utils/Errors.h>
 #include <utils/KeyedVector.h>
 #include <utils/RefBase.h>
@@ -39,6 +43,10 @@ struct JMediaExtractor : public RefBase {
             const KeyedVector<String8, String8> *headers);
 
     status_t setDataSource(int fd, off64_t offset, off64_t size);
+<<<<<<< HEAD
+=======
+    status_t setDataSource(const sp<DataSource> &source);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 
     size_t countTracks() const;
     status_t getTrackFormat(size_t index, jobject *format) const;

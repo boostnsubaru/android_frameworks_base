@@ -16,6 +16,7 @@
 
 package android.content;
 
+<<<<<<< HEAD
 import com.google.android.collect.Maps;
 
 import android.content.pm.RegisteredServicesCache;
@@ -26,16 +27,36 @@ import android.util.Log;
 import android.accounts.Account;
 
 import java.util.ArrayList;
+=======
+import android.accounts.Account;
+import android.content.pm.RegisteredServicesCache.ServiceInfo;
+import android.os.SystemClock;
+import android.os.UserHandle;
+import android.text.format.DateUtils;
+import android.util.Log;
+import android.util.Pair;
+
+import com.google.android.collect.Maps;
+
+import java.util.ArrayList;
+import java.util.Collection;
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
 /**
+<<<<<<< HEAD
+=======
+ * Queue of pending sync operations. Not inherently thread safe, external
+ * callers are responsible for locking.
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
  *
  * @hide
  */
 public class SyncQueue {
     private static final String TAG = "SyncManager";
+<<<<<<< HEAD
     private SyncStorageEngine mSyncStorageEngine;
 
     // A Map of SyncOperations operationKey -> SyncOperation that is designed for
@@ -55,12 +76,42 @@ public class SyncQueue {
                     syncAdapters.getServiceInfo(
                             SyncAdapterType.newKey(op.authority, op.account.type));
             if (syncAdapterInfo == null) {
+=======
+
+    private final SyncStorageEngine mSyncStorageEngine;
+    private final SyncAdaptersCache mSyncAdapters;
+
+    // A Map of SyncOperations operationKey -> SyncOperation that is designed for
+    // quick lookup of an enqueued SyncOperation.
+    private final HashMap<String, SyncOperation> mOperationsMap = Maps.newHashMap();
+
+    public SyncQueue(SyncStorageEngine syncStorageEngine, final SyncAdaptersCache syncAdapters) {
+        mSyncStorageEngine = syncStorageEngine;
+        mSyncAdapters = syncAdapters;
+    }
+
+    public void addPendingOperations(int userId) {
+        for (SyncStorageEngine.PendingOperation op : mSyncStorageEngine.getPendingOperations()) {
+            if (op.userId != userId) continue;
+
+            final Pair<Long, Long> backoff = mSyncStorageEngine.getBackoff(
+                    op.account, op.userId, op.authority);
+            final ServiceInfo<SyncAdapterType> syncAdapterInfo = mSyncAdapters.getServiceInfo(
+                    SyncAdapterType.newKey(op.authority, op.account.type), op.userId);
+            if (syncAdapterInfo == null) {
+                Log.w(TAG, "Missing sync adapter info for authority " + op.authority + ", userId "
+                        + op.userId);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
                 continue;
             }
             SyncOperation syncOperation = new SyncOperation(
                     op.account, op.userId, op.syncSource, op.authority, op.extras, 0 /* delay */,
                     backoff != null ? backoff.first : 0,
+<<<<<<< HEAD
                     syncStorageEngine.getDelayUntilTime(op.account, op.userId, op.authority),
+=======
+                    mSyncStorageEngine.getDelayUntilTime(op.account, op.userId, op.authority),
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
                     syncAdapterInfo.type.allowParallelSyncs());
             syncOperation.expedited = op.expedited;
             syncOperation.pendingOperation = op;
@@ -190,6 +241,13 @@ public class SyncQueue {
         }
     }
 
+<<<<<<< HEAD
+=======
+    public Collection<SyncOperation> getOperations() {
+        return mOperationsMap.values();
+    }
+
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     public void dump(StringBuilder sb) {
         final long now = SystemClock.elapsedRealtime();
         sb.append("SyncQueue: ").append(mOperationsMap.size()).append(" operation(s)\n");

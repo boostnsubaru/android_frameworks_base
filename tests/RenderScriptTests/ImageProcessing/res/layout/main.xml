@@ -50,8 +50,21 @@
                         android:textSize="8pt"
                         android:text="@string/saturation"/>
             </LinearLayout>
+<<<<<<< HEAD
             <TextView
                 android:id="@+id/inSaturationText"
+=======
+            <Spinner
+                android:id="@+id/filterselection"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"/>
+            <Spinner
+                android:id="@+id/spinner1"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"/>
+            <TextView
+                android:id="@+id/slider1Text"
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textSize="8pt"
@@ -59,13 +72,21 @@
                 android:layout_marginTop="15sp"
                 android:text="@string/saturation"/>
              <SeekBar
+<<<<<<< HEAD
                 android:id="@+id/inSaturation"
+=======
+                android:id="@+id/slider1"
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
                 android:layout_marginLeft="10sp"
                 android:layout_marginRight="10sp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"/>
             <TextView
+<<<<<<< HEAD
                 android:id="@+id/inGammaText"
+=======
+                android:id="@+id/slider2Text"
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textSize="8pt"
@@ -73,13 +94,21 @@
                 android:layout_marginTop="15sp"
                 android:text="@string/gamma"/>
             <SeekBar
+<<<<<<< HEAD
                 android:id="@+id/inGamma"
+=======
+                android:id="@+id/slider2"
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
                 android:layout_marginLeft="10sp"
                 android:layout_marginRight="10sp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"/>
             <TextView
+<<<<<<< HEAD
                 android:id="@+id/outWhiteText"
+=======
+                android:id="@+id/slider3Text"
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="10sp"
@@ -87,13 +116,21 @@
                 android:textSize="8pt"
                 android:text="@string/out_white"/>
             <SeekBar
+<<<<<<< HEAD
                 android:id="@+id/outWhite"
+=======
+                android:id="@+id/slider3"
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
                 android:layout_marginLeft="10sp"
                 android:layout_marginRight="10sp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"/>
             <TextView
+<<<<<<< HEAD
                 android:id="@+id/inWhiteText"
+=======
+                android:id="@+id/slider4Text"
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textSize="8pt"
@@ -101,6 +138,7 @@
                 android:layout_marginTop="15sp"
                 android:text="@string/in_white"/>
             <SeekBar
+<<<<<<< HEAD
                 android:id="@+id/inWhite"
                 android:layout_marginLeft="10sp"
                 android:layout_marginRight="10sp"
@@ -116,24 +154,38 @@
                 android:text="@string/out_black"/>
             <SeekBar
                 android:id="@+id/outBlack"
+=======
+                android:id="@+id/slider4"
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
                 android:layout_marginLeft="10sp"
                 android:layout_marginRight="10sp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"/>
             <TextView
+<<<<<<< HEAD
                 android:id="@+id/inBlackText"
+=======
+                android:id="@+id/slider5Text"
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textSize="8pt"
                 android:layout_marginLeft="10sp"
                 android:layout_marginTop="15sp"
+<<<<<<< HEAD
                 android:text="@string/in_black"/>
             <SeekBar
                 android:id="@+id/inBlack"
+=======
+                android:text="@string/in_white"/>
+            <SeekBar
+                android:id="@+id/slider5"
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
                 android:layout_marginLeft="10sp"
                 android:layout_marginRight="10sp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"/>
+<<<<<<< HEAD
             <TextView
                 android:id="@+id/blurText"
                 android:layout_width="match_parent"
@@ -148,6 +200,13 @@
                 android:layout_marginRight="10sp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"/>
+=======
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/benchmark_all"
+                    android:onClick="benchmark_all"/>
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
             </LinearLayout>
     </ScrollView>
 </LinearLayout>

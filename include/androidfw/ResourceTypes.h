@@ -1,6 +1,9 @@
 /*
  * Copyright (C) 2005 The Android Open Source Project
+<<<<<<< HEAD
  * This code has been modified.  Portions copyright (C) 2010, T-Mobile USA, Inc.
+=======
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -24,7 +27,10 @@
 #include <androidfw/Asset.h>
 #include <utils/ByteOrder.h>
 #include <utils/Errors.h>
+<<<<<<< HEAD
 #include <androidfw/PackageRedirectionMap.h>
+=======
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 #include <utils/String16.h>
 #include <utils/Vector.h>
 
@@ -959,6 +965,16 @@ struct ResTable_config
         SCREENLONG_ANY = ACONFIGURATION_SCREENLONG_ANY << SHIFT_SCREENLONG,
         SCREENLONG_NO = ACONFIGURATION_SCREENLONG_NO << SHIFT_SCREENLONG,
         SCREENLONG_YES = ACONFIGURATION_SCREENLONG_YES << SHIFT_SCREENLONG,
+<<<<<<< HEAD
+=======
+
+        // screenLayout bits for layout direction.
+        MASK_LAYOUTDIR = 0xC0,
+        SHIFT_LAYOUTDIR = 6,
+        LAYOUTDIR_ANY = ACONFIGURATION_LAYOUTDIR_ANY << SHIFT_LAYOUTDIR,
+        LAYOUTDIR_LTR = ACONFIGURATION_LAYOUTDIR_LTR << SHIFT_LAYOUTDIR,
+        LAYOUTDIR_RTL = ACONFIGURATION_LAYOUTDIR_RTL << SHIFT_LAYOUTDIR,
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     };
     
     enum {
@@ -1022,7 +1038,12 @@ struct ResTable_config
         CONFIG_SMALLEST_SCREEN_SIZE = ACONFIGURATION_SMALLEST_SCREEN_SIZE,
         CONFIG_VERSION = ACONFIGURATION_VERSION,
         CONFIG_SCREEN_LAYOUT = ACONFIGURATION_SCREEN_LAYOUT,
+<<<<<<< HEAD
         CONFIG_UI_MODE = ACONFIGURATION_UI_MODE
+=======
+        CONFIG_UI_MODE = ACONFIGURATION_UI_MODE,
+        CONFIG_LAYOUTDIR = ACONFIGURATION_LAYOUTDIR,
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     };
     
     // Compare two configuration, returning CONFIG_* flags set for each value
@@ -1063,7 +1084,11 @@ struct ResTable_config
  * There should be one of these chunks for each resource type.
  *
  * This structure is followed by an array of integers providing the set of
+<<<<<<< HEAD
  * configuation change flags (ResTable_config::CONFIG_*) that have multiple
+=======
+ * configuration change flags (ResTable_config::CONFIG_*) that have multiple
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
  * resources for that configuration.  In addition, the high bit is set if that
  * resource has been made public.
  */
@@ -1278,9 +1303,12 @@ public:
                  bool copyData=false, const void* idmap = NULL);
     status_t add(ResTable* src);
 
+<<<<<<< HEAD
     void addRedirections(PackageRedirectionMap* resMap);
     void clearRedirections();
 
+=======
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     status_t getError() const;
 
     void uninit();
@@ -1328,8 +1356,11 @@ public:
                              uint32_t* inoutTypeSpecFlags = NULL,
                              ResTable_config* outConfig = NULL) const;
 
+<<<<<<< HEAD
     uint32_t lookupRedirectionMap(uint32_t resID) const;
 
+=======
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     enum {
         TMP_BUFFER_SIZE = 16
     };
@@ -1550,7 +1581,10 @@ public:
     // IDMAP_HEADER_SIZE_BYTES) bytes of an idmap file.
     static bool getIdmapInfo(const void* idmap, size_t size,
                              uint32_t* pOriginalCrc, uint32_t* pOverlayCrc);
+<<<<<<< HEAD
     void removeAssetsByCookie(const String8 &packageName, void* cookie);
+=======
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 
 #ifndef HAVE_ANDROID_OS
     void print(bool inclValues) const;
@@ -1593,11 +1627,14 @@ private:
     // Mapping from resource package IDs to indices into the internal
     // package array.
     uint8_t                     mPackageMap[256];
+<<<<<<< HEAD
 
     // Resource redirection mapping provided by the applied theme (if there is
     // one).  Resources requested which are found in this map will be
     // automatically redirected to the appropriate themed value.
     Vector<PackageRedirectionMap*> mRedirectionMap;
+=======
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 };
 
 }   // namespace android

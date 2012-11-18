@@ -142,6 +142,11 @@ public class PopupWindow {
         };
     private int mAnchorXoff, mAnchorYoff;
 
+<<<<<<< HEAD
+=======
+    private boolean mPopupViewInitialLayoutDirectionInherited;
+
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     /**
      * <p>Create a new empty, non focusable popup window of dimension (0,0).</p>
      *
@@ -835,7 +840,11 @@ public class PopupWindow {
        
         preparePopup(p);
         if (gravity == Gravity.NO_GRAVITY) {
+<<<<<<< HEAD
             gravity = Gravity.TOP | Gravity.LEFT;
+=======
+            gravity = Gravity.TOP | Gravity.START;
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         }
         p.gravity = gravity;
         p.x = x;
@@ -968,6 +977,11 @@ public class PopupWindow {
         } else {
             mPopupView = mContentView;
         }
+<<<<<<< HEAD
+=======
+        mPopupViewInitialLayoutDirectionInherited =
+                (mPopupView.getRawLayoutDirection() == View.LAYOUT_DIRECTION_INHERIT);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         mPopupWidth = p.width;
         mPopupHeight = p.height;
     }
@@ -985,9 +999,25 @@ public class PopupWindow {
             p.packageName = mContext.getPackageName();
         }
         mPopupView.setFitsSystemWindows(mLayoutInsetDecor);
+<<<<<<< HEAD
         mWindowManager.addView(mPopupView, p);
     }
 
+=======
+        setLayoutDirectionFromAnchor();
+        mWindowManager.addView(mPopupView, p);
+    }
+
+    private void setLayoutDirectionFromAnchor() {
+        if (mAnchor != null) {
+            View anchor = mAnchor.get();
+            if (anchor != null && mPopupViewInitialLayoutDirectionInherited) {
+                mPopupView.setLayoutDirection(anchor.getLayoutDirection());
+            }
+        }
+    }
+
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     /**
      * <p>Generate the layout parameters for the popup window.</p>
      *
@@ -1003,7 +1033,11 @@ public class PopupWindow {
         // screen. The view is then positioned to the appropriate location
         // by setting the x and y offsets to match the anchor's bottom
         // left corner
+<<<<<<< HEAD
         p.gravity = Gravity.LEFT | Gravity.TOP;
+=======
+        p.gravity = Gravity.START | Gravity.TOP;
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         p.width = mLastWidth = mWidth;
         p.height = mLastHeight = mHeight;
         if (mBackground != null) {
@@ -1100,7 +1134,11 @@ public class PopupWindow {
         
         boolean onTop = false;
 
+<<<<<<< HEAD
         p.gravity = Gravity.LEFT | Gravity.TOP;
+=======
+        p.gravity = Gravity.START | Gravity.TOP;
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         
         anchor.getLocationOnScreen(mScreenLocation);
         final Rect displayFrame = new Rect();
@@ -1134,7 +1172,11 @@ public class PopupWindow {
             onTop = (displayFrame.bottom - mScreenLocation[1] - anchor.getHeight() - yoff) <
                     (mScreenLocation[1] - yoff - displayFrame.top);
             if (onTop) {
+<<<<<<< HEAD
                 p.gravity = Gravity.LEFT | Gravity.BOTTOM;
+=======
+                p.gravity = Gravity.START | Gravity.BOTTOM;
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
                 p.y = root.getHeight() - mDrawingLocation[1] + yoff;
             } else {
                 p.y = mDrawingLocation[1] + anchor.getHeight() + yoff;
@@ -1304,8 +1346,14 @@ public class PopupWindow {
             p.flags = newFlags;
             update = true;
         }
+<<<<<<< HEAD
         
         if (update) {
+=======
+
+        if (update) {
+            setLayoutDirectionFromAnchor();
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
             mWindowManager.updateViewLayout(mPopupView, p);
         }
     }
@@ -1406,6 +1454,10 @@ public class PopupWindow {
         }
 
         if (update) {
+<<<<<<< HEAD
+=======
+            setLayoutDirectionFromAnchor();
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
             mWindowManager.updateViewLayout(mPopupView, p);
         }
     }
@@ -1482,7 +1534,11 @@ public class PopupWindow {
         } else {
             updateAboveAnchor(findDropDownPosition(anchor, p, mAnchorXoff, mAnchorYoff));            
         }
+<<<<<<< HEAD
         
+=======
+
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         update(p.x, p.y, width, height, x != p.x || y != p.y);
     }
 

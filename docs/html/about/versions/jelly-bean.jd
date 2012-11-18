@@ -1,6 +1,7 @@
 page.title=Android 4.1 for Developers
 @jd:body
 
+<<<<<<< HEAD
 
 <!--<style type="text/css">
 #jd-content {
@@ -24,6 +25,8 @@ page.title=Android 4.1 for Developers
 <p class="image-caption">Find out more about the Jelly Bean features for users at <a href="http://www.android.com">android.com</a></p>
 </div>-->
 
+=======
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 <div style="float:right;width:320px;padding:0px 0px 0px 34px;clear:both">
 <div>
 <img src="{@docRoot}images/jb-android-4.1.png" height="426" width="390">
@@ -35,6 +38,7 @@ page.title=Android 4.1 for Developers
 improvements throughout the platform and added great new features
 for users and developers. This document provides a glimpse of what's new for developers.
 
+<<<<<<< HEAD
 <p>See the <a href="{@docRoot}about/versions/android-4.1.html">Android 4.1 APIs</a> document for a detailed look at the new developer APIs,</p>
 
 <!--
@@ -52,6 +56,11 @@ for users and developers. This document provides a glimpse of what's new for dev
 -->
 
 <p>Find out more about the Jelly Bean features for users at <a href="http://www.android.com/whatsnew">www.android.com</a></p>
+=======
+<p>See the <a href="{@docRoot}about/versions/android-4.1.html">Android 4.1 APIs</a> document for a detailed look at the new developer APIs.</p>
+
+<p>Find out more about the Jelly Bean features for users at <a href="http://www.android.com/whatsnew">www.android.com</a>.</p>
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 
 
 <h2 id="performance">Faster, Smoother, More Responsive</h2>
@@ -340,6 +349,7 @@ style="font-weight:500;">App Widgets</span> can resize automatically to fit the 
 
 <p>Smart app updates is a new feature of Google Play that introduces a better way of delivering <strong>app updates</strong> to devices. When developers publish an update, Google Play now delivers only the <strong>bits that have changed</strong> to devices, rather than the entire APK. This makes the updates much lighter-weight in most cases, so they are faster to download, save the device’s battery, and conserve bandwidth usage on users’ mobile data plan. On average, a smart app update is about <strong>1/3 the size</strong> of a full APK update.</p>
 
+<<<<<<< HEAD
 <h3 id="gps">Google Play services (coming soon)</h3>
 
 <p>Google Play services helps developers to <strong>integrate Google services</strong> such as authentication and Google+ into their apps delivered through Google Play.</p> 
@@ -349,3 +359,14 @@ style="font-weight:500;">App Widgets</span> can resize automatically to fit the 
 <p>Because your app only contains the small client library, you can take advantage of these services without a big increase in download size and storage footprint. Also, Google Play will <strong>deliver regular updates</strong> to the services, without developers needing to publish app updates to take advantage of them.</p>
 
 <p>For more information about the APIs included in Google Play Services, see the <a href="http://developers.google.com/android/google-play-services/index.html">Google Play Services</a> developer page.</p>
+=======
+<h3 id="gps">Google Play services</h3>
+
+<p>Google Play services helps developers to <strong>integrate Google services</strong> such as authentication and Google+ into their apps delivered through Google Play.</p> 
+
+<p>Google Play services is automatically provisioned to end user devices by Google Play, so all you need is a <strong>thin client library</strong> in your apps.</p>
+
+<p>Because your app only contains the small client library, you can take advantage of these services without a big increase in download size and storage footprint. Also, Google Play will <strong>deliver regular updates</strong> to the services, without developers needing to publish app updates to take advantage of them.</p>
+
+<p>For more information about the APIs included in Google Play Services, see the <a href="http://developers.google.com/android/google-play-services/index.html">Google Play services</a> developer page.</p>
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a

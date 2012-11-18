@@ -44,6 +44,10 @@ import android.os.RemoteException;
 import android.os.ServiceManager;
 import android.os.SystemClock;
 import android.os.SystemProperties;
+<<<<<<< HEAD
+=======
+import android.os.UserHandle;
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 import android.provider.Settings;
 import android.telephony.TelephonyManager;
 import android.text.TextUtils;
@@ -52,7 +56,10 @@ import android.util.Slog;
 import android.util.TrustedTime;
 
 import com.android.internal.R;
+<<<<<<< HEAD
 import com.android.internal.app.ThemeUtils;
+=======
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 import com.android.internal.telephony.TelephonyProperties;
 
 import java.io.BufferedWriter;
@@ -80,7 +87,10 @@ public class ThrottleService extends IThrottleManager.Stub {
     private HandlerThread mThread;
 
     private Context mContext;
+<<<<<<< HEAD
     private Context mUiContext;
+=======
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 
     private static final int INITIAL_POLL_DELAY_SEC = 90;
     private static final int TESTING_POLLING_PERIOD_SEC = 60 * 1;
@@ -197,6 +207,10 @@ public class ThrottleService extends IThrottleManager.Stub {
 
         public void interfaceRemoved(String iface) {}
         public void limitReached(String limitName, String iface) {}
+<<<<<<< HEAD
+=======
+        public void interfaceClassDataActivityChanged(String label, boolean active) {}
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     }
 
 
@@ -211,6 +225,7 @@ public class ThrottleService extends IThrottleManager.Stub {
 
         void register(Context context) {
             ContentResolver resolver = context.getContentResolver();
+<<<<<<< HEAD
             resolver.registerContentObserver(Settings.Secure.getUriFor(
                     Settings.Secure.THROTTLE_POLLING_SEC), false, this);
             resolver.registerContentObserver(Settings.Secure.getUriFor(
@@ -225,6 +240,22 @@ public class ThrottleService extends IThrottleManager.Stub {
                     Settings.Secure.THROTTLE_HELP_URI), false, this);
             resolver.registerContentObserver(Settings.Secure.getUriFor(
                     Settings.Secure.THROTTLE_MAX_NTP_CACHE_AGE_SEC), false, this);
+=======
+            resolver.registerContentObserver(Settings.Global.getUriFor(
+                    Settings.Global.THROTTLE_POLLING_SEC), false, this);
+            resolver.registerContentObserver(Settings.Global.getUriFor(
+                    Settings.Global.THROTTLE_THRESHOLD_BYTES), false, this);
+            resolver.registerContentObserver(Settings.Global.getUriFor(
+                    Settings.Global.THROTTLE_VALUE_KBITSPS), false, this);
+            resolver.registerContentObserver(Settings.Global.getUriFor(
+                    Settings.Global.THROTTLE_RESET_DAY), false, this);
+            resolver.registerContentObserver(Settings.Global.getUriFor(
+                    Settings.Global.THROTTLE_NOTIFICATION_TYPE), false, this);
+            resolver.registerContentObserver(Settings.Global.getUriFor(
+                    Settings.Global.THROTTLE_HELP_URI), false, this);
+            resolver.registerContentObserver(Settings.Global.getUriFor(
+                    Settings.Global.THROTTLE_MAX_NTP_CACHE_AGE_SEC), false, this);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         }
 
         void unregister(Context context) {
@@ -297,8 +328,13 @@ public class ThrottleService extends IThrottleManager.Stub {
 
     public String getHelpUri() {
         enforceAccessPermission();
+<<<<<<< HEAD
         return Settings.Secure.getString(mContext.getContentResolver(),
                     Settings.Secure.THROTTLE_HELP_URI);
+=======
+        return Settings.Global.getString(mContext.getContentResolver(),
+                    Settings.Global.THROTTLE_HELP_URI);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     }
 
     // TODO - fetch for the iface
@@ -339,6 +375,7 @@ public class ThrottleService extends IThrottleManager.Stub {
                 }
             }, new IntentFilter(ACTION_RESET));
 
+<<<<<<< HEAD
         ThemeUtils.registerThemeChangeReceiver(mContext, new BroadcastReceiver() {
             @Override
             public void onReceive(Context context, Intent intent) {
@@ -346,6 +383,8 @@ public class ThrottleService extends IThrottleManager.Stub {
             }
         });
 
+=======
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         // use a new thread as we don't want to stall the system for file writes
         mThread = new HandlerThread(TAG);
         mThread.start();
@@ -376,7 +415,11 @@ public class ThrottleService extends IThrottleManager.Stub {
         }
 
         if (mPollStickyBroadcast != null) {
+<<<<<<< HEAD
             mContext.removeStickyBroadcast(mPollStickyBroadcast);
+=======
+            mContext.removeStickyBroadcastAsUser(mPollStickyBroadcast, UserHandle.ALL);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         }
     }
 
@@ -443,18 +486,30 @@ public class ThrottleService extends IThrottleManager.Stub {
 
             int pollingPeriod = mContext.getResources().getInteger(
                     R.integer.config_datause_polling_period_sec);
+<<<<<<< HEAD
             mPolicyPollPeriodSec = Settings.Secure.getInt(mContext.getContentResolver(),
                     Settings.Secure.THROTTLE_POLLING_SEC, pollingPeriod);
+=======
+            mPolicyPollPeriodSec = Settings.Global.getInt(mContext.getContentResolver(),
+                    Settings.Global.THROTTLE_POLLING_SEC, pollingPeriod);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 
             // TODO - remove testing stuff?
             long defaultThreshold = mContext.getResources().getInteger(
                     R.integer.config_datause_threshold_bytes);
             int defaultValue = mContext.getResources().getInteger(
                     R.integer.config_datause_throttle_kbitsps);
+<<<<<<< HEAD
             long threshold = Settings.Secure.getLong(mContext.getContentResolver(),
                     Settings.Secure.THROTTLE_THRESHOLD_BYTES, defaultThreshold);
             int value = Settings.Secure.getInt(mContext.getContentResolver(),
                     Settings.Secure.THROTTLE_VALUE_KBITSPS, defaultValue);
+=======
+            long threshold = Settings.Global.getLong(mContext.getContentResolver(),
+                    Settings.Global.THROTTLE_THRESHOLD_BYTES, defaultThreshold);
+            int value = Settings.Global.getInt(mContext.getContentResolver(),
+                    Settings.Global.THROTTLE_VALUE_KBITSPS, defaultValue);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 
             mPolicyThreshold.set(threshold);
             mPolicyThrottleValue.set(value);
@@ -463,14 +518,24 @@ public class ThrottleService extends IThrottleManager.Stub {
                 mPolicyThreshold.set(TESTING_THRESHOLD);
             }
 
+<<<<<<< HEAD
             mPolicyResetDay = Settings.Secure.getInt(mContext.getContentResolver(),
                     Settings.Secure.THROTTLE_RESET_DAY, -1);
+=======
+            mPolicyResetDay = Settings.Global.getInt(mContext.getContentResolver(),
+                    Settings.Global.THROTTLE_RESET_DAY, -1);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
             if (mPolicyResetDay == -1 ||
                     ((mPolicyResetDay < 1) || (mPolicyResetDay > 28))) {
                 Random g = new Random();
                 mPolicyResetDay = 1 + g.nextInt(28); // 1-28
+<<<<<<< HEAD
                 Settings.Secure.putInt(mContext.getContentResolver(),
                 Settings.Secure.THROTTLE_RESET_DAY, mPolicyResetDay);
+=======
+                Settings.Global.putInt(mContext.getContentResolver(),
+                Settings.Global.THROTTLE_RESET_DAY, mPolicyResetDay);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
             }
             if (mIface == null) {
                 mPolicyThreshold.set(0);
@@ -478,11 +543,19 @@ public class ThrottleService extends IThrottleManager.Stub {
 
             int defaultNotificationType = mContext.getResources().getInteger(
                     R.integer.config_datause_notification_type);
+<<<<<<< HEAD
             mPolicyNotificationsAllowedMask = Settings.Secure.getInt(mContext.getContentResolver(),
                     Settings.Secure.THROTTLE_NOTIFICATION_TYPE, defaultNotificationType);
 
             final int maxNtpCacheAgeSec = Settings.Secure.getInt(mContext.getContentResolver(),
                     Settings.Secure.THROTTLE_MAX_NTP_CACHE_AGE_SEC,
+=======
+            mPolicyNotificationsAllowedMask = Settings.Global.getInt(mContext.getContentResolver(),
+                    Settings.Global.THROTTLE_NOTIFICATION_TYPE, defaultNotificationType);
+
+            final int maxNtpCacheAgeSec = Settings.Global.getInt(mContext.getContentResolver(),
+                    Settings.Global.THROTTLE_MAX_NTP_CACHE_AGE_SEC,
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
                     (int) (MAX_NTP_CACHE_AGE / 1000));
             mMaxNtpCacheAge = maxNtpCacheAgeSec * 1000;
 
@@ -502,7 +575,11 @@ public class ThrottleService extends IThrottleManager.Stub {
             onPollAlarm();
 
             Intent broadcast = new Intent(ThrottleManager.POLICY_CHANGED_ACTION);
+<<<<<<< HEAD
             mContext.sendBroadcast(broadcast);
+=======
+            mContext.sendBroadcastAsUser(broadcast, UserHandle.ALL);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         }
 
         private void onPollAlarm() {
@@ -571,7 +648,11 @@ public class ThrottleService extends IThrottleManager.Stub {
             broadcast.putExtra(ThrottleManager.EXTRA_CYCLE_WRITE, periodTx);
             broadcast.putExtra(ThrottleManager.EXTRA_CYCLE_START, getPeriodStartTime(mIface));
             broadcast.putExtra(ThrottleManager.EXTRA_CYCLE_END, getResetTime(mIface));
+<<<<<<< HEAD
             mContext.sendStickyBroadcast(broadcast);
+=======
+            mContext.sendStickyBroadcastAsUser(broadcast, UserHandle.ALL);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
             mPollStickyBroadcast = broadcast;
 
             mAlarmManager.cancel(mPendingPollIntent);
@@ -629,7 +710,11 @@ public class ThrottleService extends IThrottleManager.Stub {
                     Intent broadcast = new Intent(ThrottleManager.THROTTLE_ACTION);
                     broadcast.putExtra(ThrottleManager.EXTRA_THROTTLE_LEVEL,
                             mPolicyThrottleValue.get());
+<<<<<<< HEAD
                     mContext.sendStickyBroadcast(broadcast);
+=======
+                    mContext.sendStickyBroadcastAsUser(broadcast, UserHandle.ALL);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 
                 } // else already up!
             } else {
@@ -677,7 +762,12 @@ public class ThrottleService extends IThrottleManager.Stub {
             intent.setClassName("com.android.phone", "com.android.phone.DataUsage");
             intent.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
 
+<<<<<<< HEAD
             PendingIntent pi = PendingIntent.getActivity(mContext, 0, intent, 0);
+=======
+            PendingIntent pi = PendingIntent.getActivityAsUser(mContext, 0, intent, 0,
+                    null, UserHandle.CURRENT);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 
             Resources r = Resources.getSystem();
             CharSequence title = r.getText(titleInt);
@@ -691,6 +781,7 @@ public class ThrottleService extends IThrottleManager.Stub {
             }
             mThrottlingNotification.flags = flags;
             mThrottlingNotification.tickerText = title;
+<<<<<<< HEAD
             mThrottlingNotification.setLatestEventInfo(getUiContext(), title, message, pi);
 
             mNotificationManager.notify(mThrottlingNotification.icon, mThrottlingNotification);
@@ -702,6 +793,14 @@ public class ThrottleService extends IThrottleManager.Stub {
         }
         return mUiContext != null ? mUiContext : mContext;
     }
+=======
+            mThrottlingNotification.setLatestEventInfo(mContext, title, message, pi);
+
+            mNotificationManager.notifyAsUser(null, mThrottlingNotification.icon,
+                    mThrottlingNotification, UserHandle.ALL);
+        }
+
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 
         private void clearThrottleAndNotification() {
             if (mThrottleIndex.get() != THROTTLE_INDEX_UNTHROTTLED) {
@@ -713,8 +812,14 @@ public class ThrottleService extends IThrottleManager.Stub {
                 }
                 Intent broadcast = new Intent(ThrottleManager.THROTTLE_ACTION);
                 broadcast.putExtra(ThrottleManager.EXTRA_THROTTLE_LEVEL, -1);
+<<<<<<< HEAD
                 mContext.sendStickyBroadcast(broadcast);
                 mNotificationManager.cancel(R.drawable.stat_sys_throttled);
+=======
+                mContext.sendStickyBroadcastAsUser(broadcast, UserHandle.ALL);
+                mNotificationManager.cancelAsUser(null, R.drawable.stat_sys_throttled,
+                        UserHandle.ALL);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
                 mWarningNotificationSent = false;
             }
         }

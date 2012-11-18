@@ -14,11 +14,20 @@
  * limitations under the License.
  */
 
+<<<<<<< HEAD
 #include <common_time/ICommonClock.h>
 
 #ifndef ANDROID_COMMON_CLOCK_SERVICE_H
 #define ANDROID_COMMON_CLOCK_SERVICE_H
 
+=======
+#ifndef ANDROID_COMMON_CLOCK_SERVICE_H
+#define ANDROID_COMMON_CLOCK_SERVICE_H
+
+#include <sys/socket.h>
+#include <common_time/ICommonClock.h>
+
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 namespace android {
 
 class CommonTimeServer;

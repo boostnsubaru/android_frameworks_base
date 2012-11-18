@@ -60,11 +60,23 @@ abstract class CustomBar extends LinearLayout {
 
     protected abstract TextView getStyleableTextView();
 
+<<<<<<< HEAD
     protected CustomBar(Context context, Density density, String layoutPath, String name)
             throws XmlPullParserException {
         super(context);
         setOrientation(LinearLayout.HORIZONTAL);
         setGravity(Gravity.CENTER_VERTICAL);
+=======
+    protected CustomBar(Context context, Density density, int orientation, String layoutPath,
+            String name) throws XmlPullParserException {
+        super(context);
+        setOrientation(orientation);
+        if (orientation == LinearLayout.HORIZONTAL) {
+            setGravity(Gravity.CENTER_VERTICAL);
+        } else {
+            setGravity(Gravity.CENTER_HORIZONTAL);
+        }
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 
         LayoutInflater inflater = (LayoutInflater) getContext().getSystemService(
                 Context.LAYOUT_INFLATER_SERVICE);

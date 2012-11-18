@@ -40,6 +40,7 @@ interface IBluetoothHeadset {
     int getBatteryUsageHint(in BluetoothDevice device);
 
     // Internal functions, not be made public
+<<<<<<< HEAD
     boolean createIncomingConnect(in BluetoothDevice device);
     boolean acceptIncomingConnect(in BluetoothDevice device);
     boolean rejectIncomingConnect(in BluetoothDevice device);
@@ -51,4 +52,19 @@ interface IBluetoothHeadset {
 
     boolean startScoUsingVirtualVoiceCall(in BluetoothDevice device);
     boolean stopScoUsingVirtualVoiceCall(in BluetoothDevice device);
+=======
+    boolean acceptIncomingConnect(in BluetoothDevice device);
+    boolean rejectIncomingConnect(in BluetoothDevice device);
+    int getAudioState(in BluetoothDevice device);
+
+    boolean isAudioOn();
+    boolean connectAudio();
+    boolean disconnectAudio();
+    boolean startScoUsingVirtualVoiceCall(in BluetoothDevice device);
+    boolean stopScoUsingVirtualVoiceCall(in BluetoothDevice device);
+    void phoneStateChanged(int numActive, int numHeld, int callState, String number, int type);
+    void roamChanged(boolean roam);
+    void clccResponse(int index, int direction, int status, int mode, boolean mpty,
+                      String number, int type);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 }

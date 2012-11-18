@@ -18,6 +18,11 @@ package com.android.tools.layoutlib.create;
 
 import java.io.IOException;
 import java.util.ArrayList;
+<<<<<<< HEAD
+=======
+import java.util.List;
+import java.util.Map;
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 import java.util.Set;
 
 
@@ -47,6 +52,11 @@ public class Main {
 
     public static class Options {
         public boolean generatePublicAccess = true;
+<<<<<<< HEAD
+=======
+        public boolean listAllDeps = false;
+        public boolean listOnlyMissingDeps = false;
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     }
 
     public static final Options sOptions = new Options();
@@ -60,16 +70,40 @@ public class Main {
 
         if (!processArgs(log, args, osJarPath, osDestJar)) {
             log.error("Usage: layoutlib_create [-v] [-p] output.jar input.jar ...");
+<<<<<<< HEAD
             System.exit(1);
         }
 
         log.info("Output: %1$s", osDestJar[0]);
+=======
+            log.error("Usage: layoutlib_create [-v] [--list-deps|--missing-deps] input.jar ...");
+            System.exit(1);
+        }
+
+        if (sOptions.listAllDeps || sOptions.listOnlyMissingDeps) {
+            System.exit(listDeps(osJarPath, log));
+
+        } else {
+            System.exit(createLayoutLib(osDestJar[0], osJarPath, log));
+        }
+
+
+        System.exit(1);
+    }
+
+    private static int createLayoutLib(String osDestJar, ArrayList<String> osJarPath, Log log) {
+        log.info("Output: %1$s", osDestJar);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         for (String path : osJarPath) {
             log.info("Input :      %1$s", path);
         }
 
         try {
+<<<<<<< HEAD
             AsmGenerator agen = new AsmGenerator(log, osDestJar[0], new CreateInfo());
+=======
+            AsmGenerator agen = new AsmGenerator(log, osDestJar, new CreateInfo());
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 
             AsmAnalyzer aa = new AsmAnalyzer(log, osJarPath, agen,
                     new String[] {                          // derived from
@@ -116,17 +150,44 @@ public class Main {
                 for (String path : osJarPath) {
                     log.info("- Input JAR : %1$s", path);
                 }
+<<<<<<< HEAD
                 System.exit(1);
             }
 
             System.exit(0);
+=======
+                return 1;
+            }
+
+            return 0;
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         } catch (IOException e) {
             log.exception(e, "Failed to load jar");
         } catch (LogAbortException e) {
             e.error(log);
         }
 
+<<<<<<< HEAD
         System.exit(1);
+=======
+        return 1;
+    }
+
+    private static int listDeps(ArrayList<String> osJarPath, Log log) {
+        DependencyFinder df = new DependencyFinder(log);
+        try {
+            List<Map<String, Set<String>>> result = df.findDeps(osJarPath);
+            if (sOptions.listAllDeps) {
+                df.printAllDeps(result);
+            } else if (sOptions.listOnlyMissingDeps) {
+                df.printMissingDeps(result);
+            }
+        } catch (IOException e) {
+            log.exception(e, "Failed to load jar");
+        }
+
+        return 0;
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     }
 
     /**
@@ -138,14 +199,29 @@ public class Main {
      */
     private static boolean processArgs(Log log, String[] args,
             ArrayList<String> osJarPath, String[] osDestJar) {
+<<<<<<< HEAD
+=======
+        boolean needs_dest = true;
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         for (int i = 0; i < args.length; i++) {
             String s = args[i];
             if (s.equals("-v")) {
                 log.setVerbose(true);
             } else if (s.equals("-p")) {
                 sOptions.generatePublicAccess = false;
+<<<<<<< HEAD
             } else if (!s.startsWith("-")) {
                 if (osDestJar[0] == null) {
+=======
+            } else if (s.equals("--list-deps")) {
+                sOptions.listAllDeps = true;
+                needs_dest = false;
+            } else if (s.equals("--missing-deps")) {
+                sOptions.listOnlyMissingDeps = true;
+                needs_dest = false;
+            } else if (!s.startsWith("-")) {
+                if (needs_dest && osDestJar[0] == null) {
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
                     osDestJar[0] = s;
                 } else {
                     osJarPath.add(s);
@@ -160,7 +236,11 @@ public class Main {
             log.error("Missing parameter: path to input jar");
             return false;
         }
+<<<<<<< HEAD
         if (osDestJar[0] == null) {
+=======
+        if (needs_dest && osDestJar[0] == null) {
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
             log.error("Missing parameter: path to output jar");
             return false;
         }

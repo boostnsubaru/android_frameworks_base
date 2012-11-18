@@ -193,6 +193,7 @@ public class ImageView extends View {
         }
     }
 
+<<<<<<< HEAD
     /**
      * @hide
      */
@@ -202,6 +203,8 @@ public class ImageView extends View {
                 getResolvedLayoutDirection() : super.getResolvedLayoutDirection(dr);
     }
 
+=======
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     @Override
     public boolean hasOverlappingRendering() {
         return (getBackground() != null);
@@ -351,8 +354,20 @@ public class ImageView extends View {
             updateDrawable(null);
             mResource = resId;
             mUri = null;
+<<<<<<< HEAD
             resolveUri();
             requestLayout();
+=======
+
+            final int oldWidth = mDrawableWidth;
+            final int oldHeight = mDrawableHeight;
+
+            resolveUri();
+
+            if (oldWidth != mDrawableWidth || oldHeight != mDrawableHeight) {
+                requestLayout();
+            }
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
             invalidate();
         }
     }
@@ -376,8 +391,20 @@ public class ImageView extends View {
             updateDrawable(null);
             mResource = 0;
             mUri = uri;
+<<<<<<< HEAD
             resolveUri();
             requestLayout();
+=======
+
+            final int oldWidth = mDrawableWidth;
+            final int oldHeight = mDrawableHeight;
+
+            resolveUri();
+
+            if (oldWidth != mDrawableWidth || oldHeight != mDrawableHeight) {
+                requestLayout();
+            }
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
             invalidate();
         }
     }
@@ -392,8 +419,13 @@ public class ImageView extends View {
             mResource = 0;
             mUri = null;
 
+<<<<<<< HEAD
             int oldWidth = mDrawableWidth;
             int oldHeight = mDrawableHeight;
+=======
+            final int oldWidth = mDrawableWidth;
+            final int oldHeight = mDrawableHeight;
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 
             updateDrawable(drawable);
 
@@ -675,6 +707,10 @@ public class ImageView extends View {
                 d.setState(getDrawableState());
             }
             d.setLevel(mLevel);
+<<<<<<< HEAD
+=======
+            d.setLayoutDirection(getLayoutDirection());
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
             mDrawableWidth = d.getIntrinsicWidth();
             mDrawableHeight = d.getIntrinsicHeight();
             applyColorMod();

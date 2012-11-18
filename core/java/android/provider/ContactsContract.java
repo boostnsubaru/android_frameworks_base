@@ -37,6 +37,10 @@ import android.graphics.Rect;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.RemoteException;
+<<<<<<< HEAD
+=======
+import android.os.UserHandle;
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 import android.text.TextUtils;
 import android.util.DisplayMetrics;
 import android.util.Pair;
@@ -345,10 +349,17 @@ public final class ContactsContract {
      * directory provider URIs by themselves. This level of indirection allows
      * Contacts Provider to implement additional system-level features and
      * optimizations. Access to Contacts Provider is protected by the
+<<<<<<< HEAD
      * READ_CONTACTS permission, but access to the directory provider is not.
      * Therefore directory providers must reject requests coming from clients
      * other than the Contacts Provider itself. An easy way to prevent such
      * unauthorized access is to check the name of the calling package:
+=======
+     * READ_CONTACTS permission, but access to the directory provider is protected by
+     * BIND_DIRECTORY_SEARCH. This permission was introduced at the API level 17, for previous
+     * platform versions the provider should perform the following check to make sure the call
+     * is coming from the ContactsProvider:
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
      * <pre>
      * private boolean isCallerAllowed() {
      *   PackageManager pm = getContext().getPackageManager();
@@ -833,6 +844,7 @@ public final class ContactsContract {
         public static final String CUSTOM_RINGTONE = "custom_ringtone";
 
         /**
+<<<<<<< HEAD
          * URI for a custom vibration associated with the contact. If null or missing,
          * the default vibration is used.
          * <P>Type: TEXT (URI to the vibration)</P>
@@ -840,6 +852,8 @@ public final class ContactsContract {
         public static final String CUSTOM_VIBRATION = "custom_vibration";
 
         /**
+=======
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
          * Whether the contact should always be sent to voicemail. If missing,
          * defaults to false.
          * <P>Type: INTEGER (0 for false, 1 for true)</P>
@@ -7665,6 +7679,57 @@ public final class ContactsContract {
         public static final int MODE_LARGE = 3;
 
         /**
+<<<<<<< HEAD
+=======
+         * Constructs the QuickContacts intent with a view's rect.
+         * @hide
+         */
+        public static Intent composeQuickContactsIntent(Context context, View target, Uri lookupUri,
+                int mode, String[] excludeMimes) {
+            // Find location and bounds of target view, adjusting based on the
+            // assumed local density.
+            final float appScale = context.getResources().getCompatibilityInfo().applicationScale;
+            final int[] pos = new int[2];
+            target.getLocationOnScreen(pos);
+
+            final Rect rect = new Rect();
+            rect.left = (int) (pos[0] * appScale + 0.5f);
+            rect.top = (int) (pos[1] * appScale + 0.5f);
+            rect.right = (int) ((pos[0] + target.getWidth()) * appScale + 0.5f);
+            rect.bottom = (int) ((pos[1] + target.getHeight()) * appScale + 0.5f);
+
+            return composeQuickContactsIntent(context, rect, lookupUri, mode, excludeMimes);
+        }
+
+        /**
+         * Constructs the QuickContacts intent.
+         * @hide
+         */
+        public static Intent composeQuickContactsIntent(Context context, Rect target,
+                Uri lookupUri, int mode, String[] excludeMimes) {
+            // When launching from an Activiy, we don't want to start a new task, but otherwise
+            // we *must* start a new task.  (Otherwise startActivity() would crash.)
+            Context actualContext = context;
+            while ((actualContext instanceof ContextWrapper)
+                    && !(actualContext instanceof Activity)) {
+                actualContext = ((ContextWrapper) actualContext).getBaseContext();
+            }
+            final int intentFlags = (actualContext instanceof Activity)
+                    ? Intent.FLAG_ACTIVITY_CLEAR_WHEN_TASK_RESET
+                    : Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK;
+
+            // Launch pivot dialog through intent for now
+            final Intent intent = new Intent(ACTION_QUICK_CONTACT).addFlags(intentFlags);
+
+            intent.setData(lookupUri);
+            intent.setSourceBounds(target);
+            intent.putExtra(EXTRA_MODE, mode);
+            intent.putExtra(EXTRA_EXCLUDE_MIMES, excludeMimes);
+            return intent;
+        }
+
+        /**
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
          * Trigger a dialog that lists the various methods of interacting with
          * the requested {@link Contacts} entry. This may be based on available
          * {@link ContactsContract.Data} rows under that contact, and may also
@@ -7689,6 +7754,7 @@ public final class ContactsContract {
          */
         public static void showQuickContact(Context context, View target, Uri lookupUri, int mode,
                 String[] excludeMimes) {
+<<<<<<< HEAD
             // Find location and bounds of target view, adjusting based on the
             // assumed local density.
             final float appScale = context.getResources().getCompatibilityInfo().applicationScale;
@@ -7703,6 +7769,12 @@ public final class ContactsContract {
 
             // Trigger with obtained rectangle
             showQuickContact(context, rect, lookupUri, mode, excludeMimes);
+=======
+            // Trigger with obtained rectangle
+            Intent intent = composeQuickContactsIntent(context, target, lookupUri, mode,
+                    excludeMimes);
+            context.startActivity(intent);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         }
 
         /**
@@ -7733,6 +7805,7 @@ public final class ContactsContract {
          */
         public static void showQuickContact(Context context, Rect target, Uri lookupUri, int mode,
                 String[] excludeMimes) {
+<<<<<<< HEAD
             // When launching from an Activiy, we don't want to start a new task, but otherwise
             // we *must* start a new task.  (Otherwise startActivity() would crash.)
             Context actualContext = context;
@@ -7751,6 +7824,10 @@ public final class ContactsContract {
             intent.setSourceBounds(target);
             intent.putExtra(EXTRA_MODE, mode);
             intent.putExtra(EXTRA_EXCLUDE_MIMES, excludeMimes);
+=======
+            Intent intent = composeQuickContactsIntent(context, target, lookupUri, mode,
+                    excludeMimes);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
             context.startActivity(intent);
         }
     }
@@ -7907,6 +7984,19 @@ public final class ContactsContract {
                 "com.android.contacts.action.GET_MULTIPLE_PHONES";
 
         /**
+<<<<<<< HEAD
+=======
+         * A broadcast action which is sent when any change has been made to the profile, such
+         * as the profile name or the picture.  A receiver must have
+         * the android.permission.READ_PROFILE permission.
+         *
+         * @hide
+         */
+        public static final String ACTION_PROFILE_CHANGED =
+                "android.provider.Contacts.PROFILE_CHANGED";
+
+        /**
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
          * Used with {@link #SHOW_OR_CREATE_CONTACT} to force creating a new
          * contact if no matching contact found. Otherwise, default behavior is
          * to prompt user with dialog before creating.

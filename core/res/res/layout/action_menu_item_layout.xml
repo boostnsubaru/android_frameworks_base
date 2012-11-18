@@ -22,8 +22,13 @@
     android:focusable="true"
     android:paddingTop="4dip"
     android:paddingBottom="4dip"
+<<<<<<< HEAD
     android:paddingLeft="8dip"
     android:paddingRight="8dip"
+=======
+    android:paddingStart="8dip"
+    android:paddingEnd="8dip"
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     android:textAppearance="?attr/actionMenuTextAppearance"
     android:textColor="?attr/actionMenuTextColor"
     style="?android:attr/actionButtonStyle" />

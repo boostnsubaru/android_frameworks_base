@@ -105,7 +105,11 @@ public class DrawableContainer extends Drawable implements Drawable.Callback {
             mAlpha = alpha;
             if (mCurrDrawable != null) {
                 if (mEnterAnimationEnd == 0) {
+<<<<<<< HEAD
                     mCurrDrawable.setAlpha(alpha);
+=======
+                    mCurrDrawable.mutate().setAlpha(alpha);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
                 } else {
                     animate(false);
                 }
@@ -118,7 +122,11 @@ public class DrawableContainer extends Drawable implements Drawable.Callback {
         if (mDrawableContainerState.mDither != dither) {
             mDrawableContainerState.mDither = dither;
             if (mCurrDrawable != null) {
+<<<<<<< HEAD
                 mCurrDrawable.setDither(mDrawableContainerState.mDither);
+=======
+                mCurrDrawable.mutate().setDither(mDrawableContainerState.mDither);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
             }
         }
     }
@@ -128,7 +136,11 @@ public class DrawableContainer extends Drawable implements Drawable.Callback {
         if (mColorFilter != cf) {
             mColorFilter = cf;
             if (mCurrDrawable != null) {
+<<<<<<< HEAD
                 mCurrDrawable.setColorFilter(cf);
+=======
+                mCurrDrawable.mutate().setColorFilter(cf);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
             }
         }
     }
@@ -176,7 +188,11 @@ public class DrawableContainer extends Drawable implements Drawable.Callback {
         }
         if (mCurrDrawable != null) {
             mCurrDrawable.jumpToCurrentState();
+<<<<<<< HEAD
             mCurrDrawable.setAlpha(mAlpha);
+=======
+            mCurrDrawable.mutate().setAlpha(mAlpha);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         }
         if (mExitAnimationEnd != 0) {
             mExitAnimationEnd = 0;
@@ -312,6 +328,10 @@ public class DrawableContainer extends Drawable implements Drawable.Callback {
             mCurrDrawable = d;
             mCurIndex = idx;
             if (d != null) {
+<<<<<<< HEAD
+=======
+                d.mutate();
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
                 if (mDrawableContainerState.mEnterFadeDuration > 0) {
                     mEnterAnimationEnd = now + mDrawableContainerState.mEnterFadeDuration;
                 } else {
@@ -355,13 +375,21 @@ public class DrawableContainer extends Drawable implements Drawable.Callback {
         if (mCurrDrawable != null) {
             if (mEnterAnimationEnd != 0) {
                 if (mEnterAnimationEnd <= now) {
+<<<<<<< HEAD
                     mCurrDrawable.setAlpha(mAlpha);
+=======
+                    mCurrDrawable.mutate().setAlpha(mAlpha);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
                     mEnterAnimationEnd = 0;
                 } else {
                     int animAlpha = (int)((mEnterAnimationEnd-now)*255)
                             / mDrawableContainerState.mEnterFadeDuration;
                     if (DEBUG) android.util.Log.i(TAG, toString() + " cur alpha " + animAlpha);
+<<<<<<< HEAD
                     mCurrDrawable.setAlpha(((255-animAlpha)*mAlpha)/255);
+=======
+                    mCurrDrawable.mutate().setAlpha(((255-animAlpha)*mAlpha)/255);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
                     animating = true;
                 }
             }
@@ -378,7 +406,11 @@ public class DrawableContainer extends Drawable implements Drawable.Callback {
                     int animAlpha = (int)((mExitAnimationEnd-now)*255)
                             / mDrawableContainerState.mExitFadeDuration;
                     if (DEBUG) android.util.Log.i(TAG, toString() + " last alpha " + animAlpha);
+<<<<<<< HEAD
                     mLastDrawable.setAlpha((animAlpha*mAlpha)/255);
+=======
+                    mLastDrawable.mutate().setAlpha((animAlpha*mAlpha)/255);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
                     animating = true;
                 }
             }
@@ -443,7 +475,10 @@ public class DrawableContainer extends Drawable implements Drawable.Callback {
         int         mConstantMinimumWidth;
         int         mConstantMinimumHeight;
 
+<<<<<<< HEAD
         boolean     mHaveOpacity = false;
+=======
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         int         mOpacity;
 
         boolean     mHaveStateful = false;
@@ -492,7 +527,10 @@ public class DrawableContainer extends Drawable implements Drawable.Callback {
                 mConstantWidth = orig.mConstantWidth;
                 mConstantHeight = orig.mConstantHeight;
                 
+<<<<<<< HEAD
                 mHaveOpacity = orig.mHaveOpacity;
+=======
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
                 mOpacity = orig.mOpacity;
                 mHaveStateful = orig.mHaveStateful;
                 mStateful = orig.mStateful;
@@ -527,7 +565,10 @@ public class DrawableContainer extends Drawable implements Drawable.Callback {
             mDrawables[pos] = dr;
             mNumChildren++;
             mChildrenChangingConfigurations |= dr.getChangingConfigurations();
+<<<<<<< HEAD
             mHaveOpacity = false;
+=======
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
             mHaveStateful = false;
 
             mConstantPadding = null;
@@ -655,10 +696,13 @@ public class DrawableContainer extends Drawable implements Drawable.Callback {
         }
 
         public final int getOpacity() {
+<<<<<<< HEAD
             if (mHaveOpacity) {
                 return mOpacity;
             }
 
+=======
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
             final int N = getChildCount();
             final Drawable[] drawables = mDrawables;
             int op = N > 0 ? drawables[0].getOpacity() : PixelFormat.TRANSPARENT;
@@ -666,7 +710,10 @@ public class DrawableContainer extends Drawable implements Drawable.Callback {
                 op = Drawable.resolveOpacity(op, drawables[i].getOpacity());
             }
             mOpacity = op;
+<<<<<<< HEAD
             mHaveOpacity = true;
+=======
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
             return op;
         }
 

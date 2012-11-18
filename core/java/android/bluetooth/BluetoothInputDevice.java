@@ -18,7 +18,14 @@ package android.bluetooth;
 
 import android.annotation.SdkConstant;
 import android.annotation.SdkConstant.SdkConstantType;
+<<<<<<< HEAD
 import android.content.Context;
+=======
+import android.content.ComponentName;
+import android.content.Context;
+import android.content.Intent;
+import android.content.ServiceConnection;
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 import android.os.IBinder;
 import android.os.RemoteException;
 import android.os.ServiceManager;
@@ -41,7 +48,12 @@ import java.util.List;
  */
 public final class BluetoothInputDevice implements BluetoothProfile {
     private static final String TAG = "BluetoothInputDevice";
+<<<<<<< HEAD
     private static final boolean DBG = false;
+=======
+    private static final boolean DBG = true;
+    private static final boolean VDBG = false;
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 
     /**
      * Intent used to broadcast the change in connection state of the Input
@@ -66,6 +78,25 @@ public final class BluetoothInputDevice implements BluetoothProfile {
         "android.bluetooth.input.profile.action.CONNECTION_STATE_CHANGED";
 
     /**
+<<<<<<< HEAD
+=======
+     * @hide
+     */
+    @SdkConstant(SdkConstantType.BROADCAST_INTENT_ACTION)
+    public static final String ACTION_PROTOCOL_MODE_CHANGED =
+        "android.bluetooth.input.profile.action.PROTOCOL_MODE_CHANGED";
+
+
+    /**
+     * @hide
+     */
+    @SdkConstant(SdkConstantType.BROADCAST_INTENT_ACTION)
+    public static final String ACTION_VIRTUAL_UNPLUG_STATUS =
+        "android.bluetooth.input.profile.action.VIRTUAL_UNPLUG_STATUS";
+
+
+    /**
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
      * Return codes for the connect and disconnect Bluez / Dbus calls.
      * @hide
      */
@@ -91,15 +122,125 @@ public final class BluetoothInputDevice implements BluetoothProfile {
      */
     public static final int INPUT_OPERATION_SUCCESS = 5004;
 
+<<<<<<< HEAD
     private ServiceListener mServiceListener;
     private BluetoothAdapter mAdapter;
     private IBluetooth mService;
+=======
+    /**
+     * @hide
+     */
+    public static final int PROTOCOL_REPORT_MODE = 0;
+
+    /**
+     * @hide
+     */
+    public static final int PROTOCOL_BOOT_MODE = 1;
+
+    /**
+     * @hide
+     */
+    public static final int PROTOCOL_UNSUPPORTED_MODE = 255;
+
+    /*  int reportType, int reportType, int bufferSize */
+    /**
+     * @hide
+     */
+    public static final byte REPORT_TYPE_INPUT = 0;
+
+    /**
+     * @hide
+     */
+    public static final byte REPORT_TYPE_OUTPUT = 1;
+
+    /**
+     * @hide
+     */
+    public static final byte REPORT_TYPE_FEATURE = 2;
+
+    /**
+     * @hide
+     */
+    public static final int VIRTUAL_UNPLUG_STATUS_SUCCESS = 0;
+
+    /**
+     * @hide
+     */
+    public static final int VIRTUAL_UNPLUG_STATUS_FAIL = 1;
+
+    /**
+     * @hide
+     */
+    public static final String EXTRA_PROTOCOL_MODE = "android.bluetooth.BluetoothInputDevice.extra.PROTOCOL_MODE";
+
+    /**
+     * @hide
+     */
+    public static final String EXTRA_REPORT_TYPE = "android.bluetooth.BluetoothInputDevice.extra.REPORT_TYPE";
+
+    /**
+     * @hide
+     */
+    public static final String EXTRA_REPORT_ID = "android.bluetooth.BluetoothInputDevice.extra.REPORT_ID";
+
+    /**
+     * @hide
+     */
+    public static final String EXTRA_REPORT_BUFFER_SIZE = "android.bluetooth.BluetoothInputDevice.extra.REPORT_BUFFER_SIZE";
+
+    /**
+     * @hide
+     */
+    public static final String EXTRA_REPORT = "android.bluetooth.BluetoothInputDevice.extra.REPORT";
+
+    /**
+     * @hide
+     */
+    public static final String EXTRA_VIRTUAL_UNPLUG_STATUS = "android.bluetooth.BluetoothInputDevice.extra.VIRTUAL_UNPLUG_STATUS";
+
+    private Context mContext;
+    private ServiceListener mServiceListener;
+    private BluetoothAdapter mAdapter;
+    private IBluetoothInputDevice mService;
+
+    final private IBluetoothStateChangeCallback mBluetoothStateChangeCallback =
+            new IBluetoothStateChangeCallback.Stub() {
+                public void onBluetoothStateChange(boolean up) {
+                    if (DBG) Log.d(TAG, "onBluetoothStateChange: up=" + up);
+                    if (!up) {
+                        if (VDBG) Log.d(TAG,"Unbinding service...");
+                        synchronized (mConnection) {
+                            try {
+                                mService = null;
+                                mContext.unbindService(mConnection);
+                            } catch (Exception re) {
+                                Log.e(TAG,"",re);
+                            }
+                        }
+                    } else {
+                        synchronized (mConnection) {
+                            try {
+                                if (mService == null) {
+                                    if (VDBG) Log.d(TAG,"Binding service...");
+                                    if (!mContext.bindService(new Intent(IBluetoothInputDevice.class.getName()), mConnection, 0)) {
+                                        Log.e(TAG, "Could not bind to Bluetooth HID Service");
+                                    }
+                                }
+                            } catch (Exception re) {
+                                Log.e(TAG,"",re);
+                            }
+                        }
+                    }
+                }
+        };
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 
     /**
      * Create a BluetoothInputDevice proxy object for interacting with the local
      * Bluetooth Service which handles the InputDevice profile
      *
      */
+<<<<<<< HEAD
     /*package*/ BluetoothInputDevice(Context mContext, ServiceListener l) {
         IBinder b = ServiceManager.getService(BluetoothAdapter.BLUETOOTH_SERVICE);
         mServiceListener = l;
@@ -115,10 +256,52 @@ public final class BluetoothInputDevice implements BluetoothProfile {
             // Instead of throwing an exception which prevents people from going
             // into Wireless settings in the emulator. Let it crash later when it is actually used.
             mService = null;
+=======
+    /*package*/ BluetoothInputDevice(Context context, ServiceListener l) {
+        mContext = context;
+        mServiceListener = l;
+        mAdapter = BluetoothAdapter.getDefaultAdapter();
+
+        IBluetoothManager mgr = mAdapter.getBluetoothManager();
+        if (mgr != null) {
+            try {
+                mgr.registerStateChangeCallback(mBluetoothStateChangeCallback);
+            } catch (RemoteException e) {
+                Log.e(TAG,"",e);
+            }
+        }
+
+        if (!context.bindService(new Intent(IBluetoothInputDevice.class.getName()),
+                                 mConnection, 0)) {
+            Log.e(TAG, "Could not bind to Bluetooth HID Service");
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         }
     }
 
     /*package*/ void close() {
+<<<<<<< HEAD
+=======
+        if (VDBG) log("close()");
+        IBluetoothManager mgr = mAdapter.getBluetoothManager();
+        if (mgr != null) {
+            try {
+                mgr.unregisterStateChangeCallback(mBluetoothStateChangeCallback);
+            } catch (Exception e) {
+                Log.e(TAG,"",e);
+            }
+        }
+
+        synchronized (mConnection) {
+            if (mService != null) {
+                try {
+                    mService = null;
+                    mContext.unbindService(mConnection);
+                } catch (Exception re) {
+                    Log.e(TAG,"",re);
+                }
+           }
+        }
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         mServiceListener = null;
     }
 
@@ -144,10 +327,16 @@ public final class BluetoothInputDevice implements BluetoothProfile {
      */
     public boolean connect(BluetoothDevice device) {
         if (DBG) log("connect(" + device + ")");
+<<<<<<< HEAD
         if (mService != null && isEnabled() &&
             isValidDevice(device)) {
             try {
                 return mService.connectInputDevice(device);
+=======
+        if (mService != null && isEnabled() && isValidDevice(device)) {
+            try {
+                return mService.connect(device);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
             } catch (RemoteException e) {
                 Log.e(TAG, "Stack:" + Log.getStackTraceString(new Throwable()));
                 return false;
@@ -185,10 +374,16 @@ public final class BluetoothInputDevice implements BluetoothProfile {
      */
     public boolean disconnect(BluetoothDevice device) {
         if (DBG) log("disconnect(" + device + ")");
+<<<<<<< HEAD
         if (mService != null && isEnabled() &&
             isValidDevice(device)) {
             try {
                 return mService.disconnectInputDevice(device);
+=======
+        if (mService != null && isEnabled() && isValidDevice(device)) {
+            try {
+                return mService.disconnect(device);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
             } catch (RemoteException e) {
                 Log.e(TAG, "Stack:" + Log.getStackTraceString(new Throwable()));
                 return false;
@@ -202,10 +397,17 @@ public final class BluetoothInputDevice implements BluetoothProfile {
      * {@inheritDoc}
      */
     public List<BluetoothDevice> getConnectedDevices() {
+<<<<<<< HEAD
         if (DBG) log("getConnectedDevices()");
         if (mService != null && isEnabled()) {
             try {
                 return mService.getConnectedInputDevices();
+=======
+        if (VDBG) log("getConnectedDevices()");
+        if (mService != null && isEnabled()) {
+            try {
+                return mService.getConnectedDevices();
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
             } catch (RemoteException e) {
                 Log.e(TAG, "Stack:" + Log.getStackTraceString(new Throwable()));
                 return new ArrayList<BluetoothDevice>();
@@ -219,10 +421,17 @@ public final class BluetoothInputDevice implements BluetoothProfile {
      * {@inheritDoc}
      */
     public List<BluetoothDevice> getDevicesMatchingConnectionStates(int[] states) {
+<<<<<<< HEAD
         if (DBG) log("getDevicesMatchingStates()");
         if (mService != null && isEnabled()) {
             try {
                 return mService.getInputDevicesMatchingConnectionStates(states);
+=======
+        if (VDBG) log("getDevicesMatchingStates()");
+        if (mService != null && isEnabled()) {
+            try {
+                return mService.getDevicesMatchingConnectionStates(states);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
             } catch (RemoteException e) {
                 Log.e(TAG, "Stack:" + Log.getStackTraceString(new Throwable()));
                 return new ArrayList<BluetoothDevice>();
@@ -236,11 +445,18 @@ public final class BluetoothInputDevice implements BluetoothProfile {
      * {@inheritDoc}
      */
     public int getConnectionState(BluetoothDevice device) {
+<<<<<<< HEAD
         if (DBG) log("getState(" + device + ")");
         if (mService != null && isEnabled()
             && isValidDevice(device)) {
             try {
                 return mService.getInputDeviceConnectionState(device);
+=======
+        if (VDBG) log("getState(" + device + ")");
+        if (mService != null && isEnabled() && isValidDevice(device)) {
+            try {
+                return mService.getConnectionState(device);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
             } catch (RemoteException e) {
                 Log.e(TAG, "Stack:" + Log.getStackTraceString(new Throwable()));
                 return BluetoothProfile.STATE_DISCONNECTED;
@@ -267,14 +483,22 @@ public final class BluetoothInputDevice implements BluetoothProfile {
      */
     public boolean setPriority(BluetoothDevice device, int priority) {
         if (DBG) log("setPriority(" + device + ", " + priority + ")");
+<<<<<<< HEAD
         if (mService != null && isEnabled()
             && isValidDevice(device)) {
+=======
+        if (mService != null && isEnabled() && isValidDevice(device)) {
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
             if (priority != BluetoothProfile.PRIORITY_OFF &&
                 priority != BluetoothProfile.PRIORITY_ON) {
               return false;
             }
             try {
+<<<<<<< HEAD
                 return mService.setInputDevicePriority(device, priority);
+=======
+                return mService.setPriority(device, priority);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
             } catch (RemoteException e) {
                 Log.e(TAG, "Stack:" + Log.getStackTraceString(new Throwable()));
                 return false;
@@ -298,11 +522,18 @@ public final class BluetoothInputDevice implements BluetoothProfile {
      * @hide
      */
     public int getPriority(BluetoothDevice device) {
+<<<<<<< HEAD
         if (DBG) log("getPriority(" + device + ")");
         if (mService != null && isEnabled()
             && isValidDevice(device)) {
             try {
                 return mService.getInputDevicePriority(device);
+=======
+        if (VDBG) log("getPriority(" + device + ")");
+        if (mService != null && isEnabled() && isValidDevice(device)) {
+            try {
+                return mService.getPriority(device);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
             } catch (RemoteException e) {
                 Log.e(TAG, "Stack:" + Log.getStackTraceString(new Throwable()));
                 return BluetoothProfile.PRIORITY_OFF;
@@ -312,6 +543,27 @@ public final class BluetoothInputDevice implements BluetoothProfile {
         return BluetoothProfile.PRIORITY_OFF;
     }
 
+<<<<<<< HEAD
+=======
+    private ServiceConnection mConnection = new ServiceConnection() {
+        public void onServiceConnected(ComponentName className, IBinder service) {
+            if (DBG) Log.d(TAG, "Proxy object connected");
+            mService = IBluetoothInputDevice.Stub.asInterface(service);
+
+            if (mServiceListener != null) {
+                mServiceListener.onServiceConnected(BluetoothProfile.INPUT_DEVICE, BluetoothInputDevice.this);
+            }
+        }
+        public void onServiceDisconnected(ComponentName className) {
+            if (DBG) Log.d(TAG, "Proxy object disconnected");
+            mService = null;
+            if (mServiceListener != null) {
+                mServiceListener.onServiceDisconnected(BluetoothProfile.INPUT_DEVICE);
+            }
+        }
+    };
+
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     private boolean isEnabled() {
        if (mAdapter.getState() == BluetoothAdapter.STATE_ON) return true;
        return false;
@@ -324,6 +576,161 @@ public final class BluetoothInputDevice implements BluetoothProfile {
        return false;
     }
 
+<<<<<<< HEAD
+=======
+
+    /**
+     * Initiate virtual unplug for a HID input device.
+     *
+     * <p>Requires {@link android.Manifest.permission#BLUETOOTH_ADMIN} permission.
+     *
+     * @param device Remote Bluetooth Device
+     * @return false on immediate error,
+     *               true otherwise
+     * @hide
+     */
+    public boolean virtualUnplug(BluetoothDevice device) {
+        if (DBG) log("virtualUnplug(" + device + ")");
+        if (mService != null && isEnabled() && isValidDevice(device)) {
+            try {
+                return mService.virtualUnplug(device);
+            } catch (RemoteException e) {
+                Log.e(TAG, "Stack:" + Log.getStackTraceString(new Throwable()));
+                return false;
+            }
+        }
+
+        if (mService == null) Log.w(TAG, "Proxy not attached to service");
+        return false;
+
+    }
+
+    /**
+    * Send Get_Protocol_Mode command to the connected HID input device.
+    *
+    * <p>Requires {@link android.Manifest.permission#BLUETOOTH_ADMIN} permission.
+    *
+    * @param device Remote Bluetooth Device
+    * @return false on immediate error,
+    *true otherwise
+    * @hide
+    */
+    public boolean getProtocolMode(BluetoothDevice device) {
+        if (VDBG) log("getProtocolMode(" + device + ")");
+        if (mService != null && isEnabled() && isValidDevice(device)) {
+            try {
+                return mService.getProtocolMode(device);
+            } catch (RemoteException e) {
+                Log.e(TAG, "Stack:" + Log.getStackTraceString(new Throwable()));
+                return false;
+            }
+        }
+        if (mService == null) Log.w(TAG, "Proxy not attached to service");
+            return false;
+    }
+
+    /**
+     * Send Set_Protocol_Mode command to the connected HID input device.
+     *
+     * <p>Requires {@link android.Manifest.permission#BLUETOOTH_ADMIN} permission.
+     *
+     * @param device Remote Bluetooth Device
+     * @return false on immediate error,
+     *               true otherwise
+     * @hide
+     */
+    public boolean setProtocolMode(BluetoothDevice device, int protocolMode) {
+        if (DBG) log("setProtocolMode(" + device + ")");
+        if (mService != null && isEnabled() && isValidDevice(device)) {
+            try {
+                return mService.setProtocolMode(device, protocolMode);
+            } catch (RemoteException e) {
+                Log.e(TAG, "Stack:" + Log.getStackTraceString(new Throwable()));
+                return false;
+            }
+        }
+        if (mService == null) Log.w(TAG, "Proxy not attached to service");
+        return false;
+    }
+
+    /**
+     * Send Get_Report command to the connected HID input device.
+     *
+     * <p>Requires {@link android.Manifest.permission#BLUETOOTH_ADMIN} permission.
+     *
+     * @param device Remote Bluetooth Device
+     * @param reportType Report type
+     * @param reportId Report ID
+     * @param bufferSize Report receiving buffer size
+     * @return false on immediate error,
+     *               true otherwise
+     * @hide
+     */
+    public boolean getReport(BluetoothDevice device, byte reportType, byte reportId, int bufferSize) {
+        if (VDBG) log("getReport(" + device + "), reportType=" + reportType + " reportId=" + reportId + "bufferSize=" + bufferSize);
+        if (mService != null && isEnabled() && isValidDevice(device)) {
+            try {
+                return mService.getReport(device, reportType, reportId, bufferSize);
+            } catch (RemoteException e) {
+                Log.e(TAG, "Stack:" + Log.getStackTraceString(new Throwable()));
+                return false;
+            }
+        }
+        if (mService == null) Log.w(TAG, "Proxy not attached to service");
+        return false;
+    }
+
+    /**
+     * Send Set_Report command to the connected HID input device.
+     *
+     * <p>Requires {@link android.Manifest.permission#BLUETOOTH_ADMIN} permission.
+     *
+     * @param device Remote Bluetooth Device
+     * @param reportType Report type
+     * @param report Report receiving buffer size
+     * @return false on immediate error,
+     *               true otherwise
+     * @hide
+     */
+    public boolean setReport(BluetoothDevice device, byte reportType, String report) {
+        if (DBG) log("setReport(" + device + "), reportType=" + reportType + " report=" + report);
+        if (mService != null && isEnabled() && isValidDevice(device)) {
+            try {
+                return mService.setReport(device, reportType, report);
+            } catch (RemoteException e) {
+                Log.e(TAG, "Stack:" + Log.getStackTraceString(new Throwable()));
+                return false;
+            }
+        }
+        if (mService == null) Log.w(TAG, "Proxy not attached to service");
+        return false;
+    }
+
+    /**
+     * Send Send_Data command to the connected HID input device.
+     *
+     * <p>Requires {@link android.Manifest.permission#BLUETOOTH_ADMIN} permission.
+     *
+     * @param device Remote Bluetooth Device
+     * @param data Data to send
+     * @return false on immediate error,
+     *               true otherwise
+     * @hide
+     */
+    public boolean sendData(BluetoothDevice device, String report) {
+        if (DBG) log("sendData(" + device + "), report=" + report);
+        if (mService != null && isEnabled() && isValidDevice(device)) {
+            try {
+                return mService.sendData(device, report);
+            } catch (RemoteException e) {
+                Log.e(TAG, "Stack:" + Log.getStackTraceString(new Throwable()));
+                return false;
+            }
+        }
+        if (mService == null) Log.w(TAG, "Proxy not attached to service");
+        return false;
+    }
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     private static void log(String msg) {
       Log.d(TAG, msg);
     }

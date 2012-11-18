@@ -81,6 +81,10 @@ Program::Program(const ProgramDescription& description, const char* vertex, cons
 
     if (mInitialized) {
         transform = addUniform("transform");
+<<<<<<< HEAD
+=======
+        projection = addUniform("projection");
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     }
 }
 
@@ -152,18 +156,32 @@ GLuint Program::buildShader(const char* source, GLenum type) {
 
 void Program::set(const mat4& projectionMatrix, const mat4& modelViewMatrix,
         const mat4& transformMatrix, bool offset) {
+<<<<<<< HEAD
     mat4 t(projectionMatrix);
+=======
+    mat4 p(projectionMatrix);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     if (offset) {
         // offset screenspace xy by an amount that compensates for typical precision
         // issues in GPU hardware that tends to paint hor/vert lines in pixels shifted
         // up and to the left.
         // This offset value is based on an assumption that some hardware may use as
         // little as 12.4 precision, so we offset by slightly more than 1/16.
+<<<<<<< HEAD
         t.translate(.375, .375, 0);
     }
     t.multiply(transformMatrix);
     t.multiply(modelViewMatrix);
 
+=======
+        p.translate(.375, .375, 0);
+    }
+
+    mat4 t(transformMatrix);
+    t.multiply(modelViewMatrix);
+
+    glUniformMatrix4fv(projection, 1, GL_FALSE, &p.data[0]);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     glUniformMatrix4fv(transform, 1, GL_FALSE, &t.data[0]);
 }
 
@@ -178,7 +196,11 @@ void Program::setColor(const float r, const float g, const float b, const float 
 void Program::use() {
     glUseProgram(mProgramId);
     if (texCoords >= 0 && !mHasSampler) {
+<<<<<<< HEAD
         glUniform1i(getUniform("sampler"), 0);
+=======
+        glUniform1i(getUniform("baseSampler"), 0);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         mHasSampler = true;
     }
     mUse = true;

@@ -26,6 +26,10 @@ import android.content.pm.MacAuthenticatedInputStream;
 import android.content.pm.ContainerEncryptionParams;
 import android.content.pm.IPackageManager;
 import android.content.pm.LimitedLengthInputStream;
+<<<<<<< HEAD
+=======
+import android.content.pm.PackageCleanItem;
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageInfoLite;
 import android.content.pm.PackageManager;
@@ -34,6 +38,10 @@ import android.content.res.ObbInfo;
 import android.content.res.ObbScanner;
 import android.net.Uri;
 import android.os.Environment;
+<<<<<<< HEAD
+=======
+import android.os.Environment.UserEnvironment;
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 import android.os.FileUtils;
 import android.os.IBinder;
 import android.os.ParcelFileDescriptor;
@@ -181,6 +189,10 @@ public class DefaultContainerService extends IntentService {
             }
 
             ret.packageName = pkg.packageName;
+<<<<<<< HEAD
+=======
+            ret.versionCode = pkg.versionCode;
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
             ret.installLocation = pkg.installLocation;
             ret.verifiers = pkg.verifiers;
 
@@ -256,6 +268,24 @@ public class DefaultContainerService extends IntentService {
                 eraseFiles(directory);
             }
         }
+<<<<<<< HEAD
+=======
+
+        @Override
+        public long calculateInstalledSize(String packagePath, boolean isForwardLocked)
+                throws RemoteException {
+            final File packageFile = new File(packagePath);
+            try {
+                return calculateContainerSize(packageFile, isForwardLocked) * 1024 * 1024;
+            } catch (IOException e) {
+                /*
+                 * Okay, something failed, so let's just estimate it to be 2x
+                 * the file size. Note this will be 0 if the file doesn't exist.
+                 */
+                return packageFile.length() * 2;
+            }
+        }
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     };
 
     public DefaultContainerService() {
@@ -266,6 +296,7 @@ public class DefaultContainerService extends IntentService {
     @Override
     protected void onHandleIntent(Intent intent) {
         if (PackageManager.ACTION_CLEAN_EXTERNAL_STORAGE.equals(intent.getAction())) {
+<<<<<<< HEAD
             IPackageManager pm = IPackageManager.Stub.asInterface(
                     ServiceManager.getService("package"));
             String pkg = null;
@@ -274,6 +305,19 @@ public class DefaultContainerService extends IntentService {
                     eraseFiles(Environment.getExternalStorageAppDataDirectory(pkg));
                     eraseFiles(Environment.getExternalStorageAppMediaDirectory(pkg));
                     eraseFiles(Environment.getExternalStorageAppObbDirectory(pkg));
+=======
+            final IPackageManager pm = IPackageManager.Stub.asInterface(
+                    ServiceManager.getService("package"));
+            PackageCleanItem item = null;
+            try {
+                while ((item = pm.nextPackageToClean(item)) != null) {
+                    final UserEnvironment userEnv = new UserEnvironment(item.userId);
+                    eraseFiles(userEnv.getExternalStorageAppDataDirectory(item.packageName));
+                    eraseFiles(userEnv.getExternalStorageAppMediaDirectory(item.packageName));
+                    if (item.andCode) {
+                        eraseFiles(userEnv.getExternalStorageAppObbDirectory(item.packageName));
+                    }
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
                 }
             } catch (RemoteException e) {
             }
@@ -666,9 +710,15 @@ public class DefaultContainerService extends IntentService {
             }
 
             // Pick user preference
+<<<<<<< HEAD
             int installPreference = Settings.System.getInt(getApplicationContext()
                     .getContentResolver(),
                     Settings.Secure.DEFAULT_INSTALL_LOCATION,
+=======
+            int installPreference = Settings.Global.getInt(getApplicationContext()
+                    .getContentResolver(),
+                    Settings.Global.DEFAULT_INSTALL_LOCATION,
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
                     PackageHelper.APP_INSTALL_AUTO);
             if (installPreference == PackageHelper.APP_INSTALL_INTERNAL) {
                 prefer = PREFER_INTERNAL;

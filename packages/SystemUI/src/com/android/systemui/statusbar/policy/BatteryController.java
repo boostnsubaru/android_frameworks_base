@@ -18,6 +18,7 @@ package com.android.systemui.statusbar.policy;
 
 import java.util.ArrayList;
 
+<<<<<<< HEAD
 import android.content.BroadcastReceiver;
 import android.graphics.Color;
 import android.text.Spannable;
@@ -37,17 +38,32 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+=======
+import android.bluetooth.BluetoothAdapter.BluetoothStateChangeCallback;
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
+import android.os.BatteryManager;
+import android.util.Slog;
+import android.widget.ImageView;
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 import android.widget.TextView;
 
 import com.android.systemui.R;
 
+<<<<<<< HEAD
 public class BatteryController extends LinearLayout {
+=======
+public class BatteryController extends BroadcastReceiver {
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     private static final String TAG = "StatusBar.BatteryController";
 
     private Context mContext;
     private ArrayList<ImageView> mIconViews = new ArrayList<ImageView>();
     private ArrayList<TextView> mLabelViews = new ArrayList<TextView>();
 
+<<<<<<< HEAD
     private ImageView mBatteryIcon;
     private TextView mBatteryText;
     private TextView mBatteryCenterText;
@@ -97,6 +113,21 @@ public class BatteryController extends LinearLayout {
         IntentFilter filter = new IntentFilter();
         filter.addAction(Intent.ACTION_BATTERY_CHANGED);
         mContext.registerReceiver(mBatteryBroadcastReceiver, filter);
+=======
+    private ArrayList<BatteryStateChangeCallback> mChangeCallbacks =
+            new ArrayList<BatteryStateChangeCallback>();
+
+    public interface BatteryStateChangeCallback {
+        public void onBatteryLevelChanged(int level, boolean pluggedIn);
+    }
+
+    public BatteryController(Context context) {
+        mContext = context;
+
+        IntentFilter filter = new IntentFilter();
+        filter.addAction(Intent.ACTION_BATTERY_CHANGED);
+        context.registerReceiver(this, filter);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     }
 
     public void addIconView(ImageView v) {
@@ -107,6 +138,7 @@ public class BatteryController extends LinearLayout {
         mLabelViews.add(v);
     }
 
+<<<<<<< HEAD
     private BroadcastReceiver mBatteryBroadcastReceiver = new BroadcastReceiver() {
 
         @Override
@@ -265,5 +297,37 @@ public class BatteryController extends LinearLayout {
 
         setBatteryIcon(mLevel, mPlugged);
 
+=======
+    public void addStateChangedCallback(BatteryStateChangeCallback cb) {
+        mChangeCallbacks.add(cb);
+    }
+
+    public void onReceive(Context context, Intent intent) {
+        final String action = intent.getAction();
+        if (action.equals(Intent.ACTION_BATTERY_CHANGED)) {
+            final int level = intent.getIntExtra(BatteryManager.EXTRA_LEVEL, 0);
+            final boolean plugged = intent.getIntExtra(BatteryManager.EXTRA_PLUGGED, 0) != 0;
+            final int icon = plugged ? R.drawable.stat_sys_battery_charge 
+                                     : R.drawable.stat_sys_battery;
+            int N = mIconViews.size();
+            for (int i=0; i<N; i++) {
+                ImageView v = mIconViews.get(i);
+                v.setImageResource(icon);
+                v.setImageLevel(level);
+                v.setContentDescription(mContext.getString(R.string.accessibility_battery_level,
+                        level));
+            }
+            N = mLabelViews.size();
+            for (int i=0; i<N; i++) {
+                TextView v = mLabelViews.get(i);
+                v.setText(mContext.getString(R.string.status_bar_settings_battery_meter_format,
+                        level));
+            }
+
+            for (BatteryStateChangeCallback cb : mChangeCallbacks) {
+                cb.onBatteryLevelChanged(level, plugged);
+            }
+        }
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     }
 }

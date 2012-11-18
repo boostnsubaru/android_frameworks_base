@@ -88,6 +88,11 @@ public class BootReceiver extends BroadcastReceiver {
         final String headers = new StringBuilder(512)
             .append("Build: ").append(Build.FINGERPRINT).append("\n")
             .append("Hardware: ").append(Build.BOARD).append("\n")
+<<<<<<< HEAD
+=======
+            .append("Revision: ")
+            .append(SystemProperties.get("ro.revision", "")).append("\n")
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
             .append("Bootloader: ").append(Build.BOOTLOADER).append("\n")
             .append("Radio: ").append(Build.RADIO).append("\n")
             .append("Kernel: ")

@@ -43,8 +43,13 @@ exception:<br />{@code java.lang.OutofMemoryError: bitmap size exceeds VM budget
   perform under this minimum memory limit. However, keep in mind many devices are configured with
   higher limits.</li>
   <li>Bitmaps take up a lot of memory, especially for rich images like photographs. For example, the
+<<<<<<< HEAD
   camera on the <a href="http://www.google.com/nexus/">Galaxy Nexus</a> takes photos up to 2592x1936
   pixels (5 megapixels). If the bitmap configuration used is {@link
+=======
+  camera on the <a href="http://www.android.com/devices/detail/galaxy-nexus">Galaxy Nexus</a> takes 
+  photos up to 2592x1936 pixels (5 megapixels). If the bitmap configuration used is {@link
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
   android.graphics.Bitmap.Config ARGB_8888} (the default from the Android 2.3 onward) then loading
   this image into memory takes about 19MB of memory (2592*1936*4 bytes), immediately exhausting the
   per-app limit on some devices.</li>
@@ -75,4 +80,8 @@ exception:<br />{@code java.lang.OutofMemoryError: bitmap size exceeds VM budget
     components like {@link android.support.v4.view.ViewPager} and {@link android.widget.GridView}
     using a background thread and bitmap cache.</dd>
 
+<<<<<<< HEAD
 </dl>
+=======
+</dl>
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a

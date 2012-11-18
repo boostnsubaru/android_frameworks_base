@@ -35,10 +35,16 @@ import java.util.HashMap;
  */
 public class WifiP2pDeviceList implements Parcelable {
 
+<<<<<<< HEAD
     private HashMap<String, WifiP2pDevice> mDevices;
 
     public WifiP2pDeviceList() {
         mDevices = new HashMap<String, WifiP2pDevice>();
+=======
+    private final HashMap<String, WifiP2pDevice> mDevices = new HashMap<String, WifiP2pDevice>();
+
+    public WifiP2pDeviceList() {
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     }
 
     /** copy constructor */
@@ -52,7 +58,10 @@ public class WifiP2pDeviceList implements Parcelable {
 
     /** @hide */
     public WifiP2pDeviceList(ArrayList<WifiP2pDevice> devices) {
+<<<<<<< HEAD
         mDevices = new HashMap<String, WifiP2pDevice>();
+=======
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         for (WifiP2pDevice device : devices) {
             if (device.deviceAddress != null) {
                 mDevices.put(device.deviceAddress, device);
@@ -78,6 +87,10 @@ public class WifiP2pDeviceList implements Parcelable {
             d.wpsConfigMethodsSupported = device.wpsConfigMethodsSupported;
             d.deviceCapability = device.deviceCapability;
             d.groupCapability = device.groupCapability;
+<<<<<<< HEAD
+=======
+            d.wfdInfo = device.wfdInfo;
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
             return;
         }
         //Not found, add a new one
@@ -115,6 +128,18 @@ public class WifiP2pDeviceList implements Parcelable {
         return mDevices.remove(device.deviceAddress) != null;
     }
 
+<<<<<<< HEAD
+=======
+    /** Returns true if any device the list was removed @hide */
+    public boolean remove(WifiP2pDeviceList list) {
+        boolean ret = false;
+        for (WifiP2pDevice d : list.mDevices.values()) {
+            if (remove(d)) ret = true;
+        }
+        return ret;
+    }
+
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     /** Get the list of devices */
     public Collection<WifiP2pDevice> getDeviceList() {
         return Collections.unmodifiableCollection(mDevices.values());

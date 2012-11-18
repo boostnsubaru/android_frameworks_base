@@ -91,6 +91,12 @@ public class BackDropperEffect extends FilterGraphEffect {
         if (parameterKey.equals("source")) {
             Filter background = mGraph.getFilter("background");
             background.setInputValue("sourceUrl", value);
+<<<<<<< HEAD
+=======
+        } else if (parameterKey.equals("context")) {
+            Filter background = mGraph.getFilter("background");
+            background.setInputValue("context", value);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         }
     }
 

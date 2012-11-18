@@ -221,7 +221,11 @@ public class ScaleDrawable extends Drawable implements Drawable.Callback {
             final int ih = min ? mScaleState.mDrawable.getIntrinsicHeight() : 0;
             h -= (int) ((h - ih) * (10000 - level) * mScaleState.mScaleHeight / 10000);
         }
+<<<<<<< HEAD
         final int layoutDirection = getResolvedLayoutDirectionSelf();
+=======
+        final int layoutDirection = getLayoutDirection();
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         Gravity.apply(mScaleState.mGravity, w, h, bounds, r, layoutDirection);
 
         if (w > 0 && h > 0) {

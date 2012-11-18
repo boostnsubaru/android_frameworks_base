@@ -790,7 +790,11 @@ bool AudioGroup::DeviceThread::threadLoop()
     if (AudioTrack::getMinFrameCount(&output, AUDIO_STREAM_VOICE_CALL,
         sampleRate) != NO_ERROR || output <= 0 ||
         AudioRecord::getMinFrameCount(&input, sampleRate,
+<<<<<<< HEAD
         AUDIO_FORMAT_PCM_16_BIT, 1) != NO_ERROR || input <= 0) {
+=======
+        AUDIO_FORMAT_PCM_16_BIT, AUDIO_CHANNEL_IN_MONO) != NO_ERROR || input <= 0) {
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         ALOGE("cannot compute frame count");
         return false;
     }

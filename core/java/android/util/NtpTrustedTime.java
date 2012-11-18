@@ -59,10 +59,17 @@ public class NtpTrustedTime implements TrustedTime {
             final long defaultTimeout = res.getInteger(
                     com.android.internal.R.integer.config_ntpTimeout);
 
+<<<<<<< HEAD
             final String secureServer = Settings.Secure.getString(
                     resolver, Settings.Secure.NTP_SERVER);
             final long timeout = Settings.Secure.getLong(
                     resolver, Settings.Secure.NTP_TIMEOUT, defaultTimeout);
+=======
+            final String secureServer = Settings.Global.getString(
+                    resolver, Settings.Global.NTP_SERVER);
+            final long timeout = Settings.Global.getLong(
+                    resolver, Settings.Global.NTP_TIMEOUT, defaultTimeout);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 
             final String server = secureServer != null ? secureServer : defaultServer;
             sSingleton = new NtpTrustedTime(server, timeout);
@@ -71,7 +78,11 @@ public class NtpTrustedTime implements TrustedTime {
         return sSingleton;
     }
 
+<<<<<<< HEAD
     /** {@inheritDoc} */
+=======
+    @Override
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     public boolean forceRefresh() {
         if (mServer == null) {
             // missing server, so no trusted time available
@@ -91,12 +102,20 @@ public class NtpTrustedTime implements TrustedTime {
         }
     }
 
+<<<<<<< HEAD
     /** {@inheritDoc} */
+=======
+    @Override
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     public boolean hasCache() {
         return mHasCache;
     }
 
+<<<<<<< HEAD
     /** {@inheritDoc} */
+=======
+    @Override
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     public long getCacheAge() {
         if (mHasCache) {
             return SystemClock.elapsedRealtime() - mCachedNtpElapsedRealtime;
@@ -105,7 +124,11 @@ public class NtpTrustedTime implements TrustedTime {
         }
     }
 
+<<<<<<< HEAD
     /** {@inheritDoc} */
+=======
+    @Override
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     public long getCacheCertainty() {
         if (mHasCache) {
             return mCachedNtpCertainty;
@@ -114,7 +137,11 @@ public class NtpTrustedTime implements TrustedTime {
         }
     }
 
+<<<<<<< HEAD
     /** {@inheritDoc} */
+=======
+    @Override
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     public long currentTimeMillis() {
         if (!mHasCache) {
             throw new IllegalStateException("Missing authoritative time source");

@@ -72,7 +72,10 @@ private:
     JNIMediaPlayerListener();
     jclass      mClass;     // Reference to MediaPlayer class
     jobject     mObject;    // Weak ref to MediaPlayer Java object to call on
+<<<<<<< HEAD
     jobject     mParcel;
+=======
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 };
 
 JNIMediaPlayerListener::JNIMediaPlayerListener(JNIEnv* env, jobject thiz, jobject weak_thiz)
@@ -91,7 +94,10 @@ JNIMediaPlayerListener::JNIMediaPlayerListener(JNIEnv* env, jobject thiz, jobjec
     // We use a weak reference so the MediaPlayer object can be garbage collected.
     // The reference is only used as a proxy for callbacks.
     mObject  = env->NewGlobalRef(weak_thiz);
+<<<<<<< HEAD
     mParcel = env->NewGlobalRef(createJavaParcelObject(env));
+=======
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 }
 
 JNIMediaPlayerListener::~JNIMediaPlayerListener()
@@ -100,20 +106,32 @@ JNIMediaPlayerListener::~JNIMediaPlayerListener()
     JNIEnv *env = AndroidRuntime::getJNIEnv();
     env->DeleteGlobalRef(mObject);
     env->DeleteGlobalRef(mClass);
+<<<<<<< HEAD
 
     recycleJavaParcelObject(env, mParcel);
     env->DeleteGlobalRef(mParcel);
+=======
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 }
 
 void JNIMediaPlayerListener::notify(int msg, int ext1, int ext2, const Parcel *obj)
 {
     JNIEnv *env = AndroidRuntime::getJNIEnv();
     if (obj && obj->dataSize() > 0) {
+<<<<<<< HEAD
         if (mParcel != NULL) {
             Parcel* nativeParcel = parcelForJavaObject(env, mParcel);
             nativeParcel->setData(obj->data(), obj->dataSize());
             env->CallStaticVoidMethod(mClass, fields.post_event, mObject,
                     msg, ext1, ext2, mParcel);
+=======
+        jobject jParcel = createJavaParcelObject(env);
+        if (jParcel != NULL) {
+            Parcel* nativeParcel = parcelForJavaObject(env, jParcel);
+            nativeParcel->setData(obj->data(), obj->dataSize());
+            env->CallStaticVoidMethod(mClass, fields.post_event, mObject,
+                    msg, ext1, ext2, jParcel);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         }
     } else {
         env->CallStaticVoidMethod(mClass, fields.post_event, mObject,
@@ -275,9 +293,20 @@ setVideoSurface(JNIEnv *env, jobject thiz, jobject jsurface, jboolean mediaPlaye
 
     sp<ISurfaceTexture> new_st;
     if (jsurface) {
+<<<<<<< HEAD
         sp<Surface> surface(Surface_getSurface(env, jsurface));
         if (surface != NULL) {
             new_st = surface->getSurfaceTexture();
+=======
+        sp<Surface> surface(android_view_Surface_getSurface(env, jsurface));
+        if (surface != NULL) {
+            new_st = surface->getSurfaceTexture();
+            if (new_st == NULL) {
+                jniThrowException(env, "java/lang/IllegalArgumentException",
+                    "The surface does not have a binding SurfaceTexture!");
+                return;
+            }
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
             new_st->incStrong(thiz);
         } else {
             jniThrowException(env, "java/lang/IllegalArgumentException",

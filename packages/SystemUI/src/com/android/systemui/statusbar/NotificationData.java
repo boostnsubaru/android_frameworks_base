@@ -147,10 +147,13 @@ public class NotificationData {
         return e;
     }
 
+<<<<<<< HEAD
     public void clear() {
         mEntries.clear();
     }
 
+=======
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     /**
      * Return whether there are any visible items (i.e. items without an error).
      */

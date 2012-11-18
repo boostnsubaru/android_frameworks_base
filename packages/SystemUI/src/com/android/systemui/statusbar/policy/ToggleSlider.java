@@ -36,6 +36,10 @@ public class ToggleSlider extends RelativeLayout
     private static final String TAG = "StatusBar.ToggleSlider";
 
     public interface Listener {
+<<<<<<< HEAD
+=======
+        public void onInit(ToggleSlider v);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         public void onChanged(ToggleSlider v, boolean tracking, boolean checked, int value);
     }
 
@@ -75,6 +79,17 @@ public class ToggleSlider extends RelativeLayout
         a.recycle();
     }
 
+<<<<<<< HEAD
+=======
+    @Override
+    protected void onAttachedToWindow() {
+        super.onAttachedToWindow();
+        if (mListener != null) {
+            mListener.onInit(this);
+        }
+    }
+
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     public void onCheckedChanged(CompoundButton toggle, boolean checked) {
         Drawable thumb;
         Drawable slider;

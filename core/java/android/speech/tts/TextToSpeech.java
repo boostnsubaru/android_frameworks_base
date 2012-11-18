@@ -1282,6 +1282,10 @@ public class TextToSpeech {
             }
         };
 
+<<<<<<< HEAD
+=======
+        @Override
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         public void onServiceConnected(ComponentName name, IBinder service) {
             Log.i(TAG, "Connected to " + name);
             synchronized(mStartLock) {
@@ -1305,6 +1309,10 @@ public class TextToSpeech {
             return mCallback;
         }
 
+<<<<<<< HEAD
+=======
+        @Override
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         public void onServiceDisconnected(ComponentName name) {
             synchronized(mStartLock) {
                 mService = null;
@@ -1317,16 +1325,34 @@ public class TextToSpeech {
 
         public void disconnect() {
             mContext.unbindService(this);
+<<<<<<< HEAD
         }
 
         public <R> R runAction(Action<R> action, R errorResult, String method, boolean reconnect) {
             try {
                 synchronized (mStartLock) {
+=======
+
+            synchronized (mStartLock) {
+                mService = null;
+                // If this is the active connection, clear it
+                if (mServiceConnection == this) {
+                    mServiceConnection = null;
+                }
+
+            }
+        }
+
+        public <R> R runAction(Action<R> action, R errorResult, String method, boolean reconnect) {
+            synchronized (mStartLock) {
+                try {
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
                     if (mService == null) {
                         Log.w(TAG, method + " failed: not connected to TTS engine");
                         return errorResult;
                     }
                     return action.run(mService);
+<<<<<<< HEAD
                 }
             } catch (RemoteException ex) {
                 Log.e(TAG, method + " failed", ex);
@@ -1335,6 +1361,16 @@ public class TextToSpeech {
                     initTts();
                 }
                 return errorResult;
+=======
+                } catch (RemoteException ex) {
+                    Log.e(TAG, method + " failed", ex);
+                    if (reconnect) {
+                        disconnect();
+                        initTts();
+                    }
+                    return errorResult;
+                }
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
             }
         }
     }

@@ -35,7 +35,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
+<<<<<<< HEAD
 import android.view.WindowManagerImpl;
+=======
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.FrameLayout;
@@ -62,7 +65,12 @@ public class TabletTicker
 
     private static final int ADVANCE_DELAY = 5000; // 5 seconds
 
+<<<<<<< HEAD
     private Context mContext;
+=======
+    private final Context mContext;
+    private final WindowManager mWindowManager;
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 
     private ViewGroup mWindow;
     private IBinder mCurrentKey;
@@ -83,6 +91,10 @@ public class TabletTicker
     public TabletTicker(TabletStatusBar bar) {
         mBar = bar;
         mContext = bar.getContext();
+<<<<<<< HEAD
+=======
+        mWindowManager = (WindowManager)mContext.getSystemService(Context.WINDOW_SERVICE);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         final Resources res = mContext.getResources();
         mLargeIconHeight = res.getDimensionPixelSize(
                 android.R.dimen.notification_large_icon_height);
@@ -178,7 +190,11 @@ public class TabletTicker
             if (mCurrentView != null) {
                 if (mWindow == null) {
                     mWindow = makeWindow();
+<<<<<<< HEAD
                     WindowManagerImpl.getDefault().addView(mWindow, mWindow.getLayoutParams());
+=======
+                    mWindowManager.addView(mWindow, mWindow.getLayoutParams());
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
                 }
 
                 mWindow.addView(mCurrentView);
@@ -242,7 +258,11 @@ public class TabletTicker
     public void endTransition(LayoutTransition transition, ViewGroup container,
             View view, int transitionType) {
         if (mWindowShouldClose) {
+<<<<<<< HEAD
             WindowManagerImpl.getDefault().removeView(mWindow);
+=======
+            mWindowManager.removeView(mWindow);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
             mWindow = null;
             mWindowShouldClose = false;
             mBar.doneTicking();
@@ -287,7 +307,12 @@ public class TabletTicker
         } else if (n.tickerText != null) {
             group = (ViewGroup)inflater.inflate(R.layout.system_bar_ticker_compat, mWindow, false);
             final Drawable icon = StatusBarIconView.getIcon(mContext,
+<<<<<<< HEAD
                     new StatusBarIcon(notification.pkg, n.icon, n.iconLevel, 0, n.tickerText));
+=======
+                    new StatusBarIcon(notification.pkg, notification.user, n.icon, n.iconLevel, 0,
+                            n.tickerText));
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
             ImageView iv = (ImageView)group.findViewById(iconId);
             iv.setImageDrawable(icon);
             iv.setVisibility(View.VISIBLE);

@@ -138,6 +138,24 @@ public interface InputMethodSession {
     public void dispatchTrackballEvent(int seq, MotionEvent event, EventCallback callback);
 
     /**
+<<<<<<< HEAD
+=======
+     * This method is called when there is a generic motion event.
+     *
+     * <p>
+     * If the input method wants to handle this event, return true, otherwise
+     * return false and the caller (i.e. the application) will handle the event.
+     *
+     * @param event The motion event.
+     *
+     * @return Whether the input method wants to handle this event.
+     *
+     * @see android.view.MotionEvent
+     */
+    public void dispatchGenericMotionEvent(int seq, MotionEvent event, EventCallback callback);
+
+    /**
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
      * Process a private command sent from the application to the input method.
      * This can be used to provide domain-specific features that are
      * only known between certain input methods and their clients.

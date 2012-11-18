@@ -38,8 +38,14 @@ import android.content.pm.PermissionInfo;
 import android.content.pm.ProviderInfo;
 import android.content.pm.ResolveInfo;
 import android.content.pm.ServiceInfo;
+<<<<<<< HEAD
 import android.content.pm.UserInfo;
 import android.content.pm.VerifierDeviceIdentity;
+=======
+import android.content.pm.VerificationParams;
+import android.content.pm.VerifierDeviceIdentity;
+import android.content.pm.PackageManager.NameNotFoundException;
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 import android.content.res.Resources;
 import android.content.res.XmlResourceParser;
 import android.graphics.drawable.Drawable;
@@ -138,6 +144,15 @@ public class MockPackageManager extends PackageManager {
         throw new UnsupportedOperationException();
     }
 
+<<<<<<< HEAD
+=======
+    /** @hide */
+    @Override
+    public List<PackageInfo> getInstalledPackages(int flags, int userId) {
+        throw new UnsupportedOperationException();
+    }
+
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     @Override
     public int checkPermission(String permName, String pkgName) {
         throw new UnsupportedOperationException();
@@ -208,11 +223,30 @@ public class MockPackageManager extends PackageManager {
         throw new UnsupportedOperationException();
     }
 
+<<<<<<< HEAD
+=======
+    /** @hide */
+    @Override
+    public ResolveInfo resolveActivityAsUser(Intent intent, int flags, int userId) {
+        throw new UnsupportedOperationException();
+    }
+
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     @Override
     public List<ResolveInfo> queryIntentActivities(Intent intent, int flags) {
         throw new UnsupportedOperationException();
     }
 
+<<<<<<< HEAD
+=======
+    /** @hide */
+    @Override
+    public List<ResolveInfo> queryIntentActivitiesAsUser(Intent intent,
+                                                   int flags, int userId) {
+        throw new UnsupportedOperationException();
+    }
+
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     @Override
     public List<ResolveInfo> queryIntentActivityOptions(ComponentName caller,
             Intent[] specifics, Intent intent, int flags) {
@@ -224,6 +258,15 @@ public class MockPackageManager extends PackageManager {
         throw new UnsupportedOperationException();
     }
 
+<<<<<<< HEAD
+=======
+    /** @hide */
+    @Override
+    public List<ResolveInfo> queryBroadcastReceivers(Intent intent, int flags, int userId) {
+        throw new UnsupportedOperationException();
+    }
+
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     @Override
     public ResolveInfo resolveService(Intent intent, int flags) {
         throw new UnsupportedOperationException();
@@ -234,6 +277,15 @@ public class MockPackageManager extends PackageManager {
         throw new UnsupportedOperationException();
     }
 
+<<<<<<< HEAD
+=======
+    /** @hide */
+    @Override
+    public List<ResolveInfo> queryIntentServicesAsUser(Intent intent, int flags, int userId) {
+        throw new UnsupportedOperationException();
+    }
+
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     @Override
     public ProviderInfo resolveContentProvider(String name, int flags) {
         throw new UnsupportedOperationException();
@@ -340,6 +392,15 @@ public class MockPackageManager extends PackageManager {
         throw new UnsupportedOperationException();
     }
 
+<<<<<<< HEAD
+=======
+    /** @hide */
+    @Override
+    public Resources getResourcesForApplicationAsUser(String appPackageName, int userId) {
+        throw new UnsupportedOperationException();
+    }
+
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     @Override
     public PackageInfo getPackageArchiveInfo(String archiveFilePath, int flags) {
         throw new UnsupportedOperationException();
@@ -479,7 +540,12 @@ public class MockPackageManager extends PackageManager {
      * @hide - to match hiding in superclass
      */
     @Override
+<<<<<<< HEAD
     public void getPackageSizeInfo(String packageName, IPackageStatsObserver observer) {
+=======
+    public void getPackageSizeInfo(String packageName, int userHandle,
+            IPackageStatsObserver observer) {
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         throw new UnsupportedOperationException();
     }
 
@@ -513,6 +579,7 @@ public class MockPackageManager extends PackageManager {
      * @hide
      */
     @Override
+<<<<<<< HEAD
     public UserInfo createUser(String name, int flags) {
         throw new UnsupportedOperationException();
     }
@@ -538,6 +605,11 @@ public class MockPackageManager extends PackageManager {
      */
     @Override
     public boolean removeUser(int id) {
+=======
+    public void installPackageWithVerification(Uri packageURI, IPackageInstallObserver observer,
+            int flags, String installerPackageName, Uri verificationURI,
+            ManifestDigest manifestDigest, ContainerEncryptionParams encryptionParams) {
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         throw new UnsupportedOperationException();
     }
 
@@ -545,7 +617,13 @@ public class MockPackageManager extends PackageManager {
      * @hide
      */
     @Override
+<<<<<<< HEAD
     public void updateUserName(int id, String name) {
+=======
+    public void installPackageWithVerificationAndEncryption(Uri packageURI,
+            IPackageInstallObserver observer, int flags, String installerPackageName,
+            VerificationParams verificationParams, ContainerEncryptionParams encryptionParams) {
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         throw new UnsupportedOperationException();
     }
 
@@ -553,6 +631,7 @@ public class MockPackageManager extends PackageManager {
      * @hide
      */
     @Override
+<<<<<<< HEAD
     public void updateUserFlags(int id, int flags) {
         throw new UnsupportedOperationException();
     }
@@ -572,11 +651,25 @@ public class MockPackageManager extends PackageManager {
     public void installPackageWithVerification(Uri packageURI, IPackageInstallObserver observer,
             int flags, String installerPackageName, Uri verificationURI,
             ManifestDigest manifestDigest, ContainerEncryptionParams encryptionParams) {
+=======
+    public int installExistingPackage(String packageName)
+            throws NameNotFoundException {
         throw new UnsupportedOperationException();
     }
 
     @Override
     public void verifyPendingInstall(int id, int verificationCode) {
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+<<<<<<< HEAD
+    public void verifyPendingInstall(int id, int verificationCode) {
+=======
+    public void extendVerificationTimeout(int id, int verificationCodeAtTimeout,
+            long millisecondsToDelay) {
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         throw new UnsupportedOperationException();
     }
 

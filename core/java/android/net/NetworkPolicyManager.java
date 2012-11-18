@@ -26,6 +26,10 @@ import android.content.pm.PackageManager;
 import android.content.pm.PackageManager.NameNotFoundException;
 import android.content.pm.Signature;
 import android.os.RemoteException;
+<<<<<<< HEAD
+=======
+import android.os.UserHandle;
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 import android.text.format.Time;
 
 import com.google.android.collect.Sets;
@@ -72,29 +76,51 @@ public class NetworkPolicyManager {
     }
 
     /**
+<<<<<<< HEAD
      * Set policy flags for specific application.
+=======
+     * Set policy flags for specific UID.
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
      *
      * @param policy {@link #POLICY_NONE} or combination of flags like
      *            {@link #POLICY_REJECT_METERED_BACKGROUND}.
      */
+<<<<<<< HEAD
     public void setAppPolicy(int appId, int policy) {
         try {
             mService.setAppPolicy(appId, policy);
+=======
+    public void setUidPolicy(int uid, int policy) {
+        try {
+            mService.setUidPolicy(uid, policy);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         } catch (RemoteException e) {
         }
     }
 
+<<<<<<< HEAD
     public int getAppPolicy(int appId) {
         try {
             return mService.getAppPolicy(appId);
+=======
+    public int getUidPolicy(int uid) {
+        try {
+            return mService.getUidPolicy(uid);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         } catch (RemoteException e) {
             return POLICY_NONE;
         }
     }
 
+<<<<<<< HEAD
     public int[] getAppsWithPolicy(int policy) {
         try {
             return mService.getAppsWithPolicy(policy);
+=======
+    public int[] getUidsWithPolicy(int policy) {
+        try {
+            return mService.getUidsWithPolicy(policy);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         } catch (RemoteException e) {
             return new int[0];
         }
@@ -236,8 +262,12 @@ public class NetworkPolicyManager {
     @Deprecated
     public static boolean isUidValidForPolicy(Context context, int uid) {
         // first, quick-reject non-applications
+<<<<<<< HEAD
         if (uid < android.os.Process.FIRST_APPLICATION_UID
                 || uid > android.os.Process.LAST_APPLICATION_UID) {
+=======
+        if (!UserHandle.isApp(uid)) {
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
             return false;
         }
 

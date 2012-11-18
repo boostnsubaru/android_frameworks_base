@@ -18,6 +18,10 @@ package android.view;
 
 import android.content.Context;
 import android.content.ContextWrapper;
+<<<<<<< HEAD
+=======
+import android.content.res.Configuration;
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 import android.content.res.Resources;
 import android.os.Build;
 
@@ -30,6 +34,11 @@ public class ContextThemeWrapper extends ContextWrapper {
     private int mThemeResource;
     private Resources.Theme mTheme;
     private LayoutInflater mInflater;
+<<<<<<< HEAD
+=======
+    private Configuration mOverrideConfiguration;
+    private Resources mResources;
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 
     public ContextThemeWrapper() {
         super(null);
@@ -45,6 +54,44 @@ public class ContextThemeWrapper extends ContextWrapper {
         super.attachBaseContext(newBase);
         mBase = newBase;
     }
+<<<<<<< HEAD
+=======
+
+    /**
+     * Call to set an "override configuration" on this context -- this is
+     * a configuration that replies one or more values of the standard
+     * configuration that is applied to the context.  See
+     * {@link Context#createConfigurationContext(Configuration)} for more
+     * information.
+     *
+     * <p>This method can only be called once, and must be called before any
+     * calls to {@link #getResources()} are made.
+     */
+    public void applyOverrideConfiguration(Configuration overrideConfiguration) {
+        if (mResources != null) {
+            throw new IllegalStateException("getResources() has already been called");
+        }
+        if (mOverrideConfiguration != null) {
+            throw new IllegalStateException("Override configuration has already been set");
+        }
+        mOverrideConfiguration = new Configuration(overrideConfiguration);
+    }
+
+    @Override
+    public Resources getResources() {
+        if (mResources != null) {
+            return mResources;
+        }
+        if (mOverrideConfiguration == null) {
+            mResources = super.getResources();
+            return mResources;
+        } else {
+            Context resc = createConfigurationContext(mOverrideConfiguration);
+            mResources = resc.getResources();
+            return mResources;
+        }
+    }
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     
     @Override public void setTheme(int resid) {
         mThemeResource = resid;

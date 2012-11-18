@@ -17,7 +17,15 @@
 package android.server.search;
 
 import com.android.internal.content.PackageMonitor;
+<<<<<<< HEAD
 
+=======
+import com.android.internal.util.IndentingPrintWriter;
+
+import android.app.ActivityManager;
+import android.app.ActivityManagerNative;
+import android.app.AppGlobals;
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 import android.app.ISearchManager;
 import android.app.SearchManager;
 import android.app.SearchableInfo;
@@ -27,12 +35,31 @@ import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+<<<<<<< HEAD
 import android.content.pm.ResolveInfo;
 import android.database.ContentObserver;
 import android.os.Process;
 import android.provider.Settings;
 import android.util.Log;
 
+=======
+import android.content.pm.IPackageManager;
+import android.content.pm.PackageManager;
+import android.content.pm.ResolveInfo;
+import android.database.ContentObserver;
+import android.os.Binder;
+import android.os.Process;
+import android.os.RemoteException;
+import android.os.UserHandle;
+import android.os.UserManager;
+import android.provider.Settings;
+import android.util.Log;
+import android.util.Slog;
+import android.util.SparseArray;
+
+import java.io.FileDescriptor;
+import java.io.PrintWriter;
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 import java.util.List;
 
 /**
@@ -48,9 +75,13 @@ public class SearchManagerService extends ISearchManager.Stub {
     private final Context mContext;
 
     // This field is initialized lazily in getSearchables(), and then never modified.
+<<<<<<< HEAD
     private Searchables mSearchables;
 
     private ContentObserver mGlobalSearchObserver;
+=======
+    private final SparseArray<Searchables> mSearchables = new SparseArray<Searchables>();
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 
     /**
      * Initializes the Search Manager service in the provided system context.
@@ -62,6 +93,7 @@ public class SearchManagerService extends ISearchManager.Stub {
         mContext = context;
         mContext.registerReceiver(new BootCompletedReceiver(),
                 new IntentFilter(Intent.ACTION_BOOT_COMPLETED));
+<<<<<<< HEAD
         mGlobalSearchObserver = new GlobalSearchProviderObserver(
                 mContext.getContentResolver());
     }
@@ -74,6 +106,41 @@ public class SearchManagerService extends ISearchManager.Stub {
             mSearchables.buildSearchableList();
         }
         return mSearchables;
+=======
+        mContext.registerReceiver(new UserReceiver(),
+                new IntentFilter(Intent.ACTION_USER_REMOVED));
+        new MyPackageMonitor().register(context, null, UserHandle.ALL, true);
+    }
+
+    private Searchables getSearchables(int userId) {
+        long origId = Binder.clearCallingIdentity();
+        try {
+            boolean userExists = ((UserManager) mContext.getSystemService(Context.USER_SERVICE))
+                    .getUserInfo(userId) != null;
+            if (!userExists) return null;
+        } finally {
+            Binder.restoreCallingIdentity(origId);
+        }
+        synchronized (mSearchables) {
+            Searchables searchables = mSearchables.get(userId);
+
+            if (searchables == null) {
+                Log.i(TAG, "Building list of searchable activities for userId=" + userId);
+                searchables = new Searchables(mContext, userId);
+                searchables.buildSearchableList();
+                mSearchables.append(userId, searchables);
+            }
+            return searchables;
+        }
+    }
+
+    private void onUserRemoved(int userId) {
+        if (userId != UserHandle.USER_OWNER) {
+            synchronized (mSearchables) {
+                mSearchables.remove(userId);
+            }
+        }
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     }
 
     /**
@@ -87,12 +154,26 @@ public class SearchManagerService extends ISearchManager.Stub {
                 public void run() {
                     Process.setThreadPriority(Process.THREAD_PRIORITY_BACKGROUND);
                     mContext.unregisterReceiver(BootCompletedReceiver.this);
+<<<<<<< HEAD
                     getSearchables();
+=======
+                    getSearchables(0);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
                 }
             }.start();
         }
     }
 
+<<<<<<< HEAD
+=======
+    private final class UserReceiver extends BroadcastReceiver {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            onUserRemoved(intent.getIntExtra(Intent.EXTRA_USER_HANDLE, UserHandle.USER_OWNER));
+        }
+    }
+
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     /**
      * Refreshes the "searchables" list when packages are added/removed.
      */
@@ -109,12 +190,30 @@ public class SearchManagerService extends ISearchManager.Stub {
         }
 
         private void updateSearchables() {
+<<<<<<< HEAD
             // Update list of searchable activities
             getSearchables().buildSearchableList();
             // Inform all listeners that the list of searchables has been updated.
             Intent intent = new Intent(SearchManager.INTENT_ACTION_SEARCHABLES_CHANGED);
             intent.addFlags(Intent.FLAG_RECEIVER_REPLACE_PENDING);
             mContext.sendBroadcast(intent);
+=======
+            final int changingUserId = getChangingUserId();
+            synchronized (mSearchables) {
+                // Update list of searchable activities
+                for (int i = 0; i < mSearchables.size(); i++) {
+                    if (changingUserId == mSearchables.keyAt(i)) {
+                        getSearchables(mSearchables.keyAt(i)).buildSearchableList();
+                        break;
+                    }
+                }
+            }
+            // Inform all listeners that the list of searchables has been updated.
+            Intent intent = new Intent(SearchManager.INTENT_ACTION_SEARCHABLES_CHANGED);
+            intent.addFlags(Intent.FLAG_RECEIVER_REPLACE_PENDING
+                    | Intent.FLAG_RECEIVER_REGISTERED_ONLY_BEFORE_BOOT);
+            mContext.sendBroadcastAsUser(intent, new UserHandle(changingUserId));
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         }
     }
 
@@ -132,10 +231,21 @@ public class SearchManagerService extends ISearchManager.Stub {
 
         @Override
         public void onChange(boolean selfChange) {
+<<<<<<< HEAD
             getSearchables().buildSearchableList();
             Intent intent = new Intent(SearchManager.INTENT_GLOBAL_SEARCH_ACTIVITY_CHANGED);
             intent.addFlags(Intent.FLAG_RECEIVER_REPLACE_PENDING);
             mContext.sendBroadcast(intent);
+=======
+            synchronized (mSearchables) {
+                for (int i = 0; i < mSearchables.size(); i++) {
+                    getSearchables(mSearchables.keyAt(i)).buildSearchableList();
+                }
+            }
+            Intent intent = new Intent(SearchManager.INTENT_GLOBAL_SEARCH_ACTIVITY_CHANGED);
+            intent.addFlags(Intent.FLAG_RECEIVER_REPLACE_PENDING);
+            mContext.sendBroadcastAsUser(intent, UserHandle.ALL);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         }
 
     }
@@ -156,32 +266,113 @@ public class SearchManagerService extends ISearchManager.Stub {
             Log.e(TAG, "getSearchableInfo(), activity == null");
             return null;
         }
+<<<<<<< HEAD
         return getSearchables().getSearchableInfo(launchActivity);
+=======
+        return getSearchables(UserHandle.getCallingUserId()).getSearchableInfo(launchActivity);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     }
 
     /**
      * Returns a list of the searchable activities that can be included in global search.
      */
     public List<SearchableInfo> getSearchablesInGlobalSearch() {
+<<<<<<< HEAD
         return getSearchables().getSearchablesInGlobalSearchList();
     }
 
     public List<ResolveInfo> getGlobalSearchActivities() {
         return getSearchables().getGlobalSearchActivities();
+=======
+        return getSearchables(UserHandle.getCallingUserId()).getSearchablesInGlobalSearchList();
+    }
+
+    public List<ResolveInfo> getGlobalSearchActivities() {
+        return getSearchables(UserHandle.getCallingUserId()).getGlobalSearchActivities();
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     }
 
     /**
      * Gets the name of the global search activity.
      */
     public ComponentName getGlobalSearchActivity() {
+<<<<<<< HEAD
         return getSearchables().getGlobalSearchActivity();
+=======
+        return getSearchables(UserHandle.getCallingUserId()).getGlobalSearchActivity();
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     }
 
     /**
      * Gets the name of the web search activity.
      */
     public ComponentName getWebSearchActivity() {
+<<<<<<< HEAD
         return getSearchables().getWebSearchActivity();
     }
 
+=======
+        return getSearchables(UserHandle.getCallingUserId()).getWebSearchActivity();
+    }
+
+    @Override
+    public ComponentName getAssistIntent(int userHandle) {
+        try {
+            if (userHandle != UserHandle.getCallingUserId()) {
+                // Requesting a different user, make sure that they have the permission
+                if (ActivityManager.checkComponentPermission(
+                        android.Manifest.permission.INTERACT_ACROSS_USERS_FULL,
+                        Binder.getCallingUid(), -1, true)
+                        == PackageManager.PERMISSION_GRANTED) {
+                    // Translate to the current user id, if caller wasn't aware
+                    if (userHandle == UserHandle.USER_CURRENT) {
+                        long identity = Binder.clearCallingIdentity();
+                        userHandle = ActivityManagerNative.getDefault().getCurrentUser().id;
+                        Binder.restoreCallingIdentity(identity);
+                    }
+                } else {
+                    String msg = "Permission Denial: "
+                            + "Request to getAssistIntent for " + userHandle
+                            + " but is calling from user " + UserHandle.getCallingUserId()
+                            + "; this requires "
+                            + android.Manifest.permission.INTERACT_ACROSS_USERS_FULL;
+                    Slog.w(TAG, msg);
+                    return null;
+                }
+            }
+            IPackageManager pm = AppGlobals.getPackageManager();
+            Intent assistIntent = new Intent(Intent.ACTION_ASSIST);
+            ResolveInfo info =
+                    pm.resolveIntent(assistIntent,
+                    assistIntent.resolveTypeIfNeeded(mContext.getContentResolver()),
+                    PackageManager.MATCH_DEFAULT_ONLY, userHandle);
+            if (info != null) {
+                return new ComponentName(
+                        info.activityInfo.applicationInfo.packageName,
+                        info.activityInfo.name);
+            }
+        } catch (RemoteException re) {
+            // Local call
+            Log.e(TAG, "RemoteException in getAssistIntent: " + re);
+        } catch (Exception e) {
+            Log.e(TAG, "Exception in getAssistIntent: " + e);
+        }
+        return null;
+    }
+
+    @Override
+    public void dump(FileDescriptor fd, PrintWriter pw, String[] args) {
+        mContext.enforceCallingOrSelfPermission(android.Manifest.permission.DUMP, TAG);
+
+        IndentingPrintWriter ipw = new IndentingPrintWriter(pw, "  ");
+        synchronized (mSearchables) {
+            for (int i = 0; i < mSearchables.size(); i++) {
+                ipw.print("\nUser: "); ipw.println(mSearchables.keyAt(i));
+                ipw.increaseIndent();
+                mSearchables.valueAt(i).dump(fd, ipw, args);
+                ipw.decreaseIndent();
+            }
+        }
+    }
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 }

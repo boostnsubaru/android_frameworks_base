@@ -17,7 +17,11 @@
 LOCAL_PATH := $(call my-dir)
 include $(CLEAR_VARS)
 
+<<<<<<< HEAD
 LOCAL_MODULE_TAGS := optional
+=======
+LOCAL_MODULE_TAGS := tests
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 
 LOCAL_SRC_FILES := $(call all-java-files-under, src) $(call all-renderscript-files-under, src)
 

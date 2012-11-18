@@ -14,7 +14,12 @@
      limitations under the License.
 -->
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+<<<<<<< HEAD
        package="com.android.frameworks.downloadmanagertests">
+=======
+       package="com.android.frameworks.downloadmanagertests"
+       android:sharedUserId="android.uid.system">
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
@@ -22,6 +27,10 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WRITE_SETTINGS" />
+<<<<<<< HEAD
+=======
+    <uses-permission android:name="android.permission.WRITE_SECURE_SETTINGS" />
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 
     <application android:label="DownloadManagerTestApp">
             <uses-library android:name="android.test.runner" />

@@ -21,6 +21,7 @@
   state of the device, as well as instructions on how to get past it
   depending on the state of the device.  It is the same for landscape
   and portrait.-->
+<<<<<<< HEAD
 <RelativeLayout
 	xmlns:android="http://schemas.android.com/apk/res/android"
 	xmlns:tabunlock="http://schemas.android.com/apk/res/com.android.tabunlock"
@@ -37,11 +38,23 @@
 	android:layout_height="match_parent"
 	android:orientation="vertical"
 	android:id="@+id/root">
+=======
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tabunlock="http://schemas.android.com/apk/res/com.android.tabunlock"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:id="@+id/root">
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 
     <!-- top: status -->
     <RelativeLayout
         android:layout_height="0dip"
+<<<<<<< HEAD
         android:layout_weight="1"
+=======
+        android:layout_weight="0.42"
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         android:layout_width="match_parent"
         android:gravity="center">
 
@@ -54,10 +67,17 @@
             <include layout="@layout/keyguard_screen_status_port"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+<<<<<<< HEAD
                 android:layout_marginLeft="50dip"
                 android:layout_marginTop="50dip"
                 android:layout_alignParentTop="true"
                 android:layout_alignParentLeft="true"/>
+=======
+                android:layout_marginStart="50dip"
+                android:layout_marginTop="50dip"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentStart="true"/>
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 
             <!-- Music transport control -->
             <include android:id="@+id/transport"
@@ -78,7 +98,11 @@
     <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="0dip"
+<<<<<<< HEAD
             android:layout_weight="1"
+=======
+            android:layout_weight="0.58"
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
             android:orientation="vertical"
             android:gravity="bottom">
 
@@ -86,7 +110,11 @@
             android:id="@+id/screenLocked"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+<<<<<<< HEAD
             android:layout_marginLeft="24dip"
+=======
+            android:layout_marginStart="24dip"
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:layout_marginTop="12dip"
             android:drawablePadding="4dip"
@@ -98,7 +126,11 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
+<<<<<<< HEAD
             android:gravity="top"
+=======
+            android:gravity="center"
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
             android:focusable="true"
 
             android:targetDrawables="@array/lockscreen_targets_with_camera"
@@ -131,4 +163,8 @@
     </LinearLayout>
 
 </LinearLayout>
+<<<<<<< HEAD
 </RelativeLayout>
+=======
+
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a

@@ -31,6 +31,10 @@ import android.view.ViewConfiguration;
 import android.view.ViewGroup;
 import android.view.accessibility.AccessibilityEvent;
 import android.view.accessibility.AccessibilityNodeInfo;
+<<<<<<< HEAD
+=======
+import android.widget.RemoteViews.OnClickHandler;
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -813,6 +817,12 @@ public abstract class AdapterViewAnimator extends AdapterView<Adapter>
     @Override
     public Parcelable onSaveInstanceState() {
         Parcelable superState = super.onSaveInstanceState();
+<<<<<<< HEAD
+=======
+        if (mRemoteViewsAdapter != null) {
+            mRemoteViewsAdapter.saveRemoteViewsCache();
+        }
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         return new SavedState(superState, mWhichChild);
     }
 
@@ -984,6 +994,27 @@ public abstract class AdapterViewAnimator extends AdapterView<Adapter>
         mDeferNotifyDataSetChanged = false;
         // Otherwise, create a new RemoteViewsAdapter for binding
         mRemoteViewsAdapter = new RemoteViewsAdapter(getContext(), intent, this);
+<<<<<<< HEAD
+=======
+        if (mRemoteViewsAdapter.isDataReady()) {
+            setAdapter(mRemoteViewsAdapter);
+        }
+    }
+
+    /**
+     * Sets up the onClickHandler to be used by the RemoteViewsAdapter when inflating RemoteViews
+     * 
+     * @param handler The OnClickHandler to use when inflating RemoteViews.
+     * 
+     * @hide
+     */
+    public void setRemoteViewsOnClickHandler(OnClickHandler handler) {
+        // Ensure that we don't already have a RemoteViewsAdapter that is bound to an existing
+        // service handling the specified intent.
+        if (mRemoteViewsAdapter != null) {
+            mRemoteViewsAdapter.setRemoteViewsOnClickHandler(handler);
+        }
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     }
 
     @Override

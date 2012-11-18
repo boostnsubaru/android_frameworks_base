@@ -51,11 +51,23 @@ public class VolumeController implements ToggleSlider.Listener {
 
         mMute = mAudioManager.getRingerMode() != AudioManager.RINGER_MODE_NORMAL;
         mVolume = mAudioManager.getStreamVolume(STREAM);
+<<<<<<< HEAD
         control.setMax(mAudioManager.getStreamMaxVolume(STREAM));
         control.setValue(mVolume);
         control.setChecked(mMute);
 
         control.setOnChangedListener(this);
+=======
+
+        control.setOnChangedListener(this);
+    }
+
+    @Override
+    public void onInit(ToggleSlider control) {
+        control.setMax(mAudioManager.getStreamMaxVolume(STREAM));
+        control.setValue(mVolume);
+        control.setChecked(mMute);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     }
 
     public void onChanged(ToggleSlider view, boolean tracking, boolean mute, int level) {

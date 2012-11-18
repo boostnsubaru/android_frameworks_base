@@ -28,7 +28,11 @@
         android:padding="4dp"
         android:verticalSpacing="8dp"
         android:horizontalSpacing="8dp"
+<<<<<<< HEAD
         android:gravity="left"
+=======
+        android:gravity="start"
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         android:drawSelectorOnTop="false"
         android:numColumns="4"
         android:columnWidth="48dp"
@@ -41,8 +45,13 @@
         android:id="@+id/cancel"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+<<<<<<< HEAD
         android:layout_marginLeft="12dp"
         android:layout_marginRight="12dp"
+=======
+        android:layout_marginStart="12dp"
+        android:layout_marginEnd="12dp"
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         android:background="@drawable/btn_close"
         android:layout_gravity="center_vertical"
     />

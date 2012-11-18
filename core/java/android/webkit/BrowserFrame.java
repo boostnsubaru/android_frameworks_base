@@ -32,7 +32,10 @@ import android.net.http.SslCertificate;
 import android.net.http.SslError;
 import android.os.Handler;
 import android.os.Message;
+<<<<<<< HEAD
 import android.os.SystemProperties;
+=======
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.Surface;
@@ -75,6 +78,10 @@ class BrowserFrame extends Handler {
     private final CallbackProxy mCallbackProxy;
     private final WebSettingsClassic mSettings;
     private final Context mContext;
+<<<<<<< HEAD
+=======
+    private final WebViewDatabaseClassic mDatabase;
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     private final WebViewCore mWebViewCore;
     /* package */ boolean mLoadInitFromJava;
     private int mLoadType;
@@ -89,16 +96,35 @@ class BrowserFrame extends Handler {
     // Is this frame the main frame?
     private boolean mIsMainFrame;
 
+<<<<<<< HEAD
     // Attached Javascript interfaces
     private Map<String, Object> mJavaScriptObjects;
+=======
+    // Javascript interface object
+    private class JSObject {
+        Object object;
+        boolean requireAnnotation;
+
+        public JSObject(Object object, boolean requireAnnotation) {
+            this.object = object;
+            this.requireAnnotation = requireAnnotation;
+        }
+    }
+
+    // Attached Javascript interfaces
+    private Map<String, JSObject> mJavaScriptObjects;
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     private Set<Object> mRemovedJavaScriptObjects;
 
     // Key store handler when Chromium HTTP stack is used.
     private KeyStoreHandler mKeyStoreHandler = null;
 
+<<<<<<< HEAD
     // Implementation of the searchbox API.
     private final SearchBoxImpl mSearchBox;
 
+=======
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     // message ids
     // a message posted when a frame loading is completed
     static final int FRAME_COMPLETED = 1001;
@@ -213,6 +239,7 @@ class BrowserFrame extends Handler {
             // set WebCore native cache size
             ActivityManager am = (ActivityManager) context
                     .getSystemService(Context.ACTIVITY_SERVICE);
+<<<<<<< HEAD
             int defCacheSize = am.getMemoryClass() > 16 ?
                 8 * 1024 * 1024 : 4 * 1024 * 1024;
             int cacheSize = SystemProperties.getInt("net.webkit.cache.size", defCacheSize);
@@ -220,6 +247,13 @@ class BrowserFrame extends Handler {
                 cacheSize = defCacheSize;
             }
             sJavaBridge.setCacheSize(cacheSize);
+=======
+            if (am.getMemoryClass() > 16) {
+                sJavaBridge.setCacheSize(8 * 1024 * 1024);
+            } else {
+                sJavaBridge.setCacheSize(4 * 1024 * 1024);
+            }
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
             // initialize CacheManager
             CacheManager.init(appContext);
             // create CookieSyncManager with current Context
@@ -236,20 +270,31 @@ class BrowserFrame extends Handler {
         }
         sConfigCallback.addHandler(this);
 
+<<<<<<< HEAD
         mJavaScriptObjects = javascriptInterfaces;
         if (mJavaScriptObjects == null) {
             mJavaScriptObjects = new HashMap<String, Object>();
         }
+=======
+        mJavaScriptObjects = new HashMap<String, JSObject>();
+        addJavaScriptObjects(javascriptInterfaces);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         mRemovedJavaScriptObjects = new HashSet<Object>();
 
         mSettings = settings;
         mContext = context;
         mCallbackProxy = proxy;
+<<<<<<< HEAD
         mWebViewCore = w;
 
         mSearchBox = new SearchBoxImpl(mWebViewCore, mCallbackProxy);
         mJavaScriptObjects.put(SearchBoxImpl.JS_INTERFACE_NAME, mSearchBox);
 
+=======
+        mDatabase = WebViewDatabaseClassic.getInstance(appContext);
+        mWebViewCore = w;
+
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         AssetManager am = context.getAssets();
         nativeCreateFrame(w, am, proxy.getBackForwardList());
 
@@ -427,8 +472,12 @@ class BrowserFrame extends Handler {
             if (h != null) {
                 String url = WebTextView.urlForAutoCompleteData(h.getUrl());
                 if (url != null) {
+<<<<<<< HEAD
                     WebViewDatabaseClassic.getInstance(mContext).setFormData(
                             url, data);
+=======
+                    mDatabase.setFormData(url, data);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
                 }
             }
         }
@@ -500,9 +549,14 @@ class BrowserFrame extends Handler {
                     if (item != null) {
                         WebAddress uri = new WebAddress(item.getUrl());
                         String schemePlusHost = uri.getScheme() + uri.getHost();
+<<<<<<< HEAD
                         String[] up =
                                 WebViewDatabaseClassic.getInstance(mContext)
                                         .getUsernamePassword(schemePlusHost);
+=======
+                        String[] up = mDatabase.getUsernamePassword(
+                                schemePlusHost);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
                         if (up != null && up[0] != null) {
                             setUsernamePassword(up[0], up[1]);
                         }
@@ -594,6 +648,7 @@ class BrowserFrame extends Handler {
         Iterator<String> iter = mJavaScriptObjects.keySet().iterator();
         while (iter.hasNext())  {
             String interfaceName = iter.next();
+<<<<<<< HEAD
             Object object = mJavaScriptObjects.get(interfaceName);
             if (object != null) {
                 nativeAddJavascriptInterface(nativeFramePointer,
@@ -603,6 +658,36 @@ class BrowserFrame extends Handler {
         mRemovedJavaScriptObjects.clear();
 
         stringByEvaluatingJavaScriptFromString(SearchBoxImpl.JS_BRIDGE);
+=======
+            JSObject jsobject = mJavaScriptObjects.get(interfaceName);
+            if (jsobject != null && jsobject.object != null) {
+                nativeAddJavascriptInterface(nativeFramePointer,
+                        jsobject.object, interfaceName, jsobject.requireAnnotation);
+            }
+        }
+        mRemovedJavaScriptObjects.clear();
+    }
+
+    /*
+     * Add javascript objects to the internal list of objects. The default behavior
+     * is to allow access to inherited methods (no annotation needed). This is only
+     * used when js objects are passed through a constructor (via a hidden constructor).
+     *
+     * @TODO change the default behavior to be compatible with the public addjavascriptinterface
+     */
+    private void addJavaScriptObjects(Map<String, Object> javascriptInterfaces) {
+
+        // TODO in a separate CL provide logic to enable annotations for API level JB_MR1 and above.
+        if (javascriptInterfaces == null) return;
+        Iterator<String> iter = javascriptInterfaces.keySet().iterator();
+        while (iter.hasNext())  {
+            String interfaceName = iter.next();
+            Object object = javascriptInterfaces.get(interfaceName);
+            if (object != null) {
+                mJavaScriptObjects.put(interfaceName, new JSObject(object, false));
+            }
+        }
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     }
 
     /**
@@ -622,11 +707,19 @@ class BrowserFrame extends Handler {
         }
     }
 
+<<<<<<< HEAD
     public void addJavascriptInterface(Object obj, String interfaceName) {
         assert obj != null;
         removeJavascriptInterface(interfaceName);
 
         mJavaScriptObjects.put(interfaceName, obj);
+=======
+    public void addJavascriptInterface(Object obj, String interfaceName,
+            boolean requireAnnotation) {
+        assert obj != null;
+        removeJavascriptInterface(interfaceName);
+        mJavaScriptObjects.put(interfaceName, new JSObject(obj, requireAnnotation));
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     }
 
     public void removeJavascriptInterface(String interfaceName) {
@@ -803,10 +896,17 @@ class BrowserFrame extends Handler {
             // the post data (there could be another form on the
             // page and that was posted instead.
             String postString = new String(postData);
+<<<<<<< HEAD
             WebViewDatabaseClassic db = WebViewDatabaseClassic.getInstance(mContext);
             if (postString.contains(URLEncoder.encode(username)) &&
                     postString.contains(URLEncoder.encode(password))) {
                 String[] saved = db.getUsernamePassword(schemePlusHost);
+=======
+            if (postString.contains(URLEncoder.encode(username)) &&
+                    postString.contains(URLEncoder.encode(password))) {
+                String[] saved = mDatabase.getUsernamePassword(
+                        schemePlusHost);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
                 if (saved != null) {
                     // null username implies that user has chosen not to
                     // save password
@@ -814,8 +914,12 @@ class BrowserFrame extends Handler {
                         // non-null username implies that user has
                         // chosen to save password, so update the
                         // recorded password
+<<<<<<< HEAD
                         db.setUsernamePassword(schemePlusHost, username,
                                 password);
+=======
+                        mDatabase.setUsernamePassword(schemePlusHost, username, password);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
                     }
                 } else {
                     // CallbackProxy will handle creating the resume
@@ -1007,7 +1111,11 @@ class BrowserFrame extends Handler {
     }
 
     private float density() {
+<<<<<<< HEAD
         return mContext.getResources().getDisplayMetrics().density;
+=======
+        return WebViewCore.getFixedDisplayDensity(mContext);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     }
 
     /**
@@ -1141,7 +1249,11 @@ class BrowserFrame extends Handler {
      * DownloadListener.
      */
     private void downloadStart(String url, String userAgent,
+<<<<<<< HEAD
             String contentDisposition, String mimeType, long contentLength) {
+=======
+            String contentDisposition, String mimeType, String referer, long contentLength) {
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         // This will only work if the url ends with the filename
         if (mimeType.isEmpty()) {
             try {
@@ -1161,7 +1273,11 @@ class BrowserFrame extends Handler {
             mKeyStoreHandler = new KeyStoreHandler(mimeType);
         } else {
             mCallbackProxy.onDownloadStart(url, userAgent,
+<<<<<<< HEAD
                 contentDisposition, mimeType, contentLength);
+=======
+                contentDisposition, mimeType, referer, contentLength);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         }
     }
 
@@ -1194,10 +1310,13 @@ class BrowserFrame extends Handler {
         }
     }
 
+<<<<<<< HEAD
     /*package*/ SearchBox getSearchBox() {
         return mSearchBox;
     }
 
+=======
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     /**
      * Called by JNI when processing the X-Auto-Login header.
      */
@@ -1252,7 +1371,11 @@ class BrowserFrame extends Handler {
      * Add a javascript interface to the main frame.
      */
     private native void nativeAddJavascriptInterface(int nativeFramePointer,
+<<<<<<< HEAD
             Object obj, String interfaceName);
+=======
+            Object obj, String interfaceName, boolean requireAnnotation);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 
     public native void clearCache();
 

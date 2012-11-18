@@ -8,6 +8,10 @@
     <uses-permission android:name="android.permission.ASEC_MOUNT_UNMOUNT"/>
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.ACCESS_CACHE_FILESYSTEM" />
+<<<<<<< HEAD
+=======
+    <uses-permission android:name="android.permission.ACCESS_ALL_EXTERNAL_STORAGE" />
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 
     <application android:label="@string/service_name"
                  android:allowBackup="false">

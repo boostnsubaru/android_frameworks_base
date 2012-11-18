@@ -22,16 +22,28 @@
     <!-- Resources for GlowPadView in LockScreen -->
     <array name="lockscreen_targets_when_silent">
         <item>@null</item>"
+<<<<<<< HEAD
         <item>@drawable/ic_lockscreen_unlock</item>
         <item>@drawable/ic_action_assist_generic</item>
         <item>@drawable/ic_lockscreen_soundon</item>
+=======
+        <item>@drawable/ic_action_assist_generic</item>
+        <item>@drawable/ic_lockscreen_soundon</item>
+        <item>@drawable/ic_lockscreen_unlock</item>
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     </array>
 
     <array name="lockscreen_target_descriptions_when_silent">
         <item>@null</item>
+<<<<<<< HEAD
         <item>@string/description_target_unlock</item>
         <item>@string/description_target_search</item>
         <item>@string/description_target_soundon</item>
+=======
+        <item>@string/description_target_search</item>
+        <item>@string/description_target_soundon</item>
+        <item>@string/description_target_unlock</item>
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     </array>
 
     <array name="lockscreen_direction_descriptions">
@@ -43,27 +55,46 @@
 
     <array name="lockscreen_targets_when_soundon">
         <item>@null</item>
+<<<<<<< HEAD
         <item>@drawable/ic_lockscreen_unlock</item>
         <item>@drawable/ic_action_assist_generic</item>
         <item>@drawable/ic_lockscreen_silent</item>
+=======
+        <item>@drawable/ic_action_assist_generic</item>
+        <item>@drawable/ic_lockscreen_silent</item>
+        <item>@drawable/ic_lockscreen_unlock</item>
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     </array>
 
     <array name="lockscreen_target_descriptions_when_soundon">
         <item>@null</item>
+<<<<<<< HEAD
         <item>@string/description_target_unlock</item>
         <item>@string/description_target_search</item>
         <item>@string/description_target_silent</item>
+=======
+        <item>@string/description_target_search</item>
+        <item>@string/description_target_silent</item>
+        <item>@string/description_target_unlock</item>
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     </array>
 
     <array name="lockscreen_targets_with_camera">
         <item>@null</item>
+<<<<<<< HEAD
         <item>@drawable/ic_lockscreen_unlock</item>
         <item>@drawable/ic_action_assist_generic</item>
         <item>@drawable/ic_lockscreen_camera</item>
+=======
+        <item>@drawable/ic_action_assist_generic</item>
+        <item>@drawable/ic_lockscreen_camera</item>
+        <item>@drawable/ic_lockscreen_unlock</item>
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     </array>
 
     <array name="lockscreen_target_descriptions_with_camera">
         <item>@null</item>
+<<<<<<< HEAD
         <item>@string/description_target_unlock</item>
         <item>@string/description_target_search</item>
         <item>@string/description_target_camera</item>
@@ -74,6 +105,11 @@
         <item>@drawable/ic_lockscreen_chevron_up</item>
         <item>@null</item>
         <item>@null</item>
+=======
+        <item>@string/description_target_search</item>
+        <item>@string/description_target_camera</item>
+        <item>@string/description_target_unlock</item>
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     </array>
 
 </resources>

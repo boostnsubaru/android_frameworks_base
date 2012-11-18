@@ -6,17 +6,33 @@ include $(CLEAR_VARS)
 ifeq ($(USE_OPENGL_RENDERER),true)
 	LOCAL_SRC_FILES:= \
 		utils/SortedListImpl.cpp \
+<<<<<<< HEAD
+=======
+		font/CacheTexture.cpp \
+		font/Font.cpp \
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 		FontRenderer.cpp \
 		GammaFontRenderer.cpp \
 		Caches.cpp \
 		DisplayListLogBuffer.cpp \
 		DisplayListRenderer.cpp \
+<<<<<<< HEAD
 		FboCache.cpp \
 		GradientCache.cpp \
+=======
+		Dither.cpp \
+		FboCache.cpp \
+		GradientCache.cpp \
+		Layer.cpp \
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 		LayerCache.cpp \
 		LayerRenderer.cpp \
 		Matrix.cpp \
 		OpenGLRenderer.cpp \
+<<<<<<< HEAD
+=======
+		PathRenderer.cpp \
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 		Patch.cpp \
 		PatchCache.cpp \
 		PathCache.cpp \
@@ -27,9 +43,16 @@ ifeq ($(USE_OPENGL_RENDERER),true)
 		SkiaColorFilter.cpp \
 		SkiaShader.cpp \
 		Snapshot.cpp \
+<<<<<<< HEAD
 		TextureCache.cpp \
 		TextDropShadowCache.cpp
 	
+=======
+		Stencil.cpp \
+		TextureCache.cpp \
+		TextDropShadowCache.cpp
+
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 	LOCAL_C_INCLUDES += \
 		$(JNI_H_INCLUDE) \
 		$(LOCAL_PATH)/../../include/utils \
@@ -39,6 +62,7 @@ ifeq ($(USE_OPENGL_RENDERER),true)
 		external/skia/src/ports \
 		external/skia/include/utils
 
+<<<<<<< HEAD
 ifeq ($(BOARD_USES_QCOM_HARDWARE),true)
 	LOCAL_C_INCLUDES += \
 		hardware/qcom/display/libtilerenderer
@@ -58,6 +82,22 @@ endif
 	LOCAL_MODULE := libhwui
 	LOCAL_MODULE_TAGS := optional
 	
+=======
+	LOCAL_CFLAGS += -DUSE_OPENGL_RENDERER -DGL_GLEXT_PROTOTYPES
+	LOCAL_MODULE_CLASS := SHARED_LIBRARIES
+	LOCAL_SHARED_LIBRARIES := libcutils libutils libGLESv2 libskia libui
+	LOCAL_MODULE := libhwui
+	LOCAL_MODULE_TAGS := optional
+
+	ifndef HWUI_COMPILE_SYMBOLS
+		LOCAL_CFLAGS += -fvisibility=hidden
+	endif
+
+	ifdef HWUI_COMPILE_FOR_PERF
+		LOCAL_CFLAGS += -fno-omit-frame-pointer -marm -mapcs
+	endif
+
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 	include $(BUILD_SHARED_LIBRARY)
 
     include $(call all-makefiles-under,$(LOCAL_PATH))

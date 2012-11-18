@@ -16,8 +16,17 @@
 
 package android.net.arp;
 
+<<<<<<< HEAD
 import android.os.SystemClock;
 import android.util.Log;
+=======
+import android.net.LinkAddress;
+import android.net.LinkProperties;
+import android.net.RouteInfo;
+import android.os.SystemClock;
+import android.util.Log;
+
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 import java.io.IOException;
 import java.net.InetAddress;
 import java.net.Inet6Address;
@@ -35,6 +44,11 @@ import libcore.net.RawSocket;
  * @hide
  */
 public class ArpPeer {
+<<<<<<< HEAD
+=======
+    private static final boolean DBG = false;
+    private static final String TAG = "ArpPeer";
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     private String mInterfaceName;
     private final InetAddress mMyAddr;
     private final byte[] mMyMac = new byte[6];
@@ -46,16 +60,27 @@ public class ArpPeer {
     private static final int ARP_LENGTH = 28;
     private static final int MAC_ADDR_LENGTH = 6;
     private static final int IPV4_LENGTH = 4;
+<<<<<<< HEAD
     private static final String TAG = "ArpPeer";
+=======
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 
     public ArpPeer(String interfaceName, InetAddress myAddr, String mac,
                    InetAddress peer) throws SocketException {
         mInterfaceName = interfaceName;
         mMyAddr = myAddr;
 
+<<<<<<< HEAD
         for (int i = 0; i < MAC_ADDR_LENGTH; i++) {
             mMyMac[i] = (byte) Integer.parseInt(mac.substring(
                         i*3, (i*3) + 2), 16);
+=======
+        if (mac != null) {
+            for (int i = 0; i < MAC_ADDR_LENGTH; i++) {
+                mMyMac[i] = (byte) Integer.parseInt(mac.substring(
+                            i*3, (i*3) + 2), 16);
+            }
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         }
 
         if (myAddr instanceof Inet6Address || peer instanceof Inet6Address) {
@@ -123,6 +148,44 @@ public class ArpPeer {
         return null;
     }
 
+<<<<<<< HEAD
+=======
+    public static boolean doArp(String myMacAddress, LinkProperties linkProperties,
+            int timeoutMillis, int numArpPings, int minArpResponses) {
+        String interfaceName = linkProperties.getInterfaceName();
+        InetAddress inetAddress = null;
+        InetAddress gateway = null;
+        boolean success;
+
+        for (LinkAddress la : linkProperties.getLinkAddresses()) {
+            inetAddress = la.getAddress();
+            break;
+        }
+
+        for (RouteInfo route : linkProperties.getRoutes()) {
+            gateway = route.getGateway();
+            break;
+        }
+
+        try {
+            ArpPeer peer = new ArpPeer(interfaceName, inetAddress, myMacAddress, gateway);
+            int responses = 0;
+            for (int i=0; i < numArpPings; i++) {
+                if(peer.doArp(timeoutMillis) != null) responses++;
+            }
+            if (DBG) Log.d(TAG, "ARP test result: " + responses + "/" + numArpPings);
+            success = (responses >= minArpResponses);
+            peer.close();
+        } catch (SocketException se) {
+            //Consider an Arp socket creation issue as a successful Arp
+            //test to avoid any wifi connectivity issues
+            Log.e(TAG, "ARP test initiation failure: " + se);
+            success = true;
+        }
+        return success;
+    }
+
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     public void close() {
         try {
             mSocket.close();

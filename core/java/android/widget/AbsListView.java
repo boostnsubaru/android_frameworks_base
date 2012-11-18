@@ -16,8 +16,11 @@
 
 package android.widget;
 
+<<<<<<< HEAD
 import com.android.internal.R;
 
+=======
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.TypedArray;
@@ -42,7 +45,10 @@ import android.util.SparseBooleanArray;
 import android.util.StateSet;
 import android.view.ActionMode;
 import android.view.ContextMenu.ContextMenuInfo;
+<<<<<<< HEAD
 import android.view.FocusFinder;
+=======
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 import android.view.Gravity;
 import android.view.HapticFeedbackConstants;
 import android.view.InputDevice;
@@ -68,6 +74,12 @@ import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputConnection;
 import android.view.inputmethod.InputConnectionWrapper;
 import android.view.inputmethod.InputMethodManager;
+<<<<<<< HEAD
+=======
+import android.widget.RemoteViews.OnClickHandler;
+
+import com.android.internal.R;
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 
 import java.util.ArrayList;
 import java.util.List;
@@ -581,7 +593,10 @@ public abstract class AbsListView extends AdapterView<ListAdapter> implements Te
     Runnable mPositionScrollAfterLayout;
     private int mMinimumVelocity;
     private int mMaximumVelocity;
+<<<<<<< HEAD
     private int mDecacheThreshold;
+=======
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     private float mVelocityScale = 1.0f;
 
     final boolean[] mIsScrap = new boolean[1];
@@ -677,6 +692,17 @@ public abstract class AbsListView extends AdapterView<ListAdapter> implements Te
     static final Interpolator sLinearInterpolator = new LinearInterpolator();
 
     /**
+<<<<<<< HEAD
+=======
+     * The saved state that we will be restoring from when we next sync.
+     * Kept here so that if we happen to be asked to save our state before
+     * the sync happens, we can return this existing data rather than losing
+     * it.
+     */
+    private SavedState mPendingSync;
+
+    /**
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
      * Interface definition for a callback to be invoked when the list or grid
      * has been scrolled.
      */
@@ -811,7 +837,10 @@ public abstract class AbsListView extends AdapterView<ListAdapter> implements Te
         mTouchSlop = configuration.getScaledTouchSlop();
         mMinimumVelocity = configuration.getScaledMinimumFlingVelocity();
         mMaximumVelocity = configuration.getScaledMaximumFlingVelocity();
+<<<<<<< HEAD
         mDecacheThreshold = mMaximumVelocity / 2;
+=======
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         mOverscrollDistance = configuration.getScaledOverscrollDistance();
         mOverflingDistance = configuration.getScaledOverflingDistance();
 
@@ -976,6 +1005,15 @@ public abstract class AbsListView extends AdapterView<ListAdapter> implements Te
 
         // Start selection mode if needed. We don't need to if we're unchecking something.
         if (value && mChoiceMode == CHOICE_MODE_MULTIPLE_MODAL && mChoiceActionMode == null) {
+<<<<<<< HEAD
+=======
+            if (mMultiChoiceModeCallback == null ||
+                    !mMultiChoiceModeCallback.hasWrappedCallback()) {
+                throw new IllegalStateException("AbsListView: attempted to start selection mode " +
+                        "for CHOICE_MODE_MULTIPLE_MODAL but no choice mode callback was " +
+                        "supplied. Call setMultiChoiceModeListener to set a callback.");
+            }
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
             mChoiceActionMode = startActionMode(mMultiChoiceModeCallback);
         }
 
@@ -1043,29 +1081,49 @@ public abstract class AbsListView extends AdapterView<ListAdapter> implements Te
 
             if (mChoiceMode == CHOICE_MODE_MULTIPLE ||
                     (mChoiceMode == CHOICE_MODE_MULTIPLE_MODAL && mChoiceActionMode != null)) {
+<<<<<<< HEAD
                 boolean newValue = !mCheckStates.get(position, false);
                 mCheckStates.put(position, newValue);
                 if (mCheckedIdStates != null && mAdapter.hasStableIds()) {
                     if (newValue) {
+=======
+                boolean checked = !mCheckStates.get(position, false);
+                mCheckStates.put(position, checked);
+                if (mCheckedIdStates != null && mAdapter.hasStableIds()) {
+                    if (checked) {
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
                         mCheckedIdStates.put(mAdapter.getItemId(position), position);
                     } else {
                         mCheckedIdStates.delete(mAdapter.getItemId(position));
                     }
                 }
+<<<<<<< HEAD
                 if (newValue) {
+=======
+                if (checked) {
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
                     mCheckedItemCount++;
                 } else {
                     mCheckedItemCount--;
                 }
                 if (mChoiceActionMode != null) {
                     mMultiChoiceModeCallback.onItemCheckedStateChanged(mChoiceActionMode,
+<<<<<<< HEAD
                             position, id, newValue);
+=======
+                            position, id, checked);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
                     dispatchItemClick = false;
                 }
                 checkedStateChanged = true;
             } else if (mChoiceMode == CHOICE_MODE_SINGLE) {
+<<<<<<< HEAD
                 boolean newValue = !mCheckStates.get(position, false);
                 if (newValue) {
+=======
+                boolean checked = !mCheckStates.get(position, false);
+                if (checked) {
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
                     mCheckStates.clear();
                     mCheckStates.put(position, true);
                     if (mCheckedIdStates != null && mAdapter.hasStableIds()) {
@@ -1331,6 +1389,7 @@ public abstract class AbsListView extends AdapterView<ListAdapter> implements Te
     }
 
     @Override
+<<<<<<< HEAD
     public void addFocusables(ArrayList<View> views, int direction, int focusableMode) {
         if ((focusableMode & FOCUSABLES_ACCESSIBILITY) == FOCUSABLES_ACCESSIBILITY) {
             switch(direction) {
@@ -1475,6 +1534,8 @@ public abstract class AbsListView extends AdapterView<ListAdapter> implements Te
     }
 
     @Override
+=======
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     public void sendAccessibilityEvent(int eventType) {
         // Since this class calls onScrollChanged even if the mFirstPosition and the
         // child count have not changed we will avoid sending duplicate accessibility
@@ -1753,6 +1814,24 @@ public abstract class AbsListView extends AdapterView<ListAdapter> implements Te
 
         SavedState ss = new SavedState(superState);
 
+<<<<<<< HEAD
+=======
+        if (mPendingSync != null) {
+            // Just keep what we last restored.
+            ss.selectedId = mPendingSync.selectedId;
+            ss.firstId = mPendingSync.firstId;
+            ss.viewTop = mPendingSync.viewTop;
+            ss.position = mPendingSync.position;
+            ss.height = mPendingSync.height;
+            ss.filter = mPendingSync.filter;
+            ss.inActionMode = mPendingSync.inActionMode;
+            ss.checkedItemCount = mPendingSync.checkedItemCount;
+            ss.checkState = mPendingSync.checkState;
+            ss.checkIdState = mPendingSync.checkIdState;
+            return ss;
+        }
+
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         boolean haveChildren = getChildCount() > 0 && mItemCount > 0;
         long selectedId = getSelectedItemId();
         ss.selectedId = selectedId;
@@ -1815,6 +1894,13 @@ public abstract class AbsListView extends AdapterView<ListAdapter> implements Te
         }
         ss.checkedItemCount = mCheckedItemCount;
 
+<<<<<<< HEAD
+=======
+        if (mRemoteAdapter != null) {
+            mRemoteAdapter.saveRemoteViewsCache();
+        }
+
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         return ss;
     }
 
@@ -1829,6 +1915,10 @@ public abstract class AbsListView extends AdapterView<ListAdapter> implements Te
 
         if (ss.selectedId >= 0) {
             mNeedSync = true;
+<<<<<<< HEAD
+=======
+            mPendingSync = ss;
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
             mSyncRowId = ss.selectedId;
             mSyncPosition = ss.position;
             mSpecificTop = ss.viewTop;
@@ -1839,6 +1929,10 @@ public abstract class AbsListView extends AdapterView<ListAdapter> implements Te
             setNextSelectedPositionInt(INVALID_POSITION);
             mSelectorPosition = INVALID_POSITION;
             mNeedSync = true;
+<<<<<<< HEAD
+=======
+            mPendingSync = ss;
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
             mSyncRowId = ss.firstId;
             mSyncPosition = ss.position;
             mSpecificTop = ss.viewTop;
@@ -1940,6 +2034,10 @@ public abstract class AbsListView extends AdapterView<ListAdapter> implements Te
         mDataChanged = false;
         mPositionScrollAfterLayout = null;
         mNeedSync = false;
+<<<<<<< HEAD
+=======
+        mPendingSync = null;
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         mOldSelectedPosition = INVALID_POSITION;
         mOldSelectedRowId = INVALID_ROW_ID;
         setSelectedPositionInt(INVALID_POSITION);
@@ -2295,7 +2393,13 @@ public abstract class AbsListView extends AdapterView<ListAdapter> implements Te
             if (mAccessibilityDelegate == null) {
                 mAccessibilityDelegate = new ListItemAccessibilityDelegate();
             }
+<<<<<<< HEAD
             child.setAccessibilityDelegate(mAccessibilityDelegate);
+=======
+            if (child.getAccessibilityDelegate() == null) {
+                child.setAccessibilityDelegate(mAccessibilityDelegate);
+            }
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         }
 
         return child;
@@ -4029,7 +4133,11 @@ public abstract class AbsListView extends AdapterView<ListAdapter> implements Te
                     // Keep the fling alive a little longer
                     postDelayed(this, FLYWHEEL_TIMEOUT);
                 } else {
+<<<<<<< HEAD
                     endFling(false); // Don't disable the scrolling cache right after it was enabled
+=======
+                    endFling();
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
                     mTouchMode = TOUCH_MODE_SCROLL;
                     reportScrollStateChange(OnScrollListener.SCROLL_STATE_TOUCH_SCROLL);
                 }
@@ -4043,11 +4151,14 @@ public abstract class AbsListView extends AdapterView<ListAdapter> implements Te
         }
 
         void start(int initialVelocity) {
+<<<<<<< HEAD
             if (Math.abs(initialVelocity) > mDecacheThreshold) {
                 // For long flings, scrolling cache causes stutter, so don't use it
                 clearScrollingCache();
             }
 
+=======
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
             int initialY = initialVelocity < 0 ? Integer.MAX_VALUE : 0;
             mLastFlingY = initialY;
             mScroller.setInterpolator(null);
@@ -4120,18 +4231,25 @@ public abstract class AbsListView extends AdapterView<ListAdapter> implements Te
         }
 
         void endFling() {
+<<<<<<< HEAD
             endFling(true);
         }
 
         void endFling(boolean clearCache) {
+=======
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
             mTouchMode = TOUCH_MODE_REST;
 
             removeCallbacks(this);
             removeCallbacks(mCheckFlywheel);
 
             reportScrollStateChange(OnScrollListener.SCROLL_STATE_IDLE);
+<<<<<<< HEAD
             if (clearCache)
                 clearScrollingCache();
+=======
+            clearScrollingCache();
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
             mScroller.abortAnimation();
 
             if (mFlingStrictSpan != null) {
@@ -5354,6 +5472,10 @@ public abstract class AbsListView extends AdapterView<ListAdapter> implements Te
             if (mNeedSync) {
                 // Update this first, since setNextSelectedPositionInt inspects it
                 mNeedSync = false;
+<<<<<<< HEAD
+=======
+                mPendingSync = null;
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 
                 if (mTranscriptMode == TRANSCRIPT_MODE_ALWAYS_SCROLL) {
                     mLayoutMode = LAYOUT_FORCE_BOTTOM;
@@ -5469,6 +5591,10 @@ public abstract class AbsListView extends AdapterView<ListAdapter> implements Te
         mNextSelectedPosition = INVALID_POSITION;
         mNextSelectedRowId = INVALID_ROW_ID;
         mNeedSync = false;
+<<<<<<< HEAD
+=======
+        mPendingSync = null;
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         mSelectorPosition = INVALID_POSITION;
         checkSelectionChanged();
     }
@@ -5986,6 +6112,27 @@ public abstract class AbsListView extends AdapterView<ListAdapter> implements Te
         mDeferNotifyDataSetChanged = false;
         // Otherwise, create a new RemoteViewsAdapter for binding
         mRemoteAdapter = new RemoteViewsAdapter(getContext(), intent, this);
+<<<<<<< HEAD
+=======
+        if (mRemoteAdapter.isDataReady()) {
+            setAdapter(mRemoteAdapter);
+        }
+    }
+
+    /**
+     * Sets up the onClickHandler to be used by the RemoteViewsAdapter when inflating RemoteViews
+     * 
+     * @param handler The OnClickHandler to use when inflating RemoteViews.
+     * 
+     * @hide
+     */
+    public void setRemoteViewsOnClickHandler(OnClickHandler handler) {
+        // Ensure that we don't already have a RemoteViewsAdapter that is bound to an existing
+        // service handling the specified intent.
+        if (mRemoteAdapter != null) {
+            mRemoteAdapter.setRemoteViewsOnClickHandler(handler);
+        }
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     }
 
     /**
@@ -6095,6 +6242,13 @@ public abstract class AbsListView extends AdapterView<ListAdapter> implements Te
             mWrapped = wrapped;
         }
 
+<<<<<<< HEAD
+=======
+        public boolean hasWrappedCallback() {
+            return mWrapped != null;
+        }
+
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         public boolean onCreateActionMode(ActionMode mode, Menu menu) {
             if (mWrapped.onCreateActionMode(mode, menu)) {
                 // Initialize checked graphic state?

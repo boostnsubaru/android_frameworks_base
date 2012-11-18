@@ -407,17 +407,28 @@ public final class StrictMode {
             }
 
             /**
+<<<<<<< HEAD
              * Enable detection of disk reads.
+=======
+             * Enable detection of slow calls.
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
              */
             public Builder detectCustomSlowCalls() {
                 return enable(DETECT_CUSTOM);
             }
 
             /**
+<<<<<<< HEAD
              * Enable detection of disk reads.
              */
             public Builder permitCustomSlowCalls() {
                 return enable(DETECT_CUSTOM);
+=======
+             * Disable detection of slow calls.
+             */
+            public Builder permitCustomSlowCalls() {
+                return disable(DETECT_CUSTOM);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
             }
 
             /**

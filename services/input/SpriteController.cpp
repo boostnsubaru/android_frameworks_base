@@ -298,7 +298,11 @@ void SpriteController::doUpdateSprites() {
             }
 
             if (becomingVisible) {
+<<<<<<< HEAD
                 status = update.state.surfaceControl->show(surfaceLayer);
+=======
+                status = update.state.surfaceControl->show();
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
                 if (status) {
                     ALOGE("Error %d showing sprite surface.", status);
                 } else {
@@ -369,7 +373,12 @@ sp<SurfaceControl> SpriteController::obtainSurface(int32_t width, int32_t height
     ensureSurfaceComposerClient();
 
     sp<SurfaceControl> surfaceControl = mSurfaceComposerClient->createSurface(
+<<<<<<< HEAD
             String8("Sprite"), 0, width, height, PIXEL_FORMAT_RGBA_8888);
+=======
+            String8("Sprite"), width, height, PIXEL_FORMAT_RGBA_8888,
+            ISurfaceComposerClient::eHidden);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     if (surfaceControl == NULL || !surfaceControl->isValid()
             || !surfaceControl->getSurface()->isValid()) {
         ALOGE("Error creating sprite surface.");

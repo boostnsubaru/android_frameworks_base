@@ -582,9 +582,12 @@ public class ProcessStats {
                     }
                 } catch (NumberFormatException nfe) {
                     Slog.i(TAG, "Unable to parse time_in_state");
+<<<<<<< HEAD
                 } catch (java.util.NoSuchElementException nsee) {
                     Slog.i(TAG, "time_in_state changed size halfway?");
                     break;
+=======
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
                 }
             }
         }
@@ -705,9 +708,13 @@ public class ProcessStats {
 
         long sampleTime = mCurrentSampleTime - mLastSampleTime;
         long sampleRealTime = mCurrentSampleRealTime - mLastSampleRealTime;
+<<<<<<< HEAD
         long percAwake = ((sampleRealTime > 0)
             ? (sampleTime*100) / sampleRealTime
             : 100);
+=======
+        long percAwake = sampleRealTime > 0 ? ((sampleTime*100) / sampleRealTime) : 0;
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         if (percAwake != 100) {
             pw.print(" with ");
             pw.print(percAwake);

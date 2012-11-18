@@ -32,6 +32,14 @@ public class PackageInfoLite implements Parcelable {
     public String packageName;
 
     /**
+<<<<<<< HEAD
+=======
+     * The android:versionCode of the package.
+     */
+    public int versionCode;
+
+    /**
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
      * Specifies the recommended install location. Can be one of
      * {@link #PackageHelper.RECOMMEND_INSTALL_INTERNAL} to install on internal storage
      * {@link #PackageHelper.RECOMMEND_INSTALL_EXTERNAL} to install on external media
@@ -58,6 +66,10 @@ public class PackageInfoLite implements Parcelable {
 
     public void writeToParcel(Parcel dest, int parcelableFlags) {
         dest.writeString(packageName);
+<<<<<<< HEAD
+=======
+        dest.writeInt(versionCode);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         dest.writeInt(recommendedInstallLocation);
         dest.writeInt(installLocation);
 
@@ -82,6 +94,10 @@ public class PackageInfoLite implements Parcelable {
 
     private PackageInfoLite(Parcel source) {
         packageName = source.readString();
+<<<<<<< HEAD
+=======
+        versionCode = source.readInt();
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         recommendedInstallLocation = source.readInt();
         installLocation = source.readInt();
 

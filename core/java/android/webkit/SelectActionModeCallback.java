@@ -21,9 +21,13 @@ import android.app.SearchManager;
 import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.Intent;
+<<<<<<< HEAD
 import android.net.Uri;
 import android.provider.Browser;
 import android.util.Patterns;
+=======
+import android.provider.Browser;
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 import android.view.ActionMode;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -32,7 +36,10 @@ class SelectActionModeCallback implements ActionMode.Callback {
     private WebViewClassic mWebView;
     private ActionMode mActionMode;
     private boolean mIsTextSelected = true;
+<<<<<<< HEAD
     private Menu mMenu;
+=======
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 
     void setWebView(WebViewClassic webView) {
         mWebView = webView;
@@ -55,7 +62,11 @@ class SelectActionModeCallback implements ActionMode.Callback {
     @Override
     public boolean onCreateActionMode(ActionMode mode, Menu menu) {
         mode.getMenuInflater().inflate(com.android.internal.R.menu.webview_copy, menu);
+<<<<<<< HEAD
         mMenu = menu;
+=======
+
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         final Context context = mWebView.getContext();
         mode.setTitle(context.getString(com.android.internal.R.string.textSelectionCABTitle));
         mode.setTitleOptionalHint(true);
@@ -79,16 +90,22 @@ class SelectActionModeCallback implements ActionMode.Callback {
         setMenuVisibility(menu, canCut, com.android.internal.R.id.cut);
         setMenuVisibility(menu, canCopy, com.android.internal.R.id.copy);
         setMenuVisibility(menu, canWebSearch, com.android.internal.R.id.websearch);
+<<<<<<< HEAD
         setOpenUrlVisibility();
+=======
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         mActionMode = mode;
         return true;
     }
 
+<<<<<<< HEAD
     protected void setOpenUrlVisibility() {
         boolean isUrl = Patterns.WEB_URL.matcher(mWebView.getSelection()).matches();
         setMenuVisibility(mMenu, isUrl, com.android.internal.R.id.openurl);
     }
 
+=======
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     @Override
     public boolean onPrepareActionMode(ActionMode mode, Menu menu) {
         return true;
@@ -137,6 +154,7 @@ class SelectActionModeCallback implements ActionMode.Callback {
                 }
                 mWebView.getContext().startActivity(i);
                 break;
+<<<<<<< HEAD
             case com.android.internal.R.id.openurl:
                 String url = mWebView.getSelection();
                 if (!url.startsWith("https://") && !url.startsWith("http://")){
@@ -144,6 +162,9 @@ class SelectActionModeCallback implements ActionMode.Callback {
                 }
                 Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
                 mWebView.getContext().startActivity(browserIntent);
+=======
+
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
             default:
                 return false;
         }

@@ -153,6 +153,15 @@ public class TextActivity extends Activity {
             canvas.drawText("Hello OpenGL renderer!", 100, 300, mLargePaint);
             canvas.restore();
 
+<<<<<<< HEAD
+=======
+//            mStrikePaint.setUnderlineText(false);
+//            canvas.save();
+//            canvas.scale(20.0f, 20.0f);
+//            canvas.drawText("aeiouyw", 5.0f, 750 / 20.0f, mStrikePaint);
+//            canvas.restore();
+//            mStrikePaint.setUnderlineText(true);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         }
     }
 }

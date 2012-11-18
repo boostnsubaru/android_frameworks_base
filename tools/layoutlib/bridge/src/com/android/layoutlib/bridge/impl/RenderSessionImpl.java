@@ -24,6 +24,10 @@ import static com.android.ide.common.rendering.api.Result.Status.ERROR_VIEWGROUP
 import static com.android.ide.common.rendering.api.Result.Status.SUCCESS;
 
 import com.android.ide.common.rendering.api.AdapterBinding;
+<<<<<<< HEAD
+=======
+import com.android.ide.common.rendering.api.HardwareConfig;
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 import com.android.ide.common.rendering.api.IAnimationListener;
 import com.android.ide.common.rendering.api.ILayoutPullParser;
 import com.android.ide.common.rendering.api.IProjectCallback;
@@ -43,13 +47,22 @@ import com.android.layoutlib.bridge.android.BridgeContext;
 import com.android.layoutlib.bridge.android.BridgeLayoutParamsMapAttributes;
 import com.android.layoutlib.bridge.android.BridgeXmlBlockParser;
 import com.android.layoutlib.bridge.bars.FakeActionBar;
+<<<<<<< HEAD
 import com.android.layoutlib.bridge.bars.PhoneSystemBar;
 import com.android.layoutlib.bridge.bars.TabletSystemBar;
+=======
+import com.android.layoutlib.bridge.bars.NavigationBar;
+import com.android.layoutlib.bridge.bars.StatusBar;
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 import com.android.layoutlib.bridge.bars.TitleBar;
 import com.android.layoutlib.bridge.impl.binding.FakeAdapter;
 import com.android.layoutlib.bridge.impl.binding.FakeExpandableAdapter;
 import com.android.resources.ResourceType;
+<<<<<<< HEAD
 import com.android.resources.ScreenSize;
+=======
+import com.android.resources.ScreenOrientation;
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 import com.android.util.Pair;
 
 import org.xmlpull.v1.XmlPullParserException;
@@ -68,11 +81,21 @@ import android.util.DisplayMetrics;
 import android.util.TypedValue;
 import android.view.AttachInfo_Accessor;
 import android.view.BridgeInflater;
+<<<<<<< HEAD
+=======
+import android.view.IWindowManager;
+import android.view.IWindowManagerImpl;
+import android.view.Surface;
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 import android.view.View;
 import android.view.View.MeasureSpec;
 import android.view.ViewGroup;
 import android.view.ViewGroup.LayoutParams;
 import android.view.ViewGroup.MarginLayoutParams;
+<<<<<<< HEAD
+=======
+import android.view.WindowManagerGlobal_Delegate;
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 import android.widget.AbsListView;
 import android.widget.AbsSpinner;
 import android.widget.AdapterView;
@@ -120,7 +143,12 @@ public class RenderSessionImpl extends RenderAction<SessionParams> {
     private boolean mWindowIsFloating;
 
     private int mStatusBarSize;
+<<<<<<< HEAD
     private int mSystemBarSize;
+=======
+    private int mNavigationBarSize;
+    private int mNavigationBarOrientation = LinearLayout.HORIZONTAL;
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     private int mTitleBarSize;
     private int mActionBarSize;
 
@@ -183,7 +211,19 @@ public class RenderSessionImpl extends RenderAction<SessionParams> {
         findBackground(resources);
         findStatusBar(resources, metrics);
         findActionBar(resources, metrics);
+<<<<<<< HEAD
         findSystemBar(resources, metrics);
+=======
+        findNavigationBar(resources, metrics);
+
+        // FIXME: find those out, and possibly add them to the render params
+        boolean hasSystemNavBar = true;
+        boolean hasNavigationBar = true;
+        IWindowManager iwm = new IWindowManagerImpl(getContext().getConfiguration(),
+                metrics, Surface.ROTATION_0,
+                hasSystemNavBar, hasNavigationBar);
+        WindowManagerGlobal_Delegate.setWindowManagerService(iwm);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 
         // build the inflater and parser.
         mInflater = new BridgeInflater(context, params.getProjectCallback());
@@ -209,19 +249,69 @@ public class RenderSessionImpl extends RenderAction<SessionParams> {
         try {
 
             SessionParams params = getParams();
+<<<<<<< HEAD
             BridgeContext context = getContext();
 
+=======
+            HardwareConfig hardwareConfig = params.getHardwareConfig();
+            BridgeContext context = getContext();
+
+
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
             // the view group that receives the window background.
             ViewGroup backgroundView = null;
 
             if (mWindowIsFloating || params.isForceNoDecor()) {
                 backgroundView = mViewRoot = mContentRoot = new FrameLayout(context);
             } else {
+<<<<<<< HEAD
+=======
+                if (hasSoftwareButtons() && mNavigationBarOrientation == LinearLayout.VERTICAL) {
+                    /*
+                     * This is a special case where the navigation bar is on the right.
+                       +-------------------------------------------------+---+
+                       | Status bar (always)                             |   |
+                       +-------------------------------------------------+   |
+                       | (Layout with background drawable)               |   |
+                       | +---------------------------------------------+ |   |
+                       | | Title/Action bar (optional)                 | |   |
+                       | +---------------------------------------------+ |   |
+                       | | Content, vertical extending                 | |   |
+                       | |                                             | |   |
+                       | +---------------------------------------------+ |   |
+                       +-------------------------------------------------+---+
+
+                       So we create a horizontal layout, with the nav bar on the right,
+                       and the left part is the normal layout below without the nav bar at
+                       the bottom
+                     */
+                    LinearLayout topLayout = new LinearLayout(context);
+                    mViewRoot = topLayout;
+                    topLayout.setOrientation(LinearLayout.HORIZONTAL);
+
+                    try {
+                        NavigationBar navigationBar = new NavigationBar(context,
+                                hardwareConfig.getDensity(), LinearLayout.VERTICAL);
+                        navigationBar.setLayoutParams(
+                                new LinearLayout.LayoutParams(
+                                        mNavigationBarSize,
+                                        LayoutParams.MATCH_PARENT));
+                        topLayout.addView(navigationBar);
+                    } catch (XmlPullParserException e) {
+
+                    }
+                }
+
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
                 /*
                  * we're creating the following layout
                  *
                    +-------------------------------------------------+
+<<<<<<< HEAD
                    | System bar (only in phone UI)                   |
+=======
+                   | Status bar (always)                             |
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
                    +-------------------------------------------------+
                    | (Layout with background drawable)               |
                    | +---------------------------------------------+ |
@@ -231,20 +321,45 @@ public class RenderSessionImpl extends RenderAction<SessionParams> {
                    | |                                             | |
                    | +---------------------------------------------+ |
                    +-------------------------------------------------+
+<<<<<<< HEAD
                    | System bar (only in tablet UI)                  |
+=======
+                   | Navigation bar for soft buttons, maybe see above|
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
                    +-------------------------------------------------+
 
                  */
 
                 LinearLayout topLayout = new LinearLayout(context);
+<<<<<<< HEAD
                 mViewRoot = topLayout;
                 topLayout.setOrientation(LinearLayout.VERTICAL);
+=======
+                topLayout.setOrientation(LinearLayout.VERTICAL);
+                // if we don't already have a view root this is it
+                if (mViewRoot == null) {
+                    mViewRoot = topLayout;
+                } else {
+                    LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
+                            LayoutParams.WRAP_CONTENT, LayoutParams.MATCH_PARENT);
+                    layoutParams.weight = 1;
+                    topLayout.setLayoutParams(layoutParams);
+
+                    // this is the case of soft buttons + vertical bar.
+                    // this top layout is the first layout in the horizontal layout. see above)
+                    mViewRoot.addView(topLayout, 0);
+                }
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 
                 if (mStatusBarSize > 0) {
                     // system bar
                     try {
+<<<<<<< HEAD
                         PhoneSystemBar systemBar = new PhoneSystemBar(context,
                                 params.getDensity());
+=======
+                        StatusBar systemBar = new StatusBar(context, hardwareConfig.getDensity());
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
                         systemBar.setLayoutParams(
                                 new LinearLayout.LayoutParams(
                                         LayoutParams.MATCH_PARENT, mStatusBarSize));
@@ -268,7 +383,11 @@ public class RenderSessionImpl extends RenderAction<SessionParams> {
                 if (mActionBarSize > 0) {
                     try {
                         FakeActionBar actionBar = new FakeActionBar(context,
+<<<<<<< HEAD
                                 params.getDensity(),
+=======
+                                hardwareConfig.getDensity(),
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
                                 params.getAppLabel(), params.getAppIcon());
                         actionBar.setLayoutParams(
                                 new LinearLayout.LayoutParams(
@@ -280,7 +399,11 @@ public class RenderSessionImpl extends RenderAction<SessionParams> {
                 } else if (mTitleBarSize > 0) {
                     try {
                         TitleBar titleBar = new TitleBar(context,
+<<<<<<< HEAD
                                 params.getDensity(), params.getAppLabel());
+=======
+                                hardwareConfig.getDensity(), params.getAppLabel());
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
                         titleBar.setLayoutParams(
                                 new LinearLayout.LayoutParams(
                                         LayoutParams.MATCH_PARENT, mTitleBarSize));
@@ -298,6 +421,7 @@ public class RenderSessionImpl extends RenderAction<SessionParams> {
                 mContentRoot.setLayoutParams(layoutParams);
                 backgroundLayout.addView(mContentRoot);
 
+<<<<<<< HEAD
                 if (mSystemBarSize > 0) {
                     // system bar
                     try {
@@ -307,6 +431,18 @@ public class RenderSessionImpl extends RenderAction<SessionParams> {
                                 new LinearLayout.LayoutParams(
                                         LayoutParams.MATCH_PARENT, mSystemBarSize));
                         topLayout.addView(systemBar);
+=======
+                if (mNavigationBarOrientation == LinearLayout.HORIZONTAL &&
+                        mNavigationBarSize > 0) {
+                    // system bar
+                    try {
+                        NavigationBar navigationBar = new NavigationBar(context,
+                                hardwareConfig.getDensity(), LinearLayout.HORIZONTAL);
+                        navigationBar.setLayoutParams(
+                                new LinearLayout.LayoutParams(
+                                        LayoutParams.MATCH_PARENT, mNavigationBarSize));
+                        topLayout.addView(navigationBar);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
                     } catch (XmlPullParserException e) {
 
                     }
@@ -334,7 +470,11 @@ public class RenderSessionImpl extends RenderAction<SessionParams> {
             // get the background drawable
             if (mWindowBackground != null && backgroundView != null) {
                 Drawable d = ResourceHelper.getDrawable(mWindowBackground, context);
+<<<<<<< HEAD
                 backgroundView.setBackgroundDrawable(d);
+=======
+                backgroundView.setBackground(d);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
             }
 
             return SUCCESS.createResult();
@@ -377,13 +517,22 @@ public class RenderSessionImpl extends RenderAction<SessionParams> {
             }
 
             RenderingMode renderingMode = params.getRenderingMode();
+<<<<<<< HEAD
+=======
+            HardwareConfig hardwareConfig = params.getHardwareConfig();
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 
             // only do the screen measure when needed.
             boolean newRenderSize = false;
             if (mMeasuredScreenWidth == -1) {
                 newRenderSize = true;
+<<<<<<< HEAD
                 mMeasuredScreenWidth = params.getScreenWidth();
                 mMeasuredScreenHeight = params.getScreenHeight();
+=======
+                mMeasuredScreenWidth = hardwareConfig.getScreenWidth();
+                mMeasuredScreenHeight = hardwareConfig.getScreenHeight();
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 
                 if (renderingMode != RenderingMode.NORMAL) {
                     int widthMeasureSpecMode = renderingMode.isHorizExpand() ?
@@ -483,11 +632,19 @@ public class RenderSessionImpl extends RenderAction<SessionParams> {
 
                     // create an Android bitmap around the BufferedImage
                     Bitmap bitmap = Bitmap_Delegate.createBitmap(mImage,
+<<<<<<< HEAD
                             true /*isMutable*/, params.getDensity());
 
                     // create a Canvas around the Android bitmap
                     mCanvas = new Canvas(bitmap);
                     mCanvas.setDensity(params.getDensity().getDpiValue());
+=======
+                            true /*isMutable*/, hardwareConfig.getDensity());
+
+                    // create a Canvas around the Android bitmap
+                    mCanvas = new Canvas(bitmap);
+                    mCanvas.setDensity(hardwareConfig.getDensity().getDpiValue());
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
                 }
 
                 if (freshRender && newImage == false) {
@@ -960,6 +1117,7 @@ public class RenderSessionImpl extends RenderAction<SessionParams> {
         }
     }
 
+<<<<<<< HEAD
     private boolean isTabletUi() {
         return getParams().getConfigScreenSize() == ScreenSize.XLARGE;
     }
@@ -984,6 +1142,30 @@ public class RenderSessionImpl extends RenderAction<SessionParams> {
                         // compute the pixel value based on the display metrics
                         mStatusBarSize = (int)typedValue.getDimension(metrics);
                     }
+=======
+    private boolean hasSoftwareButtons() {
+        return getParams().getHardwareConfig().hasSoftwareButtons();
+    }
+
+    private void findStatusBar(RenderResources resources, DisplayMetrics metrics) {
+        boolean windowFullscreen = getBooleanThemeValue(resources,
+                "windowFullscreen", false /*defaultValue*/);
+
+        if (windowFullscreen == false && mWindowIsFloating == false) {
+            // default value
+            mStatusBarSize = DEFAULT_STATUS_BAR_HEIGHT;
+
+            // get the real value
+            ResourceValue value = resources.getFrameworkResource(ResourceType.DIMEN,
+                    "status_bar_height");
+
+            if (value != null) {
+                TypedValue typedValue = ResourceHelper.getValue("status_bar_height",
+                        value.getValue(), true /*requireUnit*/);
+                if (typedValue != null) {
+                    // compute the pixel value based on the display metrics
+                    mStatusBarSize = (int)typedValue.getDimension(metrics);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
                 }
             }
         }
@@ -1050,6 +1232,7 @@ public class RenderSessionImpl extends RenderAction<SessionParams> {
         }
     }
 
+<<<<<<< HEAD
     private void findSystemBar(RenderResources resources, DisplayMetrics metrics) {
         if (isTabletUi() && mWindowIsFloating == false) {
 
@@ -1066,6 +1249,50 @@ public class RenderSessionImpl extends RenderAction<SessionParams> {
                 if (typedValue != null) {
                     // compute the pixel value based on the display metrics
                     mSystemBarSize = (int)typedValue.getDimension(metrics);
+=======
+    private void findNavigationBar(RenderResources resources, DisplayMetrics metrics) {
+        if (hasSoftwareButtons() && mWindowIsFloating == false) {
+
+            // default value
+            mNavigationBarSize = 48; // ??
+
+            HardwareConfig hardwareConfig = getParams().getHardwareConfig();
+
+            boolean barOnBottom = true;
+
+            if (hardwareConfig.getOrientation() == ScreenOrientation.LANDSCAPE) {
+                // compute the dp of the screen.
+                int shortSize = hardwareConfig.getScreenHeight();
+
+                // compute in dp
+                int shortSizeDp = shortSize * DisplayMetrics.DENSITY_DEFAULT / hardwareConfig.getDensity().getDpiValue();
+
+                if (shortSizeDp < 600) {
+                    // 0-599dp: "phone" UI with bar on the side
+                    barOnBottom = false;
+                } else {
+                    // 600+dp: "tablet" UI with bar on the bottom
+                    barOnBottom = true;
+                }
+            }
+
+            if (barOnBottom) {
+                mNavigationBarOrientation = LinearLayout.HORIZONTAL;
+            } else {
+                mNavigationBarOrientation = LinearLayout.VERTICAL;
+            }
+
+            // get the real value
+            ResourceValue value = resources.getFrameworkResource(ResourceType.DIMEN,
+                    barOnBottom ? "navigation_bar_height" : "navigation_bar_width");
+
+            if (value != null) {
+                TypedValue typedValue = ResourceHelper.getValue("navigation_bar_height",
+                        value.getValue(), true /*requireUnit*/);
+                if (typedValue != null) {
+                    // compute the pixel value based on the display metrics
+                    mNavigationBarSize = (int)typedValue.getDimension(metrics);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
                 }
             }
         }

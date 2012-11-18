@@ -226,6 +226,7 @@ public class GestureDetector {
      */
     private boolean mIsDoubleTapping;
 
+<<<<<<< HEAD
     private float mLastMotionY;
     private float mLastMotionX;
 
@@ -237,6 +238,14 @@ public class GestureDetector {
      * so we can work side by side with multitouch gesture detectors.
      */
     private boolean mIgnoreMultitouch;
+=======
+    private float mLastFocusX;
+    private float mLastFocusY;
+    private float mDownFocusX;
+    private float mDownFocusY;
+
+    private boolean mIsLongpressEnabled;
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 
     /**
      * Determines speed during touch scrolling
@@ -349,8 +358,21 @@ public class GestureDetector {
      * @throws NullPointerException if {@code listener} is null.
      */
     public GestureDetector(Context context, OnGestureListener listener, Handler handler) {
+<<<<<<< HEAD
         this(context, listener, handler, context != null &&
                 context.getApplicationInfo().targetSdkVersion >= Build.VERSION_CODES.FROYO);
+=======
+        if (handler != null) {
+            mHandler = new GestureHandler(handler);
+        } else {
+            mHandler = new GestureHandler();
+        }
+        mListener = listener;
+        if (listener instanceof OnDoubleTapListener) {
+            setOnDoubleTapListener((OnDoubleTapListener) listener);
+        }
+        init(context);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     }
     
     /**
@@ -362,12 +384,16 @@ public class GestureDetector {
      * @param listener the listener invoked for all the callbacks, this must
      * not be null.
      * @param handler the handler to use
+<<<<<<< HEAD
      * @param ignoreMultitouch whether events involving more than one pointer should
      * be ignored.
+=======
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
      *
      * @throws NullPointerException if {@code listener} is null.
      */
     public GestureDetector(Context context, OnGestureListener listener, Handler handler,
+<<<<<<< HEAD
             boolean ignoreMultitouch) {
         if (handler != null) {
             mHandler = new GestureHandler(handler);
@@ -382,11 +408,21 @@ public class GestureDetector {
     }
 
     private void init(Context context, boolean ignoreMultitouch) {
+=======
+            boolean unused) {
+        this(context, listener, handler);
+    }
+
+    private void init(Context context) {
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         if (mListener == null) {
             throw new NullPointerException("OnGestureListener must not be null");
         }
         mIsLongpressEnabled = true;
+<<<<<<< HEAD
         mIgnoreMultitouch = ignoreMultitouch;
+=======
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 
         // Fallback to support pre-donuts releases
         int touchSlop, doubleTapSlop, doubleTapTouchSlop;
@@ -456,18 +492,41 @@ public class GestureDetector {
         }
 
         final int action = ev.getAction();
+<<<<<<< HEAD
         final float y = ev.getY();
         final float x = ev.getX();
+=======
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 
         if (mVelocityTracker == null) {
             mVelocityTracker = VelocityTracker.obtain();
         }
         mVelocityTracker.addMovement(ev);
 
+<<<<<<< HEAD
+=======
+        final boolean pointerUp =
+                (action & MotionEvent.ACTION_MASK) == MotionEvent.ACTION_POINTER_UP;
+        final int skipIndex = pointerUp ? ev.getActionIndex() : -1;
+
+        // Determine focal point
+        float sumX = 0, sumY = 0;
+        final int count = ev.getPointerCount();
+        for (int i = 0; i < count; i++) {
+            if (skipIndex == i) continue;
+            sumX += ev.getX(i);
+            sumY += ev.getY(i);
+        }
+        final int div = pointerUp ? count - 1 : count;
+        final float focusX = sumX / div;
+        final float focusY = sumY / div;
+
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         boolean handled = false;
 
         switch (action & MotionEvent.ACTION_MASK) {
         case MotionEvent.ACTION_POINTER_DOWN:
+<<<<<<< HEAD
             if (mIgnoreMultitouch) {
                 // Multitouch event - abort.
                 cancel();
@@ -483,6 +542,37 @@ public class GestureDetector {
                 mLastMotionY = ev.getY(index);
                 mVelocityTracker.recycle();
                 mVelocityTracker = VelocityTracker.obtain();
+=======
+            mDownFocusX = mLastFocusX = focusX;
+            mDownFocusY = mLastFocusY = focusY;
+            // Cancel long press and taps
+            cancelTaps();
+            break;
+
+        case MotionEvent.ACTION_POINTER_UP:
+            mDownFocusX = mLastFocusX = focusX;
+            mDownFocusY = mLastFocusY = focusY;
+
+            // Check the dot product of current velocities.
+            // If the pointer that left was opposing another velocity vector, clear.
+            mVelocityTracker.computeCurrentVelocity(1000, mMaximumFlingVelocity);
+            final int upIndex = ev.getActionIndex();
+            final int id1 = ev.getPointerId(upIndex);
+            final float x1 = mVelocityTracker.getXVelocity(id1);
+            final float y1 = mVelocityTracker.getYVelocity(id1);
+            for (int i = 0; i < count; i++) {
+                if (i == upIndex) continue;
+
+                final int id2 = ev.getPointerId(i);
+                final float x = x1 * mVelocityTracker.getXVelocity(id2);
+                final float y = y1 * mVelocityTracker.getYVelocity(id2);
+
+                final float dot = x + y;
+                if (dot < 0) {
+                    mVelocityTracker.clear();
+                    break;
+                }
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
             }
             break;
 
@@ -504,8 +594,13 @@ public class GestureDetector {
                 }
             }
 
+<<<<<<< HEAD
             mLastMotionX = x;
             mLastMotionY = y;
+=======
+            mDownFocusX = mLastFocusX = focusX;
+            mDownFocusY = mLastFocusY = focusY;
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
             if (mCurrentDownEvent != null) {
                 mCurrentDownEvent.recycle();
             }
@@ -525,15 +620,24 @@ public class GestureDetector {
             break;
 
         case MotionEvent.ACTION_MOVE:
+<<<<<<< HEAD
             if (mInLongPress || (mIgnoreMultitouch && ev.getPointerCount() > 1)) {
                 break;
             }
             final float scrollX = mLastMotionX - x;
             final float scrollY = mLastMotionY - y;
+=======
+            if (mInLongPress) {
+                break;
+            }
+            final float scrollX = mLastFocusX - focusX;
+            final float scrollY = mLastFocusY - focusY;
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
             if (mIsDoubleTapping) {
                 // Give the move events of the double-tap
                 handled |= mDoubleTapListener.onDoubleTapEvent(ev);
             } else if (mAlwaysInTapRegion) {
+<<<<<<< HEAD
                 final int deltaX = (int) (x - mCurrentDownEvent.getX());
                 final int deltaY = (int) (y - mCurrentDownEvent.getY());
                 int distance = (deltaX * deltaX) + (deltaY * deltaY);
@@ -541,6 +645,15 @@ public class GestureDetector {
                     handled = mListener.onScroll(mCurrentDownEvent, ev, scrollX, scrollY);
                     mLastMotionX = x;
                     mLastMotionY = y;
+=======
+                final int deltaX = (int) (focusX - mDownFocusX);
+                final int deltaY = (int) (focusY - mDownFocusY);
+                int distance = (deltaX * deltaX) + (deltaY * deltaY);
+                if (distance > mTouchSlopSquare) {
+                    handled = mListener.onScroll(mCurrentDownEvent, ev, scrollX, scrollY);
+                    mLastFocusX = focusX;
+                    mLastFocusY = focusY;
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
                     mAlwaysInTapRegion = false;
                     mHandler.removeMessages(TAP);
                     mHandler.removeMessages(SHOW_PRESS);
@@ -551,8 +664,13 @@ public class GestureDetector {
                 }
             } else if ((Math.abs(scrollX) >= 1) || (Math.abs(scrollY) >= 1)) {
                 handled = mListener.onScroll(mCurrentDownEvent, ev, scrollX, scrollY);
+<<<<<<< HEAD
                 mLastMotionX = x;
                 mLastMotionY = y;
+=======
+                mLastFocusX = focusX;
+                mLastFocusY = focusY;
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
             }
             break;
 
@@ -571,9 +689,16 @@ public class GestureDetector {
 
                 // A fling must travel the minimum tap distance
                 final VelocityTracker velocityTracker = mVelocityTracker;
+<<<<<<< HEAD
                 velocityTracker.computeCurrentVelocity(1000, mMaximumFlingVelocity);
                 final float velocityY = velocityTracker.getYVelocity();
                 final float velocityX = velocityTracker.getXVelocity();
+=======
+                final int pointerId = ev.getPointerId(0);
+                velocityTracker.computeCurrentVelocity(1000, mMaximumFlingVelocity);
+                final float velocityY = velocityTracker.getYVelocity(pointerId);
+                final float velocityX = velocityTracker.getXVelocity(pointerId);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 
                 if ((Math.abs(velocityY) > mMinimumFlingVelocity)
                         || (Math.abs(velocityX) > mMinimumFlingVelocity)){
@@ -622,6 +747,21 @@ public class GestureDetector {
         }
     }
 
+<<<<<<< HEAD
+=======
+    private void cancelTaps() {
+        mHandler.removeMessages(SHOW_PRESS);
+        mHandler.removeMessages(LONG_PRESS);
+        mHandler.removeMessages(TAP);
+        mIsDoubleTapping = false;
+        mAlwaysInTapRegion = false;
+        mAlwaysInBiggerTapRegion = false;
+        if (mInLongPress) {
+            mInLongPress = false;
+        }
+    }
+
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     private boolean isConsideredDoubleTap(MotionEvent firstDown, MotionEvent firstUp,
             MotionEvent secondDown) {
         if (!mAlwaysInBiggerTapRegion) {

@@ -79,7 +79,13 @@ public class NetworkInfo implements Parcelable {
         /** Access to this network is blocked. */
         BLOCKED,
         /** Link has poor connectivity. */
+<<<<<<< HEAD
         VERIFYING_POOR_LINK
+=======
+        VERIFYING_POOR_LINK,
+        /** Checking if network is a captive portal */
+        CAPTIVE_PORTAL_CHECK,
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     }
 
     /**
@@ -97,6 +103,10 @@ public class NetworkInfo implements Parcelable {
         stateMap.put(DetailedState.AUTHENTICATING, State.CONNECTING);
         stateMap.put(DetailedState.OBTAINING_IPADDR, State.CONNECTING);
         stateMap.put(DetailedState.VERIFYING_POOR_LINK, State.CONNECTING);
+<<<<<<< HEAD
+=======
+        stateMap.put(DetailedState.CAPTIVE_PORTAL_CHECK, State.CONNECTING);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         stateMap.put(DetailedState.CONNECTED, State.CONNECTED);
         stateMap.put(DetailedState.SUSPENDED, State.SUSPENDED);
         stateMap.put(DetailedState.DISCONNECTING, State.DISCONNECTING);

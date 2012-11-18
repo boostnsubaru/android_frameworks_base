@@ -10,7 +10,10 @@ import com.android.systemui.R;
 public class AccessibilityContentDescriptions {
 
     private AccessibilityContentDescriptions() {}
+<<<<<<< HEAD
     
+=======
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     static final int[] PHONE_SIGNAL_STRENGTH = {
         R.string.accessibility_no_phone,
         R.string.accessibility_phone_one_bar,

@@ -33,8 +33,13 @@
                  android:layout_width="0dp"
                  android:layout_height="wrap_content"
                  android:layout_weight="1"
+<<<<<<< HEAD
                  android:layout_marginLeft="8dp"
                  android:layout_marginRight="8dp" />
+=======
+                 android:layout_marginStart="8dp"
+                 android:layout_marginEnd="8dp" />
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         <ImageButton android:id="@+id/extended_settings"
                      android:layout_width="48dp"
                      android:layout_height="48dp"

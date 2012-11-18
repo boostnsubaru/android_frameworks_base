@@ -31,7 +31,11 @@ public class UT_clamp_relaxed extends UnitTest {
     public void run() {
         RenderScript pRS = RenderScript.create(mCtx);
         ScriptC_clamp_relaxed s =
+<<<<<<< HEAD
                 new ScriptC_clamp_relaxed(pRS, mRes, R.raw.clamp_relaxed);
+=======
+                new ScriptC_clamp_relaxed(pRS);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         pRS.setMessageHandler(mRsMessage);
         s.invoke_clamp_test();
         pRS.finish();

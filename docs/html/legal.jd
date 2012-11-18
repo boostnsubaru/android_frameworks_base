@@ -39,7 +39,11 @@ href="http://creativecommons.org/licenses/by/2.5/">Creative Commons Attribution<
 use of it must be attributed as such.</p>
 
 <p>For more information about Android brands, see the <a
+<<<<<<< HEAD
 href="{@docRoot}distribute/googleplay/promote/brand.html">Android Branding Guidelines</a>.</p>
+=======
+href="{@docRoot}distribute/googleplay/promote/brand.html">Brand Guidelines</a>.</p>
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 
 <p>All other trademarks are the property of their respective owners.</p>
 

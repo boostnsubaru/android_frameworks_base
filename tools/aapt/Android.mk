@@ -20,7 +20,10 @@ LOCAL_SRC_FILES := \
 	StringPool.cpp \
 	XMLNode.cpp \
 	ResourceFilter.cpp \
+<<<<<<< HEAD
 	ResourceIdCache.cpp \
+=======
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 	ResourceTable.cpp \
 	Images.cpp \
 	Resource.cpp \
@@ -30,8 +33,16 @@ LOCAL_SRC_FILES := \
 
 
 LOCAL_CFLAGS += -Wno-format-y2k
+<<<<<<< HEAD
 
 LOCAL_C_INCLUDES += external/expat/lib
+=======
+ifeq (darwin,$(HOST_OS))
+LOCAL_CFLAGS += -D_DARWIN_UNLIMITED_STREAMS
+endif
+
+
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 LOCAL_C_INCLUDES += external/libpng
 LOCAL_C_INCLUDES += external/zlib
 LOCAL_C_INCLUDES += build/libs/host/include

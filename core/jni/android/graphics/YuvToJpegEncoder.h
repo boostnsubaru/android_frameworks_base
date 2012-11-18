@@ -55,7 +55,11 @@ private:
      void deinterleaveYuv(uint8_t* yuv, int width, int height,
             uint8_t*& yPlanar, uint8_t*& uPlanar, uint8_t*& vPlanar);
      void deinterleave(uint8_t* vuPlanar, uint8_t* uRows, uint8_t* vRows,
+<<<<<<< HEAD
              int rowIndex, int width);
+=======
+             int rowIndex, int width, int height);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
      void compress(jpeg_compress_struct* cinfo, uint8_t* yuv, int* offsets);
 };
 

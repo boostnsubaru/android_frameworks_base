@@ -23,5 +23,10 @@ package android.bluetooth;
  */
 interface IBluetoothCallback
 {
+<<<<<<< HEAD
     void onRfcommChannelFound(int channel);
+=======
+    //void onRfcommChannelFound(int channel);
+    void onBluetoothStateChange(int prevState, int newState);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 }

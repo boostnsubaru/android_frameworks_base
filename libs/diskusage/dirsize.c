@@ -49,6 +49,12 @@ int64_t calculate_dir_size(int dfd)
 
     while ((de = readdir(d))) {
         const char *name = de->d_name;
+<<<<<<< HEAD
+=======
+        if (fstatat(dfd, name, &s, AT_SYMLINK_NOFOLLOW) == 0) {
+            size += stat_size(&s);
+        }
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         if (de->d_type == DT_DIR) {
             int subfd;
 
@@ -64,10 +70,13 @@ int64_t calculate_dir_size(int dfd)
             if (subfd >= 0) {
                 size += calculate_dir_size(subfd);
             }
+<<<<<<< HEAD
         } else {
             if (fstatat(dfd, name, &s, AT_SYMLINK_NOFOLLOW) == 0) {
                 size += stat_size(&s);
             }
+=======
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         }
     }
     closedir(d);

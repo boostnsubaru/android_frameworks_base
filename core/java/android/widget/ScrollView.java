@@ -25,6 +25,10 @@ import android.graphics.Rect;
 import android.os.Bundle;
 import android.os.StrictMode;
 import android.util.AttributeSet;
+<<<<<<< HEAD
+=======
+import android.util.Log;
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 import android.view.FocusFinder;
 import android.view.InputDevice;
 import android.view.KeyEvent;
@@ -69,6 +73,11 @@ public class ScrollView extends FrameLayout {
 
     static final float MAX_SCROLL_FACTOR = 0.5f;
 
+<<<<<<< HEAD
+=======
+    private static final String TAG = "ScrollView";
+
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     private long mLastScroll;
 
     private final Rect mTempRect = new Rect();
@@ -460,6 +469,16 @@ public class ScrollView extends FrameLayout {
             return true;
         }
 
+<<<<<<< HEAD
+=======
+        /*
+         * Don't try to intercept touch if we can't scroll anyway.
+         */
+        if (getScrollY() == 0 && !canScrollVertically(1)) {
+            return false;
+        }
+
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         switch (action & MotionEvent.ACTION_MASK) {
             case MotionEvent.ACTION_MOVE: {
                 /*
@@ -478,6 +497,15 @@ public class ScrollView extends FrameLayout {
                 }
 
                 final int pointerIndex = ev.findPointerIndex(activePointerId);
+<<<<<<< HEAD
+=======
+                if (pointerIndex == -1) {
+                    Log.e(TAG, "Invalid pointerId=" + activePointerId
+                            + " in onInterceptTouchEvent");
+                    break;
+                }
+
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
                 final int y = (int) ev.getY(pointerIndex);
                 final int yDiff = Math.abs(y - mLastMotionY);
                 if (yDiff > mTouchSlop) {
@@ -585,6 +613,14 @@ public class ScrollView extends FrameLayout {
             }
             case MotionEvent.ACTION_MOVE:
                 final int activePointerIndex = ev.findPointerIndex(mActivePointerId);
+<<<<<<< HEAD
+=======
+                if (activePointerIndex == -1) {
+                    Log.e(TAG, "Invalid pointerId=" + mActivePointerId + " in onTouchEvent");
+                    break;
+                }
+
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
                 final int y = (int) ev.getY(activePointerIndex);
                 int deltaY = mLastMotionY - y;
                 if (!mIsBeingDragged && Math.abs(deltaY) > mTouchSlop) {

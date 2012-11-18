@@ -72,6 +72,13 @@ public interface LayoutTestController {
     // For XSSAuditor tests
     public void setXSSAuditorEnabled(boolean flag);
 
+<<<<<<< HEAD
+=======
+    // For Geolocation tests
+    public void setMockGeolocationPosition(double latitude, double longitude, double accuracy);
+    public void setMockGeolocationError(int code, String message);
+
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     // For DeviceOrientation tests
     public void setMockDeviceOrientation(boolean canProvideAlpha, double alpha,
             boolean canProvideBeta, double beta, boolean canProvideGamma, double gamma);

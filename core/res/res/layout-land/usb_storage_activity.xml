@@ -52,16 +52,26 @@
             <Button android:id="@+id/mount_button" 
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+<<<<<<< HEAD
                 android:paddingLeft="18dip"
                 android:paddingRight="18dip"
+=======
+                android:paddingStart="18dip"
+                android:paddingEnd="18dip"
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
                 android:text="@string/usb_storage_button_mount"
                 />
             <Button android:id="@+id/unmount_button"
                 android:visibility="gone"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+<<<<<<< HEAD
                 android:paddingLeft="18dip"
                 android:paddingRight="18dip"
+=======
+                android:paddingStart="18dip"
+                android:paddingEnd="18dip"
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
                 android:text="@string/usb_storage_stop_button_mount"
                 />
             <ProgressBar android:id="@+id/progress"

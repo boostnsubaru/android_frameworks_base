@@ -24,7 +24,11 @@ import android.content.IntentFilter;
 import android.os.RemoteException;
 import android.os.ServiceManager;
 import android.os.StatFs;
+<<<<<<< HEAD
 import android.os.UserId;
+=======
+import android.os.UserHandle;
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 import android.test.AndroidTestCase;
 import android.test.suitebuilder.annotation.LargeTest;
 import android.test.suitebuilder.annotation.MediumTest;
@@ -570,7 +574,11 @@ public class AppCacheTest extends AndroidTestCase {
             PackageStatsObserver observer = new PackageStatsObserver();
             //wait on observer
             synchronized(observer) {
+<<<<<<< HEAD
                 getPm().getPackageSizeInfo(packageName, observer);
+=======
+                getPm().getPackageSizeInfo(packageName, UserHandle.myUserId(), observer);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
                 long waitTime = 0;
                 while((!observer.isDone()) || (waitTime > MAX_WAIT_TIME) ) {
                     observer.wait(WAIT_TIME_INCR);
@@ -719,7 +727,11 @@ public class AppCacheTest extends AndroidTestCase {
     File getDataDir() {
         try {
             ApplicationInfo appInfo = getPm().getApplicationInfo(mContext.getPackageName(), 0,
+<<<<<<< HEAD
                     UserId.myUserId());
+=======
+                    UserHandle.myUserId());
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
             return new File(appInfo.dataDir);
         } catch (RemoteException e) {
             throw new RuntimeException("Pacakge manager dead", e);
@@ -748,7 +760,11 @@ public class AppCacheTest extends AndroidTestCase {
     
     @LargeTest
     public void testClearApplicationUserDataNoObserver() throws Exception {
+<<<<<<< HEAD
         getPm().clearApplicationUserData(mContext.getPackageName(), null, UserId.myUserId());
+=======
+        getPm().clearApplicationUserData(mContext.getPackageName(), null, UserHandle.myUserId());
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         //sleep for 1 minute
         Thread.sleep(60*1000);
         //confirm files dont exist

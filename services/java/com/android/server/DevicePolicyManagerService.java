@@ -16,7 +16,10 @@
 
 package com.android.server;
 
+<<<<<<< HEAD
 import com.android.internal.content.PackageMonitor;
+=======
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 import com.android.internal.os.storage.ExternalStorageFormatter;
 import com.android.internal.util.FastXmlSerializer;
 import com.android.internal.util.JournaledFile;
@@ -28,7 +31,13 @@ import org.xmlpull.v1.XmlPullParserException;
 import org.xmlpull.v1.XmlSerializer;
 
 import android.app.Activity;
+<<<<<<< HEAD
 import android.app.AlarmManager;
+=======
+import android.app.ActivityManagerNative;
+import android.app.AlarmManager;
+import android.app.AppGlobals;
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 import android.app.PendingIntent;
 import android.app.admin.DeviceAdminInfo;
 import android.app.admin.DeviceAdminReceiver;
@@ -40,25 +49,46 @@ import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+<<<<<<< HEAD
+=======
+import android.content.pm.IPackageManager;
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 import android.content.pm.PackageManager;
 import android.content.pm.PackageManager.NameNotFoundException;
 import android.content.pm.ResolveInfo;
 import android.os.Binder;
+<<<<<<< HEAD
+=======
+import android.os.Bundle;
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 import android.os.Environment;
 import android.os.Handler;
 import android.os.IBinder;
 import android.os.IPowerManager;
 import android.os.PowerManager;
+<<<<<<< HEAD
+=======
+import android.os.Process;
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 import android.os.RecoverySystem;
 import android.os.RemoteCallback;
 import android.os.RemoteException;
 import android.os.ServiceManager;
 import android.os.SystemClock;
 import android.os.SystemProperties;
+<<<<<<< HEAD
+=======
+import android.os.UserHandle;
+import android.os.UserManager;
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 import android.provider.Settings;
 import android.util.PrintWriterPrinter;
 import android.util.Printer;
 import android.util.Slog;
+<<<<<<< HEAD
+=======
+import android.util.SparseArray;
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 import android.util.Xml;
 import android.view.IWindowManager;
 import android.view.WindowManagerPolicy;
@@ -81,24 +111,42 @@ import java.util.Set;
  * Implementation of the device policy APIs.
  */
 public class DevicePolicyManagerService extends IDevicePolicyManager.Stub {
+<<<<<<< HEAD
+=======
+    private static final String DEVICE_POLICIES_XML = "device_policies.xml";
+
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     private static final String TAG = "DevicePolicyManagerService";
 
     private static final int REQUEST_EXPIRE_PASSWORD = 5571;
 
+<<<<<<< HEAD
     private static final long EXPIRATION_GRACE_PERIOD_MS = 5 * 86400 * 1000; // 5 days, in ms
+=======
+    private static final long MS_PER_DAY = 86400 * 1000;
+
+    private static final long EXPIRATION_GRACE_PERIOD_MS = 5 * MS_PER_DAY; // 5 days, in ms
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 
     protected static final String ACTION_EXPIRED_PASSWORD_NOTIFICATION
             = "com.android.server.ACTION_EXPIRED_PASSWORD_NOTIFICATION";
 
+<<<<<<< HEAD
     private static final long MS_PER_DAY = 86400 * 1000;
 
     final Context mContext;
     final MyPackageMonitor mMonitor;
+=======
+    private static final boolean DBG = false;
+
+    final Context mContext;
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     final PowerManager.WakeLock mWakeLock;
 
     IPowerManager mIPowerManager;
     IWindowManager mIWindowManager;
 
+<<<<<<< HEAD
     int mActivePasswordQuality = DevicePolicyManager.PASSWORD_QUALITY_UNSPECIFIED;
     int mActivePasswordLength = 0;
     int mActivePasswordUpperCase = 0;
@@ -118,10 +166,41 @@ public class DevicePolicyManagerService extends IDevicePolicyManager.Stub {
             = new HashMap<ComponentName, ActiveAdmin>();
     final ArrayList<ActiveAdmin> mAdminList
             = new ArrayList<ActiveAdmin>();
+=======
+    public static class DevicePolicyData {
+        int mActivePasswordQuality = DevicePolicyManager.PASSWORD_QUALITY_UNSPECIFIED;
+        int mActivePasswordLength = 0;
+        int mActivePasswordUpperCase = 0;
+        int mActivePasswordLowerCase = 0;
+        int mActivePasswordLetters = 0;
+        int mActivePasswordNumeric = 0;
+        int mActivePasswordSymbols = 0;
+        int mActivePasswordNonLetter = 0;
+        int mFailedPasswordAttempts = 0;
+
+        int mUserHandle;;
+        int mPasswordOwner = -1;
+        long mLastMaximumTimeToLock = -1;
+
+        final HashMap<ComponentName, ActiveAdmin> mAdminMap
+                = new HashMap<ComponentName, ActiveAdmin>();
+        final ArrayList<ActiveAdmin> mAdminList
+                = new ArrayList<ActiveAdmin>();
+
+        public DevicePolicyData(int userHandle) {
+            mUserHandle = userHandle;
+        }
+    }
+
+    final SparseArray<DevicePolicyData> mUserData = new SparseArray<DevicePolicyData>();
+
+    Handler mHandler = new Handler();
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 
     BroadcastReceiver mReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
+<<<<<<< HEAD
             String action = intent.getAction();
             if (Intent.ACTION_BOOT_COMPLETED.equals(action)
                     || ACTION_EXPIRED_PASSWORD_NOTIFICATION.equals(action)) {
@@ -131,6 +210,35 @@ public class DevicePolicyManagerService extends IDevicePolicyManager.Stub {
                         handlePasswordExpirationNotification();
                     }
                 });
+=======
+            final String action = intent.getAction();
+            final int userHandle = intent.getIntExtra(Intent.EXTRA_USER_HANDLE,
+                    getSendingUserId());
+            if (Intent.ACTION_BOOT_COMPLETED.equals(action)
+                    || ACTION_EXPIRED_PASSWORD_NOTIFICATION.equals(action)) {
+                Slog.v(TAG, "Sending password expiration notifications for action " + action
+                        + " for user " + userHandle);
+                mHandler.post(new Runnable() {
+                    public void run() {
+                        handlePasswordExpirationNotification(getUserData(userHandle));
+                    }
+                });
+            } else if (Intent.ACTION_USER_REMOVED.equals(action)) {
+                removeUserData(userHandle);
+            } else if (Intent.ACTION_USER_STARTED.equals(action)
+                    || Intent.ACTION_PACKAGE_CHANGED.equals(action)
+                    || Intent.ACTION_PACKAGE_REMOVED.equals(action)
+                    || Intent.ACTION_EXTERNAL_APPLICATIONS_UNAVAILABLE.equals(action)) {
+
+                if (Intent.ACTION_USER_STARTED.equals(action)) {
+                    // Reset the policy data
+                    synchronized (DevicePolicyManagerService.this) {
+                        mUserData.remove(userHandle);
+                    }
+                }
+
+                handlePackagesChanged(userHandle);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
             }
         }
     };
@@ -176,6 +284,12 @@ public class DevicePolicyManagerService extends IDevicePolicyManager.Stub {
         static final long DEF_PASSWORD_EXPIRATION_DATE = 0;
         long passwordExpirationDate = DEF_PASSWORD_EXPIRATION_DATE;
 
+<<<<<<< HEAD
+=======
+        static final int DEF_KEYGUARD_FEATURES_DISABLED = 0; // none
+        int disabledKeyguardFeatures = DEF_KEYGUARD_FEATURES_DISABLED;
+
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         boolean encryptionRequested = false;
         boolean disableCamera = false;
 
@@ -190,6 +304,13 @@ public class DevicePolicyManagerService extends IDevicePolicyManager.Stub {
 
         int getUid() { return info.getActivityInfo().applicationInfo.uid; }
 
+<<<<<<< HEAD
+=======
+        public UserHandle getUserHandle() {
+            return new UserHandle(UserHandle.getUserId(info.getActivityInfo().applicationInfo.uid));
+        }
+
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         void writeToXml(XmlSerializer out)
                 throws IllegalArgumentException, IllegalStateException, IOException {
             out.startTag(null, "policies");
@@ -285,6 +406,14 @@ public class DevicePolicyManagerService extends IDevicePolicyManager.Stub {
                 out.attribute(null, "value", Boolean.toString(disableCamera));
                 out.endTag(null, "disable-camera");
             }
+<<<<<<< HEAD
+=======
+            if (disabledKeyguardFeatures != DEF_KEYGUARD_FEATURES_DISABLED) {
+                out.startTag(null, "disable-keyguard-features");
+                out.attribute(null, "value", Integer.toString(disabledKeyguardFeatures));
+                out.endTag(null, "disable-keyguard-features");
+            }
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         }
 
         void readFromXml(XmlPullParser parser)
@@ -353,6 +482,12 @@ public class DevicePolicyManagerService extends IDevicePolicyManager.Stub {
                 } else if ("disable-camera".equals(tag)) {
                     disableCamera = Boolean.parseBoolean(
                             parser.getAttributeValue(null, "value"));
+<<<<<<< HEAD
+=======
+                } else if ("disable-keyguard-features".equals(tag)) {
+                    disabledKeyguardFeatures = Integer.parseInt(
+                            parser.getAttributeValue(null, "value"));
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
                 } else {
                     Slog.w(TAG, "Unknown admin tag: " + tag);
                 }
@@ -409,6 +544,7 @@ public class DevicePolicyManagerService extends IDevicePolicyManager.Stub {
                     pw.println(encryptionRequested);
             pw.print(prefix); pw.print("disableCamera=");
                     pw.println(disableCamera);
+<<<<<<< HEAD
         }
     }
 
@@ -445,6 +581,35 @@ public class DevicePolicyManagerService extends IDevicePolicyManager.Stub {
                 }
             }
         }
+=======
+            pw.print(prefix); pw.print("disabledKeyguardFeatures=");
+                    pw.println(disabledKeyguardFeatures);
+        }
+    }
+
+    private void handlePackagesChanged(int userHandle) {
+        boolean removed = false;
+        Slog.d(TAG, "Handling package changes for user " + userHandle);
+        DevicePolicyData policy = getUserData(userHandle);
+        IPackageManager pm = AppGlobals.getPackageManager();
+        for (int i = policy.mAdminList.size() - 1; i >= 0; i--) {
+            ActiveAdmin aa = policy.mAdminList.get(i);
+            try {
+                if (pm.getPackageInfo(aa.info.getPackageName(), 0, userHandle) == null
+                        || pm.getReceiverInfo(aa.info.getComponent(), 0, userHandle) == null) {
+                    removed = true;
+                    policy.mAdminList.remove(i);
+                }
+            } catch (RemoteException re) {
+                // Shouldn't happen
+            }
+        }
+        if (removed) {
+            validatePasswordOwnerLocked(policy);
+            syncDeviceCapabilitiesLocked(policy);
+            saveSettingsLocked(policy.mUserHandle);
+        }
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     }
 
     /**
@@ -452,22 +617,76 @@ public class DevicePolicyManagerService extends IDevicePolicyManager.Stub {
      */
     public DevicePolicyManagerService(Context context) {
         mContext = context;
+<<<<<<< HEAD
         mMonitor = new MyPackageMonitor();
         mMonitor.register(context, null, true);
+=======
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         mWakeLock = ((PowerManager)context.getSystemService(Context.POWER_SERVICE))
                 .newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, "DPM");
         IntentFilter filter = new IntentFilter();
         filter.addAction(Intent.ACTION_BOOT_COMPLETED);
         filter.addAction(ACTION_EXPIRED_PASSWORD_NOTIFICATION);
+<<<<<<< HEAD
         context.registerReceiver(mReceiver, filter);
+=======
+        filter.addAction(Intent.ACTION_USER_REMOVED);
+        filter.addAction(Intent.ACTION_USER_STARTED);
+        context.registerReceiverAsUser(mReceiver, UserHandle.ALL, filter, null, mHandler);
+        filter = new IntentFilter();
+        filter.addAction(Intent.ACTION_PACKAGE_CHANGED);
+        filter.addAction(Intent.ACTION_PACKAGE_REMOVED);
+        filter.addAction(Intent.ACTION_EXTERNAL_APPLICATIONS_UNAVAILABLE);
+        filter.addDataScheme("package");
+        context.registerReceiverAsUser(mReceiver, UserHandle.ALL, filter, null, mHandler);
+    }
+
+    /**
+     * Creates and loads the policy data from xml.
+     * @param userHandle the user for whom to load the policy data
+     * @return
+     */
+    DevicePolicyData getUserData(int userHandle) {
+        synchronized (this) {
+            DevicePolicyData policy = mUserData.get(userHandle);
+            if (policy == null) {
+                policy = new DevicePolicyData(userHandle);
+                mUserData.append(userHandle, policy);
+                loadSettingsLocked(policy, userHandle);
+            }
+            return policy;
+        }
+    }
+
+    void removeUserData(int userHandle) {
+        synchronized (this) {
+            if (userHandle == UserHandle.USER_OWNER) {
+                Slog.w(TAG, "Tried to remove device policy file for user 0! Ignoring.");
+                return;
+            }
+            DevicePolicyData policy = mUserData.get(userHandle);
+            if (policy != null) {
+                mUserData.remove(userHandle);
+            }
+            File policyFile = new File(Environment.getUserSystemDirectory(userHandle),
+                    DEVICE_POLICIES_XML);
+            policyFile.delete();
+            Slog.i(TAG, "Removed device policy file " + policyFile.getAbsolutePath());
+        }
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     }
 
     /**
      * Set an alarm for an upcoming event - expiration warning, expiration, or post-expiration
      * reminders.  Clears alarm if no expirations are configured.
      */
+<<<<<<< HEAD
     protected void setExpirationAlarmCheckLocked(Context context) {
         final long expiration = getPasswordExpirationLocked(null);
+=======
+    protected void setExpirationAlarmCheckLocked(Context context, DevicePolicyData policy) {
+        final long expiration = getPasswordExpirationLocked(null, policy.mUserHandle);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         final long now = System.currentTimeMillis();
         final long timeToExpire = expiration - now;
         final long alarmTime;
@@ -490,9 +709,16 @@ public class DevicePolicyManagerService extends IDevicePolicyManager.Stub {
         long token = Binder.clearCallingIdentity();
         try {
             AlarmManager am = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
+<<<<<<< HEAD
             PendingIntent pi = PendingIntent.getBroadcast(context, REQUEST_EXPIRE_PASSWORD,
                     new Intent(ACTION_EXPIRED_PASSWORD_NOTIFICATION),
                     PendingIntent.FLAG_ONE_SHOT | PendingIntent.FLAG_UPDATE_CURRENT);
+=======
+            PendingIntent pi = PendingIntent.getBroadcastAsUser(context, REQUEST_EXPIRE_PASSWORD,
+                    new Intent(ACTION_EXPIRED_PASSWORD_NOTIFICATION),
+                    PendingIntent.FLAG_ONE_SHOT | PendingIntent.FLAG_UPDATE_CURRENT,
+                    new UserHandle(policy.mUserHandle));
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
             am.cancel(pi);
             if (alarmTime != 0) {
                 am.set(AlarmManager.RTC, alarmTime, pi);
@@ -518,8 +744,13 @@ public class DevicePolicyManagerService extends IDevicePolicyManager.Stub {
         return mIWindowManager;
     }
 
+<<<<<<< HEAD
     ActiveAdmin getActiveAdminUncheckedLocked(ComponentName who) {
         ActiveAdmin admin = mAdminMap.get(who);
+=======
+    ActiveAdmin getActiveAdminUncheckedLocked(ComponentName who, int userHandle) {
+        ActiveAdmin admin = getUserData(userHandle).mAdminMap.get(who);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         if (admin != null
                 && who.getPackageName().equals(admin.info.getActivityInfo().packageName)
                 && who.getClassName().equals(admin.info.getActivityInfo().name)) {
@@ -531,8 +762,15 @@ public class DevicePolicyManagerService extends IDevicePolicyManager.Stub {
     ActiveAdmin getActiveAdminForCallerLocked(ComponentName who, int reqPolicy)
             throws SecurityException {
         final int callingUid = Binder.getCallingUid();
+<<<<<<< HEAD
         if (who != null) {
             ActiveAdmin admin = mAdminMap.get(who);
+=======
+        final int userHandle = UserHandle.getUserId(callingUid);
+        final DevicePolicyData policy = getUserData(userHandle);
+        if (who != null) {
+            ActiveAdmin admin = policy.mAdminMap.get(who);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
             if (admin == null) {
                 throw new SecurityException("No active admin " + who);
             }
@@ -547,9 +785,15 @@ public class DevicePolicyManagerService extends IDevicePolicyManager.Stub {
             }
             return admin;
         } else {
+<<<<<<< HEAD
             final int N = mAdminList.size();
             for (int i=0; i<N; i++) {
                 ActiveAdmin admin = mAdminList.get(i);
+=======
+            final int N = policy.mAdminList.size();
+            for (int i=0; i<N; i++) {
+                ActiveAdmin admin = policy.mAdminList.get(i);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
                 if (admin.getUid() == callingUid && admin.info.usesPolicy(reqPolicy)) {
                     return admin;
                 }
@@ -570,6 +814,7 @@ public class DevicePolicyManagerService extends IDevicePolicyManager.Stub {
             intent.putExtra("expiration", admin.passwordExpirationDate);
         }
         if (result != null) {
+<<<<<<< HEAD
             mContext.sendOrderedBroadcast(intent, null, result, mHandler,
                     Activity.RESULT_OK, null, null);
         } else {
@@ -582,6 +827,21 @@ public class DevicePolicyManagerService extends IDevicePolicyManager.Stub {
         if (N > 0) {
             for (int i=0; i<N; i++) {
                 ActiveAdmin admin = mAdminList.get(i);
+=======
+            mContext.sendOrderedBroadcastAsUser(intent, admin.getUserHandle(),
+                    null, result, mHandler, Activity.RESULT_OK, null, null);
+        } else {
+            mContext.sendBroadcastAsUser(intent, UserHandle.OWNER);
+        }
+    }
+
+    void sendAdminCommandLocked(String action, int reqPolicy, int userHandle) {
+        final DevicePolicyData policy = getUserData(userHandle);
+        final int count = policy.mAdminList.size();
+        if (count > 0) {
+            for (int i = 0; i < count; i++) {
+                ActiveAdmin admin = policy.mAdminList.get(i);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
                 if (admin.info.usesPolicy(reqPolicy)) {
                     sendAdminCommandLocked(admin, action);
                 }
@@ -589,8 +849,13 @@ public class DevicePolicyManagerService extends IDevicePolicyManager.Stub {
         }
     }
 
+<<<<<<< HEAD
     void removeActiveAdminLocked(final ComponentName adminReceiver) {
         final ActiveAdmin admin = getActiveAdminUncheckedLocked(adminReceiver);
+=======
+    void removeActiveAdminLocked(final ComponentName adminReceiver, int userHandle) {
+        final ActiveAdmin admin = getActiveAdminUncheckedLocked(adminReceiver, userHandle);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         if (admin != null) {
             sendAdminCommandLocked(admin,
                     DeviceAdminReceiver.ACTION_DEVICE_ADMIN_DISABLED,
@@ -598,6 +863,7 @@ public class DevicePolicyManagerService extends IDevicePolicyManager.Stub {
                         @Override
                         public void onReceive(Context context, Intent intent) {
                             synchronized (DevicePolicyManagerService.this) {
+<<<<<<< HEAD
                                 boolean doProxyCleanup = admin.info.usesPolicy(
                                         DeviceAdminInfo.USES_POLICY_SETS_GLOBAL_PROXY);
                                 mAdminList.remove(admin);
@@ -609,17 +875,41 @@ public class DevicePolicyManagerService extends IDevicePolicyManager.Stub {
                                 }
                                 saveSettingsLocked();
                                 updateMaximumTimeToLockLocked();
+=======
+                                int userHandle = admin.getUserHandle().getIdentifier();
+                                DevicePolicyData policy = getUserData(userHandle);
+                                boolean doProxyCleanup = admin.info.usesPolicy(
+                                        DeviceAdminInfo.USES_POLICY_SETS_GLOBAL_PROXY);
+                                policy.mAdminList.remove(admin);
+                                policy.mAdminMap.remove(adminReceiver);
+                                validatePasswordOwnerLocked(policy);
+                                syncDeviceCapabilitiesLocked(policy);
+                                if (doProxyCleanup) {
+                                    resetGlobalProxyLocked(getUserData(userHandle));
+                                }
+                                saveSettingsLocked(userHandle);
+                                updateMaximumTimeToLockLocked(policy);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
                             }
                         }
             });
         }
     }
 
+<<<<<<< HEAD
     public DeviceAdminInfo findAdmin(ComponentName adminName) {
         Intent resolveIntent = new Intent();
         resolveIntent.setComponent(adminName);
         List<ResolveInfo> infos = mContext.getPackageManager().queryBroadcastReceivers(
                 resolveIntent, PackageManager.GET_META_DATA);
+=======
+    public DeviceAdminInfo findAdmin(ComponentName adminName, int userHandle) {
+        enforceCrossUserPermission(userHandle);
+        Intent resolveIntent = new Intent();
+        resolveIntent.setComponent(adminName);
+        List<ResolveInfo> infos = mContext.getPackageManager().queryBroadcastReceivers(
+                resolveIntent, PackageManager.GET_META_DATA, userHandle);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         if (infos == null || infos.size() <= 0) {
             throw new IllegalArgumentException("Unknown admin: " + adminName);
         }
@@ -627,14 +917,22 @@ public class DevicePolicyManagerService extends IDevicePolicyManager.Stub {
         try {
             return new DeviceAdminInfo(mContext, infos.get(0));
         } catch (XmlPullParserException e) {
+<<<<<<< HEAD
             Slog.w(TAG, "Bad device admin requested: " + adminName, e);
             return null;
         } catch (IOException e) {
             Slog.w(TAG, "Bad device admin requested: " + adminName, e);
+=======
+            Slog.w(TAG, "Bad device admin requested for user=" + userHandle + ": " + adminName, e);
+            return null;
+        } catch (IOException e) {
+            Slog.w(TAG, "Bad device admin requested for user=" + userHandle + ": " + adminName, e);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
             return null;
         }
     }
 
+<<<<<<< HEAD
     private static JournaledFile makeJournaledFile() {
         final String base = "/data/system/device_policies.xml";
         return new JournaledFile(new File(base), new File(base + ".tmp"));
@@ -642,6 +940,19 @@ public class DevicePolicyManagerService extends IDevicePolicyManager.Stub {
 
     private void saveSettingsLocked() {
         JournaledFile journal = makeJournaledFile();
+=======
+    private static JournaledFile makeJournaledFile(int userHandle) {
+        final String base = userHandle == 0
+                ? "/data/system/" + DEVICE_POLICIES_XML
+                : new File(Environment.getUserSystemDirectory(userHandle), DEVICE_POLICIES_XML)
+                        .getAbsolutePath();
+        return new JournaledFile(new File(base), new File(base + ".tmp"));
+    }
+
+    private void saveSettingsLocked(int userHandle) {
+        DevicePolicyData policy = getUserData(userHandle);
+        JournaledFile journal = makeJournaledFile(userHandle);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         FileOutputStream stream = null;
         try {
             stream = new FileOutputStream(journal.chooseForWrite(), false);
@@ -651,9 +962,15 @@ public class DevicePolicyManagerService extends IDevicePolicyManager.Stub {
 
             out.startTag(null, "policies");
 
+<<<<<<< HEAD
             final int N = mAdminList.size();
             for (int i=0; i<N; i++) {
                 ActiveAdmin ap = mAdminList.get(i);
+=======
+            final int N = policy.mAdminList.size();
+            for (int i=0; i<N; i++) {
+                ActiveAdmin ap = policy.mAdminList.get(i);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
                 if (ap != null) {
                     out.startTag(null, "admin");
                     out.attribute(null, "name", ap.info.getComponent().flattenToString());
@@ -662,6 +979,7 @@ public class DevicePolicyManagerService extends IDevicePolicyManager.Stub {
                 }
             }
 
+<<<<<<< HEAD
             if (mPasswordOwner >= 0) {
                 out.startTag(null, "password-owner");
                 out.attribute(null, "value", Integer.toString(mPasswordOwner));
@@ -688,6 +1006,34 @@ public class DevicePolicyManagerService extends IDevicePolicyManager.Stub {
                         .toString(mActivePasswordNumeric));
                 out.attribute(null, "symbols", Integer.toString(mActivePasswordSymbols));
                 out.attribute(null, "nonletter", Integer.toString(mActivePasswordNonLetter));
+=======
+            if (policy.mPasswordOwner >= 0) {
+                out.startTag(null, "password-owner");
+                out.attribute(null, "value", Integer.toString(policy.mPasswordOwner));
+                out.endTag(null, "password-owner");
+            }
+
+            if (policy.mFailedPasswordAttempts != 0) {
+                out.startTag(null, "failed-password-attempts");
+                out.attribute(null, "value", Integer.toString(policy.mFailedPasswordAttempts));
+                out.endTag(null, "failed-password-attempts");
+            }
+
+            if (policy.mActivePasswordQuality != 0 || policy.mActivePasswordLength != 0
+                    || policy.mActivePasswordUpperCase != 0 || policy.mActivePasswordLowerCase != 0
+                    || policy.mActivePasswordLetters != 0 || policy.mActivePasswordNumeric != 0
+                    || policy.mActivePasswordSymbols != 0 || policy.mActivePasswordNonLetter != 0) {
+                out.startTag(null, "active-password");
+                out.attribute(null, "quality", Integer.toString(policy.mActivePasswordQuality));
+                out.attribute(null, "length", Integer.toString(policy.mActivePasswordLength));
+                out.attribute(null, "uppercase", Integer.toString(policy.mActivePasswordUpperCase));
+                out.attribute(null, "lowercase", Integer.toString(policy.mActivePasswordLowerCase));
+                out.attribute(null, "letters", Integer.toString(policy.mActivePasswordLetters));
+                out.attribute(null, "numeric", Integer
+                        .toString(policy.mActivePasswordNumeric));
+                out.attribute(null, "symbols", Integer.toString(policy.mActivePasswordSymbols));
+                out.attribute(null, "nonletter", Integer.toString(policy.mActivePasswordNonLetter));
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
                 out.endTag(null, "active-password");
             }
 
@@ -696,7 +1042,11 @@ public class DevicePolicyManagerService extends IDevicePolicyManager.Stub {
             out.endDocument();
             stream.close();
             journal.commit();
+<<<<<<< HEAD
             sendChangedNotification();
+=======
+            sendChangedNotification(userHandle);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         } catch (IOException e) {
             try {
                 if (stream != null) {
@@ -709,6 +1059,7 @@ public class DevicePolicyManagerService extends IDevicePolicyManager.Stub {
         }
     }
 
+<<<<<<< HEAD
     private void sendChangedNotification() {
         Intent intent = new Intent(DevicePolicyManager.ACTION_DEVICE_POLICY_MANAGER_STATE_CHANGED);
         intent.setFlags(Intent.FLAG_RECEIVER_REGISTERED_ONLY);
@@ -717,6 +1068,21 @@ public class DevicePolicyManagerService extends IDevicePolicyManager.Stub {
 
     private void loadSettingsLocked() {
         JournaledFile journal = makeJournaledFile();
+=======
+    private void sendChangedNotification(int userHandle) {
+        Intent intent = new Intent(DevicePolicyManager.ACTION_DEVICE_POLICY_MANAGER_STATE_CHANGED);
+        intent.setFlags(Intent.FLAG_RECEIVER_REGISTERED_ONLY);
+        long ident = Binder.clearCallingIdentity();
+        try {
+            mContext.sendBroadcastAsUser(intent, new UserHandle(userHandle));
+        } finally {
+            Binder.restoreCallingIdentity(ident);
+        }
+    }
+
+    private void loadSettingsLocked(DevicePolicyData policy, int userHandle) {
+        JournaledFile journal = makeJournaledFile(userHandle);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         FileInputStream stream = null;
         File file = journal.chooseForRead();
         try {
@@ -745,17 +1111,33 @@ public class DevicePolicyManagerService extends IDevicePolicyManager.Stub {
                     String name = parser.getAttributeValue(null, "name");
                     try {
                         DeviceAdminInfo dai = findAdmin(
+<<<<<<< HEAD
                                 ComponentName.unflattenFromString(name));
                         if (dai != null) {
                             ActiveAdmin ap = new ActiveAdmin(dai);
                             ap.readFromXml(parser);
                             mAdminMap.put(ap.info.getComponent(), ap);
                             mAdminList.add(ap);
+=======
+                                ComponentName.unflattenFromString(name), userHandle);
+                        if (DBG && (UserHandle.getUserId(dai.getActivityInfo().applicationInfo.uid)
+                                != userHandle)) {
+                            Slog.w(TAG, "findAdmin returned an incorrect uid "
+                                    + dai.getActivityInfo().applicationInfo.uid + " for user "
+                                    + userHandle);
+                        }
+                        if (dai != null) {
+                            ActiveAdmin ap = new ActiveAdmin(dai);
+                            ap.readFromXml(parser);
+                            policy.mAdminMap.put(ap.info.getComponent(), ap);
+                            policy.mAdminList.add(ap);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
                         }
                     } catch (RuntimeException e) {
                         Slog.w(TAG, "Failed loading admin " + name, e);
                     }
                 } else if ("failed-password-attempts".equals(tag)) {
+<<<<<<< HEAD
                     mFailedPasswordAttempts = Integer.parseInt(
                             parser.getAttributeValue(null, "value"));
                     XmlUtils.skipCurrentTag(parser);
@@ -779,6 +1161,31 @@ public class DevicePolicyManagerService extends IDevicePolicyManager.Stub {
                     mActivePasswordSymbols = Integer.parseInt(
                             parser.getAttributeValue(null, "symbols"));
                     mActivePasswordNonLetter = Integer.parseInt(
+=======
+                    policy.mFailedPasswordAttempts = Integer.parseInt(
+                            parser.getAttributeValue(null, "value"));
+                    XmlUtils.skipCurrentTag(parser);
+                } else if ("password-owner".equals(tag)) {
+                    policy.mPasswordOwner = Integer.parseInt(
+                            parser.getAttributeValue(null, "value"));
+                    XmlUtils.skipCurrentTag(parser);
+                } else if ("active-password".equals(tag)) {
+                    policy.mActivePasswordQuality = Integer.parseInt(
+                            parser.getAttributeValue(null, "quality"));
+                    policy.mActivePasswordLength = Integer.parseInt(
+                            parser.getAttributeValue(null, "length"));
+                    policy.mActivePasswordUpperCase = Integer.parseInt(
+                            parser.getAttributeValue(null, "uppercase"));
+                    policy.mActivePasswordLowerCase = Integer.parseInt(
+                            parser.getAttributeValue(null, "lowercase"));
+                    policy.mActivePasswordLetters = Integer.parseInt(
+                            parser.getAttributeValue(null, "letters"));
+                    policy.mActivePasswordNumeric = Integer.parseInt(
+                            parser.getAttributeValue(null, "numeric"));
+                    policy.mActivePasswordSymbols = Integer.parseInt(
+                            parser.getAttributeValue(null, "symbols"));
+                    policy.mActivePasswordNonLetter = Integer.parseInt(
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
                             parser.getAttributeValue(null, "nonletter"));
                     XmlUtils.skipCurrentTag(parser);
                 } else {
@@ -812,6 +1219,7 @@ public class DevicePolicyManagerService extends IDevicePolicyManager.Stub {
         // a sanity check in case the two get out of sync; this should
         // never normally happen.
         LockPatternUtils utils = new LockPatternUtils(mContext);
+<<<<<<< HEAD
         if (utils.getActivePasswordQuality() < mActivePasswordQuality) {
             Slog.w(TAG, "Active password quality 0x"
                     + Integer.toHexString(mActivePasswordQuality)
@@ -830,6 +1238,26 @@ public class DevicePolicyManagerService extends IDevicePolicyManager.Stub {
         validatePasswordOwnerLocked();
         syncDeviceCapabilitiesLocked();
         updateMaximumTimeToLockLocked();
+=======
+        if (utils.getActivePasswordQuality() < policy.mActivePasswordQuality) {
+            Slog.w(TAG, "Active password quality 0x"
+                    + Integer.toHexString(policy.mActivePasswordQuality)
+                    + " does not match actual quality 0x"
+                    + Integer.toHexString(utils.getActivePasswordQuality()));
+            policy.mActivePasswordQuality = DevicePolicyManager.PASSWORD_QUALITY_UNSPECIFIED;
+            policy.mActivePasswordLength = 0;
+            policy.mActivePasswordUpperCase = 0;
+            policy.mActivePasswordLowerCase = 0;
+            policy.mActivePasswordLetters = 0;
+            policy.mActivePasswordNumeric = 0;
+            policy.mActivePasswordSymbols = 0;
+            policy.mActivePasswordNonLetter = 0;
+        }
+
+        validatePasswordOwnerLocked(policy);
+        syncDeviceCapabilitiesLocked(policy);
+        updateMaximumTimeToLockLocked(policy);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     }
 
     static void validateQualityConstant(int quality) {
@@ -847,19 +1275,33 @@ public class DevicePolicyManagerService extends IDevicePolicyManager.Stub {
                 + Integer.toHexString(quality));
     }
 
+<<<<<<< HEAD
     void validatePasswordOwnerLocked() {
         if (mPasswordOwner >= 0) {
             boolean haveOwner = false;
             for (int i=mAdminList.size()-1; i>=0; i--) {
                 if (mAdminList.get(i).getUid() == mPasswordOwner) {
+=======
+    void validatePasswordOwnerLocked(DevicePolicyData policy) {
+        if (policy.mPasswordOwner >= 0) {
+            boolean haveOwner = false;
+            for (int i = policy.mAdminList.size() - 1; i >= 0; i--) {
+                if (policy.mAdminList.get(i).getUid() == policy.mPasswordOwner) {
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
                     haveOwner = true;
                     break;
                 }
             }
             if (!haveOwner) {
+<<<<<<< HEAD
                 Slog.w(TAG, "Previous password owner " + mPasswordOwner
                         + " no longer active; disabling");
                 mPasswordOwner = -1;
+=======
+                Slog.w(TAG, "Previous password owner " + policy.mPasswordOwner
+                        + " no longer active; disabling");
+                policy.mPasswordOwner = -1;
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
             }
         }
     }
@@ -868,11 +1310,19 @@ public class DevicePolicyManagerService extends IDevicePolicyManager.Stub {
      * Pushes down policy information to the system for any policies related to general device
      * capabilities that need to be enforced by lower level services (e.g. Camera services).
      */
+<<<<<<< HEAD
     void syncDeviceCapabilitiesLocked() {
         // Ensure the status of the camera is synced down to the system. Interested native services
         // should monitor this value and act accordingly.
         boolean systemState = SystemProperties.getBoolean(SYSTEM_PROP_DISABLE_CAMERA, false);
         boolean cameraDisabled = getCameraDisabled(null);
+=======
+    void syncDeviceCapabilitiesLocked(DevicePolicyData policy) {
+        // Ensure the status of the camera is synced down to the system. Interested native services
+        // should monitor this value and act accordingly.
+        boolean systemState = SystemProperties.getBoolean(SYSTEM_PROP_DISABLE_CAMERA, false);
+        boolean cameraDisabled = getCameraDisabled(null, policy.mUserHandle);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         if (cameraDisabled != systemState) {
             long token = Binder.clearCallingIdentity();
             try {
@@ -888,6 +1338,7 @@ public class DevicePolicyManagerService extends IDevicePolicyManager.Stub {
 
     public void systemReady() {
         synchronized (this) {
+<<<<<<< HEAD
             loadSettingsLocked();
         }
     }
@@ -896,11 +1347,25 @@ public class DevicePolicyManagerService extends IDevicePolicyManager.Stub {
         synchronized (this) {
             final long now = System.currentTimeMillis();
             final int N = mAdminList.size();
+=======
+            loadSettingsLocked(getUserData(UserHandle.USER_OWNER), UserHandle.USER_OWNER);
+        }
+    }
+
+    private void handlePasswordExpirationNotification(DevicePolicyData policy) {
+        synchronized (this) {
+            final long now = System.currentTimeMillis();
+            final int N = policy.mAdminList.size();
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
             if (N <= 0) {
                 return;
             }
             for (int i=0; i < N; i++) {
+<<<<<<< HEAD
                 ActiveAdmin admin = mAdminList.get(i);
+=======
+                ActiveAdmin admin = policy.mAdminList.get(i);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
                 if (admin.info.usesPolicy(DeviceAdminInfo.USES_POLICY_EXPIRE_PASSWORD)
                         && admin.passwordExpirationTimeout > 0L
                         && admin.passwordExpirationDate > 0L
@@ -908,7 +1373,11 @@ public class DevicePolicyManagerService extends IDevicePolicyManager.Stub {
                     sendAdminCommandLocked(admin, DeviceAdminReceiver.ACTION_PASSWORD_EXPIRING);
                 }
             }
+<<<<<<< HEAD
             setExpirationAlarmCheckLocked(mContext);
+=======
+            setExpirationAlarmCheckLocked(mContext, policy);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         }
     }
 
@@ -916,17 +1385,28 @@ public class DevicePolicyManagerService extends IDevicePolicyManager.Stub {
      * @param adminReceiver The admin to add
      * @param refreshing true = update an active admin, no error
      */
+<<<<<<< HEAD
     public void setActiveAdmin(ComponentName adminReceiver, boolean refreshing) {
         mContext.enforceCallingOrSelfPermission(
                 android.Manifest.permission.BIND_DEVICE_ADMIN, null);
 
         DeviceAdminInfo info = findAdmin(adminReceiver);
+=======
+    public void setActiveAdmin(ComponentName adminReceiver, boolean refreshing, int userHandle) {
+        mContext.enforceCallingOrSelfPermission(
+                android.Manifest.permission.BIND_DEVICE_ADMIN, null);
+        enforceCrossUserPermission(userHandle);
+
+        DevicePolicyData policy = getUserData(userHandle);
+        DeviceAdminInfo info = findAdmin(adminReceiver, userHandle);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         if (info == null) {
             throw new IllegalArgumentException("Bad admin: " + adminReceiver);
         }
         synchronized (this) {
             long ident = Binder.clearCallingIdentity();
             try {
+<<<<<<< HEAD
                 if (!refreshing && getActiveAdminUncheckedLocked(adminReceiver) != null) {
                     throw new IllegalArgumentException("Admin is already added");
                 }
@@ -937,6 +1417,18 @@ public class DevicePolicyManagerService extends IDevicePolicyManager.Stub {
                     final int N = mAdminList.size();
                     for (int i=0; i < N; i++) {
                         ActiveAdmin oldAdmin = mAdminList.get(i);
+=======
+                if (!refreshing && getActiveAdminUncheckedLocked(adminReceiver, userHandle) != null) {
+                    throw new IllegalArgumentException("Admin is already added");
+                }
+                ActiveAdmin newAdmin = new ActiveAdmin(info);
+                policy.mAdminMap.put(adminReceiver, newAdmin);
+                int replaceIndex = -1;
+                if (refreshing) {
+                    final int N = policy.mAdminList.size();
+                    for (int i=0; i < N; i++) {
+                        ActiveAdmin oldAdmin = policy.mAdminList.get(i);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
                         if (oldAdmin.info.getComponent().equals(adminReceiver)) {
                             replaceIndex = i;
                             break;
@@ -944,11 +1436,19 @@ public class DevicePolicyManagerService extends IDevicePolicyManager.Stub {
                     }
                 }
                 if (replaceIndex == -1) {
+<<<<<<< HEAD
                     mAdminList.add(newAdmin);
                 } else {
                     mAdminList.set(replaceIndex, newAdmin);
                 }
                 saveSettingsLocked();
+=======
+                    policy.mAdminList.add(newAdmin);
+                } else {
+                    policy.mAdminList.set(replaceIndex, newAdmin);
+                }
+                saveSettingsLocked(userHandle);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
                 sendAdminCommandLocked(newAdmin, DeviceAdminReceiver.ACTION_DEVICE_ADMIN_ENABLED);
             } finally {
                 Binder.restoreCallingIdentity(ident);
@@ -956,6 +1456,7 @@ public class DevicePolicyManagerService extends IDevicePolicyManager.Stub {
         }
     }
 
+<<<<<<< HEAD
     public boolean isAdminActive(ComponentName adminReceiver) {
         synchronized (this) {
             return getActiveAdminUncheckedLocked(adminReceiver) != null;
@@ -965,6 +1466,19 @@ public class DevicePolicyManagerService extends IDevicePolicyManager.Stub {
     public boolean hasGrantedPolicy(ComponentName adminReceiver, int policyId) {
         synchronized (this) {
             ActiveAdmin administrator = getActiveAdminUncheckedLocked(adminReceiver);
+=======
+    public boolean isAdminActive(ComponentName adminReceiver, int userHandle) {
+        enforceCrossUserPermission(userHandle);
+        synchronized (this) {
+            return getActiveAdminUncheckedLocked(adminReceiver, userHandle) != null;
+        }
+    }
+
+    public boolean hasGrantedPolicy(ComponentName adminReceiver, int policyId, int userHandle) {
+        enforceCrossUserPermission(userHandle);
+        synchronized (this) {
+            ActiveAdmin administrator = getActiveAdminUncheckedLocked(adminReceiver, userHandle);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
             if (administrator == null) {
                 throw new SecurityException("No active admin " + adminReceiver);
             }
@@ -972,25 +1486,47 @@ public class DevicePolicyManagerService extends IDevicePolicyManager.Stub {
         }
     }
 
+<<<<<<< HEAD
     public List<ComponentName> getActiveAdmins() {
         synchronized (this) {
             final int N = mAdminList.size();
+=======
+    public List<ComponentName> getActiveAdmins(int userHandle) {
+        enforceCrossUserPermission(userHandle);
+        synchronized (this) {
+            DevicePolicyData policy = getUserData(userHandle);
+            final int N = policy.mAdminList.size();
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
             if (N <= 0) {
                 return null;
             }
             ArrayList<ComponentName> res = new ArrayList<ComponentName>(N);
             for (int i=0; i<N; i++) {
+<<<<<<< HEAD
                 res.add(mAdminList.get(i).info.getComponent());
+=======
+                res.add(policy.mAdminList.get(i).info.getComponent());
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
             }
             return res;
         }
     }
 
+<<<<<<< HEAD
     public boolean packageHasActiveAdmins(String packageName) {
         synchronized (this) {
             final int N = mAdminList.size();
             for (int i=0; i<N; i++) {
                 if (mAdminList.get(i).info.getPackageName().equals(packageName)) {
+=======
+    public boolean packageHasActiveAdmins(String packageName, int userHandle) {
+        enforceCrossUserPermission(userHandle);
+        synchronized (this) {
+            DevicePolicyData policy = getUserData(userHandle);
+            final int N = policy.mAdminList.size();
+            for (int i=0; i<N; i++) {
+                if (policy.mAdminList.get(i).info.getPackageName().equals(packageName)) {
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
                     return true;
                 }
             }
@@ -998,9 +1534,16 @@ public class DevicePolicyManagerService extends IDevicePolicyManager.Stub {
         }
     }
 
+<<<<<<< HEAD
     public void removeActiveAdmin(ComponentName adminReceiver) {
         synchronized (this) {
             ActiveAdmin admin = getActiveAdminUncheckedLocked(adminReceiver);
+=======
+    public void removeActiveAdmin(ComponentName adminReceiver, int userHandle) {
+        enforceCrossUserPermission(userHandle);
+        synchronized (this) {
+            ActiveAdmin admin = getActiveAdminUncheckedLocked(adminReceiver, userHandle);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
             if (admin == null) {
                 return;
             }
@@ -1010,15 +1553,25 @@ public class DevicePolicyManagerService extends IDevicePolicyManager.Stub {
             }
             long ident = Binder.clearCallingIdentity();
             try {
+<<<<<<< HEAD
                 removeActiveAdminLocked(adminReceiver);
+=======
+                removeActiveAdminLocked(adminReceiver, userHandle);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
             } finally {
                 Binder.restoreCallingIdentity(ident);
             }
         }
     }
 
+<<<<<<< HEAD
     public void setPasswordQuality(ComponentName who, int quality) {
         validateQualityConstant(quality);
+=======
+    public void setPasswordQuality(ComponentName who, int quality, int userHandle) {
+        validateQualityConstant(quality);
+        enforceCrossUserPermission(userHandle);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 
         synchronized (this) {
             if (who == null) {
@@ -1028,11 +1581,16 @@ public class DevicePolicyManagerService extends IDevicePolicyManager.Stub {
                     DeviceAdminInfo.USES_POLICY_LIMIT_PASSWORD);
             if (ap.passwordQuality != quality) {
                 ap.passwordQuality = quality;
+<<<<<<< HEAD
                 saveSettingsLocked();
+=======
+                saveSettingsLocked(userHandle);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
             }
         }
     }
 
+<<<<<<< HEAD
     public int getPasswordQuality(ComponentName who) {
         synchronized (this) {
             int mode = DevicePolicyManager.PASSWORD_QUALITY_UNSPECIFIED;
@@ -1045,6 +1603,22 @@ public class DevicePolicyManagerService extends IDevicePolicyManager.Stub {
             final int N = mAdminList.size();
             for  (int i=0; i<N; i++) {
                 ActiveAdmin admin = mAdminList.get(i);
+=======
+    public int getPasswordQuality(ComponentName who, int userHandle) {
+        enforceCrossUserPermission(userHandle);
+        synchronized (this) {
+            int mode = DevicePolicyManager.PASSWORD_QUALITY_UNSPECIFIED;
+            DevicePolicyData policy = getUserData(userHandle);
+
+            if (who != null) {
+                ActiveAdmin admin = getActiveAdminUncheckedLocked(who, userHandle);
+                return admin != null ? admin.passwordQuality : mode;
+            }
+
+            final int N = policy.mAdminList.size();
+            for  (int i=0; i<N; i++) {
+                ActiveAdmin admin = policy.mAdminList.get(i);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
                 if (mode < admin.passwordQuality) {
                     mode = admin.passwordQuality;
                 }
@@ -1053,7 +1627,12 @@ public class DevicePolicyManagerService extends IDevicePolicyManager.Stub {
         }
     }
 
+<<<<<<< HEAD
     public void setPasswordMinimumLength(ComponentName who, int length) {
+=======
+    public void setPasswordMinimumLength(ComponentName who, int length, int userHandle) {
+        enforceCrossUserPermission(userHandle);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         synchronized (this) {
             if (who == null) {
                 throw new NullPointerException("ComponentName is null");
@@ -1062,11 +1641,16 @@ public class DevicePolicyManagerService extends IDevicePolicyManager.Stub {
                     DeviceAdminInfo.USES_POLICY_LIMIT_PASSWORD);
             if (ap.minimumPasswordLength != length) {
                 ap.minimumPasswordLength = length;
+<<<<<<< HEAD
                 saveSettingsLocked();
+=======
+                saveSettingsLocked(userHandle);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
             }
         }
     }
 
+<<<<<<< HEAD
     public int getPasswordMinimumLength(ComponentName who) {
         synchronized (this) {
             int length = 0;
@@ -1079,6 +1663,22 @@ public class DevicePolicyManagerService extends IDevicePolicyManager.Stub {
             final int N = mAdminList.size();
             for  (int i=0; i<N; i++) {
                 ActiveAdmin admin = mAdminList.get(i);
+=======
+    public int getPasswordMinimumLength(ComponentName who, int userHandle) {
+        enforceCrossUserPermission(userHandle);
+        synchronized (this) {
+            DevicePolicyData policy = getUserData(userHandle);
+            int length = 0;
+
+            if (who != null) {
+                ActiveAdmin admin = getActiveAdminUncheckedLocked(who, userHandle);
+                return admin != null ? admin.minimumPasswordLength : length;
+            }
+
+            final int N = policy.mAdminList.size();
+            for  (int i=0; i<N; i++) {
+                ActiveAdmin admin = policy.mAdminList.get(i);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
                 if (length < admin.minimumPasswordLength) {
                     length = admin.minimumPasswordLength;
                 }
@@ -1087,7 +1687,12 @@ public class DevicePolicyManagerService extends IDevicePolicyManager.Stub {
         }
     }
 
+<<<<<<< HEAD
     public void setPasswordHistoryLength(ComponentName who, int length) {
+=======
+    public void setPasswordHistoryLength(ComponentName who, int length, int userHandle) {
+        enforceCrossUserPermission(userHandle);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         synchronized (this) {
             if (who == null) {
                 throw new NullPointerException("ComponentName is null");
@@ -1096,11 +1701,16 @@ public class DevicePolicyManagerService extends IDevicePolicyManager.Stub {
                     DeviceAdminInfo.USES_POLICY_LIMIT_PASSWORD);
             if (ap.passwordHistoryLength != length) {
                 ap.passwordHistoryLength = length;
+<<<<<<< HEAD
                 saveSettingsLocked();
+=======
+                saveSettingsLocked(userHandle);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
             }
         }
     }
 
+<<<<<<< HEAD
     public int getPasswordHistoryLength(ComponentName who) {
         synchronized (this) {
             int length = 0;
@@ -1113,6 +1723,22 @@ public class DevicePolicyManagerService extends IDevicePolicyManager.Stub {
             final int N = mAdminList.size();
             for (int i = 0; i < N; i++) {
                 ActiveAdmin admin = mAdminList.get(i);
+=======
+    public int getPasswordHistoryLength(ComponentName who, int userHandle) {
+        enforceCrossUserPermission(userHandle);
+        synchronized (this) {
+            DevicePolicyData policy = getUserData(userHandle);
+            int length = 0;
+
+            if (who != null) {
+                ActiveAdmin admin = getActiveAdminUncheckedLocked(who, userHandle);
+                return admin != null ? admin.passwordHistoryLength : length;
+            }
+
+            final int N = policy.mAdminList.size();
+            for (int i = 0; i < N; i++) {
+                ActiveAdmin admin = policy.mAdminList.get(i);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
                 if (length < admin.passwordHistoryLength) {
                     length = admin.passwordHistoryLength;
                 }
@@ -1121,7 +1747,12 @@ public class DevicePolicyManagerService extends IDevicePolicyManager.Stub {
         }
     }
 
+<<<<<<< HEAD
     public void setPasswordExpirationTimeout(ComponentName who, long timeout) {
+=======
+    public void setPasswordExpirationTimeout(ComponentName who, long timeout, int userHandle) {
+        enforceCrossUserPermission(userHandle);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         synchronized (this) {
             if (who == null) {
                 throw new NullPointerException("ComponentName is null");
@@ -1140,8 +1771,14 @@ public class DevicePolicyManagerService extends IDevicePolicyManager.Stub {
                         + DateFormat.getDateTimeInstance(DateFormat.DEFAULT, DateFormat.DEFAULT)
                         .format(new Date(expiration)));
             }
+<<<<<<< HEAD
             saveSettingsLocked();
             setExpirationAlarmCheckLocked(mContext); // in case this is the first one
+=======
+            saveSettingsLocked(userHandle);
+            // in case this is the first one
+            setExpirationAlarmCheckLocked(mContext, getUserData(userHandle));
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         }
     }
 
@@ -1149,17 +1786,32 @@ public class DevicePolicyManagerService extends IDevicePolicyManager.Stub {
      * Return a single admin's expiration cycle time, or the min of all cycle times.
      * Returns 0 if not configured.
      */
+<<<<<<< HEAD
     public long getPasswordExpirationTimeout(ComponentName who) {
         synchronized (this) {
             if (who != null) {
                 ActiveAdmin admin = getActiveAdminUncheckedLocked(who);
+=======
+    public long getPasswordExpirationTimeout(ComponentName who, int userHandle) {
+        enforceCrossUserPermission(userHandle);
+        synchronized (this) {
+            if (who != null) {
+                ActiveAdmin admin = getActiveAdminUncheckedLocked(who, userHandle);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
                 return admin != null ? admin.passwordExpirationTimeout : 0L;
             }
 
             long timeout = 0L;
+<<<<<<< HEAD
             final int N = mAdminList.size();
             for (int i = 0; i < N; i++) {
                 ActiveAdmin admin = mAdminList.get(i);
+=======
+            DevicePolicyData policy = getUserData(userHandle);
+            final int N = policy.mAdminList.size();
+            for (int i = 0; i < N; i++) {
+                ActiveAdmin admin = policy.mAdminList.get(i);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
                 if (timeout == 0L || (admin.passwordExpirationTimeout != 0L
                         && timeout > admin.passwordExpirationTimeout)) {
                     timeout = admin.passwordExpirationTimeout;
@@ -1173,16 +1825,29 @@ public class DevicePolicyManagerService extends IDevicePolicyManager.Stub {
      * Return a single admin's expiration date/time, or the min (soonest) for all admins.
      * Returns 0 if not configured.
      */
+<<<<<<< HEAD
     private long getPasswordExpirationLocked(ComponentName who) {
         if (who != null) {
             ActiveAdmin admin = getActiveAdminUncheckedLocked(who);
+=======
+    private long getPasswordExpirationLocked(ComponentName who, int userHandle) {
+        if (who != null) {
+            ActiveAdmin admin = getActiveAdminUncheckedLocked(who, userHandle);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
             return admin != null ? admin.passwordExpirationDate : 0L;
         }
 
         long timeout = 0L;
+<<<<<<< HEAD
         final int N = mAdminList.size();
         for (int i = 0; i < N; i++) {
             ActiveAdmin admin = mAdminList.get(i);
+=======
+        DevicePolicyData policy = getUserData(userHandle);
+        final int N = policy.mAdminList.size();
+        for (int i = 0; i < N; i++) {
+            ActiveAdmin admin = policy.mAdminList.get(i);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
             if (timeout == 0L || (admin.passwordExpirationDate != 0
                     && timeout > admin.passwordExpirationDate)) {
                 timeout = admin.passwordExpirationDate;
@@ -1191,6 +1856,7 @@ public class DevicePolicyManagerService extends IDevicePolicyManager.Stub {
         return timeout;
     }
 
+<<<<<<< HEAD
     public long getPasswordExpiration(ComponentName who) {
         synchronized (this) {
             return getPasswordExpirationLocked(who);
@@ -1198,6 +1864,17 @@ public class DevicePolicyManagerService extends IDevicePolicyManager.Stub {
     }
 
     public void setPasswordMinimumUpperCase(ComponentName who, int length) {
+=======
+    public long getPasswordExpiration(ComponentName who, int userHandle) {
+        enforceCrossUserPermission(userHandle);
+        synchronized (this) {
+            return getPasswordExpirationLocked(who, userHandle);
+        }
+    }
+
+    public void setPasswordMinimumUpperCase(ComponentName who, int length, int userHandle) {
+        enforceCrossUserPermission(userHandle);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         synchronized (this) {
             if (who == null) {
                 throw new NullPointerException("ComponentName is null");
@@ -1206,16 +1883,26 @@ public class DevicePolicyManagerService extends IDevicePolicyManager.Stub {
                     DeviceAdminInfo.USES_POLICY_LIMIT_PASSWORD);
             if (ap.minimumPasswordUpperCase != length) {
                 ap.minimumPasswordUpperCase = length;
+<<<<<<< HEAD
                 saveSettingsLocked();
+=======
+                saveSettingsLocked(userHandle);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
             }
         }
     }
 
+<<<<<<< HEAD
     public int getPasswordMinimumUpperCase(ComponentName who) {
+=======
+    public int getPasswordMinimumUpperCase(ComponentName who, int userHandle) {
+        enforceCrossUserPermission(userHandle);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         synchronized (this) {
             int length = 0;
 
             if (who != null) {
+<<<<<<< HEAD
                 ActiveAdmin admin = getActiveAdminUncheckedLocked(who);
                 return admin != null ? admin.minimumPasswordUpperCase : length;
             }
@@ -1223,6 +1910,16 @@ public class DevicePolicyManagerService extends IDevicePolicyManager.Stub {
             final int N = mAdminList.size();
             for (int i=0; i<N; i++) {
                 ActiveAdmin admin = mAdminList.get(i);
+=======
+                ActiveAdmin admin = getActiveAdminUncheckedLocked(who, userHandle);
+                return admin != null ? admin.minimumPasswordUpperCase : length;
+            }
+
+            DevicePolicyData policy = getUserData(userHandle);
+            final int N = policy.mAdminList.size();
+            for (int i=0; i<N; i++) {
+                ActiveAdmin admin = policy.mAdminList.get(i);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
                 if (length < admin.minimumPasswordUpperCase) {
                     length = admin.minimumPasswordUpperCase;
                 }
@@ -1231,7 +1928,12 @@ public class DevicePolicyManagerService extends IDevicePolicyManager.Stub {
         }
     }
 
+<<<<<<< HEAD
     public void setPasswordMinimumLowerCase(ComponentName who, int length) {
+=======
+    public void setPasswordMinimumLowerCase(ComponentName who, int length, int userHandle) {
+        enforceCrossUserPermission(userHandle);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         synchronized (this) {
             if (who == null) {
                 throw new NullPointerException("ComponentName is null");
@@ -1240,16 +1942,26 @@ public class DevicePolicyManagerService extends IDevicePolicyManager.Stub {
                     DeviceAdminInfo.USES_POLICY_LIMIT_PASSWORD);
             if (ap.minimumPasswordLowerCase != length) {
                 ap.minimumPasswordLowerCase = length;
+<<<<<<< HEAD
                 saveSettingsLocked();
+=======
+                saveSettingsLocked(userHandle);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
             }
         }
     }
 
+<<<<<<< HEAD
     public int getPasswordMinimumLowerCase(ComponentName who) {
+=======
+    public int getPasswordMinimumLowerCase(ComponentName who, int userHandle) {
+        enforceCrossUserPermission(userHandle);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         synchronized (this) {
             int length = 0;
 
             if (who != null) {
+<<<<<<< HEAD
                 ActiveAdmin admin = getActiveAdminUncheckedLocked(who);
                 return admin != null ? admin.minimumPasswordLowerCase : length;
             }
@@ -1257,6 +1969,16 @@ public class DevicePolicyManagerService extends IDevicePolicyManager.Stub {
             final int N = mAdminList.size();
             for (int i=0; i<N; i++) {
                 ActiveAdmin admin = mAdminList.get(i);
+=======
+                ActiveAdmin admin = getActiveAdminUncheckedLocked(who, userHandle);
+                return admin != null ? admin.minimumPasswordLowerCase : length;
+            }
+
+            DevicePolicyData policy = getUserData(userHandle);
+            final int N = policy.mAdminList.size();
+            for (int i=0; i<N; i++) {
+                ActiveAdmin admin = policy.mAdminList.get(i);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
                 if (length < admin.minimumPasswordLowerCase) {
                     length = admin.minimumPasswordLowerCase;
                 }
@@ -1265,7 +1987,12 @@ public class DevicePolicyManagerService extends IDevicePolicyManager.Stub {
         }
     }
 
+<<<<<<< HEAD
     public void setPasswordMinimumLetters(ComponentName who, int length) {
+=======
+    public void setPasswordMinimumLetters(ComponentName who, int length, int userHandle) {
+        enforceCrossUserPermission(userHandle);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         synchronized (this) {
             if (who == null) {
                 throw new NullPointerException("ComponentName is null");
@@ -1274,16 +2001,26 @@ public class DevicePolicyManagerService extends IDevicePolicyManager.Stub {
                     DeviceAdminInfo.USES_POLICY_LIMIT_PASSWORD);
             if (ap.minimumPasswordLetters != length) {
                 ap.minimumPasswordLetters = length;
+<<<<<<< HEAD
                 saveSettingsLocked();
+=======
+                saveSettingsLocked(userHandle);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
             }
         }
     }
 
+<<<<<<< HEAD
     public int getPasswordMinimumLetters(ComponentName who) {
+=======
+    public int getPasswordMinimumLetters(ComponentName who, int userHandle) {
+        enforceCrossUserPermission(userHandle);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         synchronized (this) {
             int length = 0;
 
             if (who != null) {
+<<<<<<< HEAD
                 ActiveAdmin admin = getActiveAdminUncheckedLocked(who);
                 return admin != null ? admin.minimumPasswordLetters : length;
             }
@@ -1291,6 +2028,16 @@ public class DevicePolicyManagerService extends IDevicePolicyManager.Stub {
             final int N = mAdminList.size();
             for (int i=0; i<N; i++) {
                 ActiveAdmin admin = mAdminList.get(i);
+=======
+                ActiveAdmin admin = getActiveAdminUncheckedLocked(who, userHandle);
+                return admin != null ? admin.minimumPasswordLetters : length;
+            }
+
+            DevicePolicyData policy = getUserData(userHandle);
+            final int N = policy.mAdminList.size();
+            for (int i=0; i<N; i++) {
+                ActiveAdmin admin = policy.mAdminList.get(i);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
                 if (length < admin.minimumPasswordLetters) {
                     length = admin.minimumPasswordLetters;
                 }
@@ -1299,7 +2046,12 @@ public class DevicePolicyManagerService extends IDevicePolicyManager.Stub {
         }
     }
 
+<<<<<<< HEAD
     public void setPasswordMinimumNumeric(ComponentName who, int length) {
+=======
+    public void setPasswordMinimumNumeric(ComponentName who, int length, int userHandle) {
+        enforceCrossUserPermission(userHandle);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         synchronized (this) {
             if (who == null) {
                 throw new NullPointerException("ComponentName is null");
@@ -1308,16 +2060,26 @@ public class DevicePolicyManagerService extends IDevicePolicyManager.Stub {
                     DeviceAdminInfo.USES_POLICY_LIMIT_PASSWORD);
             if (ap.minimumPasswordNumeric != length) {
                 ap.minimumPasswordNumeric = length;
+<<<<<<< HEAD
                 saveSettingsLocked();
+=======
+                saveSettingsLocked(userHandle);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
             }
         }
     }
 
+<<<<<<< HEAD
     public int getPasswordMinimumNumeric(ComponentName who) {
+=======
+    public int getPasswordMinimumNumeric(ComponentName who, int userHandle) {
+        enforceCrossUserPermission(userHandle);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         synchronized (this) {
             int length = 0;
 
             if (who != null) {
+<<<<<<< HEAD
                 ActiveAdmin admin = getActiveAdminUncheckedLocked(who);
                 return admin != null ? admin.minimumPasswordNumeric : length;
             }
@@ -1325,6 +2087,16 @@ public class DevicePolicyManagerService extends IDevicePolicyManager.Stub {
             final int N = mAdminList.size();
             for (int i = 0; i < N; i++) {
                 ActiveAdmin admin = mAdminList.get(i);
+=======
+                ActiveAdmin admin = getActiveAdminUncheckedLocked(who, userHandle);
+                return admin != null ? admin.minimumPasswordNumeric : length;
+            }
+
+            DevicePolicyData policy = getUserData(userHandle);
+            final int N = policy.mAdminList.size();
+            for (int i = 0; i < N; i++) {
+                ActiveAdmin admin = policy.mAdminList.get(i);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
                 if (length < admin.minimumPasswordNumeric) {
                     length = admin.minimumPasswordNumeric;
                 }
@@ -1333,7 +2105,12 @@ public class DevicePolicyManagerService extends IDevicePolicyManager.Stub {
         }
     }
 
+<<<<<<< HEAD
     public void setPasswordMinimumSymbols(ComponentName who, int length) {
+=======
+    public void setPasswordMinimumSymbols(ComponentName who, int length, int userHandle) {
+        enforceCrossUserPermission(userHandle);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         synchronized (this) {
             if (who == null) {
                 throw new NullPointerException("ComponentName is null");
@@ -1342,16 +2119,26 @@ public class DevicePolicyManagerService extends IDevicePolicyManager.Stub {
                     DeviceAdminInfo.USES_POLICY_LIMIT_PASSWORD);
             if (ap.minimumPasswordSymbols != length) {
                 ap.minimumPasswordSymbols = length;
+<<<<<<< HEAD
                 saveSettingsLocked();
+=======
+                saveSettingsLocked(userHandle);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
             }
         }
     }
 
+<<<<<<< HEAD
     public int getPasswordMinimumSymbols(ComponentName who) {
+=======
+    public int getPasswordMinimumSymbols(ComponentName who, int userHandle) {
+        enforceCrossUserPermission(userHandle);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         synchronized (this) {
             int length = 0;
 
             if (who != null) {
+<<<<<<< HEAD
                 ActiveAdmin admin = getActiveAdminUncheckedLocked(who);
                 return admin != null ? admin.minimumPasswordSymbols : length;
             }
@@ -1359,6 +2146,16 @@ public class DevicePolicyManagerService extends IDevicePolicyManager.Stub {
             final int N = mAdminList.size();
             for  (int i=0; i<N; i++) {
                 ActiveAdmin admin = mAdminList.get(i);
+=======
+                ActiveAdmin admin = getActiveAdminUncheckedLocked(who, userHandle);
+                return admin != null ? admin.minimumPasswordSymbols : length;
+            }
+
+            DevicePolicyData policy = getUserData(userHandle);
+            final int N = policy.mAdminList.size();
+            for  (int i=0; i<N; i++) {
+                ActiveAdmin admin = policy.mAdminList.get(i);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
                 if (length < admin.minimumPasswordSymbols) {
                     length = admin.minimumPasswordSymbols;
                 }
@@ -1367,7 +2164,12 @@ public class DevicePolicyManagerService extends IDevicePolicyManager.Stub {
         }
     }
 
+<<<<<<< HEAD
     public void setPasswordMinimumNonLetter(ComponentName who, int length) {
+=======
+    public void setPasswordMinimumNonLetter(ComponentName who, int length, int userHandle) {
+        enforceCrossUserPermission(userHandle);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         synchronized (this) {
             if (who == null) {
                 throw new NullPointerException("ComponentName is null");
@@ -1376,16 +2178,26 @@ public class DevicePolicyManagerService extends IDevicePolicyManager.Stub {
                     DeviceAdminInfo.USES_POLICY_LIMIT_PASSWORD);
             if (ap.minimumPasswordNonLetter != length) {
                 ap.minimumPasswordNonLetter = length;
+<<<<<<< HEAD
                 saveSettingsLocked();
+=======
+                saveSettingsLocked(userHandle);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
             }
         }
     }
 
+<<<<<<< HEAD
     public int getPasswordMinimumNonLetter(ComponentName who) {
+=======
+    public int getPasswordMinimumNonLetter(ComponentName who, int userHandle) {
+        enforceCrossUserPermission(userHandle);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         synchronized (this) {
             int length = 0;
 
             if (who != null) {
+<<<<<<< HEAD
                 ActiveAdmin admin = getActiveAdminUncheckedLocked(who);
                 return admin != null ? admin.minimumPasswordNonLetter : length;
             }
@@ -1393,6 +2205,16 @@ public class DevicePolicyManagerService extends IDevicePolicyManager.Stub {
             final int N = mAdminList.size();
             for (int i=0; i<N; i++) {
                 ActiveAdmin admin = mAdminList.get(i);
+=======
+                ActiveAdmin admin = getActiveAdminUncheckedLocked(who, userHandle);
+                return admin != null ? admin.minimumPasswordNonLetter : length;
+            }
+
+            DevicePolicyData policy = getUserData(userHandle);
+            final int N = policy.mAdminList.size();
+            for (int i=0; i<N; i++) {
+                ActiveAdmin admin = policy.mAdminList.get(i);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
                 if (length < admin.minimumPasswordNonLetter) {
                     length = admin.minimumPasswordNonLetter;
                 }
@@ -1401,12 +2223,20 @@ public class DevicePolicyManagerService extends IDevicePolicyManager.Stub {
         }
     }
 
+<<<<<<< HEAD
     public boolean isActivePasswordSufficient() {
         synchronized (this) {
+=======
+    public boolean isActivePasswordSufficient(int userHandle) {
+        enforceCrossUserPermission(userHandle);
+        synchronized (this) {
+            DevicePolicyData policy = getUserData(userHandle);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
             // This API can only be called by an active device admin,
             // so try to retrieve it to check that the caller is one.
             getActiveAdminForCallerLocked(null,
                     DeviceAdminInfo.USES_POLICY_LIMIT_PASSWORD);
+<<<<<<< HEAD
             if (mActivePasswordQuality < getPasswordQuality(null)
                     || mActivePasswordLength < getPasswordMinimumLength(null)) {
                 return false;
@@ -1424,16 +2254,45 @@ public class DevicePolicyManagerService extends IDevicePolicyManager.Stub {
     }
 
     public int getCurrentFailedPasswordAttempts() {
+=======
+            if (policy.mActivePasswordQuality < getPasswordQuality(null, userHandle)
+                    || policy.mActivePasswordLength < getPasswordMinimumLength(null, userHandle)) {
+                return false;
+            }
+            if (policy.mActivePasswordQuality != DevicePolicyManager.PASSWORD_QUALITY_COMPLEX) {
+                return true;
+            }
+            return policy.mActivePasswordUpperCase >= getPasswordMinimumUpperCase(null, userHandle)
+                    && policy.mActivePasswordLowerCase >= getPasswordMinimumLowerCase(null, userHandle)
+                    && policy.mActivePasswordLetters >= getPasswordMinimumLetters(null, userHandle)
+                    && policy.mActivePasswordNumeric >= getPasswordMinimumNumeric(null, userHandle)
+                    && policy.mActivePasswordSymbols >= getPasswordMinimumSymbols(null, userHandle)
+                    && policy.mActivePasswordNonLetter >= getPasswordMinimumNonLetter(null, userHandle);
+        }
+    }
+
+    public int getCurrentFailedPasswordAttempts(int userHandle) {
+        enforceCrossUserPermission(userHandle);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         synchronized (this) {
             // This API can only be called by an active device admin,
             // so try to retrieve it to check that the caller is one.
             getActiveAdminForCallerLocked(null,
                     DeviceAdminInfo.USES_POLICY_WATCH_LOGIN);
+<<<<<<< HEAD
             return mFailedPasswordAttempts;
         }
     }
 
     public void setMaximumFailedPasswordsForWipe(ComponentName who, int num) {
+=======
+            return getUserData(userHandle).mFailedPasswordAttempts;
+        }
+    }
+
+    public void setMaximumFailedPasswordsForWipe(ComponentName who, int num, int userHandle) {
+        enforceCrossUserPermission(userHandle);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         synchronized (this) {
             // This API can only be called by an active device admin,
             // so try to retrieve it to check that the caller is one.
@@ -1443,11 +2302,16 @@ public class DevicePolicyManagerService extends IDevicePolicyManager.Stub {
                     DeviceAdminInfo.USES_POLICY_WATCH_LOGIN);
             if (ap.maximumFailedPasswordsForWipe != num) {
                 ap.maximumFailedPasswordsForWipe = num;
+<<<<<<< HEAD
                 saveSettingsLocked();
+=======
+                saveSettingsLocked(userHandle);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
             }
         }
     }
 
+<<<<<<< HEAD
     public int getMaximumFailedPasswordsForWipe(ComponentName who) {
         synchronized (this) {
             int count = 0;
@@ -1460,6 +2324,22 @@ public class DevicePolicyManagerService extends IDevicePolicyManager.Stub {
             final int N = mAdminList.size();
             for  (int i=0; i<N; i++) {
                 ActiveAdmin admin = mAdminList.get(i);
+=======
+    public int getMaximumFailedPasswordsForWipe(ComponentName who, int userHandle) {
+        enforceCrossUserPermission(userHandle);
+        synchronized (this) {
+            DevicePolicyData policy = getUserData(userHandle);
+            int count = 0;
+
+            if (who != null) {
+                ActiveAdmin admin = getActiveAdminUncheckedLocked(who, userHandle);
+                return admin != null ? admin.maximumFailedPasswordsForWipe : count;
+            }
+
+            final int N = policy.mAdminList.size();
+            for  (int i=0; i<N; i++) {
+                ActiveAdmin admin = policy.mAdminList.get(i);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
                 if (count == 0) {
                     count = admin.maximumFailedPasswordsForWipe;
                 } else if (admin.maximumFailedPasswordsForWipe != 0
@@ -1471,14 +2351,23 @@ public class DevicePolicyManagerService extends IDevicePolicyManager.Stub {
         }
     }
 
+<<<<<<< HEAD
     public boolean resetPassword(String password, int flags) {
+=======
+    public boolean resetPassword(String password, int flags, int userHandle) {
+        enforceCrossUserPermission(userHandle);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         int quality;
         synchronized (this) {
             // This API can only be called by an active device admin,
             // so try to retrieve it to check that the caller is one.
             getActiveAdminForCallerLocked(null,
                     DeviceAdminInfo.USES_POLICY_RESET_PASSWORD);
+<<<<<<< HEAD
             quality = getPasswordQuality(null);
+=======
+            quality = getPasswordQuality(null, userHandle);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
             if (quality != DevicePolicyManager.PASSWORD_QUALITY_UNSPECIFIED) {
                 int realQuality = LockPatternUtils.computePasswordQuality(password);
                 if (realQuality < quality
@@ -1491,7 +2380,11 @@ public class DevicePolicyManagerService extends IDevicePolicyManager.Stub {
                 }
                 quality = Math.max(realQuality, quality);
             }
+<<<<<<< HEAD
             int length = getPasswordMinimumLength(null);
+=======
+            int length = getPasswordMinimumLength(null, userHandle);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
             if (password.length() < length) {
                 Slog.w(TAG, "resetPassword: password length " + password.length()
                         + " does not meet required length " + length);
@@ -1520,13 +2413,21 @@ public class DevicePolicyManagerService extends IDevicePolicyManager.Stub {
                         nonletter++;
                     }
                 }
+<<<<<<< HEAD
                 int neededLetters = getPasswordMinimumLetters(null);
+=======
+                int neededLetters = getPasswordMinimumLetters(null, userHandle);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
                 if(letters < neededLetters) {
                     Slog.w(TAG, "resetPassword: number of letters " + letters
                             + " does not meet required number of letters " + neededLetters);
                     return false;
                 }
+<<<<<<< HEAD
                 int neededNumbers = getPasswordMinimumNumeric(null);
+=======
+                int neededNumbers = getPasswordMinimumNumeric(null, userHandle);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
                 if (numbers < neededNumbers) {
                     Slog
                             .w(TAG, "resetPassword: number of numerical digits " + numbers
@@ -1534,27 +2435,43 @@ public class DevicePolicyManagerService extends IDevicePolicyManager.Stub {
                                     + neededNumbers);
                     return false;
                 }
+<<<<<<< HEAD
                 int neededLowerCase = getPasswordMinimumLowerCase(null);
+=======
+                int neededLowerCase = getPasswordMinimumLowerCase(null, userHandle);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
                 if (lowercase < neededLowerCase) {
                     Slog.w(TAG, "resetPassword: number of lowercase letters " + lowercase
                             + " does not meet required number of lowercase letters "
                             + neededLowerCase);
                     return false;
                 }
+<<<<<<< HEAD
                 int neededUpperCase = getPasswordMinimumUpperCase(null);
+=======
+                int neededUpperCase = getPasswordMinimumUpperCase(null, userHandle);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
                 if (uppercase < neededUpperCase) {
                     Slog.w(TAG, "resetPassword: number of uppercase letters " + uppercase
                             + " does not meet required number of uppercase letters "
                             + neededUpperCase);
                     return false;
                 }
+<<<<<<< HEAD
                 int neededSymbols = getPasswordMinimumSymbols(null);
+=======
+                int neededSymbols = getPasswordMinimumSymbols(null, userHandle);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
                 if (symbols < neededSymbols) {
                     Slog.w(TAG, "resetPassword: number of special symbols " + symbols
                             + " does not meet required number of special symbols " + neededSymbols);
                     return false;
                 }
+<<<<<<< HEAD
                 int neededNonLetter = getPasswordMinimumNonLetter(null);
+=======
+                int neededNonLetter = getPasswordMinimumNonLetter(null, userHandle);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
                 if (nonletter < neededNonLetter) {
                     Slog.w(TAG, "resetPassword: number of non-letter characters " + nonletter
                             + " does not meet required number of non-letter characters "
@@ -1565,7 +2482,12 @@ public class DevicePolicyManagerService extends IDevicePolicyManager.Stub {
         }
 
         int callingUid = Binder.getCallingUid();
+<<<<<<< HEAD
         if (mPasswordOwner >= 0 && mPasswordOwner != callingUid) {
+=======
+        DevicePolicyData policy = getUserData(userHandle);
+        if (policy.mPasswordOwner >= 0 && policy.mPasswordOwner != callingUid) {
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
             Slog.w(TAG, "resetPassword: already set by another uid and not entered by user");
             return false;
         }
@@ -1575,6 +2497,7 @@ public class DevicePolicyManagerService extends IDevicePolicyManager.Stub {
         long ident = Binder.clearCallingIdentity();
         try {
             LockPatternUtils utils = new LockPatternUtils(mContext);
+<<<<<<< HEAD
             utils.saveLockPassword(password, quality);
             synchronized (this) {
                 int newOwner = (flags&DevicePolicyManager.RESET_PASSWORD_REQUIRE_ENTRY)
@@ -1582,6 +2505,15 @@ public class DevicePolicyManagerService extends IDevicePolicyManager.Stub {
                 if (mPasswordOwner != newOwner) {
                     mPasswordOwner = newOwner;
                     saveSettingsLocked();
+=======
+            utils.saveLockPassword(password, quality, false, userHandle);
+            synchronized (this) {
+                int newOwner = (flags&DevicePolicyManager.RESET_PASSWORD_REQUIRE_ENTRY)
+                        != 0 ? callingUid : -1;
+                if (policy.mPasswordOwner != newOwner) {
+                    policy.mPasswordOwner = newOwner;
+                    saveSettingsLocked(userHandle);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
                 }
             }
         } finally {
@@ -1591,7 +2523,12 @@ public class DevicePolicyManagerService extends IDevicePolicyManager.Stub {
         return true;
     }
 
+<<<<<<< HEAD
     public void setMaximumTimeToLock(ComponentName who, long timeMs) {
+=======
+    public void setMaximumTimeToLock(ComponentName who, long timeMs, int userHandle) {
+        enforceCrossUserPermission(userHandle);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         synchronized (this) {
             if (who == null) {
                 throw new NullPointerException("ComponentName is null");
@@ -1600,15 +2537,26 @@ public class DevicePolicyManagerService extends IDevicePolicyManager.Stub {
                     DeviceAdminInfo.USES_POLICY_FORCE_LOCK);
             if (ap.maximumTimeToUnlock != timeMs) {
                 ap.maximumTimeToUnlock = timeMs;
+<<<<<<< HEAD
                 saveSettingsLocked();
                 updateMaximumTimeToLockLocked();
+=======
+                saveSettingsLocked(userHandle);
+                updateMaximumTimeToLockLocked(getUserData(userHandle));
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
             }
         }
     }
 
+<<<<<<< HEAD
     void updateMaximumTimeToLockLocked() {
         long timeMs = getMaximumTimeToLock(null);
         if (mLastMaximumTimeToLock == timeMs) {
+=======
+    void updateMaximumTimeToLockLocked(DevicePolicyData policy) {
+        long timeMs = getMaximumTimeToLock(null, policy.mUserHandle);
+        if (policy.mLastMaximumTimeToLock == timeMs) {
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
             return;
         }
 
@@ -1619,6 +2567,7 @@ public class DevicePolicyManagerService extends IDevicePolicyManager.Stub {
             } else {
                 // Make sure KEEP_SCREEN_ON is disabled, since that
                 // would allow bypassing of the maximum time to lock.
+<<<<<<< HEAD
                 Settings.System.putInt(mContext.getContentResolver(),
                         Settings.System.STAY_ON_WHILE_PLUGGED_IN, 0);
             }
@@ -1627,6 +2576,16 @@ public class DevicePolicyManagerService extends IDevicePolicyManager.Stub {
 
             try {
                 getIPowerManager().setMaximumScreenOffTimeount((int)timeMs);
+=======
+                Settings.Global.putInt(mContext.getContentResolver(),
+                        Settings.Global.STAY_ON_WHILE_PLUGGED_IN, 0);
+            }
+
+            policy.mLastMaximumTimeToLock = timeMs;
+
+            try {
+                getIPowerManager().setMaximumScreenOffTimeoutFromDeviceAdmin((int)timeMs);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
             } catch (RemoteException e) {
                 Slog.w(TAG, "Failure talking with power manager", e);
             }
@@ -1635,11 +2594,17 @@ public class DevicePolicyManagerService extends IDevicePolicyManager.Stub {
         }
     }
 
+<<<<<<< HEAD
     public long getMaximumTimeToLock(ComponentName who) {
+=======
+    public long getMaximumTimeToLock(ComponentName who, int userHandle) {
+        enforceCrossUserPermission(userHandle);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         synchronized (this) {
             long time = 0;
 
             if (who != null) {
+<<<<<<< HEAD
                 ActiveAdmin admin = getActiveAdminUncheckedLocked(who);
                 return admin != null ? admin.maximumTimeToUnlock : time;
             }
@@ -1647,6 +2612,16 @@ public class DevicePolicyManagerService extends IDevicePolicyManager.Stub {
             final int N = mAdminList.size();
             for  (int i=0; i<N; i++) {
                 ActiveAdmin admin = mAdminList.get(i);
+=======
+                ActiveAdmin admin = getActiveAdminUncheckedLocked(who, userHandle);
+                return admin != null ? admin.maximumTimeToUnlock : time;
+            }
+
+            DevicePolicyData policy = getUserData(userHandle);
+            final int N = policy.mAdminList.size();
+            for  (int i=0; i<N; i++) {
+                ActiveAdmin admin = policy.mAdminList.get(i);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
                 if (time == 0) {
                     time = admin.maximumTimeToUnlock;
                 } else if (admin.maximumTimeToUnlock != 0
@@ -1664,6 +2639,7 @@ public class DevicePolicyManagerService extends IDevicePolicyManager.Stub {
             // so try to retrieve it to check that the caller is one.
             getActiveAdminForCallerLocked(null,
                     DeviceAdminInfo.USES_POLICY_FORCE_LOCK);
+<<<<<<< HEAD
             long ident = Binder.clearCallingIdentity();
             try {
                 // Power off the display
@@ -1675,6 +2651,23 @@ public class DevicePolicyManagerService extends IDevicePolicyManager.Stub {
             } finally {
                 Binder.restoreCallingIdentity(ident);
             }
+=======
+            lockNowUnchecked();
+        }
+    }
+
+    private void lockNowUnchecked() {
+        long ident = Binder.clearCallingIdentity();
+        try {
+            // Power off the display
+            getIPowerManager().goToSleep(SystemClock.uptimeMillis(),
+                    PowerManager.GO_TO_SLEEP_REASON_DEVICE_ADMIN);
+            // Ensure the device is locked
+            getWindowManager().lockNow(null);
+        } catch (RemoteException e) {
+        } finally {
+            Binder.restoreCallingIdentity(ident);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         }
     }
 
@@ -1691,6 +2684,10 @@ public class DevicePolicyManagerService extends IDevicePolicyManager.Stub {
         // Note: we can only do the wipe via ExternalStorageFormatter if the volume is not emulated.
         if ((forceExtWipe || wipeExtRequested) && !Environment.isExternalStorageEmulated()) {
             Intent intent = new Intent(ExternalStorageFormatter.FORMAT_AND_FACTORY_RESET);
+<<<<<<< HEAD
+=======
+            intent.putExtra(ExternalStorageFormatter.EXTRA_ALWAYS_RESET, true);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
             intent.setComponent(ExternalStorageFormatter.COMPONENT_NAME);
             mWakeLock.acquire(10000);
             mContext.startService(intent);
@@ -1703,7 +2700,12 @@ public class DevicePolicyManagerService extends IDevicePolicyManager.Stub {
         }
     }
 
+<<<<<<< HEAD
     public void wipeData(int flags) {
+=======
+    public void wipeData(int flags, final int userHandle) {
+        enforceCrossUserPermission(userHandle);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         synchronized (this) {
             // This API can only be called by an active device admin,
             // so try to retrieve it to check that the caller is one.
@@ -1711,19 +2713,47 @@ public class DevicePolicyManagerService extends IDevicePolicyManager.Stub {
                     DeviceAdminInfo.USES_POLICY_WIPE_DATA);
             long ident = Binder.clearCallingIdentity();
             try {
+<<<<<<< HEAD
                 wipeDataLocked(flags);
+=======
+                if (userHandle == UserHandle.USER_OWNER) {
+                    wipeDataLocked(flags);
+                } else {
+                    lockNowUnchecked();
+                    mHandler.post(new Runnable() {
+                        public void run() {
+                            try {
+                                ActivityManagerNative.getDefault().switchUser(0);
+                                ((UserManager) mContext.getSystemService(Context.USER_SERVICE))
+                                        .removeUser(userHandle);
+                            } catch (RemoteException re) {
+                                // Shouldn't happen
+                            }
+                        }
+                    });
+                }
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
             } finally {
                 Binder.restoreCallingIdentity(ident);
             }
         }
     }
 
+<<<<<<< HEAD
     public void getRemoveWarning(ComponentName comp, final RemoteCallback result) {
+=======
+    public void getRemoveWarning(ComponentName comp, final RemoteCallback result, int userHandle) {
+        enforceCrossUserPermission(userHandle);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         mContext.enforceCallingOrSelfPermission(
                 android.Manifest.permission.BIND_DEVICE_ADMIN, null);
 
         synchronized (this) {
+<<<<<<< HEAD
             ActiveAdmin admin = getActiveAdminUncheckedLocked(comp);
+=======
+            ActiveAdmin admin = getActiveAdminUncheckedLocked(comp, userHandle);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
             if (admin == null) {
                 try {
                     result.sendResult(null);
@@ -1733,7 +2763,12 @@ public class DevicePolicyManagerService extends IDevicePolicyManager.Stub {
             }
             Intent intent = new Intent(DeviceAdminReceiver.ACTION_DEVICE_ADMIN_DISABLE_REQUESTED);
             intent.setComponent(admin.info.getComponent());
+<<<<<<< HEAD
             mContext.sendOrderedBroadcast(intent, null, new BroadcastReceiver() {
+=======
+            mContext.sendOrderedBroadcastAsUser(intent, new UserHandle(userHandle),
+                    null, new BroadcastReceiver() {
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
                 @Override
                 public void onReceive(Context context, Intent intent) {
                     try {
@@ -1746,13 +2781,22 @@ public class DevicePolicyManagerService extends IDevicePolicyManager.Stub {
     }
 
     public void setActivePasswordState(int quality, int length, int letters, int uppercase,
+<<<<<<< HEAD
             int lowercase, int numbers, int symbols, int nonletter) {
         mContext.enforceCallingOrSelfPermission(
                 android.Manifest.permission.BIND_DEVICE_ADMIN, null);
+=======
+            int lowercase, int numbers, int symbols, int nonletter, int userHandle) {
+        enforceCrossUserPermission(userHandle);
+        mContext.enforceCallingOrSelfPermission(
+                android.Manifest.permission.BIND_DEVICE_ADMIN, null);
+        DevicePolicyData p = getUserData(userHandle);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 
         validateQualityConstant(quality);
 
         synchronized (this) {
+<<<<<<< HEAD
             if (mActivePasswordQuality != quality || mActivePasswordLength != length
                     || mFailedPasswordAttempts != 0 || mActivePasswordLetters != letters
                     || mActivePasswordUpperCase != uppercase
@@ -1774,6 +2818,29 @@ public class DevicePolicyManagerService extends IDevicePolicyManager.Stub {
                     setExpirationAlarmCheckLocked(mContext);
                     sendAdminCommandLocked(DeviceAdminReceiver.ACTION_PASSWORD_CHANGED,
                             DeviceAdminInfo.USES_POLICY_LIMIT_PASSWORD);
+=======
+            if (p.mActivePasswordQuality != quality || p.mActivePasswordLength != length
+                    || p.mFailedPasswordAttempts != 0 || p.mActivePasswordLetters != letters
+                    || p.mActivePasswordUpperCase != uppercase
+                    || p.mActivePasswordLowerCase != lowercase || p.mActivePasswordNumeric != numbers
+                    || p.mActivePasswordSymbols != symbols || p.mActivePasswordNonLetter != nonletter) {
+                long ident = Binder.clearCallingIdentity();
+                try {
+                    p.mActivePasswordQuality = quality;
+                    p.mActivePasswordLength = length;
+                    p.mActivePasswordLetters = letters;
+                    p.mActivePasswordLowerCase = lowercase;
+                    p.mActivePasswordUpperCase = uppercase;
+                    p.mActivePasswordNumeric = numbers;
+                    p.mActivePasswordSymbols = symbols;
+                    p.mActivePasswordNonLetter = nonletter;
+                    p.mFailedPasswordAttempts = 0;
+                    saveSettingsLocked(userHandle);
+                    updatePasswordExpirationsLocked(userHandle);
+                    setExpirationAlarmCheckLocked(mContext, p);
+                    sendAdminCommandLocked(DeviceAdminReceiver.ACTION_PASSWORD_CHANGED,
+                            DeviceAdminInfo.USES_POLICY_LIMIT_PASSWORD, userHandle);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
                 } finally {
                     Binder.restoreCallingIdentity(ident);
                 }
@@ -1784,26 +2851,45 @@ public class DevicePolicyManagerService extends IDevicePolicyManager.Stub {
     /**
      * Called any time the device password is updated.  Resets all password expiration clocks.
      */
+<<<<<<< HEAD
     private void updatePasswordExpirationsLocked() {
         final int N = mAdminList.size();
         if (N > 0) {
             for (int i=0; i<N; i++) {
                 ActiveAdmin admin = mAdminList.get(i);
+=======
+    private void updatePasswordExpirationsLocked(int userHandle) {
+        DevicePolicyData policy = getUserData(userHandle);
+        final int N = policy.mAdminList.size();
+        if (N > 0) {
+            for (int i=0; i<N; i++) {
+                ActiveAdmin admin = policy.mAdminList.get(i);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
                 if (admin.info.usesPolicy(DeviceAdminInfo.USES_POLICY_EXPIRE_PASSWORD)) {
                     long timeout = admin.passwordExpirationTimeout;
                     long expiration = timeout > 0L ? (timeout + System.currentTimeMillis()) : 0L;
                     admin.passwordExpirationDate = expiration;
                 }
             }
+<<<<<<< HEAD
             saveSettingsLocked();
         }
     }
 
     public void reportFailedPasswordAttempt() {
+=======
+            saveSettingsLocked(userHandle);
+        }
+    }
+
+    public void reportFailedPasswordAttempt(int userHandle) {
+        enforceCrossUserPermission(userHandle);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         mContext.enforceCallingOrSelfPermission(
                 android.Manifest.permission.BIND_DEVICE_ADMIN, null);
 
         synchronized (this) {
+<<<<<<< HEAD
             long ident = Binder.clearCallingIdentity();
             try {
                 mFailedPasswordAttempts++;
@@ -1814,17 +2900,36 @@ public class DevicePolicyManagerService extends IDevicePolicyManager.Stub {
                 }
                 sendAdminCommandLocked(DeviceAdminReceiver.ACTION_PASSWORD_FAILED,
                         DeviceAdminInfo.USES_POLICY_WATCH_LOGIN);
+=======
+            DevicePolicyData policy = getUserData(userHandle);
+            long ident = Binder.clearCallingIdentity();
+            try {
+                policy.mFailedPasswordAttempts++;
+                saveSettingsLocked(userHandle);
+                int max = getMaximumFailedPasswordsForWipe(null, userHandle);
+                if (max > 0 && policy.mFailedPasswordAttempts >= max) {
+                    wipeDataLocked(0);
+                }
+                sendAdminCommandLocked(DeviceAdminReceiver.ACTION_PASSWORD_FAILED,
+                        DeviceAdminInfo.USES_POLICY_WATCH_LOGIN, userHandle);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
             } finally {
                 Binder.restoreCallingIdentity(ident);
             }
         }
     }
 
+<<<<<<< HEAD
     public void reportSuccessfulPasswordAttempt() {
+=======
+    public void reportSuccessfulPasswordAttempt(int userHandle) {
+        enforceCrossUserPermission(userHandle);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         mContext.enforceCallingOrSelfPermission(
                 android.Manifest.permission.BIND_DEVICE_ADMIN, null);
 
         synchronized (this) {
+<<<<<<< HEAD
             if (mFailedPasswordAttempts != 0 || mPasswordOwner >= 0) {
                 long ident = Binder.clearCallingIdentity();
                 try {
@@ -1833,6 +2938,17 @@ public class DevicePolicyManagerService extends IDevicePolicyManager.Stub {
                     saveSettingsLocked();
                     sendAdminCommandLocked(DeviceAdminReceiver.ACTION_PASSWORD_SUCCEEDED,
                             DeviceAdminInfo.USES_POLICY_WATCH_LOGIN);
+=======
+            DevicePolicyData policy = getUserData(userHandle);
+            if (policy.mFailedPasswordAttempts != 0 || policy.mPasswordOwner >= 0) {
+                long ident = Binder.clearCallingIdentity();
+                try {
+                    policy.mFailedPasswordAttempts = 0;
+                    policy.mPasswordOwner = -1;
+                    saveSettingsLocked(userHandle);
+                    sendAdminCommandLocked(DeviceAdminReceiver.ACTION_PASSWORD_SUCCEEDED,
+                            DeviceAdminInfo.USES_POLICY_WATCH_LOGIN, userHandle);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
                 } finally {
                     Binder.restoreCallingIdentity(ident);
                 }
@@ -1841,26 +2957,52 @@ public class DevicePolicyManagerService extends IDevicePolicyManager.Stub {
     }
 
     public ComponentName setGlobalProxy(ComponentName who, String proxySpec,
+<<<<<<< HEAD
             String exclusionList) {
+=======
+            String exclusionList, int userHandle) {
+        enforceCrossUserPermission(userHandle);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         synchronized(this) {
             if (who == null) {
                 throw new NullPointerException("ComponentName is null");
             }
 
+<<<<<<< HEAD
+=======
+            // Only check if owner has set global proxy. We don't allow other users to set it.
+            DevicePolicyData policy = getUserData(UserHandle.USER_OWNER);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
             ActiveAdmin admin = getActiveAdminForCallerLocked(who,
                     DeviceAdminInfo.USES_POLICY_SETS_GLOBAL_PROXY);
 
             // Scan through active admins and find if anyone has already
             // set the global proxy.
+<<<<<<< HEAD
             Set<ComponentName> compSet = mAdminMap.keySet();
             for  (ComponentName component : compSet) {
                 ActiveAdmin ap = mAdminMap.get(component);
+=======
+            Set<ComponentName> compSet = policy.mAdminMap.keySet();
+            for  (ComponentName component : compSet) {
+                ActiveAdmin ap = policy.mAdminMap.get(component);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
                 if ((ap.specifiesGlobalProxy) && (!component.equals(who))) {
                     // Another admin already sets the global proxy
                     // Return it to the caller.
                     return component;
                 }
             }
+<<<<<<< HEAD
+=======
+
+            // If the user is not the owner, don't set the global proxy. Fail silently.
+            if (UserHandle.getCallingUserId() != UserHandle.USER_OWNER) {
+                Slog.w(TAG, "Only the owner is allowed to set the global proxy. User "
+                        + userHandle + " is not permitted.");
+                return null;
+            }
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
             if (proxySpec == null) {
                 admin.specifiesGlobalProxy = false;
                 admin.globalProxySpec = null;
@@ -1875,12 +3017,17 @@ public class DevicePolicyManagerService extends IDevicePolicyManager.Stub {
             // Reset the global proxy accordingly
             // Do this using system permissions, as apps cannot write to secure settings
             long origId = Binder.clearCallingIdentity();
+<<<<<<< HEAD
             resetGlobalProxyLocked();
+=======
+            resetGlobalProxyLocked(policy);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
             Binder.restoreCallingIdentity(origId);
             return null;
         }
     }
 
+<<<<<<< HEAD
     public ComponentName getGlobalProxyAdmin() {
         synchronized(this) {
             // Scan through active admins and find if anyone has already
@@ -1888,6 +3035,17 @@ public class DevicePolicyManagerService extends IDevicePolicyManager.Stub {
             final int N = mAdminList.size();
             for (int i = 0; i < N; i++) {
                 ActiveAdmin ap = mAdminList.get(i);
+=======
+    public ComponentName getGlobalProxyAdmin(int userHandle) {
+        enforceCrossUserPermission(userHandle);
+        synchronized(this) {
+            DevicePolicyData policy = getUserData(UserHandle.USER_OWNER);
+            // Scan through active admins and find if anyone has already
+            // set the global proxy.
+            final int N = policy.mAdminList.size();
+            for (int i = 0; i < N; i++) {
+                ActiveAdmin ap = policy.mAdminList.get(i);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
                 if (ap.specifiesGlobalProxy) {
                     // Device admin sets the global proxy
                     // Return it to the caller.
@@ -1899,10 +3057,17 @@ public class DevicePolicyManagerService extends IDevicePolicyManager.Stub {
         return null;
     }
 
+<<<<<<< HEAD
     private void resetGlobalProxyLocked() {
         final int N = mAdminList.size();
         for (int i = 0; i < N; i++) {
             ActiveAdmin ap = mAdminList.get(i);
+=======
+    private void resetGlobalProxyLocked(DevicePolicyData policy) {
+        final int N = policy.mAdminList.size();
+        for (int i = 0; i < N; i++) {
+            ActiveAdmin ap = policy.mAdminList.get(i);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
             if (ap.specifiesGlobalProxy) {
                 saveGlobalProxyLocked(ap.globalProxySpec, ap.globalProxyExclusionList);
                 return;
@@ -1930,9 +3095,15 @@ public class DevicePolicyManagerService extends IDevicePolicyManager.Stub {
         }
         exclusionList = exclusionList.trim();
         ContentResolver res = mContext.getContentResolver();
+<<<<<<< HEAD
         Settings.Secure.putString(res, Settings.Secure.GLOBAL_HTTP_PROXY_HOST, data[0]);
         Settings.Secure.putInt(res, Settings.Secure.GLOBAL_HTTP_PROXY_PORT, proxyPort);
         Settings.Secure.putString(res, Settings.Secure.GLOBAL_HTTP_PROXY_EXCLUSION_LIST,
+=======
+        Settings.Global.putString(res, Settings.Global.GLOBAL_HTTP_PROXY_HOST, data[0]);
+        Settings.Global.putInt(res, Settings.Global.GLOBAL_HTTP_PROXY_PORT, proxyPort);
+        Settings.Global.putString(res, Settings.Global.GLOBAL_HTTP_PROXY_EXCLUSION_LIST,
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
                 exclusionList);
     }
 
@@ -1940,12 +3111,28 @@ public class DevicePolicyManagerService extends IDevicePolicyManager.Stub {
      * Set the storage encryption request for a single admin.  Returns the new total request
      * status (for all admins).
      */
+<<<<<<< HEAD
     public int setStorageEncryption(ComponentName who, boolean encrypt) {
+=======
+    public int setStorageEncryption(ComponentName who, boolean encrypt, int userHandle) {
+        enforceCrossUserPermission(userHandle);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         synchronized (this) {
             // Check for permissions
             if (who == null) {
                 throw new NullPointerException("ComponentName is null");
             }
+<<<<<<< HEAD
+=======
+            // Only owner can set storage encryption
+            if (userHandle != UserHandle.USER_OWNER
+                    || UserHandle.getCallingUserId() != UserHandle.USER_OWNER) {
+                Slog.w(TAG, "Only owner is allowed to set storage encryption. User "
+                        + UserHandle.getCallingUserId() + " is not permitted.");
+                return 0;
+            }
+
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
             ActiveAdmin ap = getActiveAdminForCallerLocked(who,
                     DeviceAdminInfo.USES_ENCRYPTED_STORAGE);
 
@@ -1957,6 +3144,7 @@ public class DevicePolicyManagerService extends IDevicePolicyManager.Stub {
             // (1) Record the value for the admin so it's sticky
             if (ap.encryptionRequested != encrypt) {
                 ap.encryptionRequested = encrypt;
+<<<<<<< HEAD
                 saveSettingsLocked();
             }
 
@@ -1965,6 +3153,17 @@ public class DevicePolicyManagerService extends IDevicePolicyManager.Stub {
             final int N = mAdminList.size();
             for (int i = 0; i < N; i++) {
                 newRequested |= mAdminList.get(i).encryptionRequested;
+=======
+                saveSettingsLocked(userHandle);
+            }
+
+            DevicePolicyData policy = getUserData(UserHandle.USER_OWNER);
+            // (2) Compute "max" for all admins
+            boolean newRequested = false;
+            final int N = policy.mAdminList.size();
+            for (int i = 0; i < N; i++) {
+                newRequested |= policy.mAdminList.get(i).encryptionRequested;
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
             }
 
             // Notify OS of new request
@@ -1981,20 +3180,36 @@ public class DevicePolicyManagerService extends IDevicePolicyManager.Stub {
      * Get the current storage encryption request status for a given admin, or aggregate of all
      * active admins.
      */
+<<<<<<< HEAD
     public boolean getStorageEncryption(ComponentName who) {
+=======
+    public boolean getStorageEncryption(ComponentName who, int userHandle) {
+        enforceCrossUserPermission(userHandle);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         synchronized (this) {
             // Check for permissions if a particular caller is specified
             if (who != null) {
                 // When checking for a single caller, status is based on caller's request
+<<<<<<< HEAD
                 ActiveAdmin ap = getActiveAdminUncheckedLocked(who);
+=======
+                ActiveAdmin ap = getActiveAdminUncheckedLocked(who, userHandle);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
                 return ap != null ? ap.encryptionRequested : false;
             }
 
             // If no particular caller is specified, return the aggregate set of requests.
             // This is short circuited by returning true on the first hit.
+<<<<<<< HEAD
             final int N = mAdminList.size();
             for (int i = 0; i < N; i++) {
                 if (mAdminList.get(i).encryptionRequested) {
+=======
+            DevicePolicyData policy = getUserData(userHandle);
+            final int N = policy.mAdminList.size();
+            for (int i = 0; i < N; i++) {
+                if (policy.mAdminList.get(i).encryptionRequested) {
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
                     return true;
                 }
             }
@@ -2005,7 +3220,12 @@ public class DevicePolicyManagerService extends IDevicePolicyManager.Stub {
     /**
      * Get the current encryption status of the device.
      */
+<<<<<<< HEAD
     public int getStorageEncryptionStatus() {
+=======
+    public int getStorageEncryptionStatus(int userHandle) {
+        enforceCrossUserPermission(userHandle);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         return getEncryptionStatus();
     }
 
@@ -2052,7 +3272,12 @@ public class DevicePolicyManagerService extends IDevicePolicyManager.Stub {
     /**
      * Disables all device cameras according to the specified admin.
      */
+<<<<<<< HEAD
     public void setCameraDisabled(ComponentName who, boolean disabled) {
+=======
+    public void setCameraDisabled(ComponentName who, boolean disabled, int userHandle) {
+        enforceCrossUserPermission(userHandle);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         synchronized (this) {
             if (who == null) {
                 throw new NullPointerException("ComponentName is null");
@@ -2061,9 +3286,15 @@ public class DevicePolicyManagerService extends IDevicePolicyManager.Stub {
                     DeviceAdminInfo.USES_POLICY_DISABLE_CAMERA);
             if (ap.disableCamera != disabled) {
                 ap.disableCamera = disabled;
+<<<<<<< HEAD
                 saveSettingsLocked();
             }
             syncDeviceCapabilitiesLocked();
+=======
+                saveSettingsLocked(userHandle);
+            }
+            syncDeviceCapabilitiesLocked(getUserData(userHandle));
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         }
     }
 
@@ -2071,6 +3302,7 @@ public class DevicePolicyManagerService extends IDevicePolicyManager.Stub {
      * Gets whether or not all device cameras are disabled for a given admin, or disabled for any
      * active admins.
      */
+<<<<<<< HEAD
     public boolean getCameraDisabled(ComponentName who) {
         synchronized (this) {
             if (who != null) {
@@ -2082,6 +3314,20 @@ public class DevicePolicyManagerService extends IDevicePolicyManager.Stub {
             final int N = mAdminList.size();
             for (int i = 0; i < N; i++) {
                 ActiveAdmin admin = mAdminList.get(i);
+=======
+    public boolean getCameraDisabled(ComponentName who, int userHandle) {
+        synchronized (this) {
+            if (who != null) {
+                ActiveAdmin admin = getActiveAdminUncheckedLocked(who, userHandle);
+                return (admin != null) ? admin.disableCamera : false;
+            }
+
+            DevicePolicyData policy = getUserData(userHandle);
+            // Determine whether or not the device camera is disabled for any active admins.
+            final int N = policy.mAdminList.size();
+            for (int i = 0; i < N; i++) {
+                ActiveAdmin admin = policy.mAdminList.get(i);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
                 if (admin.disableCamera) {
                     return true;
                 }
@@ -2090,6 +3336,65 @@ public class DevicePolicyManagerService extends IDevicePolicyManager.Stub {
         }
     }
 
+<<<<<<< HEAD
+=======
+    /**
+     * Selectively disable keyguard features.
+     */
+    public void setKeyguardDisabledFeatures(ComponentName who, int which, int userHandle) {
+        enforceCrossUserPermission(userHandle);
+        synchronized (this) {
+            if (who == null) {
+                throw new NullPointerException("ComponentName is null");
+            }
+            ActiveAdmin ap = getActiveAdminForCallerLocked(who,
+                    DeviceAdminInfo.USES_POLICY_DISABLE_KEYGUARD_FEATURES);
+            if (ap.disabledKeyguardFeatures != which) {
+                ap.disabledKeyguardFeatures = which;
+                saveSettingsLocked(userHandle);
+            }
+            syncDeviceCapabilitiesLocked(getUserData(userHandle));
+        }
+    }
+
+    /**
+     * Gets the disabled state for features in keyguard for the given admin,
+     * or the aggregate of all active admins if who is null.
+     */
+    public int getKeyguardDisabledFeatures(ComponentName who, int userHandle) {
+        enforceCrossUserPermission(userHandle);
+        synchronized (this) {
+            if (who != null) {
+                ActiveAdmin admin = getActiveAdminUncheckedLocked(who, userHandle);
+                return (admin != null) ? admin.disabledKeyguardFeatures : 0;
+            }
+
+            // Determine which keyguard features are disabled for any active admins.
+            DevicePolicyData policy = getUserData(userHandle);
+            final int N = policy.mAdminList.size();
+            int which = 0;
+            for (int i = 0; i < N; i++) {
+                ActiveAdmin admin = policy.mAdminList.get(i);
+                which |= admin.disabledKeyguardFeatures;
+            }
+            return which;
+        }
+    }
+
+    private void enforceCrossUserPermission(int userHandle) {
+        if (userHandle < 0) {
+            throw new IllegalArgumentException("Invalid userId " + userHandle);
+        }
+        final int callingUid = Binder.getCallingUid();
+        if (userHandle == UserHandle.getUserId(callingUid)) return;
+        if (callingUid != Process.SYSTEM_UID && callingUid != 0) {
+            mContext.enforceCallingOrSelfPermission(
+                    android.Manifest.permission.INTERACT_ACROSS_USERS_FULL, "Must be system or have"
+                    + " INTERACT_ACROSS_USERS_FULL permission");
+        }
+    }
+
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     @Override
     protected void dump(FileDescriptor fd, PrintWriter pw, String[] args) {
         if (mContext.checkCallingOrSelfPermission(android.Manifest.permission.DUMP)
@@ -2106,6 +3411,7 @@ public class DevicePolicyManagerService extends IDevicePolicyManager.Stub {
         synchronized (this) {
             p.println("Current Device Policy Manager state:");
 
+<<<<<<< HEAD
             p.println("  Enabled Device Admins:");
             final int N = mAdminList.size();
             for (int i=0; i<N; i++) {
@@ -2119,6 +3425,25 @@ public class DevicePolicyManagerService extends IDevicePolicyManager.Stub {
 
             pw.println(" ");
             pw.print("  mPasswordOwner="); pw.println(mPasswordOwner);
+=======
+            int userCount = mUserData.size();
+            for (int u = 0; u < userCount; u++) {
+                DevicePolicyData policy = getUserData(mUserData.keyAt(u));
+                p.println("  Enabled Device Admins (User " + policy.mUserHandle + "):");
+                final int N = policy.mAdminList.size();
+                for (int i=0; i<N; i++) {
+                    ActiveAdmin ap = policy.mAdminList.get(i);
+                    if (ap != null) {
+                        pw.print("  "); pw.print(ap.info.getComponent().flattenToShortString());
+                                pw.println(":");
+                        ap.dump("    ", pw);
+                    }
+                }
+
+                pw.println(" ");
+                pw.print("  mPasswordOwner="); pw.println(policy.mPasswordOwner);
+            }
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         }
     }
 }

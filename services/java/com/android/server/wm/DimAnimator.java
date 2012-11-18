@@ -30,12 +30,18 @@ import java.io.PrintWriter;
  * all state used for dim animation.
  */
 class DimAnimator {
+<<<<<<< HEAD
+=======
+    static final String TAG = "DimAnimator";
+
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     Surface mDimSurface;
     boolean mDimShown = false;
     float mDimCurrentAlpha;
     float mDimTargetAlpha;
     float mDimDeltaPerMs;
     long mLastDimAnimTime;
+<<<<<<< HEAD
     
     int mLastDimWidth, mLastDimHeight;
 
@@ -60,6 +66,31 @@ class DimAnimator {
             } catch (Exception e) {
                 Slog.e(WindowManagerService.TAG, "Exception creating Dim surface", e);
             }
+=======
+
+    int mLastDimWidth, mLastDimHeight;
+
+    DimAnimator (SurfaceSession session, final int layerStack) {
+        try {
+            if (WindowManagerService.DEBUG_SURFACE_TRACE) {
+                mDimSurface = new WindowStateAnimator.SurfaceTrace(session,
+                    "DimAnimator",
+                    16, 16, PixelFormat.OPAQUE,
+                    Surface.FX_SURFACE_DIM | Surface.HIDDEN);
+            } else {
+                mDimSurface = new Surface(session, "DimAnimator",
+                    16, 16, PixelFormat.OPAQUE,
+                    Surface.FX_SURFACE_DIM | Surface.HIDDEN);
+            }
+            if (WindowManagerService.SHOW_TRANSACTIONS ||
+                    WindowManagerService.SHOW_SURFACE_ALLOC) Slog.i(WindowManagerService.TAG,
+                            "  DIM " + mDimSurface + ": CREATE");
+            mDimSurface.setLayerStack(layerStack);
+            mDimSurface.setAlpha(0.0f);
+            mDimSurface.show();
+        } catch (Exception e) {
+            Slog.e(WindowManagerService.TAG, "Exception creating Dim surface", e);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         }
     }
 
@@ -68,6 +99,14 @@ class DimAnimator {
      * {@link #updateSurface} after all windows are examined.
      */
     void updateParameters(final Resources res, final Parameters params, final long currentTime) {
+<<<<<<< HEAD
+=======
+        if (mDimSurface == null) {
+            Slog.e(TAG, "updateParameters: no Surface");
+            return;
+        }
+
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         // Multiply by 1.5 so that rotating a frozen surface that includes this does not expose a
         // corner.
         final int dw = (int) (params.mDimWidth * 1.5);
@@ -132,6 +171,14 @@ class DimAnimator {
      * false when the animation is finished and the dim surface is hidden.
      */
     boolean updateSurface(boolean dimming, long currentTime, boolean displayFrozen) {
+<<<<<<< HEAD
+=======
+        if (mDimSurface == null) {
+            Slog.e(TAG, "updateSurface: no Surface");
+            return false;
+        }
+
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         if (!dimming) {
             if (mDimTargetAlpha != 0) {
                 mLastDimAnimTime = currentTime;
@@ -186,6 +233,16 @@ class DimAnimator {
         return animating;
     }
 
+<<<<<<< HEAD
+=======
+    public void kill() {
+        if (mDimSurface != null) {
+            mDimSurface.destroy();
+            mDimSurface = null;
+        }
+    }
+
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     public void printTo(String prefix, PrintWriter pw) {
         pw.print(prefix);
         pw.print("mDimSurface="); pw.print(mDimSurface);
@@ -211,5 +268,25 @@ class DimAnimator {
             mDimHeight = dimHeight;
             mDimTarget = dimTarget;
         }
+<<<<<<< HEAD
     }
 }
+=======
+
+        Parameters(Parameters o) {
+            mDimWinAnimator = o.mDimWinAnimator;
+            mDimWidth = o.mDimWidth;
+            mDimHeight = o.mDimHeight;
+            mDimTarget = o.mDimTarget;
+        }
+
+        public void printTo(String prefix, PrintWriter pw) {
+            pw.print(prefix);
+            pw.print("mDimWinAnimator="); pw.print(mDimWinAnimator.mWin.mAttrs.getTitle());
+                    pw.print(" "); pw.print(mDimWidth); pw.print(" x ");
+                    pw.print(mDimHeight);
+            pw.print(" mDimTarget="); pw.println(mDimTarget);
+        }
+    }
+}
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a

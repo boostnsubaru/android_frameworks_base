@@ -47,12 +47,24 @@ public final class BridgeWindow implements IWindow {
     }
 
     @Override
+<<<<<<< HEAD
     public void resized(int arg0, int arg1, Rect arg2, Rect arg3,
+=======
+    public void resized(Rect arg1, Rect arg2, Rect arg3,
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
             boolean arg4, Configuration arg5) throws RemoteException {
         // pass for now.
     }
 
     @Override
+<<<<<<< HEAD
+=======
+    public void moved(int arg0, int arg1) throws RemoteException {
+        // pass for now.
+    }
+
+    @Override
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     public void dispatchScreenState(boolean on) throws RemoteException {
         // pass for now.
     }

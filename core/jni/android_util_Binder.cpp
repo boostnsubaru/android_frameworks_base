@@ -729,11 +729,14 @@ static jint android_os_Binder_getCallingUid(JNIEnv* env, jobject clazz)
     return IPCThreadState::self()->getCallingUid();
 }
 
+<<<<<<< HEAD
 static jint android_os_Binder_getOrigCallingUid(JNIEnv* env, jobject clazz)
 {
     return IPCThreadState::self()->getOrigCallingUid();
 }
 
+=======
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 static jlong android_os_Binder_clearCallingIdentity(JNIEnv* env, jobject clazz)
 {
     return IPCThreadState::self()->clearCallingIdentity();
@@ -805,7 +808,10 @@ static const JNINativeMethod gBinderMethods[] = {
      /* name, signature, funcPtr */
     { "getCallingPid", "()I", (void*)android_os_Binder_getCallingPid },
     { "getCallingUid", "()I", (void*)android_os_Binder_getCallingUid },
+<<<<<<< HEAD
     { "getOrigCallingUidNative", "()I", (void*)android_os_Binder_getOrigCallingUid },
+=======
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     { "clearCallingIdentity", "()J", (void*)android_os_Binder_clearCallingIdentity },
     { "restoreCallingIdentity", "(J)V", (void*)android_os_Binder_restoreCallingIdentity },
     { "setThreadStrictModePolicy", "(I)V", (void*)android_os_Binder_setThreadStrictModePolicy },

@@ -23,12 +23,19 @@ import android.content.DialogInterface;
 import android.content.res.Resources;
 import android.os.Handler;
 import android.os.Message;
+<<<<<<< HEAD
 import android.util.Slog;
 import android.view.WindowManager;
 
 class AppErrorDialog extends BaseErrorDialog {
     private final static String TAG = "AppErrorDialog";
 
+=======
+import android.view.WindowManager;
+
+class AppErrorDialog extends BaseErrorDialog {
+    private final ActivityManagerService mService;
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     private final AppErrorResult mResult;
     private final ProcessRecord mProc;
 
@@ -39,11 +46,20 @@ class AppErrorDialog extends BaseErrorDialog {
     // 5-minute timeout, then we automatically dismiss the crash dialog
     static final long DISMISS_TIMEOUT = 1000 * 60 * 5;
     
+<<<<<<< HEAD
     public AppErrorDialog(Context context, AppErrorResult result, ProcessRecord app) {
+=======
+    public AppErrorDialog(Context context, ActivityManagerService service,
+            AppErrorResult result, ProcessRecord app) {
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         super(context);
         
         Resources res = context.getResources();
         
+<<<<<<< HEAD
+=======
+        mService = service;
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         mProc = app;
         mResult = result;
         CharSequence name;
@@ -73,7 +89,14 @@ class AppErrorDialog extends BaseErrorDialog {
 
         setTitle(res.getText(com.android.internal.R.string.aerr_title));
         getWindow().addFlags(FLAG_SYSTEM_ERROR);
+<<<<<<< HEAD
         getWindow().setTitle("Application Error: " + app.info.processName);
+=======
+        WindowManager.LayoutParams attrs = getWindow().getAttributes();
+        attrs.setTitle("Application Error: " + app.info.processName);
+        attrs.privateFlags |= WindowManager.LayoutParams.PRIVATE_FLAG_SHOW_FOR_ALL_USERS;
+        getWindow().setAttributes(attrs);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         if (app.persistent) {
             getWindow().setType(WindowManager.LayoutParams.TYPE_SYSTEM_ERROR);
         }
@@ -86,7 +109,11 @@ class AppErrorDialog extends BaseErrorDialog {
 
     private final Handler mHandler = new Handler() {
         public void handleMessage(Message msg) {
+<<<<<<< HEAD
             synchronized (mProc) {
+=======
+            synchronized (mService) {
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
                 if (mProc != null && mProc.crashDialog == AppErrorDialog.this) {
                     mProc.crashDialog = null;
                 }

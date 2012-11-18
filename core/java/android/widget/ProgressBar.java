@@ -478,6 +478,12 @@ public class ProgressBar extends View {
             d.setCallback(this);
         }
         mIndeterminateDrawable = d;
+<<<<<<< HEAD
+=======
+        if (mIndeterminateDrawable != null && canResolveLayoutDirection()) {
+            mIndeterminateDrawable.setLayoutDirection(getLayoutDirection());
+        }
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         if (mIndeterminate) {
             mCurrentDrawable = d;
             postInvalidate();
@@ -517,6 +523,12 @@ public class ProgressBar extends View {
 
         if (d != null) {
             d.setCallback(this);
+<<<<<<< HEAD
+=======
+            if (canResolveLayoutDirection()) {
+                d.setLayoutDirection(getLayoutDirection());
+            }
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 
             // Make sure the ProgressBar is always tall enough
             int drawableHeight = d.getMinimumHeight();
@@ -559,6 +571,26 @@ public class ProgressBar extends View {
         if (mIndeterminateDrawable != null) mIndeterminateDrawable.jumpToCurrentState();
     }
 
+<<<<<<< HEAD
+=======
+    /**
+     * @hide
+     */
+    @Override
+    public void onResolveDrawables(int layoutDirection) {
+        final Drawable d = mCurrentDrawable;
+        if (d != null) {
+            d.setLayoutDirection(layoutDirection);
+        }
+        if (mIndeterminateDrawable != null) {
+            mIndeterminateDrawable.setLayoutDirection(layoutDirection);
+        }
+        if (mProgressDrawable != null) {
+            mProgressDrawable.setLayoutDirection(layoutDirection);
+        }
+    }
+
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     @Override
     public void postInvalidate() {
         if (!mNoInvalidate) {
@@ -648,6 +680,12 @@ public class ProgressBar extends View {
 
             if (d instanceof LayerDrawable) {
                 progressDrawable = ((LayerDrawable) d).findDrawableByLayerId(id);
+<<<<<<< HEAD
+=======
+                if (progressDrawable != null && canResolveLayoutDirection()) {
+                    progressDrawable.setLayoutDirection(getLayoutDirection());
+                }
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
             }
 
             final int level = (int) (scale * MAX_LEVEL);
@@ -975,6 +1013,7 @@ public class ProgressBar extends View {
         }
     }
 
+<<<<<<< HEAD
     /**
      * @hide
      */
@@ -984,15 +1023,27 @@ public class ProgressBar extends View {
             getResolvedLayoutDirection() : super.getResolvedLayoutDirection(who);
     }
 
+=======
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     @Override
     protected void onSizeChanged(int w, int h, int oldw, int oldh) {
         updateDrawableBounds(w, h);
     }
 
     private void updateDrawableBounds(int w, int h) {
+<<<<<<< HEAD
         // onDraw will translate the canvas so we draw starting at 0,0
         int right = w - mPaddingRight - mPaddingLeft;
         int bottom = h - mPaddingBottom - mPaddingTop;
+=======
+        // onDraw will translate the canvas so we draw starting at 0,0.
+        // Subtract out padding for the purposes of the calculations below.
+        w -= mPaddingRight + mPaddingLeft;
+        h -= mPaddingTop + mPaddingBottom;
+
+        int right = w;
+        int bottom = h;
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         int top = 0;
         int left = 0;
 
@@ -1019,6 +1070,14 @@ public class ProgressBar extends View {
                     }
                 }
             }
+<<<<<<< HEAD
+=======
+            if (isLayoutRtl()) {
+                int tempLeft = left;
+                left = w - right;
+                right = w - tempLeft;
+            }
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
             mIndeterminateDrawable.setBounds(left, top, right, bottom);
         }
         
@@ -1036,7 +1095,16 @@ public class ProgressBar extends View {
             // Translate canvas so a indeterminate circular progress bar with padding
             // rotates properly in its animation
             canvas.save();
+<<<<<<< HEAD
             canvas.translate(mPaddingLeft, mPaddingTop);
+=======
+            if(isLayoutRtl()) {
+                canvas.translate(getWidth() - mPaddingRight, mPaddingTop);
+                canvas.scale(-1.0f, 1.0f);
+            } else {
+                canvas.translate(mPaddingLeft, mPaddingTop);
+            }
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
             long time = getDrawingTime();
             if (mHasAnimation) {
                 mAnimation.getTransformation(time, mTransformation);

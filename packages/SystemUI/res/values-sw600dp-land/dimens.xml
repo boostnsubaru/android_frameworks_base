@@ -19,8 +19,11 @@
     <!-- Layout parameters for the notification panel -->
 	<dimen name="notification_panel_margin_bottom">0dp</dimen>
     <dimen name="notification_panel_margin_left">32dp</dimen>
+<<<<<<< HEAD
 
     <!-- Gravity for the notification panel -->
     <!-- 0x33 = left|top -->
     <integer name="notification_panel_layout_gravity">0x33</integer>
+=======
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 </resources>

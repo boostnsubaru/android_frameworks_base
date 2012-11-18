@@ -281,8 +281,13 @@ public final class IconMenuItemView extends TextView implements MenuView.ItemVie
         Rect tmpRect = mPositionIconOutput;
         getLineBounds(0, tmpRect);
         mPositionIconAvailable.set(0, 0, getWidth(), tmpRect.top);
+<<<<<<< HEAD
         final int layoutDirection = getResolvedLayoutDirection();
         Gravity.apply(Gravity.CENTER_VERTICAL | Gravity.LEFT, mIcon.getIntrinsicWidth(), mIcon
+=======
+        final int layoutDirection = getLayoutDirection();
+        Gravity.apply(Gravity.CENTER_VERTICAL | Gravity.START, mIcon.getIntrinsicWidth(), mIcon
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
                 .getIntrinsicHeight(), mPositionIconAvailable, mPositionIconOutput,
                 layoutDirection);
         mIcon.setBounds(mPositionIconOutput);

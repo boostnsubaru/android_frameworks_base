@@ -16,4 +16,9 @@
 
 <resources>
     <bool name="action_bar_embed_tabs">false</bool>
+<<<<<<< HEAD
+=======
+    <bool name="kg_share_status_area">true</bool>
+    <bool name="kg_sim_puk_account_full_screen">true</bool>
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 </resources>

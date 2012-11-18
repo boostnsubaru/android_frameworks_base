@@ -30,8 +30,16 @@ import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
+<<<<<<< HEAD
 import android.view.accessibility.AccessibilityEvent;
 import android.view.accessibility.AccessibilityNodeInfo;
+=======
+import android.view.ViewTreeObserver;
+import android.view.ViewTreeObserver.OnGlobalLayoutListener;
+import android.view.accessibility.AccessibilityEvent;
+import android.view.accessibility.AccessibilityNodeInfo;
+import android.widget.PopupWindow.OnDismissListener;
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 
 
 /**
@@ -39,10 +47,23 @@ import android.view.accessibility.AccessibilityNodeInfo;
  * The items in the Spinner come from the {@link Adapter} associated with
  * this view.
  *
+<<<<<<< HEAD
  * <p>See the <a href="{@docRoot}resources/tutorials/views/hello-spinner.html">Spinner
  * tutorial</a>.</p>
  *
  * @attr ref android.R.styleable#Spinner_prompt
+=======
+ * <p>See the <a href="{@docRoot}guide/topics/ui/controls/spinner.html">Spinners</a> guide.</p>
+ *
+ * @attr ref android.R.styleable#Spinner_dropDownHorizontalOffset
+ * @attr ref android.R.styleable#Spinner_dropDownSelector
+ * @attr ref android.R.styleable#Spinner_dropDownVerticalOffset
+ * @attr ref android.R.styleable#Spinner_dropDownWidth
+ * @attr ref android.R.styleable#Spinner_gravity
+ * @attr ref android.R.styleable#Spinner_popupBackground
+ * @attr ref android.R.styleable#Spinner_prompt
+ * @attr ref android.R.styleable#Spinner_spinnerMode
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
  */
 @Widget
 public class Spinner extends AbsSpinner implements OnClickListener {
@@ -349,7 +370,11 @@ public class Spinner extends AbsSpinner implements OnClickListener {
     public void setGravity(int gravity) {
         if (mGravity != gravity) {
             if ((gravity & Gravity.HORIZONTAL_GRAVITY_MASK) == 0) {
+<<<<<<< HEAD
                 gravity |= Gravity.LEFT;
+=======
+                gravity |= Gravity.START;
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
             }
             mGravity = gravity;
             requestLayout();
@@ -409,6 +434,10 @@ public class Spinner extends AbsSpinner implements OnClickListener {
     /**
      * <p>A spinner does not support item click events. Calling this method
      * will raise an exception.</p>
+<<<<<<< HEAD
+=======
+     * <p>Instead use {@link AdapterView#setOnItemSelectedListener}.
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
      *
      * @param l this listener will be ignored
      */
@@ -453,7 +482,11 @@ public class Spinner extends AbsSpinner implements OnClickListener {
     /**
      * Creates and positions all views for this Spinner.
      *
+<<<<<<< HEAD
      * @param delta Change in the selected position. +1 moves selection is moving to the right,
+=======
+     * @param delta Change in the selected position. +1 means selection is moving to the right,
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
      * so views are scrolling to the left. -1 means selection is moving to the left.
      */
     @Override
@@ -485,7 +518,13 @@ public class Spinner extends AbsSpinner implements OnClickListener {
         View sel = makeAndAddView(mSelectedPosition);
         int width = sel.getMeasuredWidth();
         int selectedOffset = childrenLeft;
+<<<<<<< HEAD
         switch (mGravity & Gravity.HORIZONTAL_GRAVITY_MASK) {
+=======
+        final int layoutDirection = getLayoutDirection();
+        final int absoluteGravity = Gravity.getAbsoluteGravity(mGravity, layoutDirection);
+        switch (absoluteGravity & Gravity.HORIZONTAL_GRAVITY_MASK) {
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
             case Gravity.CENTER_HORIZONTAL:
                 selectedOffset = childrenLeft + (childrenWidth / 2) - (width / 2);
                 break;
@@ -932,19 +971,32 @@ public class Spinner extends AbsSpinner implements OnClickListener {
         @Override
         public void show() {
             final Drawable background = getBackground();
+<<<<<<< HEAD
             int bgOffset = 0;
             if (background != null) {
                 background.getPadding(mTempRect);
                 bgOffset = -mTempRect.left;
+=======
+            int hOffset = 0;
+            if (background != null) {
+                background.getPadding(mTempRect);
+                hOffset = isLayoutRtl() ? mTempRect.right : -mTempRect.left;
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
             } else {
                 mTempRect.left = mTempRect.right = 0;
             }
 
             final int spinnerPaddingLeft = Spinner.this.getPaddingLeft();
+<<<<<<< HEAD
             if (mDropDownWidth == WRAP_CONTENT) {
                 final int spinnerWidth = Spinner.this.getWidth();
                 final int spinnerPaddingRight = Spinner.this.getPaddingRight();
 
+=======
+            final int spinnerPaddingRight = Spinner.this.getPaddingRight();
+            final int spinnerWidth = Spinner.this.getWidth();
+            if (mDropDownWidth == WRAP_CONTENT) {
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
                 int contentWidth =  measureContentWidth(
                         (SpinnerAdapter) mAdapter, getBackground());
                 final int contentWidthLimit = mContext.getResources()
@@ -952,21 +1004,64 @@ public class Spinner extends AbsSpinner implements OnClickListener {
                 if (contentWidth > contentWidthLimit) {
                     contentWidth = contentWidthLimit;
                 }
+<<<<<<< HEAD
 
                 setContentWidth(Math.max(
                        contentWidth, spinnerWidth - spinnerPaddingLeft - spinnerPaddingRight));
             } else if (mDropDownWidth == MATCH_PARENT) {
                 final int spinnerWidth = Spinner.this.getWidth();
                 final int spinnerPaddingRight = Spinner.this.getPaddingRight();
+=======
+                setContentWidth(Math.max(
+                       contentWidth, spinnerWidth - spinnerPaddingLeft - spinnerPaddingRight));
+            } else if (mDropDownWidth == MATCH_PARENT) {
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
                 setContentWidth(spinnerWidth - spinnerPaddingLeft - spinnerPaddingRight);
             } else {
                 setContentWidth(mDropDownWidth);
             }
+<<<<<<< HEAD
             setHorizontalOffset(bgOffset + spinnerPaddingLeft);
+=======
+
+            if (isLayoutRtl()) {
+                hOffset += spinnerWidth - spinnerPaddingRight - getWidth();
+            } else {
+                hOffset += spinnerPaddingLeft;
+            }
+            setHorizontalOffset(hOffset);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
             setInputMethodMode(ListPopupWindow.INPUT_METHOD_NOT_NEEDED);
             super.show();
             getListView().setChoiceMode(ListView.CHOICE_MODE_SINGLE);
             setSelection(Spinner.this.getSelectedItemPosition());
+<<<<<<< HEAD
+=======
+
+            // Make sure we hide if our anchor goes away.
+            // TODO: This might be appropriate to push all the way down to PopupWindow,
+            // but it may have other side effects to investigate first. (Text editing handles, etc.)
+            final ViewTreeObserver vto = getViewTreeObserver();
+            if (vto != null) {
+                final OnGlobalLayoutListener layoutListener = new OnGlobalLayoutListener() {
+                    @Override
+                    public void onGlobalLayout() {
+                        if (!Spinner.this.isVisibleToUser()) {
+                            dismiss();
+                        }
+                    }
+                };
+                vto.addOnGlobalLayoutListener(layoutListener);
+                setOnDismissListener(new OnDismissListener() {
+                    @Override public void onDismiss() {
+                        final ViewTreeObserver vto = getViewTreeObserver();
+                        if (vto != null) {
+                            vto.removeOnGlobalLayoutListener(layoutListener);
+                        }
+                    }
+                });
+            }
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         }
     }
 }

@@ -19,6 +19,10 @@ package android.inputmethodservice;
 import static android.view.ViewGroup.LayoutParams.MATCH_PARENT;
 import static android.view.ViewGroup.LayoutParams.WRAP_CONTENT;
 
+<<<<<<< HEAD
+=======
+import android.app.ActivityManager;
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 import android.app.Dialog;
 import android.content.Context;
 import android.content.res.Configuration;
@@ -250,6 +254,10 @@ public class InputMethodService extends AbstractInputMethodService {
     InputMethodManager mImm;
     
     int mTheme = 0;
+<<<<<<< HEAD
+=======
+    boolean mHardwareAccelerated = false;
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     
     LayoutInflater mInflater;
     TypedArray mThemeAttrs;
@@ -614,6 +622,29 @@ public class InputMethodService extends AbstractInputMethodService {
         mTheme = theme;
     }
 
+<<<<<<< HEAD
+=======
+    /**
+     * You can call this to try to enable hardware accelerated drawing for
+     * your IME. This must be set before {@link #onCreate}, so you
+     * will typically call it in your constructor.  It is not always possible
+     * to use hardware acclerated drawing in an IME (for example on low-end
+     * devices that do not have the resources to support this), so the call
+     * returns true if it succeeds otherwise false if you will need to draw
+     * in software.  You must be able to handle either case.
+     */
+    public boolean enableHardwareAcceleration() {
+        if (mWindow != null) {
+            throw new IllegalStateException("Must be called before onCreate()");
+        }
+        if (ActivityManager.isHighEndGfx()) {
+            mHardwareAccelerated = true;
+            return true;
+        }
+        return false;
+    }
+
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     @Override public void onCreate() {
         mTheme = Resources.selectSystemTheme(mTheme,
                 getApplicationInfo().targetSdkVersion,
@@ -626,6 +657,12 @@ public class InputMethodService extends AbstractInputMethodService {
         mInflater = (LayoutInflater)getSystemService(
                 Context.LAYOUT_INFLATER_SERVICE);
         mWindow = new SoftInputWindow(this, mTheme, mDispatcherState);
+<<<<<<< HEAD
+=======
+        if (mHardwareAccelerated) {
+            mWindow.getWindow().addFlags(WindowManager.LayoutParams.FLAG_HARDWARE_ACCELERATED);
+        }
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         initViews();
         mWindow.getWindow().setLayout(MATCH_PARENT, WRAP_CONTENT);
     }
@@ -658,8 +695,13 @@ public class InputMethodService extends AbstractInputMethodService {
                 com.android.internal.R.layout.input_method, null);
         mWindow.setContentView(mRootView);
         mRootView.getViewTreeObserver().addOnComputeInternalInsetsListener(mInsetsComputer);
+<<<<<<< HEAD
         if (Settings.System.getInt(getContentResolver(),
                 Settings.System.FANCY_IME_ANIMATIONS, 0) != 0) {
+=======
+        if (Settings.Global.getInt(getContentResolver(),
+                Settings.Global.FANCY_IME_ANIMATIONS, 0) != 0) {
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
             mWindow.getWindow().setWindowAnimations(
                     com.android.internal.R.style.Animation_InputMethodFancy);
         }
@@ -1674,9 +1716,12 @@ public class InputMethodService extends AbstractInputMethodService {
     /**
      * Show the input method. This is a call back to the
      * IMF to handle showing the input method.
+<<<<<<< HEAD
      * Close this input method's soft input area, removing it from the display.
      * The input method will continue running, but the user can no longer use
      * it to generate input by touching the screen.
+=======
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
      * @param flags Provides additional operating flags.  Currently may be
      * 0 or have the {@link InputMethodManager#SHOW_FORCED
      * InputMethodManager.} bit set.
@@ -1751,7 +1796,11 @@ public class InputMethodService extends AbstractInputMethodService {
      * Override this to intercept special key multiple events before they are
      * processed by the
      * application.  If you return true, the application will not itself
+<<<<<<< HEAD
      * process the event.  If you return true, the normal application processing
+=======
+     * process the event.  If you return false, the normal application processing
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
      * will occur as if the IME had not seen the event at all.
      * 
      * <p>The default implementation always returns false, except when
@@ -1766,7 +1815,11 @@ public class InputMethodService extends AbstractInputMethodService {
     /**
      * Override this to intercept key up events before they are processed by the
      * application.  If you return true, the application will not itself
+<<<<<<< HEAD
      * process the event.  If you return true, the normal application processing
+=======
+     * process the event.  If you return false, the normal application processing
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
      * will occur as if the IME had not seen the event at all.
      * 
      * <p>The default implementation intercepts {@link KeyEvent#KEYCODE_BACK
@@ -1784,8 +1837,34 @@ public class InputMethodService extends AbstractInputMethodService {
         return doMovementKey(keyCode, event, MOVEMENT_UP);
     }
 
+<<<<<<< HEAD
     @Override
     public boolean onTrackballEvent(MotionEvent event) {
+=======
+    /**
+     * Override this to intercept trackball motion events before they are
+     * processed by the application.
+     * If you return true, the application will not itself process the event.
+     * If you return false, the normal application processing will occur as if
+     * the IME had not seen the event at all.
+     */
+    @Override
+    public boolean onTrackballEvent(MotionEvent event) {
+        if (DEBUG) Log.v(TAG, "onTrackballEvent: " + event);
+        return false;
+    }
+
+    /**
+     * Override this to intercept generic motion events before they are
+     * processed by the application.
+     * If you return true, the application will not itself process the event.
+     * If you return false, the normal application processing will occur as if
+     * the IME had not seen the event at all.
+     */
+    @Override
+    public boolean onGenericMotionEvent(MotionEvent event) {
+        if (DEBUG) Log.v(TAG, "onGenericMotionEvent(): event " + event);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         return false;
     }
 

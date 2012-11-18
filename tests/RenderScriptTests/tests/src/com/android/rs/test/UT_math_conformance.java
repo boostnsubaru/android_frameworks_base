@@ -31,7 +31,11 @@ public class UT_math_conformance extends UnitTest {
     public void run() {
         RenderScript pRS = RenderScript.create(mCtx);
         ScriptC_math_conformance s =
+<<<<<<< HEAD
                 new ScriptC_math_conformance(pRS, mRes, R.raw.math_conformance);
+=======
+                new ScriptC_math_conformance(pRS);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         pRS.setMessageHandler(mRsMessage);
         s.invoke_math_conformance_test();
         pRS.finish();

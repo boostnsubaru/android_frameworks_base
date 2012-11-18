@@ -35,7 +35,11 @@ public class BlackFrame {
         final int layer;
         final Surface surface;
 
+<<<<<<< HEAD
         BlackSurface(SurfaceSession session, int layer, int l, int t, int r, int b)
+=======
+        BlackSurface(SurfaceSession session, int layer, int l, int t, int r, int b, int layerStack)
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
                 throws Surface.OutOfResourcesException {
             left = l;
             top = t;
@@ -43,6 +47,7 @@ public class BlackFrame {
             int w = r-l;
             int h = b-t;
             if (WindowManagerService.DEBUG_SURFACE_TRACE) {
+<<<<<<< HEAD
                 surface = new WindowStateAnimator.SurfaceTrace(session, 0, "BlackSurface("
                         + l + ", " + t + ")",
                         -1, w, h, PixelFormat.OPAQUE, Surface.FX_SURFACE_DIM);
@@ -51,6 +56,17 @@ public class BlackFrame {
                         -1, w, h, PixelFormat.OPAQUE, Surface.FX_SURFACE_DIM);
             }
             surface.setAlpha(1);
+=======
+                surface = new WindowStateAnimator.SurfaceTrace(session, "BlackSurface("
+                        + l + ", " + t + ")",
+                        w, h, PixelFormat.OPAQUE, Surface.FX_SURFACE_DIM | Surface.HIDDEN);
+            } else {
+                surface = new Surface(session, "BlackSurface",
+                        w, h, PixelFormat.OPAQUE, Surface.FX_SURFACE_DIM | Surface.HIDDEN);
+            }
+            surface.setAlpha(1);
+            surface.setLayerStack(layerStack);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
             surface.setLayer(layer);
             surface.show();
             if (WindowManagerService.SHOW_TRANSACTIONS ||
@@ -103,7 +119,11 @@ public class BlackFrame {
     }
 
     public BlackFrame(SurfaceSession session, Rect outer, Rect inner,
+<<<<<<< HEAD
             int layer) throws Surface.OutOfResourcesException {
+=======
+            int layer, final int layerStack) throws Surface.OutOfResourcesException {
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         boolean success = false;
 
         mOuterRect = new Rect(outer);
@@ -111,6 +131,7 @@ public class BlackFrame {
         try {
             if (outer.top < inner.top) {
                 mBlackSurfaces[0] = new BlackSurface(session, layer,
+<<<<<<< HEAD
                         outer.left, outer.top, inner.right, inner.top);
             }
             if (outer.left < inner.left) {
@@ -124,6 +145,21 @@ public class BlackFrame {
             if (outer.right > inner.right) {
                 mBlackSurfaces[3] = new BlackSurface(session, layer,
                         inner.right, outer.top, outer.right, inner.bottom);
+=======
+                        outer.left, outer.top, inner.right, inner.top, layerStack);
+            }
+            if (outer.left < inner.left) {
+                mBlackSurfaces[1] = new BlackSurface(session, layer,
+                        outer.left, inner.top, inner.left, outer.bottom, layerStack);
+            }
+            if (outer.bottom > inner.bottom) {
+                mBlackSurfaces[2] = new BlackSurface(session, layer,
+                        inner.left, inner.bottom, outer.right, outer.bottom, layerStack);
+            }
+            if (outer.right > inner.right) {
+                mBlackSurfaces[3] = new BlackSurface(session, layer,
+                        inner.right, outer.top, outer.right, inner.bottom, layerStack);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
             }
             success = true;
         } finally {

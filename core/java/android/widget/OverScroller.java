@@ -18,7 +18,10 @@ package android.widget;
 
 import android.content.Context;
 import android.hardware.SensorManager;
+<<<<<<< HEAD
 import android.os.PowerManager;
+=======
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 import android.util.FloatMath;
 import android.util.Log;
 import android.view.ViewConfiguration;
@@ -44,8 +47,11 @@ public class OverScroller {
     private static final int SCROLL_MODE = 0;
     private static final int FLING_MODE = 1;
 
+<<<<<<< HEAD
     private final PowerManager mPm;
 
+=======
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     /**
      * Creates an OverScroller with a viscous fluid scroll interpolator and flywheel.
      * @param context
@@ -75,6 +81,7 @@ public class OverScroller {
     public OverScroller(Context context, Interpolator interpolator, boolean flywheel) {
         mInterpolator = interpolator;
         mFlywheel = flywheel;
+<<<<<<< HEAD
 
         mScrollerX = new SplineOverScroller();
         mScrollerY = new SplineOverScroller();
@@ -82,6 +89,10 @@ public class OverScroller {
         mPm = (PowerManager) context.getSystemService(Context.POWER_SERVICE);
 
         SplineOverScroller.initFromContext(context);
+=======
+        mScrollerX = new SplineOverScroller(context);
+        mScrollerY = new SplineOverScroller(context);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     }
 
     /**
@@ -381,7 +392,10 @@ public class OverScroller {
      */
     public void startScroll(int startX, int startY, int dx, int dy, int duration) {
         mMode = SCROLL_MODE;
+<<<<<<< HEAD
         mPm.cpuBoost(1500000);
+=======
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         mScrollerX.startScroll(startX, dx, duration);
         mScrollerY.startScroll(startY, dy, duration);
     }
@@ -452,7 +466,10 @@ public class OverScroller {
             }
         }
 
+<<<<<<< HEAD
         mPm.cpuBoost(1500000);
+=======
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         mMode = FLING_MODE;
         mScrollerX.fling(startX, velocityX, minX, maxX, overX);
         mScrollerY.fling(startY, velocityY, minY, maxY, overY);
@@ -593,8 +610,13 @@ public class OverScroller {
         // Constant gravity value, used in the deceleration phase.
         private static final float GRAVITY = 2000.0f;
 
+<<<<<<< HEAD
         // A device specific coefficient adjusted to physical values.
         private static float PHYSICAL_COEF;
+=======
+        // A context-specific coefficient adjusted to physical values.
+        private float mPhysicalCoeff;
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 
         private static float DECELERATION_RATE = (float) (Math.log(0.78) / Math.log(0.9));
         private static final float INFLEXION = 0.35f; // Tension lines cross at (INFLEXION, 1)
@@ -644,6 +666,7 @@ public class OverScroller {
             SPLINE_POSITION[NB_SAMPLES] = SPLINE_TIME[NB_SAMPLES] = 1.0f;
         }
 
+<<<<<<< HEAD
         static void initFromContext(Context context) {
             final float ppi = context.getResources().getDisplayMetrics().density * 160.0f;
             PHYSICAL_COEF = SensorManager.GRAVITY_EARTH // g (m/s^2)
@@ -652,12 +675,24 @@ public class OverScroller {
                     * 0.84f; // look and feel tuning
         }
 
+=======
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         void setFriction(float friction) {
             mFlingFriction = friction;
         }
 
+<<<<<<< HEAD
         SplineOverScroller() {
             mFinished = true;
+=======
+        SplineOverScroller(Context context) {
+            mFinished = true;
+            final float ppi = context.getResources().getDisplayMetrics().density * 160.0f;
+            mPhysicalCoeff = SensorManager.GRAVITY_EARTH // g (m/s^2)
+                    * 39.37f // inch/meter
+                    * ppi
+                    * 0.84f; // look and feel tuning
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         }
 
         void updateScroll(float q) {
@@ -793,13 +828,21 @@ public class OverScroller {
         }
 
         private double getSplineDeceleration(int velocity) {
+<<<<<<< HEAD
             return Math.log(INFLEXION * Math.abs(velocity) / (mFlingFriction * PHYSICAL_COEF));
+=======
+            return Math.log(INFLEXION * Math.abs(velocity) / (mFlingFriction * mPhysicalCoeff));
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         }
 
         private double getSplineFlingDistance(int velocity) {
             final double l = getSplineDeceleration(velocity);
             final double decelMinusOne = DECELERATION_RATE - 1.0;
+<<<<<<< HEAD
             return mFlingFriction * PHYSICAL_COEF * Math.exp(DECELERATION_RATE / decelMinusOne * l);
+=======
+            return mFlingFriction * mPhysicalCoeff * Math.exp(DECELERATION_RATE / decelMinusOne * l);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         }
 
         /* Returns the duration, expressed in milliseconds */

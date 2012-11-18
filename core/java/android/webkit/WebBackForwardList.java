@@ -17,7 +17,10 @@
 package android.webkit;
 
 import java.io.Serializable;
+<<<<<<< HEAD
 import java.util.ArrayList;
+=======
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 
 /**
  * This class contains the back/forward list for a WebView.
@@ -25,6 +28,7 @@ import java.util.ArrayList;
  * inspect the entries in the list.
  */
 public class WebBackForwardList implements Cloneable, Serializable {
+<<<<<<< HEAD
     // Current position in the list.
     private int mCurrentIndex;
     // ArrayList of WebHistoryItems for maintaining our copy.
@@ -41,6 +45,13 @@ public class WebBackForwardList implements Cloneable, Serializable {
         mCurrentIndex = -1;
         mArray = new ArrayList<WebHistoryItem>();
         mCallbackProxy = proxy;
+=======
+
+    /**
+     *  @hide
+     */
+    public WebBackForwardList() {
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     }
 
     /**
@@ -49,7 +60,11 @@ public class WebBackForwardList implements Cloneable, Serializable {
      * @return The current history item.
      */
     public synchronized WebHistoryItem getCurrentItem() {
+<<<<<<< HEAD
         return getItemAtIndex(mCurrentIndex);
+=======
+        throw new MustOverrideException();
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     }
 
     /**
@@ -58,7 +73,11 @@ public class WebBackForwardList implements Cloneable, Serializable {
      * @return The current index from 0...n or -1 if the list is empty.
      */
     public synchronized int getCurrentIndex() {
+<<<<<<< HEAD
         return mCurrentIndex;
+=======
+        throw new MustOverrideException();
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     }
 
     /**
@@ -67,10 +86,14 @@ public class WebBackForwardList implements Cloneable, Serializable {
      * @param index The index to retrieve.
      */
     public synchronized WebHistoryItem getItemAtIndex(int index) {
+<<<<<<< HEAD
         if (index < 0 || index >= getSize()) {
             return null;
         }
         return mArray.get(index);
+=======
+        throw new MustOverrideException();
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     }
 
     /**
@@ -78,6 +101,7 @@ public class WebBackForwardList implements Cloneable, Serializable {
      * @return The size of the list.
      */
     public synchronized int getSize() {
+<<<<<<< HEAD
         return mArray.size();
     }
 
@@ -150,6 +174,9 @@ public class WebBackForwardList implements Cloneable, Serializable {
         // XXX: If we ever add another callback for removing history items at
         // any index, this will no longer be valid.
         mCurrentIndex--;
+=======
+        throw new MustOverrideException();
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     }
 
     /**
@@ -158,6 +185,7 @@ public class WebBackForwardList implements Cloneable, Serializable {
      * webkit package classes.
      */
     protected synchronized WebBackForwardList clone() {
+<<<<<<< HEAD
         WebBackForwardList l = new WebBackForwardList(null);
         if (mClearPending) {
             // If a clear is pending, return a copy with only the current item.
@@ -193,4 +221,9 @@ public class WebBackForwardList implements Cloneable, Serializable {
 
     /* Close the native list. */
     private static native void nativeClose(int nativeFrame);
+=======
+        throw new MustOverrideException();
+    }
+
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 }

@@ -24,6 +24,10 @@ import android.app.Activity;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
+<<<<<<< HEAD
+=======
+import android.content.pm.PackageManager;
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 import android.graphics.drawable.AnimationDrawable;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.Bitmap;
@@ -40,6 +44,10 @@ import android.graphics.Rect;
 import android.graphics.RectF;
 import android.os.Handler;
 import android.os.SystemClock;
+<<<<<<< HEAD
+=======
+import android.provider.Settings;
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 import android.util.AttributeSet;
 import android.util.DisplayMetrics;
 import android.util.Pair;
@@ -402,6 +410,14 @@ public class BeanBag extends Activity {
     public void onStart() {
         super.onStart();
 
+<<<<<<< HEAD
+=======
+        // ACHIEVEMENT UNLOCKED
+        PackageManager pm = getPackageManager();
+        pm.setComponentEnabledSetting(new ComponentName(this, BeanBagDream.class),
+                PackageManager.COMPONENT_ENABLED_STATE_ENABLED, 0);
+
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         getWindow().addFlags(
                   WindowManager.LayoutParams.FLAG_ALLOW_LOCK_WHILE_SCREEN_ON
                 | WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED

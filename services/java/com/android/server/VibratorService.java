@@ -31,6 +31,10 @@ import android.os.RemoteException;
 import android.os.IBinder;
 import android.os.Binder;
 import android.os.SystemClock;
+<<<<<<< HEAD
+=======
+import android.os.UserHandle;
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 import android.os.Vibrator;
 import android.os.WorkSource;
 import android.provider.Settings;
@@ -39,7 +43,10 @@ import android.util.Slog;
 import android.view.InputDevice;
 
 import java.util.ArrayList;
+<<<<<<< HEAD
 import java.util.Calendar;
+=======
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 import java.util.LinkedList;
 import java.util.ListIterator;
 
@@ -140,6 +147,10 @@ public class VibratorService extends IVibratorService.Stub
 
     public void systemReady() {
         mIm = (InputManager)mContext.getSystemService(Context.INPUT_SERVICE);
+<<<<<<< HEAD
+=======
+
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         mContext.getContentResolver().registerContentObserver(
                 Settings.System.getUriFor(Settings.System.VIBRATE_INPUT_DEVICES), true,
                 new ContentObserver(mH) {
@@ -147,7 +158,19 @@ public class VibratorService extends IVibratorService.Stub
                     public void onChange(boolean selfChange) {
                         updateInputDeviceVibrators();
                     }
+<<<<<<< HEAD
                 });
+=======
+                }, UserHandle.USER_ALL);
+
+        mContext.registerReceiver(new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                updateInputDeviceVibrators();
+            }
+        }, new IntentFilter(Intent.ACTION_USER_SWITCHED), null, mH);
+
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         updateInputDeviceVibrators();
     }
 
@@ -165,7 +188,11 @@ public class VibratorService extends IVibratorService.Stub
         // timeout of 0 or negative. This will ensure that a vibration has
         // either a timeout of > 0 or a non-null pattern.
         if (milliseconds <= 0 || (mCurrentVibration != null
+<<<<<<< HEAD
                 && mCurrentVibration.hasLongerTimeout(milliseconds)) || inQuietHours()) {
+=======
+                && mCurrentVibration.hasLongerTimeout(milliseconds))) {
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
             // Ignore this vibration since the current vibration will play for
             // longer than milliseconds.
             return;
@@ -195,9 +222,12 @@ public class VibratorService extends IVibratorService.Stub
                 != PackageManager.PERMISSION_GRANTED) {
             throw new SecurityException("Requires VIBRATE permission");
         }
+<<<<<<< HEAD
         if (inQuietHours()) {
             return;
         }
+=======
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         int uid = Binder.getCallingUid();
         // so wakelock calls will succeed
         long identity = Binder.clearCallingIdentity();
@@ -345,8 +375,14 @@ public class VibratorService extends IVibratorService.Stub
             synchronized (mInputDeviceVibrators) {
                 mVibrateInputDevicesSetting = false;
                 try {
+<<<<<<< HEAD
                     mVibrateInputDevicesSetting = Settings.System.getInt(mContext.getContentResolver(),
                             Settings.System.VIBRATE_INPUT_DEVICES) > 0;
+=======
+                    mVibrateInputDevicesSetting = Settings.System.getIntForUser(
+                            mContext.getContentResolver(),
+                            Settings.System.VIBRATE_INPUT_DEVICES, UserHandle.USER_CURRENT) > 0;
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
                 } catch (SettingNotFoundException snfe) {
                 }
 
@@ -530,6 +566,7 @@ public class VibratorService extends IVibratorService.Stub
             }
         }
     };
+<<<<<<< HEAD
     
     private boolean inQuietHours() {
         boolean quietHoursEnabled = Settings.System.getInt(mContext.getContentResolver(),
@@ -553,4 +590,6 @@ public class VibratorService extends IVibratorService.Stub
         }
         return false;
     }
+=======
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 }

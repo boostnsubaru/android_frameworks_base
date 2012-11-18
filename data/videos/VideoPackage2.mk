@@ -22,6 +22,7 @@ TARGET_PATH := system/media/video
 PRODUCT_COPY_FILES += \
         $(LOCAL_PATH)/AndroidInSpace.240p.mp4:$(TARGET_PATH)/AndroidInSpace.240p.mp4 \
         $(LOCAL_PATH)/AndroidInSpace.480p.mq.mp4:$(TARGET_PATH)/AndroidInSpace.480p.mp4 \
+<<<<<<< HEAD
         $(LOCAL_PATH)/Disco.240p.mp4:$(TARGET_PATH)/Disco.240p.mp4 \
         $(LOCAL_PATH)/Disco.480p.mq.mp4:$(TARGET_PATH)/Disco.480p.mp4 \
         $(LOCAL_PATH)/Sunset.240p.mp4:$(TARGET_PATH)/Sunset.240p.mp4 \
@@ -30,3 +31,7 @@ PRODUCT_COPY_FILES += \
 PRODUCT_COPY_FILES += \
         $(LOCAL_PATH)/LMprec_508.emd:system/media/LMprec_508.emd \
         $(LOCAL_PATH)/PFFprec_600.emd:system/media/PFFprec_600.emd
+=======
+        $(LOCAL_PATH)/Sunset.240p.mp4:$(TARGET_PATH)/Sunset.240p.mp4 \
+        $(LOCAL_PATH)/Sunset.480p.mq.mp4:$(TARGET_PATH)/Sunset.480p.mp4
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a

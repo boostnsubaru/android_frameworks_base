@@ -173,8 +173,13 @@ class JniUtil {
         checkInitialized();
         // If the device has not checked in it won't have pulled down the system setting for the
         // Autofill Url. In that case we will not make autofill server requests.
+<<<<<<< HEAD
         return Settings.Secure.getString(sContext.getContentResolver(),
                 Settings.Secure.WEB_AUTOFILL_QUERY_URL);
+=======
+        return Settings.Global.getString(sContext.getContentResolver(),
+                Settings.Global.WEB_AUTOFILL_QUERY_URL);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     }
 
     private static boolean canSatisfyMemoryAllocation(long bytesRequested) {

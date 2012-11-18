@@ -1,6 +1,9 @@
 /*
  * Copyright (C) 2007 The Android Open Source Project
+<<<<<<< HEAD
  * This code has been modified.  Portions copyright (C) 2010, T-Mobile USA, Inc.
+=======
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -219,6 +222,7 @@ public class PackageInfo implements Parcelable {
      */
     public int installLocation = INSTALL_LOCATION_INTERNAL_ONLY;
     
+<<<<<<< HEAD
     // Is Theme Apk
     /**
      * {@hide}
@@ -282,6 +286,11 @@ public class PackageInfo implements Parcelable {
         lockedZipFilePath = value;
     }
 
+=======
+    public PackageInfo() {
+    }
+
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     public String toString() {
         return "PackageInfo{"
             + Integer.toHexString(System.identityHashCode(this))
@@ -319,12 +328,15 @@ public class PackageInfo implements Parcelable {
         dest.writeTypedArray(configPreferences, parcelableFlags);
         dest.writeTypedArray(reqFeatures, parcelableFlags);
         dest.writeInt(installLocation);
+<<<<<<< HEAD
 
         /* Theme-specific. */
         dest.writeInt((isThemeApk)? 1 : 0);
         dest.writeInt((drmProtectedThemeApk)? 1 : 0);
         dest.writeTypedArray(themeInfos, parcelableFlags);
         dest.writeString(lockedZipFilePath);
+=======
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     }
 
     public static final Parcelable.Creator<PackageInfo> CREATOR
@@ -363,11 +375,14 @@ public class PackageInfo implements Parcelable {
         configPreferences = source.createTypedArray(ConfigurationInfo.CREATOR);
         reqFeatures = source.createTypedArray(FeatureInfo.CREATOR);
         installLocation = source.readInt();
+<<<<<<< HEAD
 
         /* Theme-specific. */
         isThemeApk = (source.readInt() != 0);
         drmProtectedThemeApk = (source.readInt() != 0);
         themeInfos = source.createTypedArray(ThemeInfo.CREATOR);
         lockedZipFilePath = source.readString();
+=======
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     }
 }

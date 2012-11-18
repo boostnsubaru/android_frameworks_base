@@ -48,6 +48,13 @@ import java.util.List;
  */
 public class TabHost extends FrameLayout implements ViewTreeObserver.OnTouchModeChangeListener {
 
+<<<<<<< HEAD
+=======
+    private static final int TABWIDGET_LOCATION_LEFT = 0;
+    private static final int TABWIDGET_LOCATION_TOP = 1;
+    private static final int TABWIDGET_LOCATION_RIGHT = 2;
+    private static final int TABWIDGET_LOCATION_BOTTOM = 3;
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     private TabWidget mTabWidget;
     private FrameLayout mTabContent;
     private List<TabSpec> mTabSpecs = new ArrayList<TabSpec>(2);
@@ -293,10 +300,36 @@ mTabHost.addTab(TAB_TAG_1, "Hello, world!", "Tab 1");
         return mTabContent;
     }
 
+<<<<<<< HEAD
+=======
+    /**
+     * Get the location of the TabWidget.
+     *
+     * @return The TabWidget location.
+     */
+    private int getTabWidgetLocation() {
+        int location = TABWIDGET_LOCATION_TOP;
+
+        switch (mTabWidget.getOrientation()) {
+            case LinearLayout.VERTICAL:
+                location = (mTabContent.getLeft() < mTabWidget.getLeft()) ? TABWIDGET_LOCATION_RIGHT
+                        : TABWIDGET_LOCATION_LEFT;
+                break;
+            case LinearLayout.HORIZONTAL:
+            default:
+                location = (mTabContent.getTop() < mTabWidget.getTop()) ? TABWIDGET_LOCATION_BOTTOM
+                        : TABWIDGET_LOCATION_TOP;
+                break;
+        }
+        return location;
+    }
+
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     @Override
     public boolean dispatchKeyEvent(KeyEvent event) {
         final boolean handled = super.dispatchKeyEvent(event);
 
+<<<<<<< HEAD
         // unhandled key ups change focus to tab indicator for embedded activities
         // when there is nothing that will take focus from default focus searching
         if (!handled
@@ -309,6 +342,49 @@ mTabHost.addTab(TAB_TAG_1, "Hello, world!", "Tab 1");
             mTabWidget.getChildTabViewAt(mCurrentTab).requestFocus();
             playSoundEffect(SoundEffectConstants.NAVIGATION_UP);
             return true;
+=======
+        // unhandled key events change focus to tab indicator for embedded
+        // activities when there is nothing that will take focus from default
+        // focus searching
+        if (!handled
+                && (event.getAction() == KeyEvent.ACTION_DOWN)
+                && (mCurrentView != null)
+                && (mCurrentView.isRootNamespace())
+                && (mCurrentView.hasFocus())) {
+            int keyCodeShouldChangeFocus = KeyEvent.KEYCODE_DPAD_UP;
+            int directionShouldChangeFocus = View.FOCUS_UP;
+            int soundEffect = SoundEffectConstants.NAVIGATION_UP;
+
+            switch (getTabWidgetLocation()) {
+                case TABWIDGET_LOCATION_LEFT:
+                    keyCodeShouldChangeFocus = KeyEvent.KEYCODE_DPAD_LEFT;
+                    directionShouldChangeFocus = View.FOCUS_LEFT;
+                    soundEffect = SoundEffectConstants.NAVIGATION_LEFT;
+                    break;
+                case TABWIDGET_LOCATION_RIGHT:
+                    keyCodeShouldChangeFocus = KeyEvent.KEYCODE_DPAD_RIGHT;
+                    directionShouldChangeFocus = View.FOCUS_RIGHT;
+                    soundEffect = SoundEffectConstants.NAVIGATION_RIGHT;
+                    break;
+                case TABWIDGET_LOCATION_BOTTOM:
+                    keyCodeShouldChangeFocus = KeyEvent.KEYCODE_DPAD_DOWN;
+                    directionShouldChangeFocus = View.FOCUS_DOWN;
+                    soundEffect = SoundEffectConstants.NAVIGATION_DOWN;
+                    break;
+                case TABWIDGET_LOCATION_TOP:
+                default:
+                    keyCodeShouldChangeFocus = KeyEvent.KEYCODE_DPAD_UP;
+                    directionShouldChangeFocus = View.FOCUS_UP;
+                    soundEffect = SoundEffectConstants.NAVIGATION_UP;
+                    break;
+            }
+            if (event.getKeyCode() == keyCodeShouldChangeFocus
+                    && mCurrentView.findFocus().focusSearch(directionShouldChangeFocus) == null) {
+                mTabWidget.getChildTabViewAt(mCurrentTab).requestFocus();
+                playSoundEffect(soundEffect);
+                return true;
+            }
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         }
         return handled;
     }

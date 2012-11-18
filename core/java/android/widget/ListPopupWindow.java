@@ -21,6 +21,10 @@ import android.database.DataSetObserver;
 import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
 import android.os.Handler;
+<<<<<<< HEAD
+=======
+import android.text.TextUtils;
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.KeyEvent;
@@ -31,6 +35,11 @@ import android.view.View.OnTouchListener;
 import android.view.ViewGroup;
 import android.view.ViewParent;
 
+<<<<<<< HEAD
+=======
+import java.util.Locale;
+
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 /**
  * A ListPopupWindow anchors itself to a host view and displays a
  * list of choices.
@@ -92,6 +101,11 @@ public class ListPopupWindow {
 
     private boolean mModal;
 
+<<<<<<< HEAD
+=======
+    private int mLayoutDirection;
+
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     /**
      * The provided prompt view should appear above list content.
      * 
@@ -193,6 +207,12 @@ public class ListPopupWindow {
         mContext = context;
         mPopup = new PopupWindow(context, attrs, defStyleAttr, defStyleRes);
         mPopup.setInputMethodMode(PopupWindow.INPUT_METHOD_NEEDED);
+<<<<<<< HEAD
+=======
+        // Set the default layout direction to match the default locale one
+        final Locale locale = mContext.getResources().getConfiguration().locale;
+        mLayoutDirection = TextUtils.getLayoutDirectionFromLocale(locale);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     }
 
     /**

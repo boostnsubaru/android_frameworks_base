@@ -18,7 +18,10 @@ package com.android.systemui;
 
 import java.io.FileDescriptor;
 import java.io.PrintWriter;
+<<<<<<< HEAD
 import android.widget.FrameLayout;
+=======
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 
 import android.content.Context;
 import android.content.res.Configuration;
@@ -27,8 +30,11 @@ public abstract class SystemUI {
     public Context mContext;
 
     public abstract void start();
+<<<<<<< HEAD
 
     public FrameLayout mStatusBarContainer;
+=======
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     
     protected void onConfigurationChanged(Configuration newConfig) {
     }

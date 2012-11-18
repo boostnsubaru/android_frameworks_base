@@ -18,10 +18,13 @@ package android.content.pm;
 
 import android.os.Parcel;
 import android.os.Parcelable;
+<<<<<<< HEAD
 import android.text.TextUtils;
 
 import java.text.Collator;
 import java.util.Comparator;
+=======
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 
 /**
  * Information you can retrieve about a particular piece of test

@@ -33,6 +33,10 @@ class PreferredActivity extends IntentFilter implements PreferredComponent.Callb
     private static final String TAG = "PreferredActivity";
 
     private static final boolean DEBUG_FILTERS = false;
+<<<<<<< HEAD
+=======
+    static final String ATTR_USER_ID = "userId";
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 
     final PreferredComponent mPref;
 
@@ -48,7 +52,11 @@ class PreferredActivity extends IntentFilter implements PreferredComponent.Callb
     public void writeToXml(XmlSerializer serializer) throws IOException {
         mPref.writeToXml(serializer);
         serializer.startTag(null, "filter");
+<<<<<<< HEAD
         super.writeToXml(serializer);
+=======
+            super.writeToXml(serializer);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         serializer.endTag(null, "filter");
     }
 

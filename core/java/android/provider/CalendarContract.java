@@ -467,6 +467,16 @@ public final class CalendarContract {
          *
          */
         public static final String ALLOWED_ATTENDEE_TYPES = "allowedAttendeeTypes";
+<<<<<<< HEAD
+=======
+
+        /**
+         * Is this the primary calendar for this account. If this column is not explicitly set, the
+         * provider will return 1 if {@link Calendars#ACCOUNT_NAME} is equal to
+         * {@link Calendars#OWNER_ACCOUNT}.
+         */
+        public static final String IS_PRIMARY = "isPrimary";
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     }
 
     /**
@@ -1206,6 +1216,17 @@ public final class CalendarContract {
         public static final String ORGANIZER = "organizer";
 
         /**
+<<<<<<< HEAD
+=======
+         * Are we the organizer of this event. If this column is not explicitly set, the provider
+         * will return 1 if {@link #ORGANIZER} is equal to {@link Calendars#OWNER_ACCOUNT}.
+         * Column name.
+         * <P>Type: STRING</P>
+         */
+        public static final String IS_ORGANIZER = "isOrganizer";
+
+        /**
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
          * Whether the user can invite others to the event. The
          * GUESTS_CAN_INVITE_OTHERS is a setting that applies to an arbitrary
          * guest, while CAN_INVITE_OTHERS indicates if the user can invite
@@ -1230,6 +1251,15 @@ public final class CalendarContract {
          */
         public static final String CUSTOM_APP_URI = "customAppUri";
 
+<<<<<<< HEAD
+=======
+        /**
+         * The UID for events added from the RFC 2445 iCalendar format.
+         * Column name.
+         * <P>Type: TEXT</P>
+         */
+        public static final String UID_2445 = "uid2445";
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     }
 
     /**
@@ -1367,7 +1397,13 @@ public final class CalendarContract {
                 DatabaseUtils.cursorIntToContentValuesIfPresent(cursor, cv, GUESTS_CAN_SEE_GUESTS);
                 DatabaseUtils.cursorStringToContentValuesIfPresent(cursor, cv, CUSTOM_APP_PACKAGE);
                 DatabaseUtils.cursorStringToContentValuesIfPresent(cursor, cv, CUSTOM_APP_URI);
+<<<<<<< HEAD
                 DatabaseUtils.cursorStringToContentValuesIfPresent(cursor, cv, ORGANIZER);
+=======
+                DatabaseUtils.cursorStringToContentValuesIfPresent(cursor, cv, UID_2445);
+                DatabaseUtils.cursorStringToContentValuesIfPresent(cursor, cv, ORGANIZER);
+                DatabaseUtils.cursorStringToContentValuesIfPresent(cursor, cv, IS_ORGANIZER);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
                 DatabaseUtils.cursorStringToContentValuesIfPresent(cursor, cv, _SYNC_ID);
                 DatabaseUtils.cursorLongToContentValuesIfPresent(cursor, cv, DIRTY);
                 DatabaseUtils.cursorLongToContentValuesIfPresent(cursor, cv, LAST_SYNCED);
@@ -1571,6 +1607,10 @@ public final class CalendarContract {
      * <li>{@link #GUESTS_CAN_SEE_GUESTS}</li>
      * <li>{@link #CUSTOM_APP_PACKAGE}</li>
      * <li>{@link #CUSTOM_APP_URI}</li>
+<<<<<<< HEAD
+=======
+     * <li>{@link #UID_2445}</li>
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
      * </ul>
      * The following Events columns are writable only by a sync adapter
      * <ul>

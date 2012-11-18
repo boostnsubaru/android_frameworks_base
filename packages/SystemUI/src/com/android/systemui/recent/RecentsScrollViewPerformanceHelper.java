@@ -16,7 +16,10 @@
 
 package com.android.systemui.recent;
 
+<<<<<<< HEAD
 import android.animation.LayoutTransition;
+=======
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Canvas;
@@ -24,11 +27,17 @@ import android.graphics.LinearGradient;
 import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.graphics.Shader;
+<<<<<<< HEAD
 import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
 import android.view.View;
 import android.view.ViewConfiguration;
 import android.view.ViewGroup;
+=======
+import android.util.AttributeSet;
+import android.view.View;
+import android.view.ViewConfiguration;
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 import android.widget.LinearLayout;
 
 import com.android.systemui.R;
@@ -37,6 +46,7 @@ public class RecentsScrollViewPerformanceHelper {
     public static final boolean OPTIMIZE_SW_RENDERED_RECENTS = true;
     public static final boolean USE_DARK_FADE_IN_HW_ACCELERATED_MODE = true;
     private View mScrollView;
+<<<<<<< HEAD
     private RecentsCallback mCallback;
 
     private int mFadingEdgeLength;
@@ -44,6 +54,12 @@ public class RecentsScrollViewPerformanceHelper {
     private boolean mIsVertical;
     private boolean mSoftwareRendered = false;
     private boolean mAttachedToWindow = false;
+=======
+
+    private int mFadingEdgeLength;
+    private boolean mIsVertical;
+    private boolean mSoftwareRendered = false;
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 
     public static RecentsScrollViewPerformanceHelper create(Context context,
             AttributeSet attrs, View scrollView, boolean isVertical) {
@@ -59,7 +75,10 @@ public class RecentsScrollViewPerformanceHelper {
     public RecentsScrollViewPerformanceHelper(Context context,
             AttributeSet attrs, View scrollView, boolean isVertical) {
         mScrollView = scrollView;
+<<<<<<< HEAD
         mContext = context;
+=======
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         TypedArray a = context.obtainStyledAttributes(attrs, com.android.internal.R.styleable.View);
         mFadingEdgeLength = a.getDimensionPixelSize(android.R.styleable.View_fadingEdgeLength,
                 ViewConfiguration.get(context).getScaledFadingEdgeLength());

@@ -210,7 +210,12 @@ public final class Bridge extends com.android.ide.common.rendering.api.Bridge {
                 Capability.PLAY_ANIMATION,
                 Capability.ANIMATED_VIEW_MANIPULATION,
                 Capability.ADAPTER_BINDING,
+<<<<<<< HEAD
                 Capability.EXTENDED_VIEWINFO);
+=======
+                Capability.EXTENDED_VIEWINFO,
+                Capability.FIXED_SCALABLE_NINE_PATCH);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 
 
         BridgeAssetManager.initSystem();

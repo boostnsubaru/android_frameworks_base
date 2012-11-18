@@ -85,7 +85,11 @@
             </FrameLayout>
             <TextView
                 android:id="@+id/mobile_text"
+<<<<<<< HEAD
                 style="@style/StatusBarNotificationText"
+=======
+                style="@style/SystemBarNotificationText"
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
                 android:layout_gravity="left|center_vertical"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -121,7 +125,11 @@
             </FrameLayout>
             <TextView
                 android:id="@+id/wifi_text"
+<<<<<<< HEAD
                 style="@style/StatusBarNotificationText"
+=======
+                style="@style/SystemBarNotificationText"
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
                 android:layout_gravity="left|center_vertical"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -131,14 +139,36 @@
                 android:text="@string/status_bar_settings_settings_button"
                 />
 
+<<<<<<< HEAD
             <include layout="@layout/battery_cluster_view" 
                 android:id="@+id/battery_cluster"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+=======
+            <ImageView
+                android:id="@+id/battery"
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
                 android:scaleType="centerInside"
                 android:layout_gravity="center_vertical"
                 android:layout_alignBaseline="@id/wifi_signal"
                 android:paddingRight="6dp"
+<<<<<<< HEAD
+=======
+                android:contentDescription="@null"
+                />
+
+            <TextView
+                android:id="@+id/battery_text"
+                style="@style/SystemBarNotificationText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="left|center_vertical"
+                android:paddingRight="2dp"
+                android:singleLine="true"
+                android:text="@string/status_bar_settings_settings_button"
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
                 />
 
             <!-- this will stretch to eat up available space -->
@@ -158,7 +188,11 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:src="@drawable/ic_sysbar_quicksettings"
+<<<<<<< HEAD
                     android:contentDescription="@string/accessibility_settings_button"
+=======
+                    android:contentDescription="@string/accessibility_desc_quick_settings"
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
                     />
 
                 <ImageView
@@ -190,7 +224,11 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:singleLine="true"
+<<<<<<< HEAD
             android:textAppearance="@style/TextAppearance.StatusBar.Expanded.Clock"
+=======
+            android:textAppearance="@style/TextAppearance.SystemBar.Expanded.Clock"
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
             />
     
         <com.android.systemui.statusbar.policy.DateView
@@ -199,7 +237,11 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="8dp"
             android:layout_marginRight="8dp"
+<<<<<<< HEAD
             android:textAppearance="@style/TextAppearance.StatusBar.Expanded.Date"
+=======
+            android:textAppearance="@style/TextAppearance.SystemBar.Expanded.Date"
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
             />
 
         <Space

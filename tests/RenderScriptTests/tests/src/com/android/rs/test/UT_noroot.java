@@ -44,7 +44,11 @@ public class UT_noroot extends UnitTest {
 
     public void run() {
         RenderScript pRS = RenderScript.create(mCtx);
+<<<<<<< HEAD
         ScriptC_noroot s = new ScriptC_noroot(pRS, mRes, R.raw.noroot);
+=======
+        ScriptC_noroot s = new ScriptC_noroot(pRS);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         pRS.setMessageHandler(mRsMessage);
         initializeGlobals(pRS, s);
         s.forEach_foo(A, A);

@@ -31,6 +31,10 @@ import android.view.KeyCharacterMap;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.ViewGroup;
+<<<<<<< HEAD
+=======
+import android.view.ViewGroup.LayoutParams;
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 import android.view.ViewRootImpl;
 import com.android.internal.R;
 
@@ -55,12 +59,34 @@ public class PasswordEntryKeyboardHelper implements OnKeyboardActionListener {
     private long[] mVibratePattern;
     private boolean mEnableHaptics = false;
 
+<<<<<<< HEAD
     public PasswordEntryKeyboardHelper(Context context, KeyboardView keyboardView, View targetView) {
         this(context, keyboardView, targetView, true);
+=======
+    private static final int NUMERIC = 0;
+    private static final int QWERTY = 1;
+    private static final int QWERTY_SHIFTED = 2;
+    private static final int SYMBOLS = 3;
+    private static final int SYMBOLS_SHIFTED = 4;
+
+    int mLayouts[] = new int[] {
+            R.xml.password_kbd_numeric,
+            R.xml.password_kbd_qwerty,
+            R.xml.password_kbd_qwerty_shifted,
+            R.xml.password_kbd_symbols,
+            R.xml.password_kbd_symbols_shift
+            };
+
+    private boolean mUsingScreenWidth;
+
+    public PasswordEntryKeyboardHelper(Context context, KeyboardView keyboardView, View targetView) {
+        this(context, keyboardView, targetView, true, null);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     }
 
     public PasswordEntryKeyboardHelper(Context context, KeyboardView keyboardView, View targetView,
             boolean useFullScreenWidth) {
+<<<<<<< HEAD
         mContext = context;
         mTargetView = targetView;
         mKeyboardView = keyboardView;
@@ -72,6 +98,36 @@ public class PasswordEntryKeyboardHelper implements OnKeyboardActionListener {
                     mKeyboardView.getLayoutParams().height);
         }
         mKeyboardView.setOnKeyboardActionListener(this);
+=======
+        this(context, keyboardView, targetView, useFullScreenWidth, null);
+    }
+
+    public PasswordEntryKeyboardHelper(Context context, KeyboardView keyboardView, View targetView,
+            boolean useFullScreenWidth, int layouts[]) {
+        mContext = context;
+        mTargetView = targetView;
+        mKeyboardView = keyboardView;
+        mKeyboardView.setOnKeyboardActionListener(this);
+        mUsingScreenWidth = useFullScreenWidth;
+        if (layouts != null) {
+            if (layouts.length != mLayouts.length) {
+                throw new RuntimeException("Wrong number of layouts");
+            }
+            for (int i = 0; i < mLayouts.length; i++) {
+                mLayouts[i] = layouts[i];
+            }
+        }
+        createKeyboards();
+    }
+
+    public void createKeyboards() {
+        LayoutParams lp = mKeyboardView.getLayoutParams();
+        if (mUsingScreenWidth || lp.width == ViewGroup.LayoutParams.MATCH_PARENT) {
+            createKeyboardsWithDefaultWidth();
+        } else {
+            createKeyboardsWithSpecificSize(lp.width, lp.height);
+        }
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     }
 
     public void setEnableHaptics(boolean enabled) {
@@ -82,6 +138,7 @@ public class PasswordEntryKeyboardHelper implements OnKeyboardActionListener {
         return mKeyboardMode == KEYBOARD_MODE_ALPHA;
     }
 
+<<<<<<< HEAD
     private void createKeyboardsWithSpecificSize(int viewWidth, int viewHeight) {
         mNumericKeyboard = new PasswordEntryKeyboard(mContext, R.xml.password_kbd_numeric,
                 viewWidth, viewHeight);
@@ -101,10 +158,29 @@ public class PasswordEntryKeyboardHelper implements OnKeyboardActionListener {
 
         mSymbolsKeyboardShifted = new PasswordEntryKeyboard(mContext,
                 R.xml.password_kbd_symbols_shift, viewWidth, viewHeight);
+=======
+    private void createKeyboardsWithSpecificSize(int width, int height) {
+        mNumericKeyboard = new PasswordEntryKeyboard(mContext, mLayouts[NUMERIC], width, height);
+        mQwertyKeyboard = new PasswordEntryKeyboard(mContext, mLayouts[QWERTY], R.id.mode_normal,
+                width, height);
+        mQwertyKeyboard.enableShiftLock();
+
+        mQwertyKeyboardShifted = new PasswordEntryKeyboard(mContext, mLayouts[QWERTY_SHIFTED],
+                R.id.mode_normal, width, height);
+        mQwertyKeyboardShifted.enableShiftLock();
+        mQwertyKeyboardShifted.setShifted(true); // always shifted.
+
+        mSymbolsKeyboard = new PasswordEntryKeyboard(mContext, mLayouts[SYMBOLS], width, height);
+        mSymbolsKeyboard.enableShiftLock();
+
+        mSymbolsKeyboardShifted = new PasswordEntryKeyboard(mContext, mLayouts[SYMBOLS_SHIFTED],
+                width, height);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         mSymbolsKeyboardShifted.enableShiftLock();
         mSymbolsKeyboardShifted.setShifted(true); // always shifted
     }
 
+<<<<<<< HEAD
     private void createKeyboards() {
         mNumericKeyboard = new PasswordEntryKeyboard(mContext, R.xml.password_kbd_numeric);
         mQwertyKeyboard = new PasswordEntryKeyboard(mContext,
@@ -113,15 +189,30 @@ public class PasswordEntryKeyboardHelper implements OnKeyboardActionListener {
 
         mQwertyKeyboardShifted = new PasswordEntryKeyboard(mContext,
                 R.xml.password_kbd_qwerty_shifted,
+=======
+    private void createKeyboardsWithDefaultWidth() {
+        mNumericKeyboard = new PasswordEntryKeyboard(mContext, mLayouts[NUMERIC]);
+        mQwertyKeyboard = new PasswordEntryKeyboard(mContext, mLayouts[QWERTY], R.id.mode_normal);
+        mQwertyKeyboard.enableShiftLock();
+
+        mQwertyKeyboardShifted = new PasswordEntryKeyboard(mContext, mLayouts[QWERTY_SHIFTED],
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
                 R.id.mode_normal);
         mQwertyKeyboardShifted.enableShiftLock();
         mQwertyKeyboardShifted.setShifted(true); // always shifted.
 
+<<<<<<< HEAD
         mSymbolsKeyboard = new PasswordEntryKeyboard(mContext, R.xml.password_kbd_symbols);
         mSymbolsKeyboard.enableShiftLock();
 
         mSymbolsKeyboardShifted = new PasswordEntryKeyboard(mContext,
                 R.xml.password_kbd_symbols_shift);
+=======
+        mSymbolsKeyboard = new PasswordEntryKeyboard(mContext, mLayouts[SYMBOLS]);
+        mSymbolsKeyboard.enableShiftLock();
+
+        mSymbolsKeyboardShifted = new PasswordEntryKeyboard(mContext, mLayouts[SYMBOLS_SHIFTED]);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         mSymbolsKeyboardShifted.enableShiftLock();
         mSymbolsKeyboardShifted.setShifted(true); // always shifted
     }

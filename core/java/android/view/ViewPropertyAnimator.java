@@ -1036,7 +1036,11 @@ public class ViewPropertyAnimator {
             if ((propertyMask & TRANSFORM_MASK) != 0) {
                 mView.mTransformationInfo.mMatrixDirty = true;
                 if (!useDisplayListProperties) {
+<<<<<<< HEAD
                     mView.mPrivateFlags |= View.DRAWN; // force another invalidation
+=======
+                    mView.mPrivateFlags |= View.PFLAG_DRAWN; // force another invalidation
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
                 }
             }
             // invalidate(false) in all cases except if alphaHandled gets set to true

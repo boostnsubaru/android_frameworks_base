@@ -15,11 +15,20 @@
 -->
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<<<<<<< HEAD
         android:orientation="vertical"
         android:layout_height="wrap_content"
         android:layout_width="match_parent"
         android:layout_marginLeft="@dimen/preference_fragment_padding_side"
         android:layout_marginRight="@dimen/preference_fragment_padding_side"
+=======
+        android:id="@+android:id/breadcrumb_section"
+        android:orientation="vertical"
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:layout_marginStart="@dimen/preference_fragment_padding_side"
+        android:layout_marginEnd="@dimen/preference_fragment_padding_side"
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     >
     <android.app.FragmentBreadCrumbs
             android:id="@android:id/title"
@@ -27,7 +36,11 @@
             android:layout_width="match_parent"
             android:paddingTop="16dip"
             android:paddingBottom="8dip"
+<<<<<<< HEAD
             android:gravity="center_vertical|left"
+=======
+            android:gravity="center_vertical|start"
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         />
 
     <ImageView

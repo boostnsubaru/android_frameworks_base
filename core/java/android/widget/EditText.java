@@ -38,8 +38,13 @@ import android.view.accessibility.AccessibilityNodeInfo;
  * EditText is a thin veneer over TextView that configures itself
  * to be editable.
  *
+<<<<<<< HEAD
  * <p>See the <a href="{@docRoot}resources/tutorials/views/hello-formstuff.html">Form Stuff
  * tutorial</a>.</p>
+=======
+ * <p>See the <a href="{@docRoot}guide/topics/ui/controls/text.html">Text Fields</a>
+ * guide.</p>
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
  * <p>
  * <b>XML attributes</b>
  * <p>

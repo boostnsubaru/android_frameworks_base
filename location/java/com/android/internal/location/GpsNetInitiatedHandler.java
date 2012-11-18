@@ -26,6 +26,10 @@ import android.content.Intent;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.os.RemoteException;
+<<<<<<< HEAD
+=======
+import android.os.UserHandle;
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 import android.util.Log;
 
 import com.android.internal.R;
@@ -89,7 +93,10 @@ public class GpsNetInitiatedHandler {
     
     // configuration of notificaiton behavior
     private boolean mPlaySounds = false;
+<<<<<<< HEAD
     private boolean visible = true;
+=======
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     private boolean mPopupImmediately = true;
     
     // Set to true if string from HAL is encoded as Hex, e.g., "3F0039"    
@@ -213,11 +220,16 @@ public class GpsNetInitiatedHandler {
         PendingIntent pi = PendingIntent.getBroadcast(mContext, 0, intent, 0);                
         mNiNotification.setLatestEventInfo(mContext, title, message, pi);
 
+<<<<<<< HEAD
         if (visible) {
             notificationManager.notify(notif.notificationId, mNiNotification);
         } else {
             notificationManager.cancel(notif.notificationId);
         }
+=======
+        notificationManager.notifyAsUser(null, notif.notificationId, mNiNotification,
+                UserHandle.ALL);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     }
 
     // Opens the notification dialog and waits for user input

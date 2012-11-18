@@ -168,7 +168,17 @@ public class CertificateChainValidator {
         }
 
         try {
+<<<<<<< HEAD
             SSLParametersImpl.getDefaultTrustManager().checkServerTrusted(chain, authType);
+=======
+            X509TrustManager x509TrustManager = SSLParametersImpl.getDefaultTrustManager();
+            if (x509TrustManager instanceof TrustManagerImpl) {
+                TrustManagerImpl trustManager = (TrustManagerImpl) x509TrustManager;
+                trustManager.checkServerTrusted(chain, authType, domain);
+            } else {
+                x509TrustManager.checkServerTrusted(chain, authType);
+            }
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
             return null;  // No errors.
         } catch (GeneralSecurityException e) {
             if (HttpLog.LOGV) {

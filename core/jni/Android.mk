@@ -32,6 +32,10 @@ LOCAL_SRC_FILES:= \
 	com_google_android_gles_jni_EGLImpl.cpp \
 	com_google_android_gles_jni_GLImpl.cpp.arm \
 	android_app_NativeActivity.cpp \
+<<<<<<< HEAD
+=======
+	android_opengl_EGL14.cpp \
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 	android_opengl_GLES10.cpp \
 	android_opengl_GLES10Ext.cpp \
 	android_opengl_GLES11.cpp \
@@ -43,9 +47,15 @@ LOCAL_SRC_FILES:= \
 	android_database_SQLiteGlobal.cpp \
 	android_database_SQLiteDebug.cpp \
 	android_emoji_EmojiFactory.cpp \
+<<<<<<< HEAD
 	android_view_Display.cpp \
 	android_view_DisplayEventReceiver.cpp \
 	android_view_Surface.cpp \
+=======
+	android_view_DisplayEventReceiver.cpp \
+	android_view_Surface.cpp \
+	android_view_SurfaceSession.cpp \
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 	android_view_TextureView.cpp \
 	android_view_InputChannel.cpp \
 	android_view_InputDevice.cpp \
@@ -66,7 +76,11 @@ LOCAL_SRC_FILES:= \
 	android_os_MessageQueue.cpp \
 	android_os_ParcelFileDescriptor.cpp \
 	android_os_Parcel.cpp \
+<<<<<<< HEAD
 	android_os_StatFs.cpp \
+=======
+	android_os_SELinux.cpp \
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 	android_os_SystemClock.cpp \
 	android_os_SystemProperties.cpp \
 	android_os_Trace.cpp \
@@ -85,7 +99,10 @@ LOCAL_SRC_FILES:= \
 	android_util_Process.cpp \
 	android_util_StringBlock.cpp \
 	android_util_XmlBlock.cpp \
+<<<<<<< HEAD
 	android_util_PackageRedirectionMap.cpp \
+=======
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 	android/graphics/AutoDecodeCancel.cpp \
 	android/graphics/Bitmap.cpp \
 	android/graphics/BitmapFactory.cpp \
@@ -126,6 +143,10 @@ LOCAL_SRC_FILES:= \
 	android_media_AudioSystem.cpp \
 	android_media_AudioTrack.cpp \
 	android_media_JetPlayer.cpp \
+<<<<<<< HEAD
+=======
+	android_media_RemoteDisplay.cpp \
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 	android_media_ToneGenerator.cpp \
 	android_hardware_Camera.cpp \
 	android_hardware_SensorManager.cpp \
@@ -137,6 +158,7 @@ LOCAL_SRC_FILES:= \
 	android_util_FileObserver.cpp \
 	android/opengl/poly_clip.cpp.arm \
 	android/opengl/util.cpp.arm \
+<<<<<<< HEAD
 	android_bluetooth_HeadsetBase.cpp \
 	android_bluetooth_common.cpp \
 	android_bluetooth_BluetoothAudioGateway.cpp \
@@ -145,6 +167,8 @@ LOCAL_SRC_FILES:= \
 	android_server_BluetoothService.cpp \
 	android_server_BluetoothEventLoop.cpp \
 	android_server_BluetoothA2dpService.cpp \
+=======
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 	android_server_NetworkManagementSocketTagger.cpp \
 	android_server_Watchdog.cpp \
 	android_ddm_DdmHandleNativeHeap.cpp \
@@ -158,6 +182,7 @@ LOCAL_SRC_FILES:= \
 	android_content_res_Configuration.cpp \
     android_animation_PropertyValuesHolder.cpp
 
+<<<<<<< HEAD
 ifeq ($(BOARD_USES_QCOM_HARDWARE),true)
     LOCAL_CFLAGS += -DQCOM_HARDWARE
     LOCAL_SRC_FILES += \
@@ -166,6 +191,8 @@ ifeq ($(BOARD_USES_QCOM_HARDWARE),true)
 	    hardware/qcom/display/libtilerenderer
 endif
 
+=======
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 LOCAL_C_INCLUDES += \
 	$(JNI_H_INCLUDE) \
 	$(LOCAL_PATH)/android/graphics \
@@ -178,6 +205,10 @@ LOCAL_C_INCLUDES += \
 	external/skia/include/core \
 	external/skia/include/effects \
 	external/skia/include/images \
+<<<<<<< HEAD
+=======
+	external/skia/include/ports \
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 	external/skia/src/ports \
 	external/skia/include/utils \
 	external/sqlite/dist \
@@ -227,14 +258,23 @@ LOCAL_SHARED_LIBRARIES := \
 	libharfbuzz \
 	libz
 
+<<<<<<< HEAD
 ifeq ($(BOARD_USES_QCOM_HARDWARE),true)
 	LOCAL_SHARED_LIBRARIES += libtilerenderer
 endif
+=======
+ifeq ($(HAVE_SELINUX),true)
+LOCAL_C_INCLUDES += external/libselinux/include
+LOCAL_SHARED_LIBRARIES += libselinux
+LOCAL_CFLAGS += -DHAVE_SELINUX
+endif # HAVE_SELINUX
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 
 ifeq ($(USE_OPENGL_RENDERER),true)
 	LOCAL_SHARED_LIBRARIES += libhwui
 endif
 
+<<<<<<< HEAD
 ifeq ($(BOARD_HAVE_BLUETOOTH),true)
 LOCAL_C_INCLUDES += \
 	external/dbus \
@@ -243,6 +283,8 @@ LOCAL_CFLAGS += -DHAVE_BLUETOOTH
 LOCAL_SHARED_LIBRARIES += libbluedroid libdbus
 endif
 
+=======
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 LOCAL_SHARED_LIBRARIES += \
 	libdl
 # we need to access the private Bionic header

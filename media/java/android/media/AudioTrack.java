@@ -1,6 +1,9 @@
 /*
  * Copyright (C) 2008 The Android Open Source Project
+<<<<<<< HEAD
  * Copyright (c) 2012, Code Aurora Forum. All rights reserved.
+=======
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -24,7 +27,10 @@ import java.lang.IllegalStateException;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
+<<<<<<< HEAD
 import android.os.SystemProperties;
+=======
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 import android.media.AudioManager;
 import android.util.Log;
 
@@ -425,6 +431,7 @@ public class AudioTrack
         case AudioFormat.ENCODING_PCM_8BIT:
             mAudioFormat = audioFormat;
             break;
+<<<<<<< HEAD
         case AudioFormat.ENCODING_AMRNB:
         case AudioFormat.ENCODING_AMRWB:
         case AudioFormat.ENCODING_EVRC:
@@ -434,6 +441,8 @@ public class AudioTrack
                 mAudioFormat = audioFormat;
                 break;
             }
+=======
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         default:
             mAudioFormat = AudioFormat.ENCODING_INVALID;
             throw(new IllegalArgumentException("Unsupported sample encoding."
@@ -690,12 +699,16 @@ public class AudioTrack
         }
 
         if ((audioFormat != AudioFormat.ENCODING_PCM_16BIT)
+<<<<<<< HEAD
             && (audioFormat != AudioFormat.ENCODING_PCM_8BIT)
             && (audioFormat != AudioFormat.ENCODING_AMRNB)
             && (audioFormat != AudioFormat.ENCODING_AMRWB)
             && (audioFormat != AudioFormat.ENCODING_EVRC)
             && (audioFormat != AudioFormat.ENCODING_EVRCB)
             && (audioFormat != AudioFormat.ENCODING_EVRCWB)) {
+=======
+            && (audioFormat != AudioFormat.ENCODING_PCM_8BIT)) {
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
             loge("getMinBufferSize(): Invalid audio format.");
             return AudioTrack.ERROR_BAD_VALUE;
         }

@@ -475,10 +475,21 @@ public abstract class Layout {
         Alignment align = getParagraphAlignment(line);
         int dir = getParagraphDirection(line);
 
+<<<<<<< HEAD
         int x;
         if (align == Alignment.ALIGN_LEFT) {
             x = left;
         } else if (align == Alignment.ALIGN_NORMAL) {
+=======
+        if (align == Alignment.ALIGN_LEFT) {
+            align = (dir == DIR_LEFT_TO_RIGHT) ? Alignment.ALIGN_NORMAL : Alignment.ALIGN_OPPOSITE;
+        } else if (align == Alignment.ALIGN_RIGHT) {
+            align = (dir == DIR_LEFT_TO_RIGHT) ? Alignment.ALIGN_OPPOSITE : Alignment.ALIGN_NORMAL;
+        }
+
+        int x;
+        if (align == Alignment.ALIGN_NORMAL) {
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
             if (dir == DIR_LEFT_TO_RIGHT) {
                 x = left;
             } else {
@@ -498,12 +509,20 @@ public abstract class Layout {
                 }
             }
             int max = (int)getLineExtent(line, tabStops, false);
+<<<<<<< HEAD
             if (align == Alignment.ALIGN_RIGHT) {
                 x = right - max;
             } else if (align == Alignment.ALIGN_OPPOSITE) {
                 if (dir == DIR_LEFT_TO_RIGHT) {
                     x = right - max;
                 } else {
+=======
+            if (align == Alignment.ALIGN_OPPOSITE) {
+                if (dir == DIR_LEFT_TO_RIGHT) {
+                    x = right - max;
+                } else {
+                    // max is negative here
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
                     x = left - max;
                 }
             } else { // Alignment.ALIGN_CENTER

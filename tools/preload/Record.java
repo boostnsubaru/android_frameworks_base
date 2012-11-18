@@ -28,12 +28,22 @@ class Record {
             "com.google.android.apps.maps\\u003AFriendService",
             "com.google.android.apps.maps:driveabout",
             "com.google.android.apps.maps\\u003Adriveabout",
+<<<<<<< HEAD
+=======
+            "com.google.android.apps.maps:GoogleLocationService",
+            "com.google.android.apps.maps\\u003AGoogleLocationService",
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
             "com.google.android.apps.maps:LocationFriendService",
             "com.google.android.apps.maps\\u003ALocationFriendService",
             "com.google.android.apps.maps:MapsBackgroundService",
             "com.google.android.apps.maps\\u003AMapsBackgroundService",
             "com.google.android.apps.maps:NetworkLocationService",
             "com.google.android.apps.maps\\u003ANetworkLocationService",
+<<<<<<< HEAD
+=======
+            "com.android.chrome:sandboxed_process",
+            "com.android.chrome\\u003Asandboxed_process",
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
             "com.android.fakeoemfeatures:background",
             "com.android.fakeoemfeatures\\u003Abackground",
             "com.android.fakeoemfeatures:core",

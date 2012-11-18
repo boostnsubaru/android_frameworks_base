@@ -38,7 +38,10 @@ import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.graphics.PixelFormat;
 import android.graphics.PointF;
+<<<<<<< HEAD
 import android.graphics.RectF;
+=======
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 import android.media.MediaActionSound;
 import android.net.Uri;
 import android.os.AsyncTask;
@@ -382,10 +385,14 @@ class GlobalScreenshot {
         // only in the natural orientation of the device :!)
         mDisplay.getRealMetrics(mDisplayMetrics);
         float[] dims = {mDisplayMetrics.widthPixels, mDisplayMetrics.heightPixels};
+<<<<<<< HEAD
         int rot = mDisplay.getRotation();
         // Allow for abnormal hardware orientation
         rot = (rot + (android.os.SystemProperties.getInt("ro.sf.hwrotation",0) / 90 )) % 4;
         float degrees = getDegreesForRotation(rot);
+=======
+        float degrees = getDegreesForRotation(mDisplay.getRotation());
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         boolean requiresRotation = (degrees > 0);
         if (requiresRotation) {
             // Get the dimensions of the device in its native orientation

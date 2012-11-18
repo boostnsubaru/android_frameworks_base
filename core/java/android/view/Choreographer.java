@@ -16,6 +16,10 @@
 
 package android.view;
 
+<<<<<<< HEAD
+=======
+import android.hardware.display.DisplayManagerGlobal;
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
@@ -164,8 +168,13 @@ public final class Choreographer {
         mHandler = new FrameHandler(looper);
         mDisplayEventReceiver = USE_VSYNC ? new FrameDisplayEventReceiver(looper) : null;
         mLastFrameTimeNanos = Long.MIN_VALUE;
+<<<<<<< HEAD
         mFrameIntervalNanos = (long)(1000000000 /
                 new Display(Display.DEFAULT_DISPLAY, null).getRefreshRate());
+=======
+
+        mFrameIntervalNanos = (long)(1000000000 / getRefreshRate());
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 
         mCallbackQueues = new CallbackQueue[CALLBACK_LAST + 1];
         for (int i = 0; i <= CALLBACK_LAST; i++) {
@@ -173,6 +182,15 @@ public final class Choreographer {
         }
     }
 
+<<<<<<< HEAD
+=======
+    private static float getRefreshRate() {
+        DisplayInfo di = DisplayManagerGlobal.getInstance().getDisplayInfo(
+                Display.DEFAULT_DISPLAY);
+        return di.refreshRate;
+    }
+
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     /**
      * Gets the choreographer for the calling thread.  Must be called from
      * a thread that already has a {@link android.os.Looper} associated with it.
@@ -677,7 +695,28 @@ public final class Choreographer {
         }
 
         @Override
+<<<<<<< HEAD
         public void onVsync(long timestampNanos, int frame) {
+=======
+        public void onVsync(long timestampNanos, int builtInDisplayId, int frame) {
+            // Ignore vsync from secondary display.
+            // This can be problematic because the call to scheduleVsync() is a one-shot.
+            // We need to ensure that we will still receive the vsync from the primary
+            // display which is the one we really care about.  Ideally we should schedule
+            // vsync for a particular display.
+            // At this time Surface Flinger won't send us vsyncs for secondary displays
+            // but that could change in the future so let's log a message to help us remember
+            // that we need to fix this.
+            if (builtInDisplayId != Surface.BUILT_IN_DISPLAY_ID_MAIN) {
+                Log.d(TAG, "Received vsync from secondary display, but we don't support "
+                        + "this case yet.  Choreographer needs a way to explicitly request "
+                        + "vsync for a specific display to ensure it doesn't lose track "
+                        + "of its scheduled vsync.");
+                scheduleVsync();
+                return;
+            }
+
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
             // Post the vsync event to the Handler.
             // The idea is to prevent incoming vsync events from completely starving
             // the message queue.  If there are no messages in the queue with timestamps

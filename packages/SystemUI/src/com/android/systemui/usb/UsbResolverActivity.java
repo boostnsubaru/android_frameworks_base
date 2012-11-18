@@ -16,8 +16,11 @@
 
 package com.android.systemui.usb;
 
+<<<<<<< HEAD
 import com.android.internal.app.ResolverActivity;
 
+=======
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 import android.content.ActivityNotFoundException;
 import android.content.Intent;
 import android.content.pm.ResolveInfo;
@@ -30,9 +33,17 @@ import android.os.IBinder;
 import android.os.Parcelable;
 import android.os.RemoteException;
 import android.os.ServiceManager;
+<<<<<<< HEAD
 import android.util.Log;
 import android.widget.CheckBox;
 
+=======
+import android.os.UserHandle;
+import android.util.Log;
+import android.widget.CheckBox;
+
+import com.android.internal.app.ResolverActivity;
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 import com.android.systemui.R;
 
 import java.util.ArrayList;
@@ -92,34 +103,59 @@ public class UsbResolverActivity extends ResolverActivity {
         super.onDestroy();
     }
 
+<<<<<<< HEAD
+=======
+    @Override
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     protected void onIntentSelected(ResolveInfo ri, Intent intent, boolean alwaysCheck) {
         try {
             IBinder b = ServiceManager.getService(USB_SERVICE);
             IUsbManager service = IUsbManager.Stub.asInterface(b);
+<<<<<<< HEAD
             int uid = ri.activityInfo.applicationInfo.uid;
+=======
+            final int uid = ri.activityInfo.applicationInfo.uid;
+            final int userId = UserHandle.myUserId();
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 
             if (mDevice != null) {
                 // grant permission for the device
                 service.grantDevicePermission(mDevice, uid);
                 // set or clear default setting
                 if (alwaysCheck) {
+<<<<<<< HEAD
                     service.setDevicePackage(mDevice, ri.activityInfo.packageName);
                 } else {
                     service.setDevicePackage(mDevice, null);
+=======
+                    service.setDevicePackage(mDevice, ri.activityInfo.packageName, userId);
+                } else {
+                    service.setDevicePackage(mDevice, null, userId);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
                 }
             } else if (mAccessory != null) {
                 // grant permission for the accessory
                 service.grantAccessoryPermission(mAccessory, uid);
                 // set or clear default setting
                 if (alwaysCheck) {
+<<<<<<< HEAD
                     service.setAccessoryPackage(mAccessory, ri.activityInfo.packageName);
                 } else {
                     service.setAccessoryPackage(mAccessory, null);
+=======
+                    service.setAccessoryPackage(mAccessory, ri.activityInfo.packageName, userId);
+                } else {
+                    service.setAccessoryPackage(mAccessory, null, userId);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
                 }
             }
 
             try {
+<<<<<<< HEAD
                 startActivity(intent);
+=======
+                startActivityAsUser(intent, new UserHandle(userId));
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
             } catch (ActivityNotFoundException e) {
                 Log.e(TAG, "startActivity failed", e);
             }

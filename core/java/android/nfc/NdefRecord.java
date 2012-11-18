@@ -70,7 +70,11 @@ import java.util.Locale;
  * indicate location with an NDEF message, provide support for chunking of
  * NDEF records, and to pack optional fields. This class does not expose
  * those details. To write an NDEF Record as binary you must first put it
+<<<<<<< HEAD
  * into an @{link NdefMessage}, then call {@link NdefMessage#toByteArray()}.
+=======
+ * into an {@link NdefMessage}, then call {@link NdefMessage#toByteArray()}.
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
  * <p class="note">
  * {@link NdefMessage} and {@link NdefRecord} implementations are
  * always available, even on Android devices that do not have NFC hardware.
@@ -688,7 +692,12 @@ public final class NdefRecord implements Parcelable {
                         }
                     } catch (FormatException e) {  }
                 } else if (Arrays.equals(mType, RTD_URI)) {
+<<<<<<< HEAD
                     return parseWktUri().normalizeScheme();
+=======
+                    Uri wktUri = parseWktUri();
+                    return (wktUri != null ? wktUri.normalizeScheme() : null);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
                 }
                 break;
 

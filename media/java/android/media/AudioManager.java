@@ -49,6 +49,10 @@ public class AudioManager {
     private final Context mContext;
     private long mVolumeKeyUpTime;
     private final boolean mUseMasterVolume;
+<<<<<<< HEAD
+=======
+    private final boolean mUseVolumeKeySounds;
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     private static String TAG = "AudioManager";
 
     /**
@@ -313,6 +317,16 @@ public class AudioManager {
     public static final int FLAG_VIBRATE = 1 << 4;
 
     /**
+<<<<<<< HEAD
+=======
+     * Indicates to VolumePanel that the volume slider should be disabled as user
+     * cannot change the stream volume
+     * @hide
+     */
+    public static final int FLAG_FIXED_VOLUME = 1 << 5;
+
+    /**
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
      * Ringer mode that will be silent and will not vibrate. (This overrides the
      * vibrate setting.)
      *
@@ -412,6 +426,11 @@ public class AudioManager {
         mContext = context;
         mUseMasterVolume = mContext.getResources().getBoolean(
                 com.android.internal.R.bool.config_useMasterVolume);
+<<<<<<< HEAD
+=======
+        mUseVolumeKeySounds = mContext.getResources().getBoolean(
+                com.android.internal.R.bool.config_useVolumeKeySounds);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     }
 
     private static IAudioService getService()
@@ -463,6 +482,10 @@ public class AudioManager {
                  * responsive to the user.
                  */
                 int flags = FLAG_SHOW_UI | FLAG_VIBRATE;
+<<<<<<< HEAD
+=======
+
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
                 if (mUseMasterVolume) {
                     adjustMasterVolume(
                             keyCode == KeyEvent.KEYCODE_VOLUME_UP
@@ -483,7 +506,11 @@ public class AudioManager {
                     if (mUseMasterVolume) {
                         setMasterMute(!isMasterMute());
                     } else {
+<<<<<<< HEAD
                         toggleMute(stream);
+=======
+                        // TODO: Actually handle MUTE.
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
                     }
                 }
                 break;
@@ -502,6 +529,7 @@ public class AudioManager {
                  * Play a sound. This is done on key up since we don't want the
                  * sound to play when a user holds down volume down to mute.
                  */
+<<<<<<< HEAD
                 if (mUseMasterVolume) {
                     if (keyCode == KeyEvent.KEYCODE_VOLUME_DOWN) {
                         adjustMasterVolume(ADJUST_SAME, FLAG_PLAY_SOUND);
@@ -514,12 +542,26 @@ public class AudioManager {
                             flags);
                 }
 
+=======
+                if (mUseVolumeKeySounds) {
+                    if (mUseMasterVolume) {
+                        adjustMasterVolume(ADJUST_SAME, FLAG_PLAY_SOUND);
+                    } else {
+                        int flags = FLAG_PLAY_SOUND;
+                        adjustSuggestedStreamVolume(
+                                ADJUST_SAME,
+                                stream,
+                                flags);
+                    }
+                }
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
                 mVolumeKeyUpTime = SystemClock.uptimeMillis();
                 break;
         }
     }
 
     /**
+<<<<<<< HEAD
      * Toggles global mute state via ringer mode.
      * @param stream The stream for which the volume panel will be shown.
      * @hide
@@ -543,6 +585,8 @@ public class AudioManager {
     }
 
     /**
+=======
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
      * Adjusts the volume of a particular stream by one step in a direction.
      * <p>
      * This method should only be used by applications that replace the platform-wide
@@ -1184,7 +1228,11 @@ public class AudioManager {
     /**
      * Indicates if current platform supports use of SCO for off call use cases.
      * Application wanted to use bluetooth SCO audio when the phone is not in call
+<<<<<<< HEAD
      * must first call thsi method to make sure that the platform supports this
+=======
+     * must first call this method to make sure that the platform supports this
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
      * feature.
      * @return true if bluetooth SCO can be used for audio when not in call
      *         false otherwise
@@ -1320,6 +1368,22 @@ public class AudioManager {
     }
 
     /**
+<<<<<<< HEAD
+=======
+     * @hide
+     * Signals whether remote submix audio rerouting is enabled.
+     */
+    public void setRemoteSubmixOn(boolean on, int address) {
+        IAudioService service = getService();
+        try {
+            service.setRemoteSubmixOn(on, address);
+        } catch (RemoteException e) {
+            Log.e(TAG, "Dead object in setRemoteSubmixOn", e);
+        }
+    }
+
+    /**
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
      * Sets audio routing to the wired headset on or off.
      *
      * @param on set <var>true</var> to route audio to/from wired
@@ -1526,6 +1590,19 @@ public class AudioManager {
 
     /**
      * @hide
+<<<<<<< HEAD
+=======
+     * Checks whether speech recognition is active
+     * @return true if a recording with source {@link MediaRecorder.AudioSource#VOICE_RECOGNITION}
+     *    is underway.
+     */
+    public boolean isSpeechRecognitionActive() {
+        return AudioSystem.isSourceActive(MediaRecorder.AudioSource.VOICE_RECOGNITION);
+    }
+
+    /**
+     * @hide
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
      * If the stream is active locally or remotely, adjust its volume according to the enforced
      * priority rules.
      * Note: only AudioManager.STREAM_MUSIC is supported at the moment
@@ -2450,4 +2527,43 @@ public class AudioManager {
             return null;
         }
     }
+<<<<<<< HEAD
+=======
+
+    /**
+     * Used as a key for {@link #getProperty} to request the native or optimal output sample rate
+     * for this device's primary output stream, in decimal Hz.
+     */
+    public static final String PROPERTY_OUTPUT_SAMPLE_RATE =
+            "android.media.property.OUTPUT_SAMPLE_RATE";
+
+    /**
+     * Used as a key for {@link #getProperty} to request the native or optimal output buffer size
+     * for this device's primary output stream, in decimal PCM frames.
+     */
+    public static final String PROPERTY_OUTPUT_FRAMES_PER_BUFFER =
+            "android.media.property.OUTPUT_FRAMES_PER_BUFFER";
+
+    /**
+     * Returns the value of the property with the specified key.
+     * @param key One of the strings corresponding to a property key: either
+     *            {@link #PROPERTY_OUTPUT_SAMPLE_RATE} or
+     *            {@link #PROPERTY_OUTPUT_FRAMES_PER_BUFFER}
+     * @return A string representing the associated value for that property key,
+     *         or null if there is no value for that key.
+     */
+    public String getProperty(String key) {
+        if (PROPERTY_OUTPUT_SAMPLE_RATE.equals(key)) {
+            int outputSampleRate = AudioSystem.getPrimaryOutputSamplingRate();
+            return outputSampleRate > 0 ? Integer.toString(outputSampleRate) : null;
+        } else if (PROPERTY_OUTPUT_FRAMES_PER_BUFFER.equals(key)) {
+            int outputFramesPerBuffer = AudioSystem.getPrimaryOutputFrameCount();
+            return outputFramesPerBuffer > 0 ? Integer.toString(outputFramesPerBuffer) : null;
+        } else {
+            // null or unknown key
+            return null;
+        }
+    }
+
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 }

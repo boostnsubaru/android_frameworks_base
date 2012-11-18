@@ -182,6 +182,15 @@ public class Gallery extends AbsSpinner implements GestureDetector.OnGestureList
      */
     private boolean mIsRtl = true;
     
+<<<<<<< HEAD
+=======
+    /**
+     * Offset between the center of the selected child view and the center of the Gallery.
+     * Used to reset position correctly during layout.
+     */
+    private int mSelectedCenterOffset;
+
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     public Gallery(Context context) {
         this(context, null);
     }
@@ -395,6 +404,17 @@ public class Gallery extends AbsSpinner implements GestureDetector.OnGestureList
         
         setSelectionToCenterChild();
 
+<<<<<<< HEAD
+=======
+        final View selChild = mSelectedChild;
+        if (selChild != null) {
+            final int childLeft = selChild.getLeft();
+            final int childCenter = selChild.getWidth() / 2;
+            final int galleryCenter = getWidth() / 2;
+            mSelectedCenterOffset = childLeft + childCenter - galleryCenter;
+        }
+
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         onScrollChanged(0, 0, 0, 0); // dummy values, View's implementation does not use these.
 
         invalidate();
@@ -537,6 +557,10 @@ public class Gallery extends AbsSpinner implements GestureDetector.OnGestureList
             // We haven't been callbacking during the fling, so do it now
             super.selectionChanged();
         }
+<<<<<<< HEAD
+=======
+        mSelectedCenterOffset = 0;
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         invalidate();
     }
     
@@ -650,7 +674,12 @@ public class Gallery extends AbsSpinner implements GestureDetector.OnGestureList
         View sel = makeAndAddView(mSelectedPosition, 0, 0, true);
         
         // Put the selected child in the center
+<<<<<<< HEAD
         int selectedOffset = childrenLeft + (childrenWidth / 2) - (sel.getWidth() / 2);
+=======
+        int selectedOffset = childrenLeft + (childrenWidth / 2) - (sel.getWidth() / 2) +
+                mSelectedCenterOffset;
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         sel.offsetLeftAndRight(selectedOffset);
 
         fillToGalleryRight();
@@ -1192,6 +1221,7 @@ public class Gallery extends AbsSpinner implements GestureDetector.OnGestureList
         case KeyEvent.KEYCODE_DPAD_LEFT:
             if (movePrevious()) {
                 playSoundEffect(SoundEffectConstants.NAVIGATION_LEFT);
+<<<<<<< HEAD
             }
             return true;
 
@@ -1201,6 +1231,17 @@ public class Gallery extends AbsSpinner implements GestureDetector.OnGestureList
             }
             return true;
 
+=======
+                return true;
+            }
+            break;
+        case KeyEvent.KEYCODE_DPAD_RIGHT:
+            if (moveNext()) {
+                playSoundEffect(SoundEffectConstants.NAVIGATION_RIGHT);
+                return true;
+            }
+            break;
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         case KeyEvent.KEYCODE_DPAD_CENTER:
         case KeyEvent.KEYCODE_ENTER:
             mReceivedInvokeKeyDown = true;

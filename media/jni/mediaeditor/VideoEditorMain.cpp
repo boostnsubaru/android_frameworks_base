@@ -380,6 +380,12 @@ getClipSetting(
                     pEnv->GetIntField(object,fid);
    M4OSA_TRACE1_1("videoRotation = %d",
                     pSettings->ClipProperties.videoRotationDegrees);
+<<<<<<< HEAD
+=======
+
+   // Free the local references to avoid memory leaks
+   pEnv->DeleteLocalRef(clazz);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 }
 
 static void jniPreviewProgressCallback (void* cookie, M4OSA_UInt32 msgType,
@@ -1849,7 +1855,13 @@ videoEditor_populateSettings(
                 "not initialized");
             if (needToBeLoaded) {
                 getClipSetting(pEnv,properties, pContext->pEditSettings->pClipList[i]);
+<<<<<<< HEAD
             } else {
+=======
+                pEnv->DeleteLocalRef(properties);
+            } else {
+                pEnv->DeleteLocalRef(properties);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
                 goto videoEditor_populateSettings_cleanup;
             }
         }

@@ -19,17 +19,23 @@
 <resources>
     <bool name="def_dim_screen">true</bool>
     <integer name="def_screen_off_timeout">60000</integer>
+<<<<<<< HEAD
     <integer name="def_brightness_loc">1</integer>
     <integer name="def_volume_ring_spk">6</integer>
     <integer name="def_volume_ring_last_aud_spk">6</integer>
+=======
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     <bool name="def_airplane_mode_on">false</bool>
     <!-- Comma-separated list of bluetooth, wifi, and cell. -->
     <string name="def_airplane_mode_radios" translatable="false">cell,bluetooth,wifi,nfc,wimax</string>
     <string name="airplane_mode_toggleable_radios" translatable="false">bluetooth,wifi,nfc</string>
+<<<<<<< HEAD
     <string name="notification_date_longclick" translatable="false">**nothing**</string>
     <string name="notification_date_shortclick" translatable="false">**nothing**</string>
     <string name="notification_clock_longclick" translatable="false">**nothing**</string>
     <string name="notification_clock_shortclick" translatable="false">**nothing**</string>
+=======
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     <bool name="def_auto_time">true</bool>
     <bool name="def_auto_time_zone">true</bool>
     <bool name="def_accelerometer_rotation">true</bool>
@@ -41,7 +47,13 @@
     <bool name="def_haptic_feedback">true</bool>
 
     <bool name="def_bluetooth_on">false</bool>
+<<<<<<< HEAD
     <bool name="def_install_non_market_apps">true</bool>
+=======
+    <bool name="def_wifi_display_on">false</bool>
+    <bool name="def_install_non_market_apps">false</bool>
+    <bool name="def_package_verifier_enable">true</bool>
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     <!-- Comma-separated list of location providers.
          Network location is off by default because it requires
          user opt-in via Setup Wizard or Settings.
@@ -53,8 +65,13 @@
     <bool name="def_netstats_enabled">true</bool>
     <bool name="def_usb_mass_storage_enabled">true</bool>
     <bool name="def_wifi_on">false</bool>
+<<<<<<< HEAD
     <!-- 0 == default, 1 == never while plugged, 2 == never -->
     <integer name="def_wifi_sleep_policy">0</integer>
+=======
+    <!-- 0 == never, 1 == only when plugged in, 2 == always -->
+    <integer name="def_wifi_sleep_policy">2</integer>
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     <bool name="def_networks_available_notification_on">true</bool>
 
     <bool name="def_backup_enabled">false</bool>
@@ -82,7 +99,10 @@
     <string name="def_unlock_sound" translatable="false">/system/media/audio/ui/Unlock.ogg</string>
     <bool name="def_lockscreen_disabled">false</bool>
     <bool name="def_device_provisioned">false</bool>
+<<<<<<< HEAD
     <integer name="def_volume_adjust_sounds_enabled">1</integer>
+=======
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 
     <!-- Notifications use ringer volume -->
     <bool name="def_notifications_use_ring_volume">true</bool>
@@ -136,6 +156,18 @@
     <!-- Default for Settings.Secure.TOUCH_EXPLORATION_ENABLED -->
     <bool name="def_touch_exploration_enabled">false</bool>
 
+<<<<<<< HEAD
+=======
+    <!-- Default value for Settings.Secure.ACCESSIBILITY_DISPLAY_MAGNIFICATION_SCALE -->
+    <fraction name="def_accessibility_display_magnification_scale">200%</fraction>
+
+    <!-- Default value for Settings.Secure.ACCESSIBILITY_DISPLAY_MAGNIFICATION_ENABLED -->
+    <bool name="def_accessibility_display_magnification_enabled">false</bool>
+
+    <!-- Default value for Settings.Secure.ACCESSIBILITY_DISPLAY_MAGNIFICATION_AUTO_UPDATE -->
+    <bool name="def_accessibility_display_magnification_auto_update">true</bool>
+
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     <!-- Default for Settings.System.USER_ROTATION -->
     <integer name="def_user_rotation">0</integer>
 
@@ -149,8 +181,11 @@
 
     <!-- Default for Settings.System.POINTER_SPEED -->
     <integer name="def_pointer_speed">0</integer>
+<<<<<<< HEAD
     <integer name="def_weather_style">1</integer>
     
+=======
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 
     <!-- Default for DTMF tones enabled -->
     <bool name="def_dtmf_tones_enabled">true</bool>
@@ -163,4 +198,10 @@
     <!-- Number of retries for connecting to DHCP.
          Value here is the same as WifiStateMachine.DEFAULT_MAX_DHCP_RETRIES -->
     <integer name="def_max_dhcp_retries">9</integer>
+<<<<<<< HEAD
+=======
+
+    <!-- Default for Settings.Secure.USER_SETUP_COMPLETE -->
+    <bool name="def_user_setup_complete">false</bool>
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 </resources>

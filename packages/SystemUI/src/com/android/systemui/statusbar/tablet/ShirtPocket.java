@@ -34,7 +34,10 @@ import android.view.Gravity;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.WindowManager;
+<<<<<<< HEAD
 import android.view.WindowManagerImpl;
+=======
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;

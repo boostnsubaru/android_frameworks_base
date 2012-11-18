@@ -1,6 +1,9 @@
 /*
  * Copyright (C) 2008 The Android Open Source Project
+<<<<<<< HEAD
  * Copyright (c) 2012, Code Aurora Forum. All rights reserved.
+=======
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -50,11 +53,14 @@ struct fields_t {
     jmethodID postNativeEventInJava; //... event post callback method
     int       PCM16;                 //...  format constants
     int       PCM8;                  //...  format constants
+<<<<<<< HEAD
     int       AMRNB;                 //...  format constants
     int       AMRWB;                 //...  format constants
     int       EVRC;                  //...  format constants
     int       EVRCB;                 //...  format constants
     int       EVRCWB;                //...  format constants
+=======
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     jfieldID  nativeRecorderInJavaObj; // provides access to the C++ AudioRecord object
     jfieldID  nativeCallbackCookie;    // provides access to the AudioRecord callback data
 };
@@ -168,6 +174,7 @@ static sp<AudioRecord> setAudioRecord(JNIEnv* env, jobject thiz, const sp<AudioR
     env->SetIntField(thiz, javaAudioRecordFields.nativeRecorderInJavaObj, (int)ar.get());
     return old;
 }
+<<<<<<< HEAD
 int getformatrec(int audioformat)
 {
     if(audioformat==javaAudioRecordFields.PCM16)
@@ -186,6 +193,8 @@ int getformatrec(int audioformat)
 #endif
     return AUDIO_FORMAT_PCM_8_BIT;
 }
+=======
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 
 // ----------------------------------------------------------------------------
 static int
@@ -205,6 +214,7 @@ android_media_AudioRecord_setup(JNIEnv *env, jobject thiz, jobject weak_this,
 
     // compare the format against the Java constants
     if ((audioFormat != javaAudioRecordFields.PCM16)
+<<<<<<< HEAD
 #ifdef QCOM_HARDWARE
         && (audioFormat != javaAudioRecordFields.AMRNB)
         && (audioFormat != javaAudioRecordFields.AMRWB)
@@ -212,16 +222,25 @@ android_media_AudioRecord_setup(JNIEnv *env, jobject thiz, jobject weak_this,
         && (audioFormat != javaAudioRecordFields.EVRCB)
         && (audioFormat != javaAudioRecordFields.EVRCWB)
 #endif
+=======
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         && (audioFormat != javaAudioRecordFields.PCM8)) {
         ALOGE("Error creating AudioRecord: unsupported audio format.");
         return AUDIORECORD_ERROR_SETUP_INVALIDFORMAT;
     }
+<<<<<<< HEAD
     int bytesPerSample;
     if(audioFormat == javaAudioRecordFields.PCM8)
         bytesPerSample = 1;
     else
         bytesPerSample = 2;
     audio_format_t format = (audio_format_t)getformatrec(audioFormat);
+=======
+
+    int bytesPerSample = audioFormat==javaAudioRecordFields.PCM16 ? 2 : 1;
+    audio_format_t format = audioFormat==javaAudioRecordFields.PCM16 ?
+            AUDIO_FORMAT_PCM_16_BIT : AUDIO_FORMAT_PCM_8_BIT;
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 
     if (buffSizeInBytes == 0) {
          ALOGE("Error creating AudioRecord: frameCount is 0.");
@@ -275,7 +294,10 @@ android_media_AudioRecord_setup(JNIEnv *env, jobject thiz, jobject weak_this,
         format,        // word length, PCM
         channels,
         frameCount,
+<<<<<<< HEAD
         (AudioRecord::record_flags) 0,  // flags
+=======
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         recorderCallback,// callback_t
         lpCallbackData,// void* user
         0,             // notificationFrames,
@@ -548,8 +570,14 @@ static jint android_media_AudioRecord_get_min_buff_size(JNIEnv *env,  jobject th
     int frameCount = 0;
     status_t result = AudioRecord::getMinFrameCount(&frameCount,
             sampleRateInHertz,
+<<<<<<< HEAD
             (audio_format_t)getformatrec(audioFormat),
             nbChannels);
+=======
+            (audioFormat == javaAudioRecordFields.PCM16 ?
+                AUDIO_FORMAT_PCM_16_BIT : AUDIO_FORMAT_PCM_8_BIT),
+            audio_channel_in_mask_from_count(nbChannels));
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 
     if (result == BAD_VALUE) {
         return 0;
@@ -557,7 +585,11 @@ static jint android_media_AudioRecord_get_min_buff_size(JNIEnv *env,  jobject th
     if (result != NO_ERROR) {
         return -1;
     }
+<<<<<<< HEAD
     return frameCount * nbChannels * (audioFormat == javaAudioRecordFields.PCM8 ? 1 : 2);
+=======
+    return frameCount * nbChannels * (audioFormat == javaAudioRecordFields.PCM16 ? 2 : 1);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 }
 
 
@@ -591,11 +623,14 @@ static JNINativeMethod gMethods[] = {
 #define JAVA_POSTEVENT_CALLBACK_NAME  "postEventFromNative"
 #define JAVA_CONST_PCM16_NAME         "ENCODING_PCM_16BIT"
 #define JAVA_CONST_PCM8_NAME          "ENCODING_PCM_8BIT"
+<<<<<<< HEAD
 #define JAVA_CONST_AMRNB_NAME         "ENCODING_AMRNB"
 #define JAVA_CONST_AMRWB_NAME         "ENCODING_AMRWB"
 #define JAVA_CONST_EVRC_NAME          "ENCODING_EVRC"
 #define JAVA_CONST_EVRCB_NAME         "ENCODING_EVRCB"
 #define JAVA_CONST_EVRCWB_NAME        "ENCODING_EVRCWB"
+=======
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 #define JAVA_NATIVERECORDERINJAVAOBJ_FIELD_NAME  "mNativeRecorderInJavaObj"
 #define JAVA_NATIVECALLBACKINFO_FIELD_NAME       "mNativeCallbackCookie"
 
@@ -659,6 +694,7 @@ int register_android_media_AudioRecord(JNIEnv *env)
                 JAVA_CONST_PCM16_NAME, &(javaAudioRecordFields.PCM16))
            || !android_media_getIntConstantFromClass(env, audioFormatClass,
                 JAVA_AUDIOFORMAT_CLASS_NAME,
+<<<<<<< HEAD
                 JAVA_CONST_PCM8_NAME, &(javaAudioRecordFields.PCM8))
            || !android_media_getIntConstantFromClass(env, audioFormatClass,
                 JAVA_AUDIOFORMAT_CLASS_NAME,
@@ -675,6 +711,9 @@ int register_android_media_AudioRecord(JNIEnv *env)
            || !android_media_getIntConstantFromClass(env, audioFormatClass,
                 JAVA_AUDIOFORMAT_CLASS_NAME,
                 JAVA_CONST_EVRCWB_NAME, &(javaAudioRecordFields.EVRCWB))) {
+=======
+                JAVA_CONST_PCM8_NAME, &(javaAudioRecordFields.PCM8)) ) {
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         // error log performed in getIntConstantFromClass()
         return -1;
     }

@@ -16,10 +16,20 @@
 
 package android.net;
 
+<<<<<<< HEAD
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.util.Log;
 import java.io.File;
+=======
+import android.os.Environment;
+import android.os.Parcel;
+import android.os.Parcelable;
+import android.os.Environment.UserEnvironment;
+import android.util.Log;
+import java.io.File;
+import java.io.IOException;
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.nio.charset.Charsets;
@@ -2288,4 +2298,42 @@ public abstract class Uri implements Parcelable, Comparable<Uri> {
         builder = builder.appendEncodedPath(pathSegment);
         return builder.build();
     }
+<<<<<<< HEAD
+=======
+
+    /**
+     * If this {@link Uri} is {@code file://}, then resolve and return its
+     * canonical path. Also fixes legacy emulated storage paths so they are
+     * usable across user boundaries. Should always be called from the app
+     * process before sending elsewhere.
+     *
+     * @hide
+     */
+    public Uri getCanonicalUri() {
+        if ("file".equals(getScheme())) {
+            final String canonicalPath;
+            try {
+                canonicalPath = new File(getPath()).getCanonicalPath();
+            } catch (IOException e) {
+                return this;
+            }
+
+            if (Environment.isExternalStorageEmulated()) {
+                final String legacyPath = Environment.getLegacyExternalStorageDirectory()
+                        .toString();
+
+                // Splice in user-specific path when legacy path is found
+                if (canonicalPath.startsWith(legacyPath)) {
+                    return Uri.fromFile(new File(
+                            Environment.getExternalStorageDirectory().toString(),
+                            canonicalPath.substring(legacyPath.length() + 1)));
+                }
+            }
+
+            return Uri.fromFile(new File(canonicalPath));
+        } else {
+            return this;
+        }
+    }
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 }

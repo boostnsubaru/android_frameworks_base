@@ -23,15 +23,31 @@ import android.os.Bundle;
 import android.os.RemoteException;
 import android.os.ServiceManager;
 import android.os.SystemProperties;
+<<<<<<< HEAD
+=======
+import android.util.Log;
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 
 import com.android.internal.telephony.IPhoneSubInfo;
 import com.android.internal.telephony.ITelephony;
 import com.android.internal.telephony.ITelephonyRegistry;
+<<<<<<< HEAD
 import com.android.internal.telephony.Phone;
 import com.android.internal.telephony.PhoneFactory;
 import com.android.internal.telephony.TelephonyProperties;
 
 import java.util.List;
+=======
+import com.android.internal.telephony.PhoneConstants;
+import com.android.internal.telephony.RILConstants;
+import com.android.internal.telephony.TelephonyProperties;
+
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 
 /**
  * Provides access to information about the telephony services on
@@ -131,25 +147,41 @@ public class TelephonyManager {
      * Retrieve with
      * {@link android.content.Intent#getStringExtra(String)}.
      */
+<<<<<<< HEAD
     public static final String EXTRA_STATE = Phone.STATE_KEY;
+=======
+    public static final String EXTRA_STATE = PhoneConstants.STATE_KEY;
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 
     /**
      * Value used with {@link #EXTRA_STATE} corresponding to
      * {@link #CALL_STATE_IDLE}.
      */
+<<<<<<< HEAD
     public static final String EXTRA_STATE_IDLE = Phone.State.IDLE.toString();
+=======
+    public static final String EXTRA_STATE_IDLE = PhoneConstants.State.IDLE.toString();
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 
     /**
      * Value used with {@link #EXTRA_STATE} corresponding to
      * {@link #CALL_STATE_RINGING}.
      */
+<<<<<<< HEAD
     public static final String EXTRA_STATE_RINGING = Phone.State.RINGING.toString();
+=======
+    public static final String EXTRA_STATE_RINGING = PhoneConstants.State.RINGING.toString();
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 
     /**
      * Value used with {@link #EXTRA_STATE} corresponding to
      * {@link #CALL_STATE_OFFHOOK}.
      */
+<<<<<<< HEAD
     public static final String EXTRA_STATE_OFFHOOK = Phone.State.OFFHOOK.toString();
+=======
+    public static final String EXTRA_STATE_OFFHOOK = PhoneConstants.State.OFFHOOK.toString();
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 
     /**
      * The lookup key used with the {@link #ACTION_PHONE_STATE_CHANGED} broadcast
@@ -215,6 +247,10 @@ public class TelephonyManager {
     public CellLocation getCellLocation() {
         try {
             Bundle bundle = getITelephony().getCellLocation();
+<<<<<<< HEAD
+=======
+            if (bundle.isEmpty()) return null;
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
             CellLocation cl = CellLocation.newFromBundle(bundle);
             if (cl.isEmpty())
                 return null;
@@ -279,6 +315,7 @@ public class TelephonyManager {
     }
 
     /** No phone radio. */
+<<<<<<< HEAD
     public static final int PHONE_TYPE_NONE = Phone.PHONE_TYPE_NONE;
     /** Phone radio is GSM. */
     public static final int PHONE_TYPE_GSM = Phone.PHONE_TYPE_GSM;
@@ -286,6 +323,15 @@ public class TelephonyManager {
     public static final int PHONE_TYPE_CDMA = Phone.PHONE_TYPE_CDMA;
     /** Phone is via SIP. */
     public static final int PHONE_TYPE_SIP = Phone.PHONE_TYPE_SIP;
+=======
+    public static final int PHONE_TYPE_NONE = PhoneConstants.PHONE_TYPE_NONE;
+    /** Phone radio is GSM. */
+    public static final int PHONE_TYPE_GSM = PhoneConstants.PHONE_TYPE_GSM;
+    /** Phone radio is CDMA. */
+    public static final int PHONE_TYPE_CDMA = PhoneConstants.PHONE_TYPE_CDMA;
+    /** Phone is via SIP. */
+    public static final int PHONE_TYPE_SIP = PhoneConstants.PHONE_TYPE_SIP;
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 
     /**
      * Returns the current phone type.
@@ -348,8 +394,130 @@ public class TelephonyManager {
         int mode = SystemProperties.getInt("ro.telephony.default_network", -1);
         if (mode == -1)
             return PHONE_TYPE_NONE;
+<<<<<<< HEAD
         return PhoneFactory.getPhoneType(mode);
     }
+=======
+        return getPhoneType(mode);
+    }
+
+    /**
+     * This function returns the type of the phone, depending
+     * on the network mode.
+     *
+     * @param network mode
+     * @return Phone Type
+     *
+     * @hide
+     */
+    public static int getPhoneType(int networkMode) {
+        switch(networkMode) {
+        case RILConstants.NETWORK_MODE_CDMA:
+        case RILConstants.NETWORK_MODE_CDMA_NO_EVDO:
+        case RILConstants.NETWORK_MODE_EVDO_NO_CDMA:
+            return PhoneConstants.PHONE_TYPE_CDMA;
+
+        case RILConstants.NETWORK_MODE_WCDMA_PREF:
+        case RILConstants.NETWORK_MODE_GSM_ONLY:
+        case RILConstants.NETWORK_MODE_WCDMA_ONLY:
+        case RILConstants.NETWORK_MODE_GSM_UMTS:
+            return PhoneConstants.PHONE_TYPE_GSM;
+
+        // Use CDMA Phone for the global mode including CDMA
+        case RILConstants.NETWORK_MODE_GLOBAL:
+        case RILConstants.NETWORK_MODE_LTE_CDMA_EVDO:
+        case RILConstants.NETWORK_MODE_LTE_CMDA_EVDO_GSM_WCDMA:
+            return PhoneConstants.PHONE_TYPE_CDMA;
+
+        case RILConstants.NETWORK_MODE_LTE_ONLY:
+            if (getLteOnCdmaModeStatic() == PhoneConstants.LTE_ON_CDMA_TRUE) {
+                return PhoneConstants.PHONE_TYPE_CDMA;
+            } else {
+                return PhoneConstants.PHONE_TYPE_GSM;
+            }
+        default:
+            return PhoneConstants.PHONE_TYPE_GSM;
+        }
+    }
+
+    /**
+     * The contents of the /proc/cmdline file
+     */
+    private static String getProcCmdLine()
+    {
+        String cmdline = "";
+        FileInputStream is = null;
+        try {
+            is = new FileInputStream("/proc/cmdline");
+            byte [] buffer = new byte[2048];
+            int count = is.read(buffer);
+            if (count > 0) {
+                cmdline = new String(buffer, 0, count);
+            }
+        } catch (IOException e) {
+            Log.d(TAG, "No /proc/cmdline exception=" + e);
+        } finally {
+            if (is != null) {
+                try {
+                    is.close();
+                } catch (IOException e) {
+                }
+            }
+        }
+        Log.d(TAG, "/proc/cmdline=" + cmdline);
+        return cmdline;
+    }
+
+    /** Kernel command line */
+    private static final String sKernelCmdLine = getProcCmdLine();
+
+    /** Pattern for selecting the product type from the kernel command line */
+    private static final Pattern sProductTypePattern =
+        Pattern.compile("\\sproduct_type\\s*=\\s*(\\w+)");
+
+    /** The ProductType used for LTE on CDMA devices */
+    private static final String sLteOnCdmaProductType =
+        SystemProperties.get(TelephonyProperties.PROPERTY_LTE_ON_CDMA_PRODUCT_TYPE, "");
+
+    /**
+     * Return if the current radio is LTE on CDMA. This
+     * is a tri-state return value as for a period of time
+     * the mode may be unknown.
+     *
+     * @return {@link PhoneConstants#LTE_ON_CDMA_UNKNOWN}, {@link PhoneConstants#LTE_ON_CDMA_FALSE}
+     * or {@link PhoneConstants#LTE_ON_CDMA_TRUE}
+     *
+     * @hide
+     */
+    public static int getLteOnCdmaModeStatic() {
+        int retVal;
+        int curVal;
+        String productType = "";
+
+        curVal = SystemProperties.getInt(TelephonyProperties.PROPERTY_LTE_ON_CDMA_DEVICE,
+                    PhoneConstants.LTE_ON_CDMA_UNKNOWN);
+        retVal = curVal;
+        if (retVal == PhoneConstants.LTE_ON_CDMA_UNKNOWN) {
+            Matcher matcher = sProductTypePattern.matcher(sKernelCmdLine);
+            if (matcher.find()) {
+                productType = matcher.group(1);
+                if (sLteOnCdmaProductType.equals(productType)) {
+                    retVal = PhoneConstants.LTE_ON_CDMA_TRUE;
+                } else {
+                    retVal = PhoneConstants.LTE_ON_CDMA_FALSE;
+                }
+            } else {
+                retVal = PhoneConstants.LTE_ON_CDMA_FALSE;
+            }
+        }
+
+        Log.d(TAG, "getLteOnCdmaMode=" + retVal + " curVal=" + curVal +
+                " product_type='" + productType +
+                "' lteOnCdmaProductType='" + sLteOnCdmaProductType + "'");
+        return retVal;
+    }
+
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     //
     //
     // Current Network
@@ -524,6 +692,7 @@ public class TelephonyManager {
         return getNetworkTypeName(getNetworkType());
     }
 
+<<<<<<< HEAD
     /**
      * @hide
      */
@@ -544,6 +713,8 @@ public class TelephonyManager {
         }
     }
 
+=======
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     /** {@hide} */
     public static String getNetworkTypeName(int type) {
         switch (type) {
@@ -715,6 +886,7 @@ public class TelephonyManager {
             return getITelephony().getLteOnCdmaMode();
         } catch (RemoteException ex) {
             // Assume no ICC card if remote exception which shouldn't happen
+<<<<<<< HEAD
             return Phone.LTE_ON_CDMA_UNKNOWN;
         } catch (NullPointerException ex) {
             // This could happen before phone restarts due to crashing
@@ -734,6 +906,12 @@ public class TelephonyManager {
         } catch (NullPointerException ex) {
             // This could happen before phone restarts due to crashing
             return 0;
+=======
+            return PhoneConstants.LTE_ON_CDMA_UNKNOWN;
+        } catch (NullPointerException ex) {
+            // This could happen before phone restarts due to crashing
+            return PhoneConstants.LTE_ON_CDMA_UNKNOWN;
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         }
     }
 
@@ -1184,8 +1362,11 @@ public class TelephonyManager {
      *
      * <p>Requires Permission:
      * (@link android.Manifest.permission#ACCESS_COARSE_UPDATES}
+<<<<<<< HEAD
      *
      * @hide pending API review
+=======
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
      */
     public List<CellInfo> getAllCellInfo() {
         try {

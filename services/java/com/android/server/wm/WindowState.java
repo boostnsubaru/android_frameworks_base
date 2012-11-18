@@ -34,7 +34,13 @@ import android.graphics.RectF;
 import android.graphics.Region;
 import android.os.IBinder;
 import android.os.RemoteException;
+<<<<<<< HEAD
 import android.util.Slog;
+=======
+import android.os.UserHandle;
+import android.util.Slog;
+import android.view.DisplayInfo;
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 import android.view.Gravity;
 import android.view.IApplicationToken;
 import android.view.IWindow;
@@ -47,6 +53,12 @@ import android.view.WindowManagerPolicy;
 import java.io.PrintWriter;
 import java.util.ArrayList;
 
+<<<<<<< HEAD
+=======
+class WindowList extends ArrayList<WindowState> {
+}
+
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 /**
  * A window in the window manager.
  */
@@ -245,21 +257,46 @@ final class WindowState implements WindowManagerPolicy.WindowState {
     // Used to improve performance of toString()
     String mStringNameCache;
     CharSequence mLastTitle;
+<<<<<<< HEAD
     boolean mWasPaused;
+=======
+    boolean mWasExiting;
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 
     final WindowStateAnimator mWinAnimator;
 
     boolean mHasSurface = false;
 
+<<<<<<< HEAD
     WindowState(WindowManagerService service, Session s, IWindow c, WindowToken token,
            WindowState attachedWindow, int seq, WindowManager.LayoutParams a,
            int viewVisibility) {
+=======
+    DisplayContent  mDisplayContent;
+
+    // UserId and appId of the owner. Don't display windows of non-current user.
+    int mOwnerUid;
+
+    /** When true this window can be displayed on screens owther than mOwnerUid's */
+    private boolean mShowToOwnerOnly;
+
+    WindowState(WindowManagerService service, Session s, IWindow c, WindowToken token,
+           WindowState attachedWindow, int seq, WindowManager.LayoutParams a,
+           int viewVisibility, final DisplayContent displayContent) {
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         mService = service;
         mSession = s;
         mClient = c;
         mToken = token;
+<<<<<<< HEAD
         mAttrs.copyFrom(a);
         mViewVisibility = viewVisibility;
+=======
+        mOwnerUid = s.mUid;
+        mAttrs.copyFrom(a);
+        mViewVisibility = viewVisibility;
+        mDisplayContent = displayContent;
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         mPolicy = mService.mPolicy;
         mContext = mService.mContext;
         DeathRecipient deathRecipient = new DeathRecipient();
@@ -267,7 +304,11 @@ final class WindowState implements WindowManagerPolicy.WindowState {
         mEnforceSizeCompat = (mAttrs.flags & FLAG_COMPATIBLE_WINDOW) != 0;
         if (WindowManagerService.localLOGV) Slog.v(
             TAG, "Window " + this + " client=" + c.asBinder()
+<<<<<<< HEAD
             + " token=" + token + " (" + mAttrs.token + ")");
+=======
+            + " token=" + token + " (" + mAttrs.token + ")" + " params=" + a);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         try {
             c.asBinder().linkToDeath(deathRecipient, 0);
         } catch (RemoteException e) {
@@ -317,9 +358,12 @@ final class WindowState implements WindowManagerPolicy.WindowState {
             mIsFloatingLayer = mIsImWindow || mIsWallpaper;
         }
 
+<<<<<<< HEAD
         mWinAnimator = new WindowStateAnimator(service, this, mAttachedWindow);
         mWinAnimator.mAlpha = a.alpha;
 
+=======
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         WindowState appWin = this;
         while (appWin.mAttachedWindow != null) {
             appWin = appWin.mAttachedWindow;
@@ -335,6 +379,12 @@ final class WindowState implements WindowManagerPolicy.WindowState {
         mRootToken = appToken;
         mAppToken = appToken.appWindowToken;
 
+<<<<<<< HEAD
+=======
+        mWinAnimator = new WindowStateAnimator(this);
+        mWinAnimator.mAlpha = a.alpha;
+
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         mRequestedWidth = 0;
         mRequestedHeight = 0;
         mLastRequestedWidth = 0;
@@ -343,7 +393,12 @@ final class WindowState implements WindowManagerPolicy.WindowState {
         mYOffset = 0;
         mLayer = 0;
         mInputWindowHandle = new InputWindowHandle(
+<<<<<<< HEAD
                 mAppToken != null ? mAppToken.mInputApplicationHandle : null, this);
+=======
+                mAppToken != null ? mAppToken.mInputApplicationHandle : null, this,
+                displayContent.getDisplayId());
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     }
 
     void attach() {
@@ -479,8 +534,14 @@ final class WindowState implements WindowManagerPolicy.WindowState {
         }
 
         if (mIsWallpaper && (fw != frame.width() || fh != frame.height())) {
+<<<<<<< HEAD
             mService.updateWallpaperOffsetLocked(this,
                     mService.mAppDisplayWidth, mService.mAppDisplayHeight, false);
+=======
+            final DisplayInfo displayInfo = mDisplayContent.getDisplayInfo();
+            mService.updateWallpaperOffsetLocked(this, displayInfo.appWidth, displayInfo.appHeight,
+                    false);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         }
 
         if (WindowManagerService.localLOGV) {
@@ -496,6 +557,24 @@ final class WindowState implements WindowManagerPolicy.WindowState {
         }
     }
 
+<<<<<<< HEAD
+=======
+    MagnificationSpec getWindowMagnificationSpecLocked() {
+        MagnificationSpec spec = mDisplayContent.mMagnificationSpec;
+        if (spec != null && !spec.isNop()) {
+            if (mAttachedWindow != null) {
+                if (!mPolicy.canMagnifyWindowLw(mAttachedWindow.mAttrs)) {
+                    return null;
+                }
+            }
+            if (!mPolicy.canMagnifyWindowLw(mAttrs)) {
+                return null;
+            }
+        }
+        return spec;
+    }
+
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     @Override
     public Rect getFrameLw() {
         return mFrame;
@@ -541,9 +620,17 @@ final class WindowState implements WindowManagerPolicy.WindowState {
         return mAttrs;
     }
 
+<<<<<<< HEAD
     public boolean getNeedsMenuLw(WindowManagerPolicy.WindowState bottom) {
         int index = -1;
         WindowState ws = this;
+=======
+    @Override
+    public boolean getNeedsMenuLw(WindowManagerPolicy.WindowState bottom) {
+        int index = -1;
+        WindowState ws = this;
+        WindowList windows = getWindowList();
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         while (true) {
             if ((ws.mAttrs.privateFlags
                     & WindowManager.LayoutParams.PRIVATE_FLAG_SET_NEEDS_MENU_KEY) != 0) {
@@ -558,28 +645,56 @@ final class WindowState implements WindowManagerPolicy.WindowState {
             // look behind it.
             // First, we may need to determine the starting position.
             if (index < 0) {
+<<<<<<< HEAD
                 index = mService.mWindows.indexOf(ws);
+=======
+                index = windows.indexOf(ws);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
             }
             index--;
             if (index < 0) {
                 return false;
             }
+<<<<<<< HEAD
             ws = mService.mWindows.get(index);
         }
     }
 
+=======
+            ws = windows.get(index);
+        }
+    }
+
+    @Override
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     public int getSystemUiVisibility() {
         return mSystemUiVisibility;
     }
 
+<<<<<<< HEAD
+=======
+    @Override
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     public int getSurfaceLayer() {
         return mLayer;
     }
 
+<<<<<<< HEAD
     public IApplicationToken getAppToken() {
         return mAppToken != null ? mAppToken.appToken : null;
     }
     
+=======
+    @Override
+    public IApplicationToken getAppToken() {
+        return mAppToken != null ? mAppToken.appToken : null;
+    }
+
+    public int getDisplayId() {
+        return mDisplayContent.getDisplayId();
+    }
+
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     public long getInputDispatchingTimeoutNanos() {
         return mAppToken != null
                 ? mAppToken.inputDispatchingTimeoutNanos
@@ -612,6 +727,10 @@ final class WindowState implements WindowManagerPolicy.WindowState {
      * surface, or we are in the process of running an exit animation
      * that will remove the surface, or its app token has been hidden.
      */
+<<<<<<< HEAD
+=======
+    @Override
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     public boolean isVisibleLw() {
         final AppWindowToken atoken = mAppToken;
         return mHasSurface && mPolicyVisibility && !mAttachedHidden
@@ -627,6 +746,10 @@ final class WindowState implements WindowManagerPolicy.WindowState {
      * for this "hidden behind keyguard" state rather than overloading
      * mPolicyVisibility.  Ungh.
      */
+<<<<<<< HEAD
+=======
+    @Override
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     public boolean isVisibleOrBehindKeyguardLw() {
         if (mRootToken.waitingToShow &&
                 mService.mNextAppTransition != WindowManagerPolicy.TRANSIT_UNSET) {
@@ -745,22 +868,39 @@ final class WindowState implements WindowManagerPolicy.WindowState {
      * Like isOnScreen, but returns false if the surface hasn't yet
      * been drawn.
      */
+<<<<<<< HEAD
+=======
+    @Override
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     public boolean isDisplayedLw() {
         final AppWindowToken atoken = mAppToken;
         return isDrawnLw() && mPolicyVisibility
             && ((!mAttachedHidden &&
                     (atoken == null || !atoken.hiddenRequested))
+<<<<<<< HEAD
                     || mWinAnimator.mAnimating);
+=======
+                        || mWinAnimator.mAnimating
+                        || (atoken != null && atoken.mAppAnimator.animation != null));
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     }
 
     /**
      * Return true if this window (or a window it is attached to, but not
      * considering its app token) is currently animating.
      */
+<<<<<<< HEAD
+=======
+    @Override
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     public boolean isAnimatingLw() {
         return mWinAnimator.mAnimation != null;
     }
 
+<<<<<<< HEAD
+=======
+    @Override
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     public boolean isGoneForLayoutLw() {
         final AppWindowToken atoken = mAppToken;
         return mViewVisibility == View.GONE
@@ -809,6 +949,21 @@ final class WindowState implements WindowManagerPolicy.WindowState {
                 mFrame.right >= screenWidth && mFrame.bottom >= screenHeight;
     }
 
+<<<<<<< HEAD
+=======
+    boolean isConfigChanged() {
+        return mConfiguration != mService.mCurConfiguration
+                && (mConfiguration == null
+                        || (mConfiguration.diff(mService.mCurConfiguration) != 0));
+    }
+
+    boolean isConfigDiff(int mask) {
+        return mConfiguration != mService.mCurConfiguration
+                && mConfiguration != null
+                && (mConfiguration.diff(mService.mCurConfiguration) & mask) != 0;
+    }
+
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     void removeLocked() {
         disposeInputChannel();
         
@@ -816,8 +971,13 @@ final class WindowState implements WindowManagerPolicy.WindowState {
             if (WindowManagerService.DEBUG_ADD_REMOVE) Slog.v(TAG, "Removing " + this + " from " + mAttachedWindow);
             mAttachedWindow.mChildWindows.remove(this);
         }
+<<<<<<< HEAD
         mWinAnimator.destroyDeferredSurfaceLocked();
         mWinAnimator.destroySurfaceLocked();
+=======
+        mWinAnimator.destroyDeferredSurfaceLocked(false);
+        mWinAnimator.destroySurfaceLocked(false);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         mSession.windowRemovedLocked();
         try {
             mClient.asBinder().unlinkToDeath(mDeathRecipient, 0);
@@ -884,6 +1044,14 @@ final class WindowState implements WindowManagerPolicy.WindowState {
     }
 
     boolean showLw(boolean doAnimation, boolean requestAnim) {
+<<<<<<< HEAD
+=======
+        if (isHiddenFromUserLocked()) {
+            Slog.w(TAG, "current user violation " + mService.mCurrentUserId + " trying to display "
+                    + this + ", type " + mAttrs.type + ", belonging to " + mOwnerUid);
+            return false;
+        }
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         if (mPolicyVisibility && mPolicyVisibilityAfterAnim) {
             // Already showing.
             return false;
@@ -907,7 +1075,11 @@ final class WindowState implements WindowManagerPolicy.WindowState {
             mWinAnimator.applyAnimationLocked(WindowManagerPolicy.TRANSIT_ENTER, true);
         }
         if (requestAnim) {
+<<<<<<< HEAD
             mService.scheduleAnimationLocked();
+=======
+            mService.updateLayoutToAnimationLocked();
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         }
         return true;
     }
@@ -950,7 +1122,11 @@ final class WindowState implements WindowManagerPolicy.WindowState {
             }
         }
         if (requestAnim) {
+<<<<<<< HEAD
             mService.scheduleAnimationLocked();
+=======
+            mService.updateLayoutToAnimationLocked();
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         }
         return true;
     }
@@ -960,6 +1136,45 @@ final class WindowState implements WindowManagerPolicy.WindowState {
         return mClient.asBinder().isBinderAlive();
     }
 
+<<<<<<< HEAD
+=======
+    boolean isClosing() {
+        return mExiting || (mService.mClosingApps.contains(mAppToken));
+    }
+
+    @Override
+    public boolean isDefaultDisplay() {
+        return mDisplayContent.isDefaultDisplay;
+    }
+
+    public void setShowToOwnerOnlyLocked(boolean showToOwnerOnly) {
+        mShowToOwnerOnly = showToOwnerOnly;
+    }
+
+    boolean isHiddenFromUserLocked() {
+        // Attached windows are evaluated based on the window that they are attached to.
+        WindowState win = this;
+        while (win.mAttachedWindow != null) {
+            win = win.mAttachedWindow;
+        }
+        if (win.mAttrs.type < WindowManager.LayoutParams.FIRST_SYSTEM_WINDOW
+                && win.mAppToken != null && win.mAppToken.showWhenLocked) {
+            // Save some cycles by not calling getDisplayInfo unless it is an application
+            // window intended for all users.
+            final DisplayInfo displayInfo = win.mDisplayContent.getDisplayInfo();
+            if (win.mFrame.left <= 0 && win.mFrame.top <= 0
+                    && win.mFrame.right >= displayInfo.appWidth
+                    && win.mFrame.bottom >= displayInfo.appHeight) {
+                // Is a fullscreen window, like the clock alarm. Show to everyone.
+                return false;
+            }
+        }
+
+        return win.mShowToOwnerOnly
+                && UserHandle.getUserId(win.mOwnerUid) != mService.mCurrentUserId;
+    }
+
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     private static void applyInsets(Region outRegion, Rect frame, Rect inset) {
         outRegion.set(
                 frame.left + inset.left, frame.top + inset.top,
@@ -988,9 +1203,22 @@ final class WindowState implements WindowManagerPolicy.WindowState {
         }
     }
 
+<<<<<<< HEAD
     void dump(PrintWriter pw, String prefix, boolean dumpAll) {
         pw.print(prefix); pw.print("mSession="); pw.print(mSession);
                 pw.print(" mClient="); pw.println(mClient.asBinder());
+=======
+    WindowList getWindowList() {
+        return mDisplayContent.getWindowList();
+    }
+
+    void dump(PrintWriter pw, String prefix, boolean dumpAll) {
+        pw.print(prefix); pw.print("mDisplayId="); pw.print(mDisplayContent.getDisplayId());
+                pw.print(" mSession="); pw.print(mSession);
+                pw.print(" mClient="); pw.println(mClient.asBinder());
+        pw.print(prefix); pw.print("mOwnerUid="); pw.print(mOwnerUid);
+                pw.print(" mShowToOwnerOnly="); pw.println(mShowToOwnerOnly);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         pw.print(prefix); pw.print("mAttrs="); pw.println(mAttrs);
         pw.print(prefix); pw.print("Requested w="); pw.print(mRequestedWidth);
                 pw.print(" h="); pw.print(mRequestedHeight);
@@ -1060,11 +1288,22 @@ final class WindowState implements WindowManagerPolicy.WindowState {
             if (mTouchableInsets != 0 || mGivenInsetsPending) {
                 pw.print(prefix); pw.print("mTouchableInsets="); pw.print(mTouchableInsets);
                         pw.print(" mGivenInsetsPending="); pw.println(mGivenInsetsPending);
+<<<<<<< HEAD
+=======
+                Region region = new Region();
+                getTouchableRegion(region);
+                pw.print(prefix); pw.print("touchable region="); pw.println(region);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
             }
             pw.print(prefix); pw.print("mConfiguration="); pw.println(mConfiguration);
         }
         pw.print(prefix); pw.print("mHasSurface="); pw.print(mHasSurface);
+<<<<<<< HEAD
                 pw.print(" mShownFrame="); mShownFrame.printShortString(pw); pw.println();
+=======
+                pw.print(" mShownFrame="); mShownFrame.printShortString(pw);
+                pw.print(" isReadyForDisplay()="); pw.println(isReadyForDisplay());
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         if (dumpAll) {
             pw.print(prefix); pw.print("mFrame="); mFrame.printShortString(pw);
                     pw.print(" last="); mLastFrame.printShortString(pw);
@@ -1095,7 +1334,12 @@ final class WindowState implements WindowManagerPolicy.WindowState {
                     pw.print(" visible="); mLastVisibleInsets.printShortString(pw);
                     pw.println();
         }
+<<<<<<< HEAD
         mWinAnimator.dump(pw, prefix, dumpAll);
+=======
+        pw.print(prefix); pw.print(mWinAnimator); pw.println(":");
+        mWinAnimator.dump(pw, prefix + "  ", dumpAll);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         if (mExiting || mRemoveOnExit || mDestroying || mRemoved) {
             pw.print(prefix); pw.print("mExiting="); pw.print(mExiting);
                     pw.print(" mRemoveOnExit="); pw.print(mRemoveOnExit);
@@ -1130,11 +1374,20 @@ final class WindowState implements WindowManagerPolicy.WindowState {
     @Override
     public String toString() {
         if (mStringNameCache == null || mLastTitle != mAttrs.getTitle()
+<<<<<<< HEAD
                 || mWasPaused != mToken.paused) {
             mLastTitle = mAttrs.getTitle();
             mWasPaused = mToken.paused;
             mStringNameCache = "Window{" + Integer.toHexString(System.identityHashCode(this))
                     + " " + mLastTitle + " paused=" + mWasPaused + "}";
+=======
+                || mWasExiting != mExiting) {
+            mLastTitle = mAttrs.getTitle();
+            mWasExiting = mExiting;
+            mStringNameCache = "Window{" + Integer.toHexString(System.identityHashCode(this))
+                    + " u" + UserHandle.getUserId(mSession.mUid)
+                    + " " + mLastTitle + (mExiting ? " EXITING}" : "}");
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         }
         return mStringNameCache;
     }

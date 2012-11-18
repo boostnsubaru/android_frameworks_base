@@ -23,10 +23,18 @@ import android.os.AsyncTask;
 import android.os.Handler;
 import android.os.RemoteException;
 import android.os.ServiceManager;
+<<<<<<< HEAD
+=======
+import android.os.UserHandle;
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 import android.provider.Settings;
 import android.util.Log;
 import android.view.IWindowManager;
 import android.view.Surface;
+<<<<<<< HEAD
+=======
+import android.view.WindowManagerGlobal;
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 
 /**
  * Provides helper functions for configuring the display rotation policy.
@@ -54,16 +62,27 @@ public final class RotationPolicy {
      */
     public static boolean isRotationLockToggleVisible(Context context) {
         return isRotationLockToggleSupported(context) &&
+<<<<<<< HEAD
                 Settings.System.getInt(context.getContentResolver(),
                         Settings.System.HIDE_ROTATION_LOCK_TOGGLE_FOR_ACCESSIBILITY, 0) == 0;
+=======
+                Settings.System.getIntForUser(context.getContentResolver(),
+                        Settings.System.HIDE_ROTATION_LOCK_TOGGLE_FOR_ACCESSIBILITY, 0,
+                        UserHandle.USER_CURRENT) == 0;
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     }
 
     /**
      * Returns true if rotation lock is enabled.
      */
     public static boolean isRotationLocked(Context context) {
+<<<<<<< HEAD
         return Settings.System.getInt(context.getContentResolver(),
                 Settings.System.ACCELEROMETER_ROTATION, 0) == 0;
+=======
+        return Settings.System.getIntForUser(context.getContentResolver(),
+                Settings.System.ACCELEROMETER_ROTATION, 0, UserHandle.USER_CURRENT) == 0;
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     }
 
     /**
@@ -72,15 +91,25 @@ public final class RotationPolicy {
      * Should be used by the rotation lock toggle.
      */
     public static void setRotationLock(Context context, final boolean enabled) {
+<<<<<<< HEAD
         Settings.System.putInt(context.getContentResolver(),
                 Settings.System.HIDE_ROTATION_LOCK_TOGGLE_FOR_ACCESSIBILITY, 0);
+=======
+        Settings.System.putIntForUser(context.getContentResolver(),
+                Settings.System.HIDE_ROTATION_LOCK_TOGGLE_FOR_ACCESSIBILITY, 0,
+                UserHandle.USER_CURRENT);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 
         AsyncTask.execute(new Runnable() {
             @Override
             public void run() {
                 try {
+<<<<<<< HEAD
                     IWindowManager wm = IWindowManager.Stub.asInterface(
                             ServiceManager.getService(Context.WINDOW_SERVICE));
+=======
+                    IWindowManager wm = WindowManagerGlobal.getWindowManagerService();
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
                     if (enabled) {
                         wm.freezeRotation(-1);
                     } else {
@@ -100,15 +129,25 @@ public final class RotationPolicy {
      * Should be used by Display settings and Accessibility settings.
      */
     public static void setRotationLockForAccessibility(Context context, final boolean enabled) {
+<<<<<<< HEAD
         Settings.System.putInt(context.getContentResolver(),
                 Settings.System.HIDE_ROTATION_LOCK_TOGGLE_FOR_ACCESSIBILITY, enabled ? 1 : 0);
+=======
+        Settings.System.putIntForUser(context.getContentResolver(),
+                Settings.System.HIDE_ROTATION_LOCK_TOGGLE_FOR_ACCESSIBILITY, enabled ? 1 : 0,
+                        UserHandle.USER_CURRENT);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 
         AsyncTask.execute(new Runnable() {
             @Override
             public void run() {
                 try {
+<<<<<<< HEAD
                     IWindowManager wm = IWindowManager.Stub.asInterface(
                             ServiceManager.getService(Context.WINDOW_SERVICE));
+=======
+                    IWindowManager wm = WindowManagerGlobal.getWindowManagerService();
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
                     if (enabled) {
                         wm.freezeRotation(Surface.ROTATION_0);
                     } else {
@@ -122,6 +161,7 @@ public final class RotationPolicy {
     }
 
     /**
+<<<<<<< HEAD
      * Registers a listener for rotation policy changes.
      */
     public static void registerRotationPolicyListener(Context context,
@@ -132,6 +172,27 @@ public final class RotationPolicy {
         context.getContentResolver().registerContentObserver(Settings.System.getUriFor(
                 Settings.System.HIDE_ROTATION_LOCK_TOGGLE_FOR_ACCESSIBILITY),
                 false, listener.mObserver);
+=======
+     * Registers a listener for rotation policy changes affecting the caller's user
+     */
+    public static void registerRotationPolicyListener(Context context,
+            RotationPolicyListener listener) {
+        registerRotationPolicyListener(context, listener, UserHandle.getCallingUserId());
+    }
+
+    /**
+     * Registers a listener for rotation policy changes affecting a specific user,
+     * or USER_ALL for all users.
+     */
+    public static void registerRotationPolicyListener(Context context,
+            RotationPolicyListener listener, int userHandle) {
+        context.getContentResolver().registerContentObserver(Settings.System.getUriFor(
+                Settings.System.ACCELEROMETER_ROTATION),
+                false, listener.mObserver, userHandle);
+        context.getContentResolver().registerContentObserver(Settings.System.getUriFor(
+                Settings.System.HIDE_ROTATION_LOCK_TOGGLE_FOR_ACCESSIBILITY),
+                false, listener.mObserver, userHandle);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     }
 
     /**

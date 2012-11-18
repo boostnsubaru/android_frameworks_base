@@ -27,6 +27,10 @@ import android.os.Handler;
 import android.os.IBinder;
 import android.os.Parcel;
 import android.os.Parcelable;
+<<<<<<< HEAD
+=======
+import android.os.UserHandle;
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 import android.util.AndroidException;
 
 
@@ -113,8 +117,13 @@ public class IntentSender implements Parcelable {
             mWho = who;
             mHandler = handler;
         }
+<<<<<<< HEAD
         public void performReceive(Intent intent, int resultCode,
                 String data, Bundle extras, boolean serialized, boolean sticky) {
+=======
+        public void performReceive(Intent intent, int resultCode, String data,
+                Bundle extras, boolean serialized, boolean sticky, int sendingUser) {
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
             mIntent = intent;
             mResultCode = resultCode;
             mResultData = data;
@@ -204,14 +213,11 @@ public class IntentSender implements Parcelable {
     }
 
     /**
-     * Return the package name of the application that created this
-     * IntentSender, that is the identity under which you will actually be
-     * sending the Intent.  The returned string is supplied by the system, so
-     * that an application can not spoof its package.
-     *
-     * @return The package name of the PendingIntent, or null if there is
-     * none associated with it.
+<<<<<<< HEAD
+=======
+     * @deprecated Renamed to {@link #getCreatorPackage()}.
      */
+    @Deprecated
     public String getTargetPackage() {
         try {
             return ActivityManagerNative.getDefault()
@@ -223,6 +229,74 @@ public class IntentSender implements Parcelable {
     }
 
     /**
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
+     * Return the package name of the application that created this
+     * IntentSender, that is the identity under which you will actually be
+     * sending the Intent.  The returned string is supplied by the system, so
+     * that an application can not spoof its package.
+     *
+     * @return The package name of the PendingIntent, or null if there is
+     * none associated with it.
+     */
+<<<<<<< HEAD
+    public String getTargetPackage() {
+=======
+    public String getCreatorPackage() {
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
+        try {
+            return ActivityManagerNative.getDefault()
+                .getPackageForIntentSender(mTarget);
+        } catch (RemoteException e) {
+            // Should never happen.
+            return null;
+        }
+    }
+
+    /**
+<<<<<<< HEAD
+=======
+     * Return the uid of the application that created this
+     * PendingIntent, that is the identity under which you will actually be
+     * sending the Intent.  The returned integer is supplied by the system, so
+     * that an application can not spoof its uid.
+     *
+     * @return The uid of the PendingIntent, or -1 if there is
+     * none associated with it.
+     */
+    public int getCreatorUid() {
+        try {
+            return ActivityManagerNative.getDefault()
+                .getUidForIntentSender(mTarget);
+        } catch (RemoteException e) {
+            // Should never happen.
+            return -1;
+        }
+    }
+
+    /**
+     * Return the user handle of the application that created this
+     * PendingIntent, that is the user under which you will actually be
+     * sending the Intent.  The returned UserHandle is supplied by the system, so
+     * that an application can not spoof its user.  See
+     * {@link android.os.Process#myUserHandle() Process.myUserHandle()} for
+     * more explanation of user handles.
+     *
+     * @return The user handle of the PendingIntent, or null if there is
+     * none associated with it.
+     */
+    public UserHandle getCreatorUserHandle() {
+        try {
+            int uid = ActivityManagerNative.getDefault()
+                .getUidForIntentSender(mTarget);
+            return uid > 0 ? new UserHandle(UserHandle.getUserId(uid)) : null;
+        } catch (RemoteException e) {
+            // Should never happen.
+            return null;
+        }
+    }
+
+    /**
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
      * Comparison operator on two IntentSender objects, such that true
      * is returned then they both represent the same operation from the
      * same package.

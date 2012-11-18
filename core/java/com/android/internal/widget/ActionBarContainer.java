@@ -77,20 +77,122 @@ public class ActionBarContainer extends FrameLayout {
     }
 
     public void setPrimaryBackground(Drawable bg) {
+<<<<<<< HEAD
         mBackground = bg;
+=======
+        if (mBackground != null) {
+            mBackground.setCallback(null);
+            unscheduleDrawable(mBackground);
+        }
+        mBackground = bg;
+        if (bg != null) {
+            bg.setCallback(this);
+        }
+        setWillNotDraw(mIsSplit ? mSplitBackground == null :
+                mBackground == null && mStackedBackground == null);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         invalidate();
     }
 
     public void setStackedBackground(Drawable bg) {
+<<<<<<< HEAD
         mStackedBackground = bg;
+=======
+        if (mStackedBackground != null) {
+            mStackedBackground.setCallback(null);
+            unscheduleDrawable(mStackedBackground);
+        }
+        mStackedBackground = bg;
+        if (bg != null) {
+            bg.setCallback(this);
+        }
+        setWillNotDraw(mIsSplit ? mSplitBackground == null :
+                mBackground == null && mStackedBackground == null);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         invalidate();
     }
 
     public void setSplitBackground(Drawable bg) {
+<<<<<<< HEAD
         mSplitBackground = bg;
         invalidate();
     }
 
+=======
+        if (mSplitBackground != null) {
+            mSplitBackground.setCallback(null);
+            unscheduleDrawable(mSplitBackground);
+        }
+        mSplitBackground = bg;
+        if (bg != null) {
+            bg.setCallback(this);
+        }
+        setWillNotDraw(mIsSplit ? mSplitBackground == null :
+                mBackground == null && mStackedBackground == null);
+        invalidate();
+    }
+
+    @Override
+    public void setVisibility(int visibility) {
+        super.setVisibility(visibility);
+        final boolean isVisible = visibility == VISIBLE;
+        if (mBackground != null) mBackground.setVisible(isVisible, false);
+        if (mStackedBackground != null) mStackedBackground.setVisible(isVisible, false);
+        if (mSplitBackground != null) mSplitBackground.setVisible(isVisible, false);
+    }
+
+    @Override
+    protected boolean verifyDrawable(Drawable who) {
+        return (who == mBackground && !mIsSplit) || (who == mStackedBackground && mIsStacked) ||
+                (who == mSplitBackground && mIsSplit) || super.verifyDrawable(who);
+    }
+
+    @Override
+    protected void drawableStateChanged() {
+        super.drawableStateChanged();
+        if (mBackground != null && mBackground.isStateful()) {
+            mBackground.setState(getDrawableState());
+        }
+        if (mStackedBackground != null && mStackedBackground.isStateful()) {
+            mStackedBackground.setState(getDrawableState());
+        }
+        if (mSplitBackground != null && mSplitBackground.isStateful()) {
+            mSplitBackground.setState(getDrawableState());
+        }
+    }
+
+    @Override
+    public void jumpDrawablesToCurrentState() {
+        super.jumpDrawablesToCurrentState();
+        if (mBackground != null) {
+            mBackground.jumpToCurrentState();
+        }
+        if (mStackedBackground != null) {
+            mStackedBackground.jumpToCurrentState();
+        }
+        if (mSplitBackground != null) {
+            mSplitBackground.jumpToCurrentState();
+        }
+    }
+
+    /**
+     * @hide
+     */
+    @Override
+    public void onResolveDrawables(int layoutDirection) {
+        super.onResolveDrawables(layoutDirection);
+        if (mBackground != null) {
+            mBackground.setLayoutDirection(layoutDirection);
+        }
+        if (mStackedBackground != null) {
+            mStackedBackground.setLayoutDirection(layoutDirection);
+        }
+        if (mSplitBackground != null) {
+            mSplitBackground.setLayoutDirection(layoutDirection);
+        }
+    }
+
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     /**
      * Set the action bar into a "transitioning" state. While transitioning
      * the bar will block focus and touch from all of its descendants. This

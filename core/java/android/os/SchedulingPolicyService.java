@@ -33,7 +33,11 @@ public class SchedulingPolicyService extends ISchedulingPolicyService.Stub {
 
     // Minimum and maximum values allowed for requestPriority parameter prio
     private static final int PRIORITY_MIN = 1;
+<<<<<<< HEAD
     private static final int PRIORITY_MAX = 2;
+=======
+    private static final int PRIORITY_MAX = 3;
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 
     public SchedulingPolicyService() {
     }

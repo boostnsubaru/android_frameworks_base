@@ -16,7 +16,10 @@
 
 package android.content;
 
+<<<<<<< HEAD
 import com.android.internal.os.AtomicFile;
+=======
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 import com.android.internal.util.ArrayUtils;
 import com.android.internal.util.FastXmlSerializer;
 
@@ -26,6 +29,10 @@ import org.xmlpull.v1.XmlSerializer;
 
 import android.accounts.Account;
 import android.accounts.AccountAndUser;
+<<<<<<< HEAD
+=======
+import android.content.res.Resources;
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
@@ -37,7 +44,11 @@ import android.os.Message;
 import android.os.Parcel;
 import android.os.RemoteCallbackList;
 import android.os.RemoteException;
+<<<<<<< HEAD
 import android.os.SystemClock;
+=======
+import android.util.AtomicFile;
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 import android.util.Log;
 import android.util.SparseArray;
 import android.util.Xml;
@@ -337,6 +348,10 @@ public class SyncStorageEngine extends Handler {
 
     private int mNextHistoryId = 0;
     private SparseArray<Boolean> mMasterSyncAutomatically = new SparseArray<Boolean>();
+<<<<<<< HEAD
+=======
+    private boolean mDefaultMasterSyncAutomatically;
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 
     private OnSyncRequestListener mSyncRequestListener;
 
@@ -346,6 +361,12 @@ public class SyncStorageEngine extends Handler {
 
         mCal = Calendar.getInstance(TimeZone.getTimeZone("GMT+0"));
 
+<<<<<<< HEAD
+=======
+        mDefaultMasterSyncAutomatically = mContext.getResources().getBoolean(
+               com.android.internal.R.bool.config_syncstorageengine_masterSyncAutomatically);
+
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         File systemDir = new File(dataDir, "system");
         File syncDir = new File(systemDir, "sync");
         syncDir.mkdirs();
@@ -605,6 +626,7 @@ public class SyncStorageEngine extends Handler {
     public void clearAllBackoffs(SyncQueue syncQueue) {
         boolean changed = false;
         synchronized (mAuthorities) {
+<<<<<<< HEAD
             for (AccountInfo accountInfo : mAccounts.values()) {
                 for (AuthorityInfo authorityInfo : accountInfo.authorities.values()) {
                     if (authorityInfo.backoffTime != NOT_IN_BACKOFF_MODE
@@ -622,6 +644,27 @@ public class SyncStorageEngine extends Handler {
                         syncQueue.onBackoffChanged(accountInfo.accountAndUser.account,
                                 accountInfo.accountAndUser.userId, authorityInfo.authority, 0);
                         changed = true;
+=======
+            synchronized (syncQueue) {
+                for (AccountInfo accountInfo : mAccounts.values()) {
+                    for (AuthorityInfo authorityInfo : accountInfo.authorities.values()) {
+                        if (authorityInfo.backoffTime != NOT_IN_BACKOFF_MODE
+                                || authorityInfo.backoffDelay != NOT_IN_BACKOFF_MODE) {
+                            if (Log.isLoggable(TAG, Log.VERBOSE)) {
+                                Log.v(TAG, "clearAllBackoffs:"
+                                        + " authority:" + authorityInfo.authority
+                                        + " account:" + accountInfo.accountAndUser.account.name
+                                        + " user:" + accountInfo.accountAndUser.userId
+                                        + " backoffTime was: " + authorityInfo.backoffTime
+                                        + " backoffDelay was: " + authorityInfo.backoffDelay);
+                            }
+                            authorityInfo.backoffTime = NOT_IN_BACKOFF_MODE;
+                            authorityInfo.backoffDelay = NOT_IN_BACKOFF_MODE;
+                            syncQueue.onBackoffChanged(accountInfo.accountAndUser.account,
+                                    accountInfo.accountAndUser.userId, authorityInfo.authority, 0);
+                            changed = true;
+                        }
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
                     }
                 }
             }
@@ -781,7 +824,11 @@ public class SyncStorageEngine extends Handler {
     public boolean getMasterSyncAutomatically(int userId) {
         synchronized (mAuthorities) {
             Boolean auto = mMasterSyncAutomatically.get(userId);
+<<<<<<< HEAD
             return auto == null ? true : auto;
+=======
+            return auto == null ? mDefaultMasterSyncAutomatically : auto;
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         }
     }
 

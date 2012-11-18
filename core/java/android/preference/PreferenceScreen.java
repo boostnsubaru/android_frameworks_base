@@ -75,6 +75,16 @@ import android.widget.ListView;
  * clicked will show another screen of preferences such as "Prefer WiFi" (and
  * the other preferences that are children of the "second_preferencescreen" tag).
  * 
+<<<<<<< HEAD
+=======
+ * <div class="special reference">
+ * <h3>Developer Guides</h3>
+ * <p>For information about building a settings UI with Preferences,
+ * read the <a href="{@docRoot}guide/topics/ui/settings.html">Settings</a>
+ * guide.</p>
+ * </div>
+ *
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
  * @see PreferenceCategory
  */
 public final class PreferenceScreen extends PreferenceGroup implements AdapterView.OnItemClickListener,

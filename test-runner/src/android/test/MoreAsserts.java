@@ -158,7 +158,11 @@ public final class MoreAsserts {
      * Asserts that array {@code actual} is the same size and every element
      * is the same as those in array {@code expected}. Note that this uses
      * {@code equals()} instead of {@code ==} to compare the objects.
+<<<<<<< HEAD
      * {@code null} will be considered equal to {code null} (unlike SQL).
+=======
+     * {@code null} will be considered equal to {@code null} (unlike SQL).
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
      * On failure, message indicates first specific element mismatch.
      */
     public static void assertEquals(

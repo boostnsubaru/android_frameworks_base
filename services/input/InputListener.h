@@ -88,6 +88,10 @@ struct NotifyMotionArgs : public NotifyArgs {
     int32_t metaState;
     int32_t buttonState;
     int32_t edgeFlags;
+<<<<<<< HEAD
+=======
+    int32_t displayId;
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     uint32_t pointerCount;
     PointerProperties pointerProperties[MAX_POINTERS];
     PointerCoords pointerCoords[MAX_POINTERS];
@@ -99,7 +103,11 @@ struct NotifyMotionArgs : public NotifyArgs {
 
     NotifyMotionArgs(nsecs_t eventTime, int32_t deviceId, uint32_t source, uint32_t policyFlags,
             int32_t action, int32_t flags, int32_t metaState, int32_t buttonState,
+<<<<<<< HEAD
             int32_t edgeFlags, uint32_t pointerCount,
+=======
+            int32_t edgeFlags, int32_t displayId, uint32_t pointerCount,
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
             const PointerProperties* pointerProperties, const PointerCoords* pointerCoords,
             float xPrecision, float yPrecision, nsecs_t downTime);
 
@@ -115,13 +123,22 @@ struct NotifyMotionArgs : public NotifyArgs {
 struct NotifySwitchArgs : public NotifyArgs {
     nsecs_t eventTime;
     uint32_t policyFlags;
+<<<<<<< HEAD
     int32_t switchCode;
     int32_t switchValue;
+=======
+    uint32_t switchValues;
+    uint32_t switchMask;
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 
     inline NotifySwitchArgs() { }
 
     NotifySwitchArgs(nsecs_t eventTime, uint32_t policyFlags,
+<<<<<<< HEAD
             int32_t switchCode, int32_t switchValue);
+=======
+            uint32_t switchValues, uint32_t switchMask);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 
     NotifySwitchArgs(const NotifySwitchArgs& other);
 

@@ -34,7 +34,11 @@ import java.util.Locale;
  */
 public class WebSettingsClassic extends WebSettings {
     // TODO: Keep this up to date
+<<<<<<< HEAD
     private static final String PREVIOUS_VERSION = "4.0.4";
+=======
+    private static final String PREVIOUS_VERSION = "4.1.1";
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 
     // WebView associated with this WebSettings.
     private WebViewClassic mWebView;
@@ -86,7 +90,10 @@ public class WebSettingsClassic extends WebSettings {
     private long            mMaximumDecodedImageSize = 0; // 0 means default
     private boolean         mPrivateBrowsingEnabled = false;
     private boolean         mSyntheticLinksEnabled = true;
+<<<<<<< HEAD
     private boolean         mMediaPreloadEnabled = true;
+=======
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     // HTML5 API flags
     private boolean         mAppCacheEnabled = false;
     private boolean         mDatabaseEnabled = false;
@@ -117,6 +124,10 @@ public class WebSettingsClassic extends WebSettings {
     private boolean         mNeedInitialFocus = true;
     private boolean         mNavDump = false;
     private boolean         mSupportZoom = true;
+<<<<<<< HEAD
+=======
+    private boolean         mMediaPlaybackRequiresUserGesture = true;
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     private boolean         mBuiltInZoomControls = false;
     private boolean         mDisplayZoomControls = true;
     private boolean         mAllowFileAccess = true;
@@ -125,7 +136,10 @@ public class WebSettingsClassic extends WebSettings {
     private boolean         mEnableSmoothTransition = false;
     private boolean         mForceUserScalable = false;
     private boolean         mPasswordEchoEnabled = true;
+<<<<<<< HEAD
     private boolean         mWebGLEnabled = true;
+=======
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 
     // AutoFill Profile data
     public static class AutoFillProfile {
@@ -375,6 +389,24 @@ public class WebSettingsClassic extends WebSettings {
         synchronized(sLockForLocaleSettings) {
             locale = sLocale;
         }
+<<<<<<< HEAD
+=======
+        return getDefaultUserAgentForLocale(mContext, locale);
+    }
+
+    /**
+     * Returns the default User-Agent used by a WebView.
+     * An instance of WebView could use a different User-Agent if a call
+     * is made to {@link WebSettings#setUserAgent(int)} or
+     * {@link WebSettings#setUserAgentString(String)}.
+     *
+     * @param context a Context object used to access application assets
+     * @param locale The Locale to use in the User-Agent string.
+     * @see WebViewFactoryProvider#getDefaultUserAgent(Context)
+     * @see WebView#getDefaultUserAgent(Context)
+     */
+    public static String getDefaultUserAgentForLocale(Context context, Locale locale) {
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         StringBuffer buffer = new StringBuffer();
         // Add version
         final String version = Build.VERSION.RELEASE;
@@ -418,9 +450,15 @@ public class WebSettingsClassic extends WebSettings {
             buffer.append(" Build/");
             buffer.append(id);
         }
+<<<<<<< HEAD
         String mobile = mContext.getResources().getText(
             com.android.internal.R.string.web_user_agent_target_content).toString();
         final String base = mContext.getResources().getText(
+=======
+        String mobile = context.getResources().getText(
+            com.android.internal.R.string.web_user_agent_target_content).toString();
+        final String base = context.getResources().getText(
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
                 com.android.internal.R.string.web_user_agent).toString();
         return String.format(base, buffer, mobile);
     }
@@ -461,6 +499,28 @@ public class WebSettingsClassic extends WebSettings {
     }
 
     /**
+<<<<<<< HEAD
+=======
+     * @see android.webkit.WebSettings#setMediaPlaybackRequiresUserGesture(boolean)
+     */
+    @Override
+    public void setMediaPlaybackRequiresUserGesture(boolean support) {
+        if (mMediaPlaybackRequiresUserGesture != support) {
+            mMediaPlaybackRequiresUserGesture = support;
+            postSync();
+        }
+    }
+
+    /**
+     * @see android.webkit.WebSettings#getMediaPlaybackRequiresUserGesture()
+     */
+    @Override
+    public boolean getMediaPlaybackRequiresUserGesture() {
+        return mMediaPlaybackRequiresUserGesture;
+    }
+
+    /**
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
      * @see android.webkit.WebSettings#setBuiltInZoomControls(boolean)
      */
     @Override
@@ -632,6 +692,7 @@ public class WebSettingsClassic extends WebSettings {
     }
 
     /**
+<<<<<<< HEAD
      * @see android.webkit.WebSettings#setTextSize(android.webkit.WebSettingsClassic.TextSize)
      */
     @Override
@@ -660,6 +721,8 @@ public class WebSettingsClassic extends WebSettings {
     }
 
     /**
+=======
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
      * Set the double-tap zoom of the page in percent. Default is 100.
      * @param doubleTapZoom A percent value for increasing or decreasing the double-tap zoom.
      */
@@ -1117,6 +1180,10 @@ public class WebSettingsClassic extends WebSettings {
         if (mJavaScriptEnabled != flag) {
             mJavaScriptEnabled = flag;
             postSync();
+<<<<<<< HEAD
+=======
+            mWebView.updateJavaScriptEnabled(flag);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         }
     }
 
@@ -1624,6 +1691,7 @@ public class WebSettingsClassic extends WebSettings {
     }
 
     /**
+<<<<<<< HEAD
      * @hide
      */
     public synchronized boolean isWebGLAvailable() {
@@ -1642,6 +1710,8 @@ public class WebSettingsClassic extends WebSettings {
     }
 
     /**
+=======
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
      * Sets whether viewport metatag can disable zooming.
      * @param flag Whether or not to forceably enable user scalable.
      */
@@ -1656,6 +1726,7 @@ public class WebSettingsClassic extends WebSettings {
         }
     }
 
+<<<<<<< HEAD
     public synchronized void setMediaPreloadEnabled(boolean flag) {
         if (mMediaPreloadEnabled != flag) {
             mMediaPreloadEnabled = flag;
@@ -1663,6 +1734,8 @@ public class WebSettingsClassic extends WebSettings {
         }
     }
 
+=======
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     public synchronized void setAutoFillEnabled(boolean enabled) {
         // AutoFill is always disabled in private browsing mode.
         boolean autoFillEnabled = enabled && !mPrivateBrowsingEnabled;
@@ -1760,5 +1833,8 @@ public class WebSettingsClassic extends WebSettings {
 
     // Synchronize the native and java settings.
     private native void nativeSync(int nativeFrame);
+<<<<<<< HEAD
     private native boolean nativeIsWebGLAvailable();
+=======
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 }

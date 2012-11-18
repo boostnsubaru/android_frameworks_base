@@ -17,6 +17,7 @@
 package com.android.server;
 
 import android.app.Activity;
+<<<<<<< HEAD
 import android.content.BroadcastReceiver;
 import android.content.Intent;
 import android.os.Bundle;
@@ -24,6 +25,18 @@ import android.os.Handler;
 import android.util.Slog;
 
 import com.android.server.pm.ShutdownThread;
+=======
+import android.content.Context;
+import android.content.Intent;
+import android.os.Bundle;
+import android.os.Handler;
+import android.os.IPowerManager;
+import android.os.RemoteException;
+import android.os.ServiceManager;
+import android.util.Slog;
+
+import com.android.server.power.ShutdownThread;
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 
 public class ShutdownActivity extends Activity {
 
@@ -40,6 +53,7 @@ public class ShutdownActivity extends Activity {
         mConfirm = intent.getBooleanExtra(Intent.EXTRA_KEY_CONFIRM, false);
         Slog.i(TAG, "onCreate(): confirm=" + mConfirm);
 
+<<<<<<< HEAD
         Handler h = new Handler();
         h.post(new Runnable() {
             public void run() {
@@ -50,5 +64,29 @@ public class ShutdownActivity extends Activity {
                 }
             }
         });
+=======
+        Thread thr = new Thread("ShutdownActivity") {
+            @Override
+            public void run() {
+                IPowerManager pm = IPowerManager.Stub.asInterface(
+                        ServiceManager.getService(Context.POWER_SERVICE));
+                try {
+                    if (mReboot) {
+                        pm.reboot(mConfirm, null, false);
+                    } else {
+                        pm.shutdown(mConfirm, false);
+                    }
+                } catch (RemoteException e) {
+                }
+            }
+        };
+        thr.start();
+        finish();
+        // Wait for us to tell the power manager to shutdown.
+        try {
+            thr.join();
+        } catch (InterruptedException e) {
+        }
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     }
 }

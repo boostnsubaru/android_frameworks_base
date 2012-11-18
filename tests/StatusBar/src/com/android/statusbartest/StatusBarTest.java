@@ -16,6 +16,7 @@
 
 package com.android.statusbartest;
 
+<<<<<<< HEAD
 import android.app.ListActivity;
 import android.app.Notification;
 import android.app.NotificationManager;
@@ -39,6 +40,17 @@ import android.widget.RemoteViews;
 import android.widget.Toast;
 import android.os.PowerManager;
 import android.view.View;
+=======
+import android.app.Notification;
+import android.app.NotificationManager;
+import android.view.View;
+import android.content.Intent;
+import android.app.PendingIntent;
+import android.app.StatusBarManager;
+import android.os.Handler;
+import android.util.Log;
+import android.os.SystemClock;
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 import android.view.Window;
 import android.view.WindowManager;
 
@@ -298,6 +310,7 @@ public class StatusBarTest extends TestActivity
                     }, 3000);
             }
         },
+<<<<<<< HEAD
         new Test("Expand") {
             public void run() {
                 mStatusBarManager.expand();
@@ -308,15 +321,49 @@ public class StatusBarTest extends TestActivity
                 mHandler.postDelayed(new Runnable() {
                         public void run() {
                             mStatusBarManager.expand();
+=======
+        new Test("Expand notifications") {
+            public void run() {
+                mStatusBarManager.expandNotificationsPanel();
+            }
+        },
+        new Test(" ... in 3 sec.") {
+            public void run() {
+                mHandler.postDelayed(new Runnable() {
+                        public void run() {
+                            mStatusBarManager.expandNotificationsPanel();
                         }
                     }, 3000);
             }
         },
+        new Test("Expand settings") {
+            public void run() {
+                mStatusBarManager.expandSettingsPanel();
+            }
+        },
+        new Test(" ... in 3 sec.") {
+            public void run() {
+                mHandler.postDelayed(new Runnable() {
+                        public void run() {
+                            mStatusBarManager.expandSettingsPanel();
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
+                        }
+                    }, 3000);
+            }
+        },
+<<<<<<< HEAD
         new Test("Collapse in 3 sec.") {
             public void run() {
                 mHandler.postDelayed(new Runnable() {
                         public void run() {
                             mStatusBarManager.collapse();
+=======
+        new Test("Collapse panels in 3 sec.") {
+            public void run() {
+                mHandler.postDelayed(new Runnable() {
+                        public void run() {
+                            mStatusBarManager.collapsePanels();
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
                         }
                     }, 3000);
             }

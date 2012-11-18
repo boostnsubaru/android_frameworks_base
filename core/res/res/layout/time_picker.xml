@@ -25,6 +25,7 @@
     android:layout_width="wrap_content"
     android:layout_height="wrap_content">
 
+<<<<<<< HEAD
     <!-- hour -->
     <NumberPicker
         android:id="@+id/hour"
@@ -43,6 +44,33 @@
         android:focusable="true"
         android:focusableInTouchMode="true"
         />
+=======
+    <LinearLayout android:orientation="horizontal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layoutDirection="ltr">
+
+        <!-- hour -->
+        <NumberPicker
+            android:id="@+id/hour"
+            android:layout_width="70dip"
+            android:layout_height="wrap_content"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
+            />
+
+        <!-- minute -->
+        <NumberPicker
+            android:id="@+id/minute"
+            android:layout_width="70dip"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="5dip"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
+            />
+
+    </LinearLayout>
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 
     <!-- AM / PM -->
     <Button
@@ -50,9 +78,15 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="43dip"
+<<<<<<< HEAD
         android:layout_marginLeft="5dip"
         android:paddingLeft="20dip"
         android:paddingRight="20dip"
+=======
+        android:layout_marginStart="5dip"
+        android:paddingStart="20dip"
+        android:paddingEnd="20dip"
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         style="?android:attr/textAppearanceLargeInverse"
         android:textColor="@android:color/primary_text_light_nodisable"
         />

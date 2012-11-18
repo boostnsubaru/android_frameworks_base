@@ -51,7 +51,11 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@android:id/text1"
+<<<<<<< HEAD
             android:layout_alignLeft="@android:id/text1" />
+=======
+            android:layout_alignStart="@android:id/text1" />
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     
     </TwoLineListItem>
 

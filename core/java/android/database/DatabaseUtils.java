@@ -50,9 +50,12 @@ public class DatabaseUtils {
     private static final String TAG = "DatabaseUtils";
 
     private static final boolean DEBUG = false;
+<<<<<<< HEAD
     private static final boolean LOCAL_LOGV = false;
 
     private static final String[] countProjection = new String[]{"count(*)"};
+=======
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 
     /** One of the values returned by {@link #getSqlStatementType(String)}. */
     public static final int STATEMENT_SELECT = 1;
@@ -963,10 +966,22 @@ public class DatabaseUtils {
     }
 
     /**
+<<<<<<< HEAD
      * This class allows users to do multiple inserts into a table but
      * compile the SQL insert statement only once, which may increase
      * performance.
      */
+=======
+     * This class allows users to do multiple inserts into a table using
+     * the same statement.
+     * <p>
+     * This class is not thread-safe.
+     * </p>
+     *
+     * @deprecated Use {@link SQLiteStatement} instead.
+     */
+    @Deprecated
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     public static class InsertHelper {
         private final SQLiteDatabase mDb;
         private final String mTableName;
@@ -983,6 +998,16 @@ public class DatabaseUtils {
          * table_info(...)" command that we depend on.
          */
         public static final int TABLE_INFO_PRAGMA_COLUMNNAME_INDEX = 1;
+<<<<<<< HEAD
+=======
+
+        /**
+         * This field was accidentally exposed in earlier versions of the platform
+         * so we can hide it but we can't remove it.
+         *
+         * @hide
+         */
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         public static final int TABLE_INFO_PRAGMA_DEFAULT_INDEX = 4;
 
         /**
@@ -1036,7 +1061,11 @@ public class DatabaseUtils {
             sb.append(sbv);
 
             mInsertSQL = sb.toString();
+<<<<<<< HEAD
             if (LOCAL_LOGV) Log.v(TAG, "insert statement is " + mInsertSQL);
+=======
+            if (DEBUG) Log.v(TAG, "insert statement is " + mInsertSQL);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         }
 
         private SQLiteStatement getStatement(boolean allowReplace) throws SQLException {
@@ -1069,24 +1098,54 @@ public class DatabaseUtils {
          * @return the row ID of the newly inserted row, or -1 if an
          * error occurred
          */
+<<<<<<< HEAD
         private synchronized long insertInternal(ContentValues values, boolean allowReplace) {
             try {
                 SQLiteStatement stmt = getStatement(allowReplace);
                 stmt.clearBindings();
                 if (LOCAL_LOGV) Log.v(TAG, "--- inserting in table " + mTableName);
+=======
+        private long insertInternal(ContentValues values, boolean allowReplace) {
+            // Start a transaction even though we don't really need one.
+            // This is to help maintain compatibility with applications that
+            // access InsertHelper from multiple threads even though they never should have.
+            // The original code used to lock the InsertHelper itself which was prone
+            // to deadlocks.  Starting a transaction achieves the same mutual exclusion
+            // effect as grabbing a lock but without the potential for deadlocks.
+            mDb.beginTransactionNonExclusive();
+            try {
+                SQLiteStatement stmt = getStatement(allowReplace);
+                stmt.clearBindings();
+                if (DEBUG) Log.v(TAG, "--- inserting in table " + mTableName);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
                 for (Map.Entry<String, Object> e: values.valueSet()) {
                     final String key = e.getKey();
                     int i = getColumnIndex(key);
                     DatabaseUtils.bindObjectToProgram(stmt, i, e.getValue());
+<<<<<<< HEAD
                     if (LOCAL_LOGV) {
+=======
+                    if (DEBUG) {
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
                         Log.v(TAG, "binding " + e.getValue() + " to column " +
                               i + " (" + key + ")");
                     }
                 }
+<<<<<<< HEAD
                 return stmt.executeInsert();
             } catch (SQLException e) {
                 Log.e(TAG, "Error inserting " + values + " into table  " + mTableName, e);
                 return -1;
+=======
+                long result = stmt.executeInsert();
+                mDb.setTransactionSuccessful();
+                return result;
+            } catch (SQLException e) {
+                Log.e(TAG, "Error inserting " + values + " into table  " + mTableName, e);
+                return -1;
+            } finally {
+                mDb.endTransaction();
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
             }
         }
 
@@ -1223,7 +1282,11 @@ public class DatabaseUtils {
                         + "execute");
             }
             try {
+<<<<<<< HEAD
                 if (LOCAL_LOGV) Log.v(TAG, "--- doing insert or replace in table " + mTableName);
+=======
+                if (DEBUG) Log.v(TAG, "--- doing insert or replace in table " + mTableName);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
                 return mPreparedStatement.executeInsert();
             } catch (SQLException e) {
                 Log.e(TAG, "Error executing InsertHelper with table " + mTableName, e);

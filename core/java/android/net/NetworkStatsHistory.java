@@ -177,6 +177,15 @@ public class NetworkStatsHistory implements Parcelable {
                 throw new ProtocolException("unexpected version: " + version);
             }
         }
+<<<<<<< HEAD
+=======
+
+        if (bucketStart.length != bucketCount || rxBytes.length != bucketCount
+                || rxPackets.length != bucketCount || txBytes.length != bucketCount
+                || txPackets.length != bucketCount || operations.length != bucketCount) {
+            throw new ProtocolException("Mismatched history lengths");
+        }
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     }
 
     public void writeToStream(DataOutputStream out) throws IOException {

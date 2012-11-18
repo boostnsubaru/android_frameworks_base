@@ -23,6 +23,10 @@ import android.content.pm.RegisteredServicesCache.ServiceInfo;
 import android.content.pm.RegisteredServicesCacheListener;
 import android.os.Bundle;
 import android.os.Handler;
+<<<<<<< HEAD
+=======
+import android.os.UserHandle;
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 import android.test.AndroidTestCase;
 import android.test.IsolatedContext;
 import android.test.RenamingDelegatingContext;
@@ -196,7 +200,13 @@ public class AccountManagerServiceTest extends AndroidTestCase {
             mServices.add(new ServiceInfo<AuthenticatorDescription>(d2, null, 0));
         }
 
+<<<<<<< HEAD
         public ServiceInfo<AuthenticatorDescription> getServiceInfo(AuthenticatorDescription type) {
+=======
+        @Override
+        public ServiceInfo<AuthenticatorDescription> getServiceInfo(
+                AuthenticatorDescription type, int userId) {
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
             for (ServiceInfo<AuthenticatorDescription> service : mServices) {
                 if (service.type.equals(type)) {
                     return service;
@@ -205,6 +215,7 @@ public class AccountManagerServiceTest extends AndroidTestCase {
             return null;
         }
 
+<<<<<<< HEAD
         public Collection<ServiceInfo<AuthenticatorDescription>> getAllServices() {
             return mServices;
         }
@@ -212,14 +223,33 @@ public class AccountManagerServiceTest extends AndroidTestCase {
         public void dump(final FileDescriptor fd, final PrintWriter fout, final String[] args) {
         }
 
+=======
+        @Override
+        public Collection<ServiceInfo<AuthenticatorDescription>> getAllServices(int userId) {
+            return mServices;
+        }
+
+        @Override
+        public void dump(
+                final FileDescriptor fd, final PrintWriter fout, final String[] args, int userId) {
+        }
+
+        @Override
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         public void setListener(
                 final RegisteredServicesCacheListener<AuthenticatorDescription> listener,
                 final Handler handler) {
         }
 
+<<<<<<< HEAD
         @Override
         public void generateServicesMap() {
         }
+=======
+		@Override
+		public void invalidateCache(int userId) {
+		}
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     }
 
     static public class MyMockContext extends MockContext {
@@ -243,11 +273,19 @@ public class AccountManagerServiceTest extends AndroidTestCase {
         }
 
         @Override
+<<<<<<< HEAD
         protected void installNotification(final int notificationId, final Notification n) {
         }
 
         @Override
         protected void cancelNotification(final int id) {
+=======
+        protected void installNotification(final int notificationId, final Notification n, UserHandle user) {
+        }
+
+        @Override
+        protected void cancelNotification(final int id, UserHandle user) {
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         }
     }
 }

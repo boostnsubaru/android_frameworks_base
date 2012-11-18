@@ -49,6 +49,7 @@ namespace uirenderer {
 
 Caches::Caches(): Singleton<Caches>(), mInitialized(false) {
     init();
+<<<<<<< HEAD
     initExtensions();
     initConstraints();
 
@@ -58,6 +59,15 @@ Caches::Caches(): Singleton<Caches>(), mInitialized(false) {
 #if RENDER_LAYERS_AS_REGIONS
     INIT_LOGD("Layers will be composited as regions");
 #endif
+=======
+    initFont();
+    initExtensions();
+    initConstraints();
+    initProperties();
+
+    mDebugLevel = readDebugLevel();
+    ALOGD("Enabling debug mode %d", mDebugLevel);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 }
 
 void Caches::init() {
@@ -70,10 +80,19 @@ void Caches::init() {
     mCurrentBuffer = meshBuffer;
     mCurrentIndicesBuffer = 0;
     mCurrentPositionPointer = this;
+<<<<<<< HEAD
+=======
+    mCurrentPositionStride = 0;
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     mCurrentTexCoordsPointer = this;
 
     mTexCoordsArrayEnabled = false;
 
+<<<<<<< HEAD
+=======
+    glDisable(GL_SCISSOR_TEST);
+    scissorEnabled = false;
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     mScissorX = mScissorY = mScissorWidth = mScissorHeight = 0;
 
     glActiveTexture(gTextureUnits[0]);
@@ -86,9 +105,21 @@ void Caches::init() {
     lastDstMode = GL_ZERO;
     currentProgram = NULL;
 
+<<<<<<< HEAD
     mInitialized = true;
 }
 
+=======
+    mFunctorsCount = 0;
+
+    mInitialized = true;
+}
+
+void Caches::initFont() {
+    fontRenderer = GammaFontRenderer::createRenderer();
+}
+
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 void Caches::initExtensions() {
     if (extensions.hasDebugMarker()) {
         eventMark = glInsertEventMarkerEXT;
@@ -119,6 +150,26 @@ void Caches::initConstraints() {
     glGetIntegerv(GL_MAX_TEXTURE_SIZE, &maxTextureSize);
 }
 
+<<<<<<< HEAD
+=======
+void Caches::initProperties() {
+    char property[PROPERTY_VALUE_MAX];
+    if (property_get(PROPERTY_DEBUG_LAYERS_UPDATES, property, NULL) > 0) {
+        INIT_LOGD("  Layers updates debug enabled: %s", property);
+        debugLayersUpdates = !strcmp(property, "true");
+    } else {
+        debugLayersUpdates = false;
+    }
+
+    if (property_get(PROPERTY_DEBUG_OVERDRAW, property, NULL) > 0) {
+        INIT_LOGD("  Overdraw debug enabled: %s", property);
+        debugOverdraw = !strcmp(property, "true");
+    } else {
+        debugOverdraw = false;
+    }
+}
+
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 void Caches::terminate() {
     if (!mInitialized) return;
 
@@ -169,8 +220,13 @@ void Caches::dumpMemoryUsage(String8 &log) {
             arcShapeCache.getSize(), arcShapeCache.getMaxSize());
     log.appendFormat("  TextDropShadowCache  %8d / %8d\n", dropShadowCache.getSize(),
             dropShadowCache.getMaxSize());
+<<<<<<< HEAD
     for (uint32_t i = 0; i < fontRenderer.getFontRendererCount(); i++) {
         const uint32_t size = fontRenderer.getFontRendererSize(i);
+=======
+    for (uint32_t i = 0; i < fontRenderer->getFontRendererCount(); i++) {
+        const uint32_t size = fontRenderer->getFontRendererSize(i);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         log.appendFormat("  FontRenderer %d       %8d / %8d\n", i, size, size);
     }
     log.appendFormat("Other:\n");
@@ -190,8 +246,13 @@ void Caches::dumpMemoryUsage(String8 &log) {
     total += ovalShapeCache.getSize();
     total += rectShapeCache.getSize();
     total += arcShapeCache.getSize();
+<<<<<<< HEAD
     for (uint32_t i = 0; i < fontRenderer.getFontRendererCount(); i++) {
         total += fontRenderer.getFontRendererSize(i);
+=======
+    for (uint32_t i = 0; i < fontRenderer->getFontRendererCount(); i++) {
+        total += fontRenderer->getFontRendererSize(i);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     }
 
     log.appendFormat("Total memory usage:\n");
@@ -206,6 +267,7 @@ void Caches::clearGarbage() {
     textureCache.clearGarbage();
     pathCache.clearGarbage();
 
+<<<<<<< HEAD
     Mutex::Autolock _l(mGarbageLock);
 
     size_t count = mLayerGarbage.size();
@@ -221,6 +283,31 @@ void Caches::clearGarbage() {
         delete displayList;
     }
     mDisplayListGarbage.clear();
+=======
+    Vector<DisplayList*> displayLists;
+    Vector<Layer*> layers;
+
+    { // scope for the lock
+        Mutex::Autolock _l(mGarbageLock);
+        displayLists = mDisplayListGarbage;
+        layers = mLayerGarbage;
+        mDisplayListGarbage.clear();
+        mLayerGarbage.clear();
+    }
+
+    size_t count = displayLists.size();
+    for (size_t i = 0; i < count; i++) {
+        DisplayList* displayList = displayLists.itemAt(i);
+        delete displayList;
+    }
+
+    count = layers.size();
+    for (size_t i = 0; i < count; i++) {
+        Layer* layer = layers.itemAt(i);
+        delete layer;
+    }
+    layers.clear();
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 }
 
 void Caches::deleteLayerDeferred(Layer* layer) {
@@ -236,18 +323,29 @@ void Caches::deleteDisplayListDeferred(DisplayList* displayList) {
 void Caches::flush(FlushMode mode) {
     FLUSH_LOGD("Flushing caches (mode %d)", mode);
 
+<<<<<<< HEAD
     clearGarbage();
 
+=======
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     switch (mode) {
         case kFlushMode_Full:
             textureCache.clear();
             patchCache.clear();
             dropShadowCache.clear();
             gradientCache.clear();
+<<<<<<< HEAD
             fontRenderer.clear();
             // fall through
         case kFlushMode_Moderate:
             fontRenderer.flush();
+=======
+            fontRenderer->clear();
+            dither.clear();
+            // fall through
+        case kFlushMode_Moderate:
+            fontRenderer->flush();
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
             textureCache.flush();
             pathCache.clear();
             roundRectShapeCache.clear();
@@ -260,6 +358,11 @@ void Caches::flush(FlushMode mode) {
             layerCache.clear();
             break;
     }
+<<<<<<< HEAD
+=======
+
+    clearGarbage();
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -306,6 +409,7 @@ bool Caches::unbindIndicesBuffer() {
     return false;
 }
 
+<<<<<<< HEAD
 void Caches::bindPositionVertexPointer(bool force, GLuint slot, GLvoid* vertices, GLsizei stride) {
     if (force || vertices != mCurrentPositionPointer) {
         glVertexAttribPointer(slot, 2, GL_FLOAT, GL_FALSE, stride, vertices);
@@ -315,6 +419,24 @@ void Caches::bindPositionVertexPointer(bool force, GLuint slot, GLvoid* vertices
 
 void Caches::bindTexCoordsVertexPointer(bool force, GLuint slot, GLvoid* vertices) {
     if (force || vertices != mCurrentTexCoordsPointer) {
+=======
+///////////////////////////////////////////////////////////////////////////////
+// Meshes and textures
+///////////////////////////////////////////////////////////////////////////////
+
+void Caches::bindPositionVertexPointer(bool force, GLvoid* vertices, GLsizei stride) {
+    if (force || vertices != mCurrentPositionPointer || stride != mCurrentPositionStride) {
+        GLuint slot = currentProgram->position;
+        glVertexAttribPointer(slot, 2, GL_FLOAT, GL_FALSE, stride, vertices);
+        mCurrentPositionPointer = vertices;
+        mCurrentPositionStride = stride;
+    }
+}
+
+void Caches::bindTexCoordsVertexPointer(bool force, GLvoid* vertices) {
+    if (force || vertices != mCurrentTexCoordsPointer) {
+        GLuint slot = currentProgram->texCoords;
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         glVertexAttribPointer(slot, 2, GL_FLOAT, GL_FALSE, gMeshStride, vertices);
         mCurrentTexCoordsPointer = vertices;
     }
@@ -351,14 +473,72 @@ void Caches::activeTexture(GLuint textureUnit) {
     }
 }
 
+<<<<<<< HEAD
 void Caches::setScissor(GLint x, GLint y, GLint width, GLint height) {
     if (x != mScissorX || y != mScissorY || width != mScissorWidth || height != mScissorHeight) {
+=======
+///////////////////////////////////////////////////////////////////////////////
+// Scissor
+///////////////////////////////////////////////////////////////////////////////
+
+bool Caches::setScissor(GLint x, GLint y, GLint width, GLint height) {
+    if (scissorEnabled && (x != mScissorX || y != mScissorY ||
+            width != mScissorWidth || height != mScissorHeight)) {
+
+        if (x < 0) {
+            width += x;
+            x = 0;
+        }
+        if (y < 0) {
+            height += y;
+            y = 0;
+        }
+        if (width < 0) {
+            width = 0;
+        }
+        if (height < 0) {
+            height = 0;
+        }
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         glScissor(x, y, width, height);
 
         mScissorX = x;
         mScissorY = y;
         mScissorWidth = width;
         mScissorHeight = height;
+<<<<<<< HEAD
+=======
+
+        return true;
+    }
+    return false;
+}
+
+bool Caches::enableScissor() {
+    if (!scissorEnabled) {
+        glEnable(GL_SCISSOR_TEST);
+        scissorEnabled = true;
+        resetScissor();
+        return true;
+    }
+    return false;
+}
+
+bool Caches::disableScissor() {
+    if (scissorEnabled) {
+        glDisable(GL_SCISSOR_TEST);
+        scissorEnabled = false;
+        return true;
+    }
+    return false;
+}
+
+void Caches::setScissorEnabled(bool enabled) {
+    if (scissorEnabled != enabled) {
+        if (enabled) glEnable(GL_SCISSOR_TEST);
+        else glDisable(GL_SCISSOR_TEST);
+        scissorEnabled = enabled;
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     }
 }
 
@@ -366,6 +546,45 @@ void Caches::resetScissor() {
     mScissorX = mScissorY = mScissorWidth = mScissorHeight = 0;
 }
 
+<<<<<<< HEAD
+=======
+///////////////////////////////////////////////////////////////////////////////
+// Tiling
+///////////////////////////////////////////////////////////////////////////////
+
+void Caches::startTiling(GLuint x, GLuint y, GLuint width, GLuint height, bool opaque) {
+    if (extensions.hasTiledRendering() && !debugOverdraw) {
+        glStartTilingQCOM(x, y, width, height, (opaque ? GL_NONE : GL_COLOR_BUFFER_BIT0_QCOM));
+    }
+}
+
+void Caches::endTiling() {
+    if (extensions.hasTiledRendering() && !debugOverdraw) {
+        glEndTilingQCOM(GL_COLOR_BUFFER_BIT0_QCOM);
+    }
+}
+
+bool Caches::hasRegisteredFunctors() {
+    return mFunctorsCount > 0;
+}
+
+void Caches::registerFunctors(uint32_t functorCount) {
+    mFunctorsCount += functorCount;
+}
+
+void Caches::unregisterFunctors(uint32_t functorCount) {
+    if (functorCount > mFunctorsCount) {
+        mFunctorsCount = 0;
+    } else {
+        mFunctorsCount -= functorCount;
+    }
+}
+
+///////////////////////////////////////////////////////////////////////////////
+// Regions
+///////////////////////////////////////////////////////////////////////////////
+
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 TextureVertex* Caches::getRegionMesh() {
     // Create the mesh, 2 triangles and 4 vertices per rectangle in the region
     if (!mRegionMesh) {

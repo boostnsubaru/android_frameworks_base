@@ -35,7 +35,12 @@ LOCAL_C_INCLUDES += \
     $(JNI_H_INCLUDE) \
     $(TOP)/frameworks/av/drm/libdrmframework/include \
     $(TOP)/frameworks/av/drm/libdrmframework/plugins/common/include \
+<<<<<<< HEAD
     $(TOP)/frameworks/av/include
+=======
+    $(TOP)/frameworks/av/include \
+    $(TOP)/libcore/include
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 
 
 

@@ -1,6 +1,9 @@
 /*
  * Copyright (C) 2010 The Android Open Source Project
+<<<<<<< HEAD
  * Copyright (c) 2012, Code Aurora Forum. All rights reserved.
+=======
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -71,15 +74,21 @@ class HTML5Audio extends Handler
     private boolean mLoopEnabled = false;
     private boolean mProcessingOnEnd = false;
     private Context mContext;
+<<<<<<< HEAD
     // The handler for WebCore thread messages;
     private Handler mWebCoreHandler;
+=======
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 
     // Timer thread -> UI thread
     private static final int TIMEUPDATE = 100;
 
+<<<<<<< HEAD
     // AudioManager callback thread -> Webcore thread
     private static final int AUDIOFOCUS_CHANGED = 200;
 
+=======
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     private static final String COOKIE = "Cookie";
     private static final String HIDE_URL_LOGS = "x-hide-urls-from-log";
 
@@ -194,7 +203,10 @@ class HTML5Audio extends Handler
     public HTML5Audio(WebViewCore webViewCore, int nativePtr) {
         // Save the native ptr
         mNativePointer = nativePtr;
+<<<<<<< HEAD
         createWebCoreHandler();
+=======
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         resetMediaPlayer();
         mContext = webViewCore.getContext();
         mIsPrivateBrowsingEnabledGetter = new IsPrivateBrowsingEnabledGetter(
@@ -247,7 +259,12 @@ class HTML5Audio extends Handler
         }
     }
 
+<<<<<<< HEAD
     private void handleAudioFocusChange(int focusChange) {
+=======
+    @Override
+    public void onAudioFocusChange(int focusChange) {
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         switch (focusChange) {
         case AudioManager.AUDIOFOCUS_GAIN:
             // resume playback
@@ -260,10 +277,17 @@ class HTML5Audio extends Handler
             break;
 
         case AudioManager.AUDIOFOCUS_LOSS:
+<<<<<<< HEAD
             // Lost focus for an unbounded amount of time: pause playback.
             if (mState != ERROR && mMediaPlayer.isPlaying()) {
                 pause();
                 nativeOnPaused(mNativePointer);
+=======
+            // Lost focus for an unbounded amount of time: stop playback.
+            if (mState != ERROR && mMediaPlayer.isPlaying()) {
+                mMediaPlayer.stop();
+                mState = STOPPED;
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
             }
             break;
 
@@ -276,6 +300,7 @@ class HTML5Audio extends Handler
         }
     }
 
+<<<<<<< HEAD
     private void createWebCoreHandler() {
         mWebCoreHandler = new Handler() {
             @Override
@@ -295,6 +320,8 @@ class HTML5Audio extends Handler
         msg.arg1 = focusChange;
         mWebCoreHandler.sendMessage(msg);
     }
+=======
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 
     private void play() {
         if (mState == COMPLETE && mLoopEnabled == true) {
@@ -341,12 +368,15 @@ class HTML5Audio extends Handler
         }
     }
 
+<<<<<<< HEAD
     private void setVolume(float volume) {
         if (mState >= PREPARED) {
             mMediaPlayer.setVolume(volume, volume);
         }
     }
 
+=======
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     /**
      * Called only over JNI when WebKit is happy to
      * destroy the media player.
@@ -368,7 +398,10 @@ class HTML5Audio extends Handler
 
     private native void nativeOnBuffering(int percent, int nativePointer);
     private native void nativeOnEnded(int nativePointer);
+<<<<<<< HEAD
     private native void nativeOnPaused(int nativePointer);
+=======
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     private native void nativeOnRequestPlay(int nativePointer);
     private native void nativeOnPrepared(int duration, int width, int height, int nativePointer);
     private native void nativeOnTimeupdate(int position, int nativePointer);

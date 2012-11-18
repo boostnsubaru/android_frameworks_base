@@ -20,8 +20,13 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+<<<<<<< HEAD
     android:paddingLeft="14dip"
     android:paddingRight="15dip"
+=======
+    android:paddingStart="14dip"
+    android:paddingEnd="15dip"
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     android:orientation="vertical">
     
     <CheckBox
@@ -36,7 +41,11 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceSmall"
+<<<<<<< HEAD
         android:paddingLeft="36dip"
+=======
+        android:paddingStart="36dip"
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         android:visibility="gone"
         android:text="@string/clearDefaultHintMsg" />
 </LinearLayout>

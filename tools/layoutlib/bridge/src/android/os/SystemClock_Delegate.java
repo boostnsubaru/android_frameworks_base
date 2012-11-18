@@ -31,6 +31,10 @@ import com.android.tools.layoutlib.annotations.LayoutlibDelegate;
  */
 public class SystemClock_Delegate {
     private static long sBootTime = System.currentTimeMillis();
+<<<<<<< HEAD
+=======
+    private static long sBootTimeNano = System.nanoTime();
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 
     @LayoutlibDelegate
     /*package*/ static boolean setCurrentTimeMillis(long millis) {
@@ -60,6 +64,19 @@ public class SystemClock_Delegate {
     }
 
     /**
+<<<<<<< HEAD
+=======
+     * Returns nanoseconds since boot, including time spent in sleep.
+     *
+     * @return elapsed nanoseconds since boot.
+     */
+    @LayoutlibDelegate
+    /*package*/ static long elapsedRealtimeNanos() {
+        return System.nanoTime() - sBootTimeNano;
+    }
+
+    /**
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
      * Returns milliseconds running in the current thread.
      *
      * @return elapsed milliseconds in the thread

@@ -16,6 +16,7 @@
 
 package com.android.systemui.statusbar.phone;
 
+<<<<<<< HEAD
 import java.io.File;
 import java.net.URISyntaxException;
 
@@ -54,28 +55,66 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.view.WindowManagerImpl;
 import android.widget.FrameLayout;
+=======
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
+import android.animation.LayoutTransition;
+import android.app.StatusBarManager;
+import android.content.Context;
+import android.content.res.Resources;
+import android.graphics.Point;
+import android.graphics.Rect;
+import android.graphics.drawable.Drawable;
+import android.os.Handler;
+import android.os.Message;
+import android.os.ServiceManager;
+import android.util.AttributeSet;
+import android.util.Slog;
+import android.view.animation.AccelerateInterpolator;
+import android.view.Display;
+import android.view.MotionEvent;
+import android.view.View;
+import android.view.Surface;
+import android.view.ViewGroup;
+import android.view.WindowManager;
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
 import java.io.FileDescriptor;
 import java.io.PrintWriter;
+<<<<<<< HEAD
 import java.lang.StringBuilder;
+=======
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 
 import com.android.internal.statusbar.IStatusBarService;
 import com.android.systemui.R;
 import com.android.systemui.statusbar.BaseStatusBar;
 import com.android.systemui.statusbar.DelegateViewHelper;
+<<<<<<< HEAD
 import com.android.systemui.statusbar.policy.KeyButtonView;
 import com.android.systemui.statusbar.policy.ExtensibleKeyButtonView;
+=======
+import com.android.systemui.statusbar.policy.DeadZone;
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 
 public class NavigationBarView extends LinearLayout {
     final static boolean DEBUG = false;
     final static String TAG = "PhoneStatusBar/NavigationBarView";
 
+<<<<<<< HEAD
     final static boolean DEBUG_DEADZONE = false;
 
     final static boolean NAVBAR_ALWAYS_AT_RIGHT = true;
 
+=======
+    final static boolean NAVBAR_ALWAYS_AT_RIGHT = true;
+
+    // slippery nav bar when everything is disabled, e.g. during setup
+    final static boolean SLIPPERY_WHEN_DISABLED= true;
+
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     final static boolean ANIMATE_HIDE_TRANSITION = false; // turned off because it introduces unsightly delay when videos goes to full screen
 
     protected IStatusBarService mBarService;
@@ -85,6 +124,10 @@ public class NavigationBarView extends LinearLayout {
 
     int mBarSize;
     boolean mVertical;
+<<<<<<< HEAD
+=======
+    boolean mScreenOn;
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 
     boolean mHidden, mLowProfile, mShowMenu;
     int mDisabledFlags = 0;
@@ -93,11 +136,16 @@ public class NavigationBarView extends LinearLayout {
     private Drawable mBackIcon, mBackLandIcon, mBackAltIcon, mBackAltLandIcon;
     
     private DelegateViewHelper mDelegateHelper;
+<<<<<<< HEAD
+=======
+    private DeadZone mDeadZone;
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 
     // workaround for LayoutTransitions leaving the nav buttons in a weird state (bug 5549288)
     final static boolean WORKAROUND_INVALID_LAYOUT = true;
     final static int MSG_CHECK_INVALID_LAYOUT = 8686;
 
+<<<<<<< HEAD
     // Navbar Custom Targets defines.
     final static String ACTION_HOME = "**home**";
     final static String ACTION_BACK = "**back**";
@@ -153,6 +201,8 @@ public class NavigationBarView extends LinearLayout {
 
 
     
+=======
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     private class H extends Handler {
         public void handleMessage(Message m) {
             switch (m.what) {
@@ -186,10 +236,21 @@ public class NavigationBarView extends LinearLayout {
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
+<<<<<<< HEAD
         if (mDelegateHelper != null) {
             mDelegateHelper.onInterceptTouchEvent(event);
         }
         return true;
+=======
+        if (mDeadZone != null && event.getAction() == MotionEvent.ACTION_OUTSIDE) {
+            mDeadZone.poke(event);
+        }
+        if (mDelegateHelper != null) {
+            boolean ret = mDelegateHelper.onInterceptTouchEvent(event);
+            if (ret) return true;
+        }
+        return super.onTouchEvent(event);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     }
 
     @Override
@@ -198,6 +259,7 @@ public class NavigationBarView extends LinearLayout {
     }
 
     private H mHandler = new H();
+<<<<<<< HEAD
     
     public View getLeftMenuButton() {
         return mCurrentView.findViewById(R.id.menu_left);
@@ -206,11 +268,20 @@ public class NavigationBarView extends LinearLayout {
     public View getRightMenuButton() {
         return mCurrentView.findViewById(R.id.menu);
     }
+=======
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 
     public View getRecentsButton() {
         return mCurrentView.findViewById(R.id.recent_apps);
     }
 
+<<<<<<< HEAD
+=======
+    public View getMenuButton() {
+        return mCurrentView.findViewById(R.id.menu);
+    }
+
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     public View getBackButton() {
         return mCurrentView.findViewById(R.id.back);
     }
@@ -219,6 +290,14 @@ public class NavigationBarView extends LinearLayout {
         return mCurrentView.findViewById(R.id.home);
     }
 
+<<<<<<< HEAD
+=======
+    // for when home is disabled, but search isn't
+    public View getSearchLight() {
+        return mCurrentView.findViewById(R.id.search_light);
+    }
+
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     public NavigationBarView(Context context, AttributeSet attrs) {
         super(context, attrs);
 
@@ -241,6 +320,7 @@ public class NavigationBarView extends LinearLayout {
         mBackAltLandIcon = res.getDrawable(R.drawable.ic_sysbar_back_ime);
     }
 
+<<<<<<< HEAD
     private void makeBar() {
 
         ((LinearLayout) rot0.findViewById(R.id.nav_buttons)).removeAllViews();
@@ -445,6 +525,13 @@ public class NavigationBarView extends LinearLayout {
                 new LayoutParams((int) px, LayoutParams.MATCH_PARENT);
     }
     
+=======
+    public void notifyScreenOn(boolean screenOn) {
+        mScreenOn = screenOn;
+        setDisabledFlags(mDisabledFlags, true);
+    }
+
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     View.OnTouchListener mLightsOutListener = new View.OnTouchListener() {
         @Override
         public boolean onTouch(View v, MotionEvent ev) {
@@ -477,6 +564,7 @@ public class NavigationBarView extends LinearLayout {
         }
 
         mNavigationIconHints = hints;
+<<<<<<< HEAD
         // We can't gaurantee users will set these buttons as targets
         if (getBackButton() != null) {
         	getBackButton().setAlpha(
@@ -494,6 +582,22 @@ public class NavigationBarView extends LinearLayout {
         	getRecentsButton().setAlpha(
         			(0 != (hints & StatusBarManager.NAVIGATION_HINT_RECENT_NOP)) ? 0.5f : 1.0f);
         }
+=======
+
+        getBackButton().setAlpha(
+            (0 != (hints & StatusBarManager.NAVIGATION_HINT_BACK_NOP)) ? 0.5f : 1.0f);
+        getHomeButton().setAlpha(
+            (0 != (hints & StatusBarManager.NAVIGATION_HINT_HOME_NOP)) ? 0.5f : 1.0f);
+        getRecentsButton().setAlpha(
+            (0 != (hints & StatusBarManager.NAVIGATION_HINT_RECENT_NOP)) ? 0.5f : 1.0f);
+
+        ((ImageView)getBackButton()).setImageDrawable(
+            (0 != (hints & StatusBarManager.NAVIGATION_HINT_BACK_ALT))
+                ? (mVertical ? mBackAltLandIcon : mBackAltIcon)
+                : (mVertical ? mBackLandIcon : mBackIcon));
+
+        setDisabledFlags(mDisabledFlags, true);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     }
 
     public void setDisabledFlags(int disabledFlags) {
@@ -507,6 +611,7 @@ public class NavigationBarView extends LinearLayout {
 
         final boolean disableHome = ((disabledFlags & View.STATUS_BAR_DISABLE_HOME) != 0);
         final boolean disableRecent = ((disabledFlags & View.STATUS_BAR_DISABLE_RECENT) != 0);
+<<<<<<< HEAD
         final boolean disableBack = ((disabledFlags & View.STATUS_BAR_DISABLE_BACK) != 0);
 
         setSlippery(disableHome && disableRecent && disableBack);
@@ -525,6 +630,31 @@ public class NavigationBarView extends LinearLayout {
 
             }
         }
+=======
+        final boolean disableBack = ((disabledFlags & View.STATUS_BAR_DISABLE_BACK) != 0)
+                && ((mNavigationIconHints & StatusBarManager.NAVIGATION_HINT_BACK_ALT) == 0);
+        final boolean disableSearch = ((disabledFlags & View.STATUS_BAR_DISABLE_SEARCH) != 0);
+
+        if (SLIPPERY_WHEN_DISABLED) {
+            setSlippery(disableHome && disableRecent && disableBack && disableSearch);
+        }
+
+        if (!mScreenOn && mCurrentView != null) {
+            ViewGroup navButtons = (ViewGroup) mCurrentView.findViewById(R.id.nav_buttons);
+            LayoutTransition lt = navButtons == null ? null : navButtons.getLayoutTransition();
+            if (lt != null) {
+                lt.disableTransitionType(
+                        LayoutTransition.CHANGE_APPEARING | LayoutTransition.CHANGE_DISAPPEARING |
+                        LayoutTransition.APPEARING | LayoutTransition.DISAPPEARING);
+            }
+        }
+
+        getBackButton()   .setVisibility(disableBack       ? View.INVISIBLE : View.VISIBLE);
+        getHomeButton()   .setVisibility(disableHome       ? View.INVISIBLE : View.VISIBLE);
+        getRecentsButton().setVisibility(disableRecent     ? View.INVISIBLE : View.VISIBLE);
+
+        getSearchLight().setVisibility((disableHome && !disableSearch) ? View.VISIBLE : View.GONE);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     }
 
     public void setSlippery(boolean newSlippery) {
@@ -538,7 +668,12 @@ public class NavigationBarView extends LinearLayout {
             } else {
                 return;
             }
+<<<<<<< HEAD
             WindowManagerImpl.getDefault().updateViewLayout(this, lp);
+=======
+            WindowManager wm = (WindowManager)getContext().getSystemService(Context.WINDOW_SERVICE);
+            wm.updateViewLayout(this, lp);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         }
     }
 
@@ -547,6 +682,7 @@ public class NavigationBarView extends LinearLayout {
     }
 
     public void setMenuVisibility(final boolean show, final boolean force) {
+<<<<<<< HEAD
 
     	if (!force && mShowMenu == show)
             return;
@@ -620,6 +756,13 @@ public class NavigationBarView extends LinearLayout {
                 getRightMenuButton().setVisibility(localShow ? View.VISIBLE : View.INVISIBLE);
                 break;
         }
+=======
+        if (!force && mShowMenu == show) return;
+
+        mShowMenu = show;
+
+        getMenuButton().setVisibility(mShowMenu ? View.VISIBLE : View.INVISIBLE);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     }
 
     public void setLowProfile(final boolean lightsOut) {
@@ -683,6 +826,7 @@ public class NavigationBarView extends LinearLayout {
 
     @Override
     public void onFinishInflate() {
+<<<<<<< HEAD
     	 rot0 = (FrameLayout) findViewById(R.id.rot0);
          rot90 = (FrameLayout) findViewById(R.id.rot90);
 
@@ -705,6 +849,18 @@ public class NavigationBarView extends LinearLayout {
          // this takes care of making the buttons
          SettingsObserver settingsObserver = new SettingsObserver(new Handler());
          settingsObserver.observe();
+=======
+        mRotatedViews[Surface.ROTATION_0] = 
+        mRotatedViews[Surface.ROTATION_180] = findViewById(R.id.rot0);
+
+        mRotatedViews[Surface.ROTATION_90] = findViewById(R.id.rot90);
+        
+        mRotatedViews[Surface.ROTATION_270] = NAVBAR_ALWAYS_AT_RIGHT
+                                                ? findViewById(R.id.rot90)
+                                                : findViewById(R.id.rot270);
+
+        mCurrentView = mRotatedViews[Surface.ROTATION_0];
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     }
 
     public void reorient() {
@@ -712,6 +868,7 @@ public class NavigationBarView extends LinearLayout {
         for (int i=0; i<4; i++) {
             mRotatedViews[i].setVisibility(View.GONE);
         }
+<<<<<<< HEAD
         if (mTablet_UI !=0) { // this is either a tablet of Phablet.  Need to stay at Rot_0
             mCurrentView = mRotatedViews[Surface.ROTATION_0];  
         } else {
@@ -719,15 +876,25 @@ public class NavigationBarView extends LinearLayout {
         }
         mCurrentView.setVisibility(View.VISIBLE);
 
+=======
+        mCurrentView = mRotatedViews[rot];
+        mCurrentView.setVisibility(View.VISIBLE);
+
+        mDeadZone = (DeadZone) mCurrentView.findViewById(R.id.deadzone);
+
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         // force the low profile & disabled states into compliance
         setLowProfile(mLowProfile, false, true /* force */);
         setDisabledFlags(mDisabledFlags, true /* force */);
         setMenuVisibility(mShowMenu, true /* force */);
 
+<<<<<<< HEAD
         if (DEBUG_DEADZONE) {
             mCurrentView.findViewById(R.id.deadzone).setBackgroundColor(0x808080FF);
         }
 
+=======
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         if (DEBUG) {
             Slog.d(TAG, "reorient(): rot=" + mDisplay.getRotation());
         }
@@ -778,6 +945,7 @@ public class NavigationBarView extends LinearLayout {
     }
     */
         
+<<<<<<< HEAD
     class SettingsObserver extends ContentObserver {
         SettingsObserver(Handler handler) {
             super(handler);
@@ -898,6 +1066,8 @@ public class NavigationBarView extends LinearLayout {
 
         return getResources().getDrawable(R.drawable.ic_sysbar_null);
     }
+=======
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 
     private String getResourceName(int resId) {
         if (resId != 0) {
@@ -926,4 +1096,60 @@ public class NavigationBarView extends LinearLayout {
                 return "VISIBLE";
         }
     }
+<<<<<<< HEAD
+=======
+
+    public void dump(FileDescriptor fd, PrintWriter pw, String[] args) {
+        pw.println("NavigationBarView {");
+        final Rect r = new Rect();
+        final Point size = new Point();
+        mDisplay.getRealSize(size);
+
+        pw.println(String.format("      this: " + PhoneStatusBar.viewInfo(this)
+                        + " " + visibilityToString(getVisibility())));
+
+        getWindowVisibleDisplayFrame(r);
+        final boolean offscreen = r.right > size.x || r.bottom > size.y;
+        pw.println("      window: " 
+                + r.toShortString()
+                + " " + visibilityToString(getWindowVisibility())
+                + (offscreen ? " OFFSCREEN!" : ""));
+
+        pw.println(String.format("      mCurrentView: id=%s (%dx%d) %s",
+                        getResourceName(mCurrentView.getId()),
+                        mCurrentView.getWidth(), mCurrentView.getHeight(),
+                        visibilityToString(mCurrentView.getVisibility())));
+
+        pw.println(String.format("      disabled=0x%08x vertical=%s hidden=%s low=%s menu=%s",
+                        mDisabledFlags,
+                        mVertical ? "true" : "false",
+                        mHidden ? "true" : "false",
+                        mLowProfile ? "true" : "false",
+                        mShowMenu ? "true" : "false"));
+
+        final View back = getBackButton();
+        final View home = getHomeButton();
+        final View recent = getRecentsButton();
+        final View menu = getMenuButton();
+
+        pw.println("      back: "
+                + PhoneStatusBar.viewInfo(back)
+                + " " + visibilityToString(back.getVisibility())
+                );
+        pw.println("      home: "
+                + PhoneStatusBar.viewInfo(home)
+                + " " + visibilityToString(home.getVisibility())
+                );
+        pw.println("      rcnt: "
+                + PhoneStatusBar.viewInfo(recent)
+                + " " + visibilityToString(recent.getVisibility())
+                );
+        pw.println("      menu: "
+                + PhoneStatusBar.viewInfo(menu)
+                + " " + visibilityToString(menu.getVisibility())
+                );
+        pw.println("    }");
+    }
+
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 }

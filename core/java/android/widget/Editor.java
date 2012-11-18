@@ -88,9 +88,12 @@ import android.view.inputmethod.ExtractedTextRequest;
 import android.view.inputmethod.InputConnection;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView.OnItemClickListener;
+<<<<<<< HEAD
 import android.widget.Editor.InputContentType;
 import android.widget.Editor.InputMethodState;
 import android.widget.Editor.SelectionModifierCursorController;
+=======
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 import android.widget.TextView.Drawables;
 import android.widget.TextView.OnEditorActionListener;
 
@@ -125,6 +128,10 @@ public class Editor {
     InputMethodState mInputMethodState;
 
     DisplayList[] mTextDisplayLists;
+<<<<<<< HEAD
+=======
+    int mLastLayoutHeight;
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 
     boolean mFrozenWithFocus;
     boolean mSelectionMoved;
@@ -146,6 +153,10 @@ public class Editor {
     CharSequence mError;
     boolean mErrorWasChanged;
     ErrorPopup mErrorPopup;
+<<<<<<< HEAD
+=======
+
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     /**
      * This flag is set if the TextView tries to display an error before it
      * is attached to the window (so its position is still unknown).
@@ -290,6 +301,7 @@ public class Editor {
     public void setError(CharSequence error, Drawable icon) {
         mError = TextUtils.stringOrSpannedString(error);
         mErrorWasChanged = true;
+<<<<<<< HEAD
         final Drawables dr = mTextView.mDrawables;
         if (dr != null) {
             switch (mTextView.getResolvedLayoutDirection()) {
@@ -306,6 +318,8 @@ public class Editor {
         } else {
             mTextView.setCompoundDrawables(null, null, icon, null);
         }
+=======
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 
         if (mError == null) {
             if (mErrorPopup != null) {
@@ -315,10 +329,28 @@ public class Editor {
 
                 mErrorPopup = null;
             }
+<<<<<<< HEAD
         } else {
             if (mTextView.isFocused()) {
                 showError();
             }
+=======
+
+            setErrorIcon(null);
+        } else if (mTextView.isFocused()) {
+            showError();
+            setErrorIcon(icon);
+        }
+    }
+
+    private void setErrorIcon(Drawable icon) {
+        final Drawables dr = mTextView.mDrawables;
+        if (dr != null) {
+            mTextView.setCompoundDrawables(dr.mDrawableLeft, dr.mDrawableTop, icon,
+                    dr.mDrawableBottom);
+        } else {
+            mTextView.setCompoundDrawables(null, null, icon, null);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         }
     }
 
@@ -327,6 +359,11 @@ public class Editor {
             if (mErrorPopup.isShowing()) {
                 mErrorPopup.dismiss();
             }
+<<<<<<< HEAD
+=======
+
+            setErrorIcon(null);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         }
 
         mShowErrorAfterAttach = false;
@@ -978,8 +1015,13 @@ public class Editor {
                 mSuggestionsPopupWindow.onParentLostFocus();
             }
 
+<<<<<<< HEAD
             // Don't leave us in the middle of a batch edit.
             mTextView.onEndBatchEdit();
+=======
+            // Don't leave us in the middle of a batch edit. Same as in onFocusChanged
+            ensureEndedBatchEdit();
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         }
     }
 
@@ -1261,6 +1303,19 @@ public class Editor {
                 mTextDisplayLists = new DisplayList[ArrayUtils.idealObjectArraySize(0)];
             }
 
+<<<<<<< HEAD
+=======
+            // If the height of the layout changes (usually when inserting or deleting a line,
+            // but could be changes within a span), invalidate everything. We could optimize
+            // more aggressively (for example, adding offsets to blocks) but it would be more
+            // complex and we would only get the benefit in some cases.
+            int layoutHeight = layout.getHeight();
+            if (mLastLayoutHeight != layoutHeight) {
+                invalidateTextDisplayList();
+                mLastLayoutHeight = layoutHeight;
+            }
+
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
             DynamicLayout dynamicLayout = (DynamicLayout) layout;
             int[] blockEndLines = dynamicLayout.getBlockEndLines();
             int[] blockIndices = dynamicLayout.getBlockIndices();
@@ -1801,6 +1856,7 @@ public class Editor {
             mTextView.deleteText_internal(dragSourceStart, dragSourceEnd);
 
             // Make sure we do not leave two adjacent spaces.
+<<<<<<< HEAD
             CharSequence t = mTextView.getTransformedText(dragSourceStart - 1, dragSourceStart + 1);
             if ( (dragSourceStart == 0 || Character.isSpaceChar(t.charAt(0))) &&
                     (dragSourceStart == mTextView.getText().length() ||
@@ -1808,6 +1864,15 @@ public class Editor {
                 final int pos = dragSourceStart == mTextView.getText().length() ?
                         dragSourceStart - 1 : dragSourceStart;
                 mTextView.deleteText_internal(pos, pos + 1);
+=======
+            final int prevCharIdx = Math.max(0,  dragSourceStart - 1);
+            final int nextCharIdx = Math.min(mTextView.getText().length(), dragSourceStart + 1);
+            if (nextCharIdx > prevCharIdx + 1) {
+                CharSequence t = mTextView.getTransformedText(prevCharIdx, nextCharIdx);
+                if (Character.isSpaceChar(t.charAt(0)) && Character.isSpaceChar(t.charAt(1))) {
+                    mTextView.deleteText_internal(prevCharIdx, prevCharIdx + 1);
+                }
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
             }
         }
     }
@@ -2282,6 +2347,7 @@ public class Editor {
                 final SuggestionInfo suggestionInfo = mSuggestionInfos[position];
                 textView.setText(suggestionInfo.text);
 
+<<<<<<< HEAD
                 if (suggestionInfo.suggestionIndex == ADD_TO_DICTIONARY) {
                     textView.setCompoundDrawablesWithIntrinsicBounds(
                             com.android.internal.R.drawable.ic_suggestions_add, 0, 0, 0);
@@ -2290,6 +2356,13 @@ public class Editor {
                             com.android.internal.R.drawable.ic_suggestions_delete, 0, 0, 0);
                 } else {
                     textView.setCompoundDrawables(null, null, null, null);
+=======
+                if (suggestionInfo.suggestionIndex == ADD_TO_DICTIONARY ||
+                suggestionInfo.suggestionIndex == DELETE_TEXT) {
+                    textView.setBackgroundColor(Color.TRANSPARENT);
+                } else {
+                    textView.setBackgroundColor(Color.WHITE);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
                 }
 
                 return textView;

@@ -53,8 +53,13 @@ import java.util.TimeZone;
  * displayed. Also the minimal and maximal date from which dates to be selected
  * can be customized.
  * <p>
+<<<<<<< HEAD
  * See the <a href="{@docRoot}resources/tutorials/views/hello-datepicker.html">Date
  * Picker tutorial</a>.
+=======
+ * See the <a href="{@docRoot}guide/topics/ui/controls/pickers.html">Pickers</a>
+ * guide.
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
  * </p>
  * <p>
  * For a dialog using this view, see {@link android.app.DatePickerDialog}.
@@ -220,7 +225,11 @@ public class DatePicker extends FrameLayout {
 
         // day
         mDaySpinner = (NumberPicker) findViewById(R.id.day);
+<<<<<<< HEAD
         mDaySpinner.setFormatter(NumberPicker.TWO_DIGIT_FORMATTER);
+=======
+        mDaySpinner.setFormatter(NumberPicker.getTwoDigitFormatter());
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         mDaySpinner.setOnLongPressUpdateInterval(100);
         mDaySpinner.setOnValueChangedListener(onChangeListener);
         mDaySpinnerInput = (EditText) mDaySpinner.findViewById(R.id.numberpicker_input);

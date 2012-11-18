@@ -220,14 +220,16 @@ status_t BootAnimation::initTexture(void* buffer, size_t len)
 status_t BootAnimation::readyToRun() {
     mAssets.addDefaultAssets();
 
+    sp<IBinder> dtoken(SurfaceComposerClient::getBuiltInDisplay(
+            ISurfaceComposer::eDisplayIdMain));
     DisplayInfo dinfo;
-    status_t status = session()->getDisplayInfo(0, &dinfo);
+    status_t status = SurfaceComposerClient::getDisplayInfo(dtoken, &dinfo);
     if (status)
         return -1;
 
     // create the native surface
-    sp<SurfaceControl> control = session()->createSurface(
-            0, dinfo.w, dinfo.h, PIXEL_FORMAT_RGB_565);
+    sp<SurfaceControl> control = session()->createSurface(String8("BootAnimation"),
+            dinfo.w, dinfo.h, PIXEL_FORMAT_RGB_565);
 
     SurfaceComposerClient::openGlobalTransaction();
     control->setLayer(0x40000000);
@@ -479,7 +481,7 @@ bool BootAnimation::movie()
             const String8 path(entryName.getPathDir());
             const String8 leaf(entryName.getPathLeaf());
             if (leaf.size() > 0) {
-                for (size_t j=0 ; j<pcount ; j++) {
+                for (int j=0 ; j<pcount ; j++) {
                     if (path == animation.parts[j].path) {
                         int method;
                         // supports only stored png files

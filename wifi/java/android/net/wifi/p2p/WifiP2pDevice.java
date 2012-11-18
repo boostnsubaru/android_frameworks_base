@@ -107,12 +107,23 @@ public class WifiP2pDevice implements Parcelable {
     /** Device connection status */
     public int status = UNAVAILABLE;
 
+<<<<<<< HEAD
     /** Detailed device string pattern
      * Example:
      *  P2P-DEVICE-FOUND fa:7b:7a:42:02:13 p2p_dev_addr=fa:7b:7a:42:02:13
      *  pri_dev_type=1-0050F204-1 name='p2p-TEST1' config_methods=0x188 dev_capab=0x27
      *  group_capab=0x0
      *
+=======
+    /** @hide */
+    public WifiP2pWfdInfo wfdInfo;
+
+    /** Detailed device string pattern with WFD info
+     * Example:
+     *  P2P-DEVICE-FOUND 00:18:6b:de:a3:6e p2p_dev_addr=00:18:6b:de:a3:6e
+     *  pri_dev_type=1-0050F204-1 name='DWD-300-DEA36E' config_methods=0x188
+     *  dev_capab=0x21 group_capab=0x9
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
      */
     private static final Pattern detailedDevicePattern = Pattern.compile(
         "((?:[0-9a-f]{2}:){5}[0-9a-f]{2}) " +
@@ -122,7 +133,12 @@ public class WifiP2pDevice implements Parcelable {
         "name='(.*)' " +
         "config_methods=(0x[0-9a-fA-F]+) " +
         "dev_capab=(0x[0-9a-fA-F]+) " +
+<<<<<<< HEAD
         "group_capab=(0x[0-9a-fA-F]+)"
+=======
+        "group_capab=(0x[0-9a-fA-F]+)" +
+        "( wfd_dev_info=0x000006([0-9a-fA-F]{12}))?"
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     );
 
     /** 2 token device address pattern
@@ -151,7 +167,11 @@ public class WifiP2pDevice implements Parcelable {
      * @param string formats supported include
      *  P2P-DEVICE-FOUND fa:7b:7a:42:02:13 p2p_dev_addr=fa:7b:7a:42:02:13
      *  pri_dev_type=1-0050F204-1 name='p2p-TEST1' config_methods=0x188 dev_capab=0x27
+<<<<<<< HEAD
      *  group_capab=0x0
+=======
+     *  group_capab=0x0 wfd_dev_info=000006015d022a0032
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
      *
      *  P2P-DEVICE-LOST p2p_dev_addr=fa:7b:7a:42:02:13
      *
@@ -203,6 +223,15 @@ public class WifiP2pDevice implements Parcelable {
                 wpsConfigMethodsSupported = parseHex(match.group(6));
                 deviceCapability = parseHex(match.group(7));
                 groupCapability = parseHex(match.group(8));
+<<<<<<< HEAD
+=======
+                if (match.group(9) != null) {
+                    String str = match.group(10);
+                    wfdInfo = new WifiP2pWfdInfo(parseHex(str.substring(0,4)),
+                            parseHex(str.substring(4,8)),
+                            parseHex(str.substring(8,12)));
+                }
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
                 break;
         }
 
@@ -231,11 +260,44 @@ public class WifiP2pDevice implements Parcelable {
         return (deviceCapability & DEVICE_CAPAB_SERVICE_DISCOVERY) != 0;
     }
 
+<<<<<<< HEAD
+=======
+    /** Returns true if the device is capable of invitation {@hide}*/
+    public boolean isInvitationCapable() {
+        return (deviceCapability & DEVICE_CAPAB_INVITATION_PROCEDURE) != 0;
+    }
+
+    /** Returns true if the device reaches the limit. {@hide}*/
+    public boolean isDeviceLimit() {
+        return (deviceCapability & DEVICE_CAPAB_DEVICE_LIMIT) != 0;
+    }
+
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     /** Returns true if the device is a group owner */
     public boolean isGroupOwner() {
         return (groupCapability & GROUP_CAPAB_GROUP_OWNER) != 0;
     }
 
+<<<<<<< HEAD
+=======
+    /** Returns true if the group reaches the limit. {@hide}*/
+    public boolean isGroupLimit() {
+        return (groupCapability & GROUP_CAPAB_GROUP_LIMIT) != 0;
+    }
+
+    /** @hide */
+    public void update(WifiP2pDevice device) {
+        if (device == null || device.deviceAddress == null) return;
+        deviceName = device.deviceName;
+        primaryDeviceType = device.primaryDeviceType;
+        secondaryDeviceType = device.secondaryDeviceType;
+        wpsConfigMethodsSupported = device.wpsConfigMethodsSupported;
+        deviceCapability = device.deviceCapability;
+        groupCapability = device.groupCapability;
+        wfdInfo = device.wfdInfo;
+    }
+
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     @Override
     public boolean equals(Object obj) {
         if (this == obj) return true;
@@ -258,6 +320,10 @@ public class WifiP2pDevice implements Parcelable {
         sbuf.append("\n grpcapab: ").append(groupCapability);
         sbuf.append("\n devcapab: ").append(deviceCapability);
         sbuf.append("\n status: ").append(status);
+<<<<<<< HEAD
+=======
+        sbuf.append("\n wfdInfo: ").append(wfdInfo);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         return sbuf.toString();
     }
 
@@ -277,6 +343,10 @@ public class WifiP2pDevice implements Parcelable {
             deviceCapability = source.deviceCapability;
             groupCapability = source.groupCapability;
             status = source.status;
+<<<<<<< HEAD
+=======
+            wfdInfo = source.wfdInfo;
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         }
     }
 
@@ -290,6 +360,15 @@ public class WifiP2pDevice implements Parcelable {
         dest.writeInt(deviceCapability);
         dest.writeInt(groupCapability);
         dest.writeInt(status);
+<<<<<<< HEAD
+=======
+        if (wfdInfo != null) {
+            dest.writeInt(1);
+            wfdInfo.writeToParcel(dest, flags);
+        } else {
+            dest.writeInt(0);
+        }
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     }
 
     /** Implement the Parcelable interface */
@@ -305,6 +384,12 @@ public class WifiP2pDevice implements Parcelable {
                 device.deviceCapability = in.readInt();
                 device.groupCapability = in.readInt();
                 device.status = in.readInt();
+<<<<<<< HEAD
+=======
+                if (in.readInt() == 1) {
+                    device.wfdInfo = WifiP2pWfdInfo.CREATOR.createFromParcel(in);
+                }
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
                 return device;
             }
 

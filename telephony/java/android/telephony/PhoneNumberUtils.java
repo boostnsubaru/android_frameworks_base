@@ -1485,6 +1485,7 @@ public class PhoneNumberUtils
      * @hide
      */
     public static String normalizeNumber(String phoneNumber) {
+<<<<<<< HEAD
         // chop off CLIR prefix
         if (phoneNumber.startsWith(CLIR_ON)) {
             phoneNumber = phoneNumber.substring(CLIR_ON.length() - 1);
@@ -1492,6 +1493,8 @@ public class PhoneNumberUtils
             phoneNumber = phoneNumber.substring(CLIR_OFF.length() - 1);
         }
 
+=======
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         StringBuilder sb = new StringBuilder();
         int len = phoneNumber.length();
         for (int i = 0; i < len; i++) {

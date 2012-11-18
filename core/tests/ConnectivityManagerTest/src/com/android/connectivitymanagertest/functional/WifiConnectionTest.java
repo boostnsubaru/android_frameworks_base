@@ -63,7 +63,10 @@ public class WifiConnectionTest
     private ConnectivityManagerTestActivity mAct;
     private ConnectivityManagerTestRunner mRunner;
     private WifiManager mWifiManager = null;
+<<<<<<< HEAD
     private WifiManager.Channel mChannel;
+=======
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     private Set<WifiConfiguration> enabledNetworks = null;
 
     public WifiConnectionTest() {
@@ -77,7 +80,10 @@ public class WifiConnectionTest
         mWifiManager = (WifiManager) mRunner.getContext().getSystemService(Context.WIFI_SERVICE);
 
         mAct = getActivity();
+<<<<<<< HEAD
         mChannel = mWifiManager.initialize(mAct, mAct.getMainLooper(), null);
+=======
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 
         networks = mAct.loadNetworkConfigurations();
         if (DEBUG) {
@@ -93,6 +99,7 @@ public class WifiConnectionTest
         assertTrue("wpa_supplicant is not started ", mAct.mWifiManager.pingSupplicant());
     }
 
+<<<<<<< HEAD
     private class WifiServiceHandler extends Handler {
         @Override
         public void handleMessage(Message msg) {
@@ -111,6 +118,8 @@ public class WifiConnectionTest
         }
     }
 
+=======
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     private void printNetworkConfigurations() {
         log("==== print network configurations parsed from XML file ====");
         log("number of access points: " + networks.size());

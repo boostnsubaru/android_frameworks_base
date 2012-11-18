@@ -28,6 +28,13 @@ import android.os.Parcel;
 public class ScanResult implements Parcelable {
     /** The network name. */
     public String SSID;
+<<<<<<< HEAD
+=======
+
+    /** Ascii encoded SSID. This will replace SSID when we deprecate it. @hide */
+    public WifiSsid wifiSsid;
+
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     /** The address of the access point. */
     public String BSSID;
     /**
@@ -47,6 +54,7 @@ public class ScanResult implements Parcelable {
     public int frequency;
 
     /**
+<<<<<<< HEAD
      * We'd like to obtain the following attributes,
      * but they are not reported via the socket
      * interface, even though they are known
@@ -55,11 +63,41 @@ public class ScanResult implements Parcelable {
      */
     public ScanResult(String SSID, String BSSID, String caps, int level, int frequency) {
         this.SSID = SSID;
+=======
+     * Time Synchronization Function (tsf) timestamp in microseconds when
+     * this result was last seen.
+     */
+     public long timestamp;
+
+    /** {@hide} */
+    public ScanResult(WifiSsid wifiSsid, String BSSID, String caps, int level, int frequency,
+            long tsf) {
+        this.wifiSsid = wifiSsid;
+        this.SSID = (wifiSsid != null) ? wifiSsid.toString() : WifiSsid.NONE;
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         this.BSSID = BSSID;
         this.capabilities = caps;
         this.level = level;
         this.frequency = frequency;
+<<<<<<< HEAD
         //networkConfig = null;
+=======
+        this.timestamp = tsf;
+    }
+
+
+    /** copy constructor {@hide} */
+    public ScanResult(ScanResult source) {
+        if (source != null) {
+            wifiSsid = source.wifiSsid;
+            SSID = source.SSID;
+            BSSID = source.BSSID;
+            capabilities = source.capabilities;
+            level = source.level;
+            frequency = source.frequency;
+            timestamp = source.timestamp;
+        }
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     }
 
     @Override
@@ -68,7 +106,11 @@ public class ScanResult implements Parcelable {
         String none = "<none>";
 
         sb.append("SSID: ").
+<<<<<<< HEAD
             append(SSID == null ? none : SSID).
+=======
+            append(wifiSsid == null ? WifiSsid.NONE : wifiSsid).
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
             append(", BSSID: ").
             append(BSSID == null ? none : BSSID).
             append(", capabilities: ").
@@ -76,7 +118,13 @@ public class ScanResult implements Parcelable {
             append(", level: ").
             append(level).
             append(", frequency: ").
+<<<<<<< HEAD
             append(frequency);
+=======
+            append(frequency).
+            append(", timestamp: ").
+            append(timestamp);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 
         return sb.toString();
     }
@@ -88,23 +136,50 @@ public class ScanResult implements Parcelable {
 
     /** Implement the Parcelable interface {@hide} */
     public void writeToParcel(Parcel dest, int flags) {
+<<<<<<< HEAD
         dest.writeString(SSID);
+=======
+        if (wifiSsid != null) {
+            dest.writeInt(1);
+            wifiSsid.writeToParcel(dest, flags);
+        } else {
+            dest.writeInt(0);
+        }
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         dest.writeString(BSSID);
         dest.writeString(capabilities);
         dest.writeInt(level);
         dest.writeInt(frequency);
+<<<<<<< HEAD
+=======
+        dest.writeLong(timestamp);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     }
 
     /** Implement the Parcelable interface {@hide} */
     public static final Creator<ScanResult> CREATOR =
         new Creator<ScanResult>() {
             public ScanResult createFromParcel(Parcel in) {
+<<<<<<< HEAD
                 return new ScanResult(
                     in.readString(),
                     in.readString(),
                     in.readString(),
                     in.readInt(),
                     in.readInt()
+=======
+                WifiSsid wifiSsid = null;
+                if (in.readInt() == 1) {
+                    wifiSsid = WifiSsid.CREATOR.createFromParcel(in);
+                }
+                return new ScanResult(
+                    wifiSsid,
+                    in.readString(),
+                    in.readString(),
+                    in.readInt(),
+                    in.readInt(),
+                    in.readLong()
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
                 );
             }
 

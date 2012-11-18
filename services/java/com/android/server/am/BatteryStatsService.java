@@ -346,6 +346,7 @@ public final class BatteryStatsService extends IBatteryStats.Stub {
             mStats.noteFullWifiLockReleasedLocked(uid);
         }
     }
+<<<<<<< HEAD
     
     public void noteScanWifiLockAcquired(int uid) {
         enforceCallingPermission();
@@ -358,6 +359,20 @@ public final class BatteryStatsService extends IBatteryStats.Stub {
         enforceCallingPermission();
         synchronized (mStats) {
             mStats.noteScanWifiLockReleasedLocked(uid);
+=======
+
+    public void noteWifiScanStarted(int uid) {
+        enforceCallingPermission();
+        synchronized (mStats) {
+            mStats.noteWifiScanStartedLocked(uid);
+        }
+    }
+
+    public void noteWifiScanStopped(int uid) {
+        enforceCallingPermission();
+        synchronized (mStats) {
+            mStats.noteWifiScanStoppedLocked(uid);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         }
     }
 
@@ -389,6 +404,7 @@ public final class BatteryStatsService extends IBatteryStats.Stub {
         }
     }
 
+<<<<<<< HEAD
     public void noteScanWifiLockAcquiredFromSource(WorkSource ws) {
         enforceCallingPermission();
         synchronized (mStats) {
@@ -400,6 +416,19 @@ public final class BatteryStatsService extends IBatteryStats.Stub {
         enforceCallingPermission();
         synchronized (mStats) {
             mStats.noteScanWifiLockReleasedFromSourceLocked(ws);
+=======
+    public void noteWifiScanStartedFromSource(WorkSource ws) {
+        enforceCallingPermission();
+        synchronized (mStats) {
+            mStats.noteWifiScanStartedFromSourceLocked(ws);
+        }
+    }
+
+    public void noteWifiScanStoppedFromSource(WorkSource ws) {
+        enforceCallingPermission();
+        synchronized (mStats) {
+            mStats.noteWifiScanStoppedFromSourceLocked(ws);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         }
     }
 

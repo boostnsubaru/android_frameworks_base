@@ -37,7 +37,15 @@ import android.widget.RelativeLayout;
  * layout for this object.
  * 
  * @attr ref android.R.styleable#TwoLineListItem_mode
+<<<<<<< HEAD
  */
+=======
+ * 
+ * @deprecated This class can be implemented easily by apps using a {@link RelativeLayout}
+ * or a {@link LinearLayout}.
+ */
+@Deprecated
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 @Widget
 public class TwoLineListItem extends RelativeLayout {
 

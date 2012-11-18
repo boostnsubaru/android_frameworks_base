@@ -204,6 +204,7 @@ public class WebViewClient {
     }
 
     /**
+<<<<<<< HEAD
      * Notify the host application that an SSL error occurred while loading a
      * resource, but the WebView chose to proceed anyway based on a
      * decision retained from a previous response to onReceivedSslError().
@@ -241,6 +242,18 @@ public class WebViewClient {
      * @param host The host requiring authentication.
      * @param realm A description to help store user credentials for future
      *            visits.
+=======
+     * Notifies the host application that the WebView received an HTTP
+     * authentication request. The host application can use the supplied
+     * {@link HttpAuthHandler} to set the WebView's response to the request.
+     * The default behavior is to cancel the request.
+     *
+     * @param view the WebView that is initiating the callback
+     * @param handler the HttpAuthHandler used to set the WebView's response
+     * @param host the host requiring authentication
+     * @param realm the realm for which authentication is required
+     * @see Webview#getHttpAuthUsernamePassword
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
      */
     public void onReceivedHttpAuthRequest(WebView view,
             HttpAuthHandler handler, String host, String realm) {

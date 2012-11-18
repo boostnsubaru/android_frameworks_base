@@ -18,6 +18,10 @@ package com.android.server.am;
 
 import android.app.IServiceConnection;
 import android.app.PendingIntent;
+<<<<<<< HEAD
+=======
+import android.content.Context;
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 
 import java.io.PrintWriter;
 
@@ -61,7 +65,43 @@ class ConnectionRecord {
         StringBuilder sb = new StringBuilder(128);
         sb.append("ConnectionRecord{");
         sb.append(Integer.toHexString(System.identityHashCode(this)));
+<<<<<<< HEAD
         sb.append(' ');
+=======
+        sb.append(" u");
+        sb.append(binding.client.userId);
+        sb.append(' ');
+        if ((flags&Context.BIND_AUTO_CREATE) != 0) {
+            sb.append("CR ");
+        }
+        if ((flags&Context.BIND_DEBUG_UNBIND) != 0) {
+            sb.append("DBG ");
+        }
+        if ((flags&Context.BIND_NOT_FOREGROUND) != 0) {
+            sb.append("!FG ");
+        }
+        if ((flags&Context.BIND_ABOVE_CLIENT) != 0) {
+            sb.append("ABCLT ");
+        }
+        if ((flags&Context.BIND_ALLOW_OOM_MANAGEMENT) != 0) {
+            sb.append("OOM ");
+        }
+        if ((flags&Context.BIND_WAIVE_PRIORITY) != 0) {
+            sb.append("WPRI ");
+        }
+        if ((flags&Context.BIND_IMPORTANT) != 0) {
+            sb.append("IMP ");
+        }
+        if ((flags&Context.BIND_ADJUST_WITH_ACTIVITY) != 0) {
+            sb.append("ACT ");
+        }
+        if ((flags&Context.BIND_NOT_VISIBLE) != 0) {
+            sb.append("!VIS ");
+        }
+        if ((flags&Context.BIND_VISIBLE) != 0) {
+            sb.append("VIS ");
+        }
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         if (serviceDead) {
             sb.append("DEAD ");
         }

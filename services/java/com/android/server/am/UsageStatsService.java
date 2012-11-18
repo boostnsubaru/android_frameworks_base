@@ -27,12 +27,19 @@ import android.os.Parcel;
 import android.os.Process;
 import android.os.ServiceManager;
 import android.os.SystemClock;
+<<<<<<< HEAD
+=======
+import android.util.AtomicFile;
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 import android.util.Slog;
 import android.util.Xml;
 
 import com.android.internal.app.IUsageStats;
 import com.android.internal.content.PackageMonitor;
+<<<<<<< HEAD
 import com.android.internal.os.AtomicFile;
+=======
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 import com.android.internal.os.PkgUsageStats;
 import com.android.internal.util.FastXmlSerializer;
 
@@ -650,7 +657,11 @@ public final class UsageStatsService extends IUsageStats.Stub {
     public void monitorPackages() {
         mPackageMonitor = new PackageMonitor() {
             @Override
+<<<<<<< HEAD
             public void onPackageRemoved(String packageName, int uid) {
+=======
+            public void onPackageRemovedAllUsers(String packageName, int uid) {
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
                 synchronized (mStatsLock) {
                     mLastResumeTimes.remove(packageName);
                 }

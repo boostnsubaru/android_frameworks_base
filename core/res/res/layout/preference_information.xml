@@ -22,13 +22,22 @@
     android:layout_height="wrap_content"
     android:minHeight="?android:attr/listPreferredItemHeight"
     android:gravity="center_vertical"
+<<<<<<< HEAD
     android:paddingRight="?android:attr/scrollbarSize">
+=======
+    android:paddingEnd="?android:attr/scrollbarSize">
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 
     <RelativeLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+<<<<<<< HEAD
         android:layout_marginLeft="16sp"
         android:layout_marginRight="6sp"
+=======
+        android:layout_marginStart="16sp"
+        android:layout_marginEnd="6sp"
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         android:layout_marginTop="6sp"
         android:layout_marginBottom="6sp"
         android:layout_weight="1">
@@ -44,7 +53,11 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@android:id/title"
+<<<<<<< HEAD
             android:layout_alignLeft="@android:id/title"
+=======
+            android:layout_alignStart="@android:id/title"
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
             android:textAppearance="?android:attr/textAppearanceSmall"
             android:textColor="?android:attr/textColorSecondary"
             android:maxLines="2" />

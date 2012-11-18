@@ -95,6 +95,12 @@ public abstract class AbsActionBarView extends ViewGroup {
 
     public void setContentHeight(int height) {
         mContentHeight = height;
+<<<<<<< HEAD
+=======
+        if (mMenuView != null) {
+            mMenuView.setMaxItemHeight(mContentHeight);
+        }
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         requestLayout();
     }
 
@@ -219,6 +225,7 @@ public abstract class AbsActionBarView extends ViewGroup {
         return Math.max(0, availableWidth);
     }
 
+<<<<<<< HEAD
     protected int positionChild(View child, int x, int y, int contentHeight) {
         int childWidth = child.getMeasuredWidth();
         int childHeight = child.getMeasuredHeight();
@@ -230,13 +237,30 @@ public abstract class AbsActionBarView extends ViewGroup {
     }
 
     protected int positionChildInverse(View child, int x, int y, int contentHeight) {
+=======
+    static protected int next(int x, int val, boolean isRtl) {
+        return isRtl ? x - val : x + val;
+    }
+
+    protected int positionChild(View child, int x, int y, int contentHeight, boolean reverse) {
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         int childWidth = child.getMeasuredWidth();
         int childHeight = child.getMeasuredHeight();
         int childTop = y + (contentHeight - childHeight) / 2;
 
+<<<<<<< HEAD
         child.layout(x - childWidth, childTop, x, childTop + childHeight);
 
         return childWidth;
+=======
+        if (reverse) {
+            child.layout(x - childWidth, childTop, x, childTop + childHeight);
+        } else {
+            child.layout(x, childTop, x + childWidth, childTop + childHeight);
+        }
+
+        return  (reverse ? -childWidth : childWidth);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     }
 
     protected class VisibilityAnimListener implements Animator.AnimatorListener {

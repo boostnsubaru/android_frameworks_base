@@ -24,6 +24,10 @@ import android.nfc.tech.Ndef;
 import android.nfc.tech.NdefFormatable;
 import android.nfc.tech.NfcA;
 import android.nfc.tech.NfcB;
+<<<<<<< HEAD
+=======
+import android.nfc.tech.NfcBarcode;
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 import android.nfc.tech.NfcF;
 import android.nfc.tech.NfcV;
 import android.nfc.tech.TagTechnology;
@@ -184,6 +188,12 @@ public final class Tag implements Parcelable {
                 case TagTechnology.NFC_V:
                     strings[i] = NfcV.class.getName();
                     break;
+<<<<<<< HEAD
+=======
+                case TagTechnology.NFC_BARCODE:
+                    strings[i] = NfcBarcode.class.getName();
+                    break;
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
                 default:
                     throw new IllegalArgumentException("Unknown tech type " + techList[i]);
             }

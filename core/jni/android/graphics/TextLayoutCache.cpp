@@ -19,6 +19,10 @@
 #include "TextLayoutCache.h"
 #include "TextLayout.h"
 #include "SkFontHost.h"
+<<<<<<< HEAD
+=======
+#include "SkTypeface_android.h"
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 #include <unicode/unistr.h>
 #include <unicode/normlzr.h>
 #include <unicode/uchar.h>
@@ -30,6 +34,7 @@ extern "C" {
 namespace android {
 
 //--------------------------------------------------------------------------------------------------
+<<<<<<< HEAD
 #define TYPEFACE_ARABIC "/system/fonts/DroidNaskh-Regular-SystemUI.ttf"
 #define TYPE_FACE_HEBREW_REGULAR "/system/fonts/DroidSansHebrew-Regular.ttf"
 #define TYPE_FACE_HEBREW_BOLD "/system/fonts/DroidSansHebrew-Bold.ttf"
@@ -38,6 +43,8 @@ namespace android {
 #define TYPEFACE_TAMIL_REGULAR "/system/fonts/DroidSansTamil-Regular.ttf"
 #define TYPEFACE_TAMIL_BOLD "/system/fonts/DroidSansTamil-Bold.ttf"
 #define TYPEFACE_THAI "/system/fonts/DroidSansThai.ttf"
+=======
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 
 ANDROID_SINGLETON_STATIC_INSTANCE(TextLayoutEngine);
 
@@ -85,8 +92,15 @@ void TextLayoutCache::operator()(TextLayoutCacheKey& text, sp<TextLayoutValue>& 
 /*
  * Cache clearing
  */
+<<<<<<< HEAD
 void TextLayoutCache::clear() {
     mCache.clear();
+=======
+void TextLayoutCache::purgeCaches() {
+    AutoMutex _l(mLock);
+    mCache.clear();
+    mShaper->purgeCaches();
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 }
 
 /*
@@ -116,7 +130,11 @@ sp<TextLayoutValue> TextLayoutCache::getValue(const SkPaint* paint,
 
         // Compute advances and store them
         mShaper->computeValues(value.get(), paint,
+<<<<<<< HEAD
                 reinterpret_cast<const UChar*>(text), start, count,
+=======
+                reinterpret_cast<const UChar*>(key.getText()), start, count,
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
                 size_t(contextCount), int(dirFlags));
 
         if (mDebugEnabled) {
@@ -144,15 +162,22 @@ sp<TextLayoutValue> TextLayoutCache::getValue(const SkPaint* paint,
             // Update current cache size
             mSize += size;
 
+<<<<<<< HEAD
             // Copy the text when we insert the new entry
             key.internalTextCopy();
 
+=======
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
             bool putOne = mCache.put(key, value);
             LOG_ALWAYS_FATAL_IF(!putOne, "Failed to put an entry into the cache.  "
                     "This indicates that the cache already has an entry with the "
                     "same key but it should not since we checked earlier!"
                     " - start = %d, count = %d, contextCount = %d - Text = '%s'",
+<<<<<<< HEAD
                     start, count, contextCount, String8(text + start, count).string());
+=======
+                    start, count, contextCount, String8(key.getText() + start, count).string());
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 
             if (mDebugEnabled) {
                 nsecs_t totalTime = systemTime(SYSTEM_TIME_MONOTONIC) - startTime;
@@ -163,7 +188,11 @@ sp<TextLayoutValue> TextLayoutCache::getValue(const SkPaint* paint,
                         value.get(), start, count, contextCount, size, mMaxSize - mSize,
                         value->getElapsedTime() * 0.000001f,
                         (totalTime - value->getElapsedTime()) * 0.000001f,
+<<<<<<< HEAD
                         String8(text + start, count).string());
+=======
+                        String8(key.getText() + start, count).string());
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
             }
         } else {
             if (mDebugEnabled) {
@@ -173,7 +202,11 @@ sp<TextLayoutValue> TextLayoutCache::getValue(const SkPaint* paint,
                         " - Compute time %0.6f ms - Text = '%s'",
                         start, count, contextCount, size, mMaxSize - mSize,
                         value->getElapsedTime() * 0.000001f,
+<<<<<<< HEAD
                         String8(text + start, count).string());
+=======
+                        String8(key.getText() + start, count).string());
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
             }
         }
     } else {
@@ -193,7 +226,11 @@ sp<TextLayoutValue> TextLayoutCache::getValue(const SkPaint* paint,
                         value->getElapsedTime() * 0.000001f,
                         elapsedTimeThruCacheGet * 0.000001f,
                         deltaPercent,
+<<<<<<< HEAD
                         String8(text + start, count).string());
+=======
+                        String8(key.getText() + start, count).string());
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
             }
             if (mCacheHitCount % DEFAULT_DUMP_STATS_CACHE_HIT_INTERVAL == 0) {
                 dumpCacheStats();
@@ -230,25 +267,45 @@ void TextLayoutCache::dumpCacheStats() {
 /**
  * TextLayoutCacheKey
  */
+<<<<<<< HEAD
 TextLayoutCacheKey::TextLayoutCacheKey(): text(NULL), start(0), count(0), contextCount(0),
         dirFlags(0), typeface(NULL), textSize(0), textSkewX(0), textScaleX(0), flags(0),
         hinting(SkPaint::kNo_Hinting)  {
+=======
+TextLayoutCacheKey::TextLayoutCacheKey(): start(0), count(0), contextCount(0),
+        dirFlags(0), typeface(NULL), textSize(0), textSkewX(0), textScaleX(0), flags(0),
+        hinting(SkPaint::kNo_Hinting), variant(SkPaint::kDefault_Variant), language()  {
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 }
 
 TextLayoutCacheKey::TextLayoutCacheKey(const SkPaint* paint, const UChar* text,
         size_t start, size_t count, size_t contextCount, int dirFlags) :
+<<<<<<< HEAD
             text(text), start(start), count(count), contextCount(contextCount),
             dirFlags(dirFlags) {
+=======
+            start(start), count(count), contextCount(contextCount),
+            dirFlags(dirFlags) {
+    textCopy.setTo(text, contextCount);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     typeface = paint->getTypeface();
     textSize = paint->getTextSize();
     textSkewX = paint->getTextSkewX();
     textScaleX = paint->getTextScaleX();
     flags = paint->getFlags();
     hinting = paint->getHinting();
+<<<<<<< HEAD
 }
 
 TextLayoutCacheKey::TextLayoutCacheKey(const TextLayoutCacheKey& other) :
         text(NULL),
+=======
+    variant = paint->getFontVariant();
+    language = paint->getLanguage();
+}
+
+TextLayoutCacheKey::TextLayoutCacheKey(const TextLayoutCacheKey& other) :
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         textCopy(other.textCopy),
         start(other.start),
         count(other.count),
@@ -259,10 +316,16 @@ TextLayoutCacheKey::TextLayoutCacheKey(const TextLayoutCacheKey& other) :
         textSkewX(other.textSkewX),
         textScaleX(other.textScaleX),
         flags(other.flags),
+<<<<<<< HEAD
         hinting(other.hinting) {
     if (other.text) {
         textCopy.setTo(other.text, other.contextCount);
     }
+=======
+        hinting(other.hinting),
+        variant(other.variant),
+        language(other.language) {
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 }
 
 int TextLayoutCacheKey::compare(const TextLayoutCacheKey& lhs, const TextLayoutCacheKey& rhs) {
@@ -296,12 +359,22 @@ int TextLayoutCacheKey::compare(const TextLayoutCacheKey& lhs, const TextLayoutC
     deltaInt = lhs.dirFlags - rhs.dirFlags;
     if (deltaInt) return (deltaInt);
 
+<<<<<<< HEAD
     return memcmp(lhs.getText(), rhs.getText(), lhs.contextCount * sizeof(UChar));
 }
 
 void TextLayoutCacheKey::internalTextCopy() {
     textCopy.setTo(text, contextCount);
     text = NULL;
+=======
+    deltaInt = lhs.variant - rhs.variant;
+    if (deltaInt) return (deltaInt);
+
+    if (lhs.language < rhs.language) return -1;
+    if (lhs.language > rhs.language) return +1;
+
+    return memcmp(lhs.getText(), rhs.getText(), lhs.contextCount * sizeof(UChar));
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 }
 
 size_t TextLayoutCacheKey::getSize() const {
@@ -316,11 +389,19 @@ TextLayoutValue::TextLayoutValue(size_t contextCount) :
     // Give a hint for advances and glyphs vectors size
     mAdvances.setCapacity(contextCount);
     mGlyphs.setCapacity(contextCount);
+<<<<<<< HEAD
+=======
+    mPos.setCapacity(contextCount * 2);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 }
 
 size_t TextLayoutValue::getSize() const {
     return sizeof(TextLayoutValue) + sizeof(jfloat) * mAdvances.capacity() +
+<<<<<<< HEAD
             sizeof(jchar) * mGlyphs.capacity();
+=======
+            sizeof(jchar) * mGlyphs.capacity() + sizeof(jfloat) * mPos.capacity();
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 }
 
 void TextLayoutValue::setElapsedTime(uint32_t time) {
@@ -337,6 +418,7 @@ TextLayoutShaper::TextLayoutShaper() : mShaperItemGlyphArraySize(0) {
     mFontRec.klass = &harfbuzzSkiaClass;
     mFontRec.userData = 0;
 
+<<<<<<< HEAD
     // The values which harfbuzzSkiaClass returns are already scaled to
     // pixel units, so we just set all these to one to disable further
     // scaling.
@@ -344,6 +426,11 @@ TextLayoutShaper::TextLayoutShaper() : mShaperItemGlyphArraySize(0) {
     mFontRec.y_ppem = 1;
     mFontRec.x_scale = 1;
     mFontRec.y_scale = 1;
+=======
+    // Note that the scaling values (x_ and y_ppem, x_ and y_scale) will be set
+    // below, when the paint transform and em unit of the actual shaping font
+    // are known.
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 
     memset(&mShaperItem, 0, sizeof(mShaperItem));
 
@@ -353,6 +440,7 @@ TextLayoutShaper::TextLayoutShaper() : mShaperItemGlyphArraySize(0) {
 
 void TextLayoutShaper::init() {
     mDefaultTypeface = SkFontHost::CreateTypeface(NULL, NULL, NULL, 0, SkTypeface::kNormal);
+<<<<<<< HEAD
     mArabicTypeface = NULL;
     mHebrewRegularTypeface = NULL;
     mHebrewBoldTypeface = NULL;
@@ -361,10 +449,13 @@ void TextLayoutShaper::init() {
     mDevanagariRegularTypeface = NULL;
     mTamilRegularTypeface = NULL;
     mTamilBoldTypeface = NULL;
+=======
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 }
 
 void TextLayoutShaper::unrefTypefaces() {
     SkSafeUnref(mDefaultTypeface);
+<<<<<<< HEAD
     SkSafeUnref(mArabicTypeface);
     SkSafeUnref(mHebrewRegularTypeface);
     SkSafeUnref(mHebrewBoldTypeface);
@@ -373,6 +464,8 @@ void TextLayoutShaper::unrefTypefaces() {
     SkSafeUnref(mDevanagariRegularTypeface);
     SkSafeUnref(mTamilRegularTypeface);
     SkSafeUnref(mTamilBoldTypeface);
+=======
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 }
 
 TextLayoutShaper::~TextLayoutShaper() {
@@ -384,7 +477,11 @@ void TextLayoutShaper::computeValues(TextLayoutValue* value, const SkPaint* pain
         size_t start, size_t count, size_t contextCount, int dirFlags) {
 
     computeValues(paint, chars, start, count, contextCount, dirFlags,
+<<<<<<< HEAD
             &value->mAdvances, &value->mTotalAdvance, &value->mGlyphs);
+=======
+            &value->mAdvances, &value->mTotalAdvance, &value->mGlyphs, &value->mPos);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 #if DEBUG_ADVANCES
     ALOGD("Advances - start = %d, count = %d, contextCount = %d, totalAdvance = %f", start, count,
             contextCount, value->mTotalAdvance);
@@ -394,9 +491,15 @@ void TextLayoutShaper::computeValues(TextLayoutValue* value, const SkPaint* pain
 void TextLayoutShaper::computeValues(const SkPaint* paint, const UChar* chars,
         size_t start, size_t count, size_t contextCount, int dirFlags,
         Vector<jfloat>* const outAdvances, jfloat* outTotalAdvance,
+<<<<<<< HEAD
         Vector<jchar>* const outGlyphs) {
         if (!count) {
             *outTotalAdvance = 0;
+=======
+        Vector<jchar>* const outGlyphs, Vector<jfloat>* const outPos) {
+        *outTotalAdvance = 0;
+        if (!count) {
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
             return;
         }
 
@@ -461,6 +564,10 @@ void TextLayoutShaper::computeValues(const SkPaint* paint, const UChar* chars,
                                 ALOGW("Visual run is not valid");
                                 outGlyphs->clear();
                                 outAdvances->clear();
+<<<<<<< HEAD
+=======
+                                outPos->clear();
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
                                 *outTotalAdvance = 0;
                                 isRTL = (paraDir == 1);
                                 useSingleRun = true;
@@ -483,15 +590,23 @@ void TextLayoutShaper::computeValues(const SkPaint* paint, const UChar* chars,
 
                             lengthRun = endRun - startRun;
                             isRTL = (runDir == UBIDI_RTL);
+<<<<<<< HEAD
                             jfloat runTotalAdvance = 0;
+=======
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 #if DEBUG_GLYPHS
                             ALOGD("Processing Bidi Run = %d -- run-start = %d, run-len = %d, isRTL = %d",
                                     i, startRun, lengthRun, isRTL);
 #endif
                             computeRunValues(paint, chars + startRun, lengthRun, isRTL,
+<<<<<<< HEAD
                                     outAdvances, &runTotalAdvance, outGlyphs);
 
                             *outTotalAdvance += runTotalAdvance;
+=======
+                                    outAdvances, outTotalAdvance, outGlyphs, outPos);
+
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
                         }
                     }
                 } else {
@@ -514,7 +629,11 @@ void TextLayoutShaper::computeValues(const SkPaint* paint, const UChar* chars,
                     "-- run-start = %d, run-len = %d, isRTL = %d", start, count, isRTL);
 #endif
             computeRunValues(paint, chars + start, count, isRTL,
+<<<<<<< HEAD
                     outAdvances, outTotalAdvance, outGlyphs);
+=======
+                    outAdvances, outTotalAdvance, outGlyphs, outPos);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         }
 
 #if DEBUG_GLYPHS
@@ -536,10 +655,16 @@ static void logGlyphs(HB_ShaperItem shaperItem) {
 void TextLayoutShaper::computeRunValues(const SkPaint* paint, const UChar* chars,
         size_t count, bool isRTL,
         Vector<jfloat>* const outAdvances, jfloat* outTotalAdvance,
+<<<<<<< HEAD
         Vector<jchar>* const outGlyphs) {
     if (!count) {
         // We cannot shape an empty run.
         *outTotalAdvance = 0;
+=======
+        Vector<jchar>* const outGlyphs, Vector<jfloat>* const outPos) {
+    if (!count) {
+        // We cannot shape an empty run.
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         return;
     }
 
@@ -639,16 +764,30 @@ void TextLayoutShaper::computeRunValues(const SkPaint* paint, const UChar* chars
 
     // Define shaping paint properties
     mShapingPaint.setTextSize(paint->getTextSize());
+<<<<<<< HEAD
     mShapingPaint.setTextSkewX(paint->getTextSkewX());
     mShapingPaint.setTextScaleX(paint->getTextScaleX());
     mShapingPaint.setFlags(paint->getFlags());
     mShapingPaint.setHinting(paint->getHinting());
+=======
+    float skewX = paint->getTextSkewX();
+    mShapingPaint.setTextSkewX(skewX);
+    mShapingPaint.setTextScaleX(paint->getTextScaleX());
+    mShapingPaint.setFlags(paint->getFlags());
+    mShapingPaint.setHinting(paint->getHinting());
+    mShapingPaint.setFontVariant(paint->getFontVariant());
+    mShapingPaint.setLanguage(paint->getLanguage());
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 
     // Split the BiDi run into Script runs. Harfbuzz will populate the pos, length and script
     // into the shaperItem
     ssize_t indexFontRun = isRTL ? mShaperItem.stringLength - 1 : 0;
     unsigned numCodePoints = 0;
+<<<<<<< HEAD
     jfloat totalAdvance = 0;
+=======
+    jfloat totalAdvance = *outTotalAdvance;
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     while ((isRTL) ?
             hb_utf16_script_run_prev(&numCodePoints, &mShaperItem.item, mShaperItem.string,
                     mShaperItem.stringLength, &indexFontRun):
@@ -699,6 +838,7 @@ void TextLayoutShaper::computeRunValues(const SkPaint* paint, const UChar* chars
                     i, HBFixedToFloat(mShaperItem.advances[i]));
         }
 #endif
+<<<<<<< HEAD
         // Get Advances and their total
         jfloat currentAdvance = HBFixedToFloat(mShaperItem.advances[mShaperItem.log_clusters[0]]);
         jfloat totalFontRunAdvance = currentAdvance;
@@ -717,6 +857,26 @@ void TextLayoutShaper::computeRunValues(const SkPaint* paint, const UChar* chars
             totalFontRunAdvance += currentAdvance;
         }
         totalAdvance += totalFontRunAdvance;
+=======
+        jfloat totalFontRunAdvance = 0;
+        size_t clusterStart = 0;
+        for (size_t i = 0; i < countScriptRun; i++) {
+            size_t cluster = mShaperItem.log_clusters[i];
+            size_t clusterNext = i == countScriptRun - 1 ? mShaperItem.num_glyphs :
+                mShaperItem.log_clusters[i + 1];
+            if (cluster != clusterNext) {
+                jfloat advance = 0;
+                // The advance for the cluster is the sum of the advances of all glyphs within
+                // the cluster.
+                for (size_t j = cluster; j < clusterNext; j++) {
+                    advance += HBFixedToFloat(mShaperItem.advances[j]);
+                }
+                totalFontRunAdvance += advance;
+                outAdvances->replaceAt(advance, startScriptRun + clusterStart);
+                clusterStart = i + 1;
+            }
+        }
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 
 #if DEBUG_ADVANCES
         ALOGD("Returned advances");
@@ -741,6 +901,33 @@ void TextLayoutShaper::computeRunValues(const SkPaint* paint, const UChar* chars
                 outGlyphs->add(glyph);
             }
         }
+<<<<<<< HEAD
+=======
+
+        // Get glyph positions (and reverse them in place if RTL)
+        if (outPos) {
+            size_t countGlyphs = mShaperItem.num_glyphs;
+            jfloat x = totalAdvance;
+            for (size_t i = 0; i < countGlyphs; i++) {
+                size_t index = (!isRTL) ? i : countGlyphs - 1 - i;
+                float xo = HBFixedToFloat(mShaperItem.offsets[index].x);
+                float yo = HBFixedToFloat(mShaperItem.offsets[index].y);
+                // Apply skewX component of transform to position offsets. Note
+                // that scale has already been applied through x_ and y_scale
+                // set in the mFontRec.
+                outPos->add(x + xo + yo * skewX);
+                outPos->add(yo);
+#if DEBUG_GLYPHS
+                ALOGD("         -- hb adv[%d] = %f, log_cluster[%d] = %d",
+                        index, HBFixedToFloat(mShaperItem.advances[index]),
+                        index, mShaperItem.log_clusters[index]);
+#endif
+                x += HBFixedToFloat(mShaperItem.advances[index]);
+            }
+        }
+
+        totalAdvance += totalFontRunAdvance;
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     }
 
     *outTotalAdvance = totalAdvance;
@@ -758,6 +945,7 @@ void TextLayoutShaper::computeRunValues(const SkPaint* paint, const UChar* chars
  * assumption is that its lifetime is managed elsewhere - in particular, the fallback typefaces
  * for the default font live in a global cache.
  */
+<<<<<<< HEAD
 SkTypeface* TextLayoutShaper::typefaceForUnichar(const SkPaint* paint, SkTypeface* typeface,
         SkUnichar unichar, HB_Script script) {
     // Set the correct Typeface depending on the script
@@ -855,6 +1043,32 @@ SkTypeface* TextLayoutShaper::typefaceForUnichar(const SkPaint* paint, SkTypefac
         break;
     }
     return typeface;
+=======
+SkTypeface* TextLayoutShaper::typefaceForScript(const SkPaint* paint, SkTypeface* typeface,
+        HB_Script script) {
+    SkTypeface::Style currentStyle = SkTypeface::kNormal;
+    if (typeface) {
+        currentStyle = typeface->style();
+    }
+    typeface = SkCreateTypefaceForScript(script, currentStyle);
+#if DEBUG_GLYPHS
+    ALOGD("Using Harfbuzz Script %d, Style %d", script, currentStyle);
+#endif
+    return typeface;
+}
+
+bool TextLayoutShaper::isComplexScript(HB_Script script) {
+    switch (script) {
+    case HB_Script_Common:
+    case HB_Script_Greek:
+    case HB_Script_Cyrillic:
+    case HB_Script_Hangul:
+    case HB_Script_Inherited:
+        return false;
+    default:
+        return true;
+    }
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 }
 
 size_t TextLayoutShaper::shapeFontRun(const SkPaint* paint, bool isRTL) {
@@ -872,6 +1086,7 @@ size_t TextLayoutShaper::shapeFontRun(const SkPaint* paint, bool isRTL) {
     // If we are a "common" script we dont need to shift
     size_t baseGlyphCount = 0;
     SkUnichar firstUnichar = 0;
+<<<<<<< HEAD
     switch (mShaperItem.item.script) {
     case HB_Script_Arabic:
     case HB_Script_Hebrew:
@@ -880,12 +1095,17 @@ size_t TextLayoutShaper::shapeFontRun(const SkPaint* paint, bool isRTL) {
     case HB_Script_Tamil:
     case HB_Script_Thai:{
         const uint16_t* text16 = (const uint16_t*)(mShaperItem.string + mShaperItem.item.pos);
+=======
+    if (isComplexScript(mShaperItem.item.script)) {
+        const uint16_t* text16 = (const uint16_t*) (mShaperItem.string + mShaperItem.item.pos);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         const uint16_t* text16End = text16 + mShaperItem.item.length;
         firstUnichar = SkUTF16_NextUnichar(&text16);
         while (firstUnichar == ' ' && text16 < text16End) {
             firstUnichar = SkUTF16_NextUnichar(&text16);
         }
         baseGlyphCount = paint->getBaseGlyphCount(firstUnichar);
+<<<<<<< HEAD
         break;
     }
     default:
@@ -906,10 +1126,50 @@ size_t TextLayoutShaper::shapeFontRun(const SkPaint* paint, bool isRTL) {
     mShapingPaint.setTypeface(typeface);
     mShaperItem.face = getCachedHBFace(typeface);
 
+=======
+    }
+
+    if (baseGlyphCount != 0) {
+        typeface = typefaceForScript(paint, typeface, mShaperItem.item.script);
+        if (!typeface) {
+            typeface = mDefaultTypeface;
+            SkSafeRef(typeface);
+#if DEBUG_GLYPHS
+            ALOGD("Using Default Typeface");
+#endif
+        }
+    } else {
+        if (!typeface) {
+            typeface = mDefaultTypeface;
+#if DEBUG_GLYPHS
+            ALOGD("Using Default Typeface");
+#endif
+        }
+        SkSafeRef(typeface);
+    }
+
+    mShapingPaint.setTypeface(typeface);
+    mShaperItem.face = getCachedHBFace(typeface);
+
+    int textSize = paint->getTextSize();
+    float scaleX = paint->getTextScaleX();
+    mFontRec.x_ppem = floor(scaleX * textSize + 0.5);
+    mFontRec.y_ppem = textSize;
+    uint32_t unitsPerEm = SkFontHost::GetUnitsPerEm(typeface->uniqueID());
+    // x_ and y_scale are the conversion factors from font design space
+    // (unitsPerEm) to 1/64th of device pixels in 16.16 format.
+    const int kDevicePixelFraction = 64;
+    const int kMultiplyFor16Dot16 = 1 << 16;
+    float emScale = kDevicePixelFraction * kMultiplyFor16Dot16 / (float)unitsPerEm;
+    mFontRec.x_scale = emScale * scaleX * textSize;
+    mFontRec.y_scale = emScale * textSize;
+
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 #if DEBUG_GLYPHS
     ALOGD("Run typeface = %p, uniqueID = %d, hb_face = %p",
             typeface, typeface->uniqueID(), mShaperItem.face);
 #endif
+<<<<<<< HEAD
 
     // Shape
     assert(mShaperItem.item.length > 0); // Harfbuzz will overwrite other memory if length is 0.
@@ -920,15 +1180,36 @@ size_t TextLayoutShaper::shapeFontRun(const SkPaint* paint, bool isRTL) {
         // HB_ShapeItem fills in shaperItem.num_glyphs with the needed size.
         ensureShaperItemGlyphArrays(mShaperItem.num_glyphs * 2);
         mShaperItem.num_glyphs = mShaperItemGlyphArraySize;
+=======
+    SkSafeUnref(typeface);
+
+    // Shape
+    assert(mShaperItem.item.length > 0); // Harfbuzz will overwrite other memory if length is 0.
+    size_t size = mShaperItem.item.length * 3 / 2;
+    while (!doShaping(size)) {
+        // We overflowed our glyph arrays. Resize and retry.
+        // HB_ShapeItem fills in shaperItem.num_glyphs with the needed size.
+        size = mShaperItem.num_glyphs * 2;
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     }
     return baseGlyphCount;
 }
 
+<<<<<<< HEAD
 void TextLayoutShaper::ensureShaperItemGlyphArrays(size_t size) {
+=======
+bool TextLayoutShaper::doShaping(size_t size) {
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     if (size > mShaperItemGlyphArraySize) {
         deleteShaperItemGlyphArrays();
         createShaperItemGlyphArrays(size);
     }
+<<<<<<< HEAD
+=======
+    mShaperItem.num_glyphs = mShaperItemGlyphArraySize;
+    memset(mShaperItem.offsets, 0, mShaperItem.num_glyphs * sizeof(HB_FixedPoint));
+    return HB_ShapeItem(&mShaperItem);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 }
 
 void TextLayoutShaper::createShaperItemGlyphArrays(size_t size) {
@@ -957,6 +1238,7 @@ void TextLayoutShaper::deleteShaperItemGlyphArrays() {
     delete[] mShaperItem.log_clusters;
 }
 
+<<<<<<< HEAD
 SkTypeface* TextLayoutShaper::getCachedTypeface(SkTypeface** typeface, const char path[]) {
     if (!*typeface) {
         *typeface = SkTypeface::CreateFromFile(path);
@@ -975,6 +1257,8 @@ SkTypeface* TextLayoutShaper::getCachedTypeface(SkTypeface** typeface, const cha
     return *typeface;
 }
 
+=======
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 HB_Face TextLayoutShaper::getCachedHBFace(SkTypeface* typeface) {
     SkFontID fontId = typeface->uniqueID();
     ssize_t index = mCachedHBFaces.indexOfKey(fontId);
@@ -1035,8 +1319,12 @@ sp<TextLayoutValue> TextLayoutEngine::getValue(const SkPaint* paint, const jchar
 
 void TextLayoutEngine::purgeCaches() {
 #if USE_TEXT_LAYOUT_CACHE
+<<<<<<< HEAD
     mTextLayoutCache->clear();
     mShaper->purgeCaches();
+=======
+    mTextLayoutCache->purgeCaches();
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 #if DEBUG_GLYPHS
     ALOGD("Purged TextLayoutEngine caches");
 #endif

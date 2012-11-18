@@ -177,6 +177,15 @@ public class MediaRecorder
          *  is applied.
          */
         public static final int VOICE_COMMUNICATION = 7;
+<<<<<<< HEAD
+=======
+
+        /**
+         * @hide
+         * Audio source for remote submix.
+         */
+        public static final int REMOTE_SUBMIX_SOURCE = 8;
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     }
 
     /**
@@ -291,7 +300,16 @@ public class MediaRecorder
      * Gets the maximum value for audio sources.
      * @see android.media.MediaRecorder.AudioSource
      */
+<<<<<<< HEAD
     public static final int getAudioSourceMax() { return AudioSource.VOICE_COMMUNICATION; }
+=======
+    public static final int getAudioSourceMax() {
+        // FIXME disable selection of the remote submxi source selection once test code
+        //       doesn't rely on it
+        return AudioSource.REMOTE_SUBMIX_SOURCE;
+        //return AudioSource.VOICE_COMMUNICATION;
+    }
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 
     /**
      * Sets the video source to be used for recording. If this method is not
@@ -351,12 +369,20 @@ public class MediaRecorder
      */
     public void setCaptureRate(double fps) {
         // Make sure that time lapse is enabled when this method is called.
+<<<<<<< HEAD
         setParameter(String.format("time-lapse-enable=1"));
 
         double timeBetweenFrameCapture = 1 / fps;
         int timeBetweenFrameCaptureMs = (int) (1000 * timeBetweenFrameCapture);
         setParameter(String.format("time-between-time-lapse-frame-capture=%d",
                     timeBetweenFrameCaptureMs));
+=======
+        setParameter("time-lapse-enable=1");
+
+        double timeBetweenFrameCapture = 1 / fps;
+        int timeBetweenFrameCaptureMs = (int) (1000 * timeBetweenFrameCapture);
+        setParameter("time-between-time-lapse-frame-capture=" + timeBetweenFrameCaptureMs);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     }
 
     /**
@@ -721,12 +747,24 @@ public class MediaRecorder
     public native int getMaxAmplitude() throws IllegalStateException;
 
     /* Do not change this value without updating its counterpart
+<<<<<<< HEAD
      * in include/media/mediarecorder.h!
+=======
+     * in include/media/mediarecorder.h or mediaplayer.h!
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
      */
     /** Unspecified media recorder error.
      * @see android.media.MediaRecorder.OnErrorListener
      */
     public static final int MEDIA_RECORDER_ERROR_UNKNOWN = 1;
+<<<<<<< HEAD
+=======
+    /** Media server died. In this case, the application must release the
+     * MediaRecorder object and instantiate a new one.
+     * @see android.media.MediaRecorder.OnErrorListener
+     */
+    public static final int MEDIA_ERROR_SERVER_DIED = 100;
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 
     /**
      * Interface definition for a callback to be invoked when an error
@@ -741,6 +779,10 @@ public class MediaRecorder
          * @param what    the type of error that has occurred:
          * <ul>
          * <li>{@link #MEDIA_RECORDER_ERROR_UNKNOWN}
+<<<<<<< HEAD
+=======
+         * <li>{@link #MEDIA_ERROR_SERVER_DIED}
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
          * </ul>
          * @param extra   an extra code, specific to the error type
          */

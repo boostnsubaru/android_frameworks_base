@@ -225,12 +225,40 @@ public abstract class CompoundButton extends Button implements Checkable {
     }
 
     @Override
+<<<<<<< HEAD
+=======
+    public int getCompoundPaddingLeft() {
+        int padding = super.getCompoundPaddingLeft();
+        if (!isLayoutRtl()) {
+            final Drawable buttonDrawable = mButtonDrawable;
+            if (buttonDrawable != null) {
+                padding += buttonDrawable.getIntrinsicWidth();
+            }
+        }
+        return padding;
+    }
+
+    @Override
+    public int getCompoundPaddingRight() {
+        int padding = super.getCompoundPaddingRight();
+        if (isLayoutRtl()) {
+            final Drawable buttonDrawable = mButtonDrawable;
+            if (buttonDrawable != null) {
+                padding += buttonDrawable.getIntrinsicWidth();
+            }
+        }
+        return padding;
+    }
+
+    @Override
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
 
         final Drawable buttonDrawable = mButtonDrawable;
         if (buttonDrawable != null) {
             final int verticalGravity = getGravity() & Gravity.VERTICAL_GRAVITY_MASK;
+<<<<<<< HEAD
             final int height = buttonDrawable.getIntrinsicHeight();
 
             int y = 0;
@@ -245,6 +273,25 @@ public abstract class CompoundButton extends Button implements Checkable {
             }
 
             buttonDrawable.setBounds(0, y, buttonDrawable.getIntrinsicWidth(), y + height);
+=======
+            final int drawableHeight = buttonDrawable.getIntrinsicHeight();
+            final int drawableWidth = buttonDrawable.getIntrinsicWidth();
+
+            int top = 0;
+            switch (verticalGravity) {
+                case Gravity.BOTTOM:
+                    top = getHeight() - drawableHeight;
+                    break;
+                case Gravity.CENTER_VERTICAL:
+                    top = (getHeight() - drawableHeight) / 2;
+                    break;
+            }
+            int bottom = top + drawableHeight;
+            int left = isLayoutRtl() ? getWidth() - drawableWidth : 0;
+            int right = isLayoutRtl() ? getWidth() : drawableWidth;
+
+            buttonDrawable.setBounds(left, top, right, bottom);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
             buttonDrawable.draw(canvas);
         }
     }

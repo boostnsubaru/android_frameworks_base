@@ -17,6 +17,10 @@
 package com.android.internal.view.menu;
 
 import android.content.Context;
+<<<<<<< HEAD
+=======
+import android.content.res.Configuration;
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 import android.content.res.Resources;
 import android.content.res.TypedArray;
 import android.graphics.Rect;
@@ -48,6 +52,12 @@ public class ActionMenuItemView extends TextView
     private int mMinWidth;
     private int mSavedPaddingLeft;
 
+<<<<<<< HEAD
+=======
+    private static final int MAX_ICON_SIZE = 32; // dp
+    private int mMaxIconSize;
+
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     public ActionMenuItemView(Context context) {
         this(context, null);
     }
@@ -67,6 +77,12 @@ public class ActionMenuItemView extends TextView
                 com.android.internal.R.styleable.ActionMenuItemView_minWidth, 0);
         a.recycle();
 
+<<<<<<< HEAD
+=======
+        final float density = res.getDisplayMetrics().density;
+        mMaxIconSize = (int) (MAX_ICON_SIZE * density + 0.5f);
+
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         setOnClickListener(this);
         setOnLongClickListener(this);
 
@@ -74,6 +90,18 @@ public class ActionMenuItemView extends TextView
     }
 
     @Override
+<<<<<<< HEAD
+=======
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+
+        mAllowTextWithIcon = getContext().getResources().getBoolean(
+                com.android.internal.R.bool.config_allowActionMenuItemTextWithIcon);
+        updateTextButtonVisibility();
+    }
+
+    @Override
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     public void setPadding(int l, int t, int r, int b) {
         mSavedPaddingLeft = l;
         super.setPadding(l, t, r, b);
@@ -135,7 +163,26 @@ public class ActionMenuItemView extends TextView
 
     public void setIcon(Drawable icon) {
         mIcon = icon;
+<<<<<<< HEAD
         setCompoundDrawablesWithIntrinsicBounds(icon, null, null, null);
+=======
+        if (icon != null) {
+            int width = icon.getIntrinsicWidth();
+            int height = icon.getIntrinsicHeight();
+            if (width > mMaxIconSize) {
+                final float scale = (float) mMaxIconSize / width;
+                width = mMaxIconSize;
+                height *= scale;
+            }
+            if (height > mMaxIconSize) {
+                final float scale = (float) mMaxIconSize / height;
+                height = mMaxIconSize;
+                width *= scale;
+            }
+            icon.setBounds(0, 0, width, height);
+        }
+        setCompoundDrawables(icon, null, null, null);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 
         updateTextButtonVisibility();
     }
@@ -209,7 +256,11 @@ public class ActionMenuItemView extends TextView
         Toast cheatSheet = Toast.makeText(context, mItemData.getTitle(), Toast.LENGTH_SHORT);
         if (midy < displayFrame.height()) {
             // Show along the top; follow action buttons
+<<<<<<< HEAD
             cheatSheet.setGravity(Gravity.TOP | Gravity.RIGHT,
+=======
+            cheatSheet.setGravity(Gravity.TOP | Gravity.END,
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
                     screenWidth - screenPos[0] - width / 2, height);
         } else {
             // Show along the bottom center
@@ -221,6 +272,14 @@ public class ActionMenuItemView extends TextView
 
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
+<<<<<<< HEAD
+=======
+        if (MeasureSpec.getMode(heightMeasureSpec) == MeasureSpec.AT_MOST) {
+            // Fill all available height.
+            heightMeasureSpec = MeasureSpec.makeMeasureSpec(
+                    MeasureSpec.getSize(heightMeasureSpec), MeasureSpec.EXACTLY);
+        }
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         final boolean textVisible = hasText();
         if (textVisible && mSavedPaddingLeft >= 0) {
             super.setPadding(mSavedPaddingLeft, getPaddingTop(),
@@ -245,7 +304,11 @@ public class ActionMenuItemView extends TextView
             // TextView won't center compound drawables in both dimensions without
             // a little coercion. Pad in to center the icon after we've measured.
             final int w = getMeasuredWidth();
+<<<<<<< HEAD
             final int dw = mIcon.getIntrinsicWidth();
+=======
+            final int dw = mIcon.getBounds().width();
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
             super.setPadding((w - dw) / 2, getPaddingTop(), getPaddingRight(), getPaddingBottom());
         }
     }

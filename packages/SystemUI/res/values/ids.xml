@@ -19,4 +19,8 @@
     <item type="id" name="expandable_tag" />
     <item type="id" name="user_expanded_tag" />
     <item type="id" name="user_lock_tag" />
+<<<<<<< HEAD
+=======
+    <item type="id" name="status_bar_cling_stub" />
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 </resources>

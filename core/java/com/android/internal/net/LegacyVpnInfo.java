@@ -17,8 +17,15 @@
 package com.android.internal.net;
 
 import android.app.PendingIntent;
+<<<<<<< HEAD
 import android.os.Parcel;
 import android.os.Parcelable;
+=======
+import android.net.NetworkInfo;
+import android.os.Parcel;
+import android.os.Parcelable;
+import android.util.Log;
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 
 /**
  * A simple container used to carry information of the ongoing legacy VPN.
@@ -27,6 +34,11 @@ import android.os.Parcelable;
  * @hide
  */
 public class LegacyVpnInfo implements Parcelable {
+<<<<<<< HEAD
+=======
+    private static final String TAG = "LegacyVpnInfo";
+
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     public static final int STATE_DISCONNECTED = 0;
     public static final int STATE_INITIALIZING = 1;
     public static final int STATE_CONNECTING = 2;
@@ -66,4 +78,28 @@ public class LegacyVpnInfo implements Parcelable {
             return new LegacyVpnInfo[size];
         }
     };
+<<<<<<< HEAD
+=======
+
+    /**
+     * Return best matching {@link LegacyVpnInfo} state based on given
+     * {@link NetworkInfo}.
+     */
+    public static int stateFromNetworkInfo(NetworkInfo info) {
+        switch (info.getDetailedState()) {
+            case CONNECTING:
+                return STATE_CONNECTING;
+            case CONNECTED:
+                return STATE_CONNECTED;
+            case DISCONNECTED:
+                return STATE_DISCONNECTED;
+            case FAILED:
+                return STATE_FAILED;
+            default:
+                Log.w(TAG, "Unhandled state " + info.getDetailedState()
+                        + " ; treating as disconnected");
+                return STATE_DISCONNECTED;
+        }
+    }
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 }

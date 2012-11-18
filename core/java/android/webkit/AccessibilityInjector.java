@@ -18,9 +18,20 @@ package android.webkit;
 
 import android.content.Context;
 import android.os.Bundle;
+<<<<<<< HEAD
 import android.os.SystemClock;
 import android.provider.Settings;
 import android.speech.tts.TextToSpeech;
+=======
+import android.os.Handler;
+import android.os.SystemClock;
+import android.provider.Settings;
+import android.speech.tts.TextToSpeech;
+import android.speech.tts.TextToSpeech.Engine;
+import android.speech.tts.TextToSpeech.OnInitListener;
+import android.speech.tts.UtteranceProgressListener;
+import android.util.Log;
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.accessibility.AccessibilityManager;
@@ -34,6 +45,10 @@ import org.json.JSONObject;
 
 import java.net.URI;
 import java.net.URISyntaxException;
+<<<<<<< HEAD
+=======
+import java.util.HashMap;
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 import java.util.Iterator;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -43,6 +58,13 @@ import java.util.concurrent.atomic.AtomicInteger;
  * APIs.
  */
 class AccessibilityInjector {
+<<<<<<< HEAD
+=======
+    private static final String TAG = AccessibilityInjector.class.getSimpleName();
+
+    private static boolean DEBUG = false;
+
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     // The WebViewClassic this injector is responsible for managing.
     private final WebViewClassic mWebViewClassic;
 
@@ -53,7 +75,11 @@ class AccessibilityInjector {
     private final WebView mWebView;
 
     // The Java objects that are exposed to JavaScript.
+<<<<<<< HEAD
     private TextToSpeech mTextToSpeech;
+=======
+    private TextToSpeechWrapper mTextToSpeech;
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     private CallbackHandler mCallback;
 
     // Lazily loaded helper objects.
@@ -87,7 +113,36 @@ class AccessibilityInjector {
 
     // Template for JavaScript that performs AndroidVox actions.
     private static final String ACCESSIBILITY_ANDROIDVOX_TEMPLATE =
+<<<<<<< HEAD
             "cvox.AndroidVox.performAction('%1s')";
+=======
+            "(function() {" +
+                    "  if ((typeof(cvox) != 'undefined')" +
+                    "      && (cvox != null)" +
+                    "      && (typeof(cvox.ChromeVox) != 'undefined')" +
+                    "      && (cvox.ChromeVox != null)" +
+                    "      && (typeof(cvox.AndroidVox) != 'undefined')" +
+                    "      && (cvox.AndroidVox != null)" +
+                    "      && cvox.ChromeVox.isActive) {" +
+                    "    return cvox.AndroidVox.performAction('%1s');" +
+                    "  } else {" +
+                    "    return false;" +
+                    "  }" +
+                    "})()";
+
+    // JS code used to shut down an active AndroidVox instance.
+    private static final String TOGGLE_CVOX_TEMPLATE =
+            "javascript:(function() {" +
+                    "  if ((typeof(cvox) != 'undefined')" +
+                    "      && (cvox != null)" +
+                    "      && (typeof(cvox.ChromeVox) != 'undefined')" +
+                    "      && (cvox.ChromeVox != null)" +
+                    "      && (typeof(cvox.ChromeVox.host) != 'undefined')" +
+                    "      && (cvox.ChromeVox.host != null)) {" +
+                    "    cvox.ChromeVox.host.activateOrDeactivateChromeVox(%b);" +
+                    "  }" +
+                    "})();";
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 
     /**
      * Creates an instance of the AccessibilityInjector based on
@@ -104,10 +159,33 @@ class AccessibilityInjector {
     }
 
     /**
+<<<<<<< HEAD
      * Attempts to load scripting interfaces for accessibility.
      * <p>
      * This should be called when the window is attached.
      * </p>
+=======
+     * If JavaScript is enabled, pauses or resumes AndroidVox.
+     *
+     * @param enabled Whether feedback should be enabled.
+     */
+    public void toggleAccessibilityFeedback(boolean enabled) {
+        if (!isAccessibilityEnabled() || !isJavaScriptEnabled()) {
+            return;
+        }
+
+        toggleAndroidVox(enabled);
+
+        if (!enabled && (mTextToSpeech != null)) {
+            mTextToSpeech.stop();
+        }
+    }
+
+    /**
+     * Attempts to load scripting interfaces for accessibility.
+     * <p>
+     * This should only be called before a page loads.
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
      */
     public void addAccessibilityApisIfNecessary() {
         if (!isAccessibilityEnabled() || !isJavaScriptEnabled()) {
@@ -121,15 +199,47 @@ class AccessibilityInjector {
     /**
      * Attempts to unload scripting interfaces for accessibility.
      * <p>
+<<<<<<< HEAD
      * This should be called when the window is detached.
      * </p>
      */
     public void removeAccessibilityApisIfNecessary() {
+=======
+     * This should only be called before a page loads.
+     */
+    private void removeAccessibilityApisIfNecessary() {
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         removeTtsApis();
         removeCallbackApis();
     }
 
     /**
+<<<<<<< HEAD
+=======
+     * Destroys this accessibility injector.
+     */
+    public void destroy() {
+        if (mTextToSpeech != null) {
+            mTextToSpeech.shutdown();
+            mTextToSpeech = null;
+        }
+
+        if (mCallback != null) {
+            mCallback = null;
+        }
+    }
+
+    private void toggleAndroidVox(boolean state) {
+        if (!mAccessibilityScriptInjected) {
+            return;
+        }
+
+        final String code = String.format(TOGGLE_CVOX_TEMPLATE, state);
+        mWebView.loadUrl(code);
+    }
+
+    /**
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
      * Initializes an {@link AccessibilityNodeInfo} with the actions and
      * movement granularity levels supported by this
      * {@link AccessibilityInjector}.
@@ -195,7 +305,11 @@ class AccessibilityInjector {
         if (mAccessibilityScriptInjected) {
             return sendActionToAndroidVox(action, arguments);
         }
+<<<<<<< HEAD
         
+=======
+
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         if (mAccessibilityInjectorFallback != null) {
             return mAccessibilityInjectorFallback.performAccessibilityAction(action, arguments);
         }
@@ -261,6 +375,13 @@ class AccessibilityInjector {
      */
     public void onPageStarted(String url) {
         mAccessibilityScriptInjected = false;
+<<<<<<< HEAD
+=======
+        if (DEBUG) {
+            Log.w(TAG, "[" + mWebView.hashCode() + "] Started loading new page");
+        }
+        addAccessibilityApisIfNecessary();
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     }
 
     /**
@@ -273,11 +394,15 @@ class AccessibilityInjector {
      */
     public void onPageFinished(String url) {
         if (!isAccessibilityEnabled()) {
+<<<<<<< HEAD
             mAccessibilityScriptInjected = false;
+=======
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
             toggleFallbackAccessibilityInjector(false);
             return;
         }
 
+<<<<<<< HEAD
         if (!shouldInjectJavaScript(url)) {
             toggleFallbackAccessibilityInjector(true);
             return;
@@ -289,6 +414,73 @@ class AccessibilityInjector {
         mWebView.loadUrl(injectionUrl);
 
         mAccessibilityScriptInjected = true;
+=======
+        toggleFallbackAccessibilityInjector(true);
+
+        if (shouldInjectJavaScript(url)) {
+            // If we're supposed to use the JS screen reader, request a
+            // callback to confirm that CallbackHandler is working.
+            if (DEBUG) {
+                Log.d(TAG, "[" + mWebView.hashCode() + "] Request callback ");
+            }
+
+            mCallback.requestCallback(mWebView, mInjectScriptRunnable);
+        }
+    }
+
+    /**
+     * Runnable used to inject the JavaScript-based screen reader if the
+     * {@link CallbackHandler} API was successfully exposed to JavaScript.
+     */
+    private Runnable mInjectScriptRunnable = new Runnable() {
+        @Override
+        public void run() {
+            if (DEBUG) {
+                Log.d(TAG, "[" + mWebView.hashCode() + "] Received callback");
+            }
+
+            injectJavaScript();
+        }
+    };
+
+    /**
+     * Called by {@link #mInjectScriptRunnable} to inject the JavaScript-based
+     * screen reader after confirming that the {@link CallbackHandler} API is
+     * functional.
+     */
+    private void injectJavaScript() {
+        toggleFallbackAccessibilityInjector(false);
+
+        if (!mAccessibilityScriptInjected) {
+            mAccessibilityScriptInjected = true;
+            final String injectionUrl = getScreenReaderInjectionUrl();
+            mWebView.loadUrl(injectionUrl);
+            if (DEBUG) {
+                Log.d(TAG, "[" + mWebView.hashCode() + "] Loading screen reader into WebView");
+            }
+        } else {
+            if (DEBUG) {
+                Log.w(TAG, "[" + mWebView.hashCode() + "] Attempted to inject screen reader twice");
+            }
+        }
+    }
+
+    /**
+     * Adjusts the accessibility injection state to reflect changes in the
+     * JavaScript enabled state.
+     *
+     * @param enabled Whether JavaScript is enabled.
+     */
+    public void updateJavaScriptEnabled(boolean enabled) {
+        if (enabled) {
+            addAccessibilityApisIfNecessary();
+        } else {
+            removeAccessibilityApisIfNecessary();
+        }
+
+        // We have to reload the page after adding or removing APIs.
+        mWebView.reload();
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     }
 
     /**
@@ -346,6 +538,7 @@ class AccessibilityInjector {
      * been done.
      */
     private void addTtsApis() {
+<<<<<<< HEAD
         if (mTextToSpeech != null) {
             return;
         }
@@ -353,6 +546,12 @@ class AccessibilityInjector {
         final String pkgName = mContext.getPackageName();
 
         mTextToSpeech = new TextToSpeech(mContext, null, null, pkgName + ".**webview**", true);
+=======
+        if (mTextToSpeech == null) {
+            mTextToSpeech = new TextToSpeechWrapper(mContext);
+        }
+
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         mWebView.addJavascriptInterface(mTextToSpeech, ALIAS_TTS_JS_INTERFACE);
     }
 
@@ -361,6 +560,7 @@ class AccessibilityInjector {
      * already been done.
      */
     private void removeTtsApis() {
+<<<<<<< HEAD
         if (mTextToSpeech == null) {
             return;
         }
@@ -377,16 +577,40 @@ class AccessibilityInjector {
         }
 
         mCallback = new CallbackHandler(ALIAS_TRAVERSAL_JS_INTERFACE);
+=======
+        if (mTextToSpeech != null) {
+            mTextToSpeech.stop();
+            mTextToSpeech.shutdown();
+            mTextToSpeech = null;
+        }
+
+        mWebView.removeJavascriptInterface(ALIAS_TTS_JS_INTERFACE);
+    }
+
+    private void addCallbackApis() {
+        if (mCallback == null) {
+            mCallback = new CallbackHandler(ALIAS_TRAVERSAL_JS_INTERFACE);
+        }
+
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         mWebView.addJavascriptInterface(mCallback, ALIAS_TRAVERSAL_JS_INTERFACE);
     }
 
     private void removeCallbackApis() {
+<<<<<<< HEAD
         if (mCallback == null) {
             return;
         }
 
         mWebView.removeJavascriptInterface(ALIAS_TRAVERSAL_JS_INTERFACE);
         mCallback = null;
+=======
+        if (mCallback != null) {
+            mCallback = null;
+        }
+
+        mWebView.removeJavascriptInterface(ALIAS_TRAVERSAL_JS_INTERFACE);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     }
 
     /**
@@ -412,6 +636,11 @@ class AccessibilityInjector {
             }
         } catch (URISyntaxException e) {
             // Do nothing.
+<<<<<<< HEAD
+=======
+        } catch (IllegalArgumentException e) {
+            // Catch badly-formed URLs.
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         }
 
         return ACCESSIBILITY_SCRIPT_INJECTION_UNDEFINED;
@@ -448,7 +677,16 @@ class AccessibilityInjector {
      *         settings.
      */
     private boolean isJavaScriptEnabled() {
+<<<<<<< HEAD
         return mWebView.getSettings().getJavaScriptEnabled();
+=======
+        final WebSettings settings = mWebView.getSettings();
+        if (settings == null) {
+            return false;
+        }
+
+        return settings.getJavaScriptEnabled();
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     }
 
     /**
@@ -508,6 +746,160 @@ class AccessibilityInjector {
     }
 
     /**
+<<<<<<< HEAD
+=======
+     * Used to protect the TextToSpeech class, only exposing the methods we want to expose.
+     */
+    private static class TextToSpeechWrapper {
+        private static final String WRAP_TAG = TextToSpeechWrapper.class.getSimpleName();
+
+        private final HashMap<String, String> mTtsParams;
+        private final TextToSpeech mTextToSpeech;
+
+        /**
+         * Whether this wrapper is ready to speak. If this is {@code true} then
+         * {@link #mShutdown} is guaranteed to be {@code false}.
+         */
+        private volatile boolean mReady;
+
+        /**
+         * Whether this wrapper was shut down. If this is {@code true} then
+         * {@link #mReady} is guaranteed to be {@code false}.
+         */
+        private volatile boolean mShutdown;
+
+        public TextToSpeechWrapper(Context context) {
+            if (DEBUG) {
+                Log.d(WRAP_TAG, "[" + hashCode() + "] Initializing text-to-speech on thread "
+                        + Thread.currentThread().getId() + "...");
+            }
+
+            final String pkgName = context.getPackageName();
+
+            mReady = false;
+            mShutdown = false;
+
+            mTtsParams = new HashMap<String, String>();
+            mTtsParams.put(Engine.KEY_PARAM_UTTERANCE_ID, WRAP_TAG);
+
+            mTextToSpeech = new TextToSpeech(
+                    context, mInitListener, null, pkgName + ".**webview**", true);
+            mTextToSpeech.setOnUtteranceProgressListener(mErrorListener);
+        }
+
+        @JavascriptInterface
+        @SuppressWarnings("unused")
+        public boolean isSpeaking() {
+            synchronized (mTextToSpeech) {
+                if (!mReady) {
+                    return false;
+                }
+
+                return mTextToSpeech.isSpeaking();
+            }
+        }
+
+        @JavascriptInterface
+        @SuppressWarnings("unused")
+        public int speak(String text, int queueMode, HashMap<String, String> params) {
+            synchronized (mTextToSpeech) {
+                if (!mReady) {
+                    if (DEBUG) {
+                        Log.w(WRAP_TAG, "[" + hashCode() + "] Attempted to speak before TTS init");
+                    }
+                    return TextToSpeech.ERROR;
+                } else {
+                    if (DEBUG) {
+                        Log.i(WRAP_TAG, "[" + hashCode() + "] Speak called from JS binder");
+                    }
+                }
+
+                return mTextToSpeech.speak(text, queueMode, params);
+            }
+        }
+
+        @JavascriptInterface
+        @SuppressWarnings("unused")
+        public int stop() {
+            synchronized (mTextToSpeech) {
+                if (!mReady) {
+                    if (DEBUG) {
+                        Log.w(WRAP_TAG, "[" + hashCode() + "] Attempted to stop before initialize");
+                    }
+                    return TextToSpeech.ERROR;
+                } else {
+                    if (DEBUG) {
+                        Log.i(WRAP_TAG, "[" + hashCode() + "] Stop called from JS binder");
+                    }
+                }
+
+                return mTextToSpeech.stop();
+            }
+        }
+
+        @SuppressWarnings("unused")
+        protected void shutdown() {
+            synchronized (mTextToSpeech) {
+                if (!mReady) {
+                    if (DEBUG) {
+                        Log.w(WRAP_TAG, "[" + hashCode() + "] Called shutdown before initialize");
+                    }
+                } else {
+                    if (DEBUG) {
+                        Log.i(WRAP_TAG, "[" + hashCode() + "] Shutting down text-to-speech from "
+                                + "thread " + Thread.currentThread().getId() + "...");
+                    }
+                }
+                mShutdown = true;
+                mReady = false;
+                mTextToSpeech.shutdown();
+            }
+        }
+
+        private final OnInitListener mInitListener = new OnInitListener() {
+            @Override
+            public void onInit(int status) {
+                synchronized (mTextToSpeech) {
+                    if (!mShutdown && (status == TextToSpeech.SUCCESS)) {
+                        if (DEBUG) {
+                            Log.d(WRAP_TAG, "[" + TextToSpeechWrapper.this.hashCode()
+                                    + "] Initialized successfully");
+                        }
+                        mReady = true;
+                    } else {
+                        if (DEBUG) {
+                            Log.w(WRAP_TAG, "[" + TextToSpeechWrapper.this.hashCode()
+                                    + "] Failed to initialize");
+                        }
+                        mReady = false;
+                    }
+                }
+            }
+        };
+
+        private final UtteranceProgressListener mErrorListener = new UtteranceProgressListener() {
+            @Override
+            public void onStart(String utteranceId) {
+                // Do nothing.
+            }
+
+            @Override
+            public void onError(String utteranceId) {
+                if (DEBUG) {
+                    Log.w(WRAP_TAG, "[" + TextToSpeechWrapper.this.hashCode()
+                            + "] Failed to speak utterance");
+                }
+            }
+
+            @Override
+            public void onDone(String utteranceId) {
+                // Do nothing.
+            }
+        };
+    }
+
+    /**
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
      * Exposes result interface to JavaScript.
      */
     private static class CallbackHandler {
@@ -520,12 +912,25 @@ class AccessibilityInjector {
         private final AtomicInteger mResultIdCounter = new AtomicInteger();
         private final Object mResultLock = new Object();
         private final String mInterfaceName;
+<<<<<<< HEAD
 
         private boolean mResult = false;
         private long mResultId = -1;
 
         private CallbackHandler(String interfaceName) {
             mInterfaceName = interfaceName;
+=======
+        private final Handler mMainHandler;
+
+        private Runnable mCallbackRunnable;
+
+        private boolean mResult = false;
+        private int mResultId = -1;
+
+        private CallbackHandler(String interfaceName) {
+            mInterfaceName = interfaceName;
+            mMainHandler = new Handler();
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         }
 
         /**
@@ -574,6 +979,7 @@ class AccessibilityInjector {
          * @return Whether the result was received.
          */
         private boolean waitForResultTimedLocked(int resultId) {
+<<<<<<< HEAD
             long waitTimeMillis = RESULT_TIMEOUT;
             final long startTimeMillis = SystemClock.uptimeMillis();
             while (true) {
@@ -592,6 +998,55 @@ class AccessibilityInjector {
                     mResultLock.wait(waitTimeMillis);
                 } catch (InterruptedException ie) {
                     /* ignore */
+=======
+            final long startTimeMillis = SystemClock.uptimeMillis();
+
+            if (DEBUG) {
+                Log.d(TAG, "Waiting for CVOX result with ID " + resultId + "...");
+            }
+
+            while (true) {
+                // Fail if we received a callback from the future.
+                if (mResultId > resultId) {
+                    if (DEBUG) {
+                        Log.w(TAG, "Aborted CVOX result");
+                    }
+                    return false;
+                }
+
+                final long elapsedTimeMillis = (SystemClock.uptimeMillis() - startTimeMillis);
+
+                // Succeed if we received the callback we were expecting.
+                if (DEBUG) {
+                    Log.w(TAG, "Check " + mResultId + " versus expected " + resultId);
+                }
+                if (mResultId == resultId) {
+                    if (DEBUG) {
+                        Log.w(TAG, "Received CVOX result after " + elapsedTimeMillis + " ms");
+                    }
+                    return true;
+                }
+
+                final long waitTimeMillis = (RESULT_TIMEOUT - elapsedTimeMillis);
+
+                // Fail if we've already exceeded the timeout.
+                if (waitTimeMillis <= 0) {
+                    if (DEBUG) {
+                        Log.w(TAG, "Timed out while waiting for CVOX result");
+                    }
+                    return false;
+                }
+
+                try {
+                    if (DEBUG) {
+                        Log.w(TAG, "Start waiting...");
+                    }
+                    mResultLock.wait(waitTimeMillis);
+                } catch (InterruptedException ie) {
+                    if (DEBUG) {
+                        Log.w(TAG, "Interrupted while waiting for CVOX result");
+                    }
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
                 }
             }
         }
@@ -603,12 +1058,25 @@ class AccessibilityInjector {
          * @param id The result id of the request as a {@link String}.
          * @param result The result of the request as a {@link String}.
          */
+<<<<<<< HEAD
         @SuppressWarnings("unused")
         public void onResult(String id, String result) {
             final long resultId;
 
             try {
                 resultId = Long.parseLong(id);
+=======
+        @JavascriptInterface
+        @SuppressWarnings("unused")
+        public void onResult(String id, String result) {
+            if (DEBUG) {
+                Log.w(TAG, "Saw CVOX result of '" + result + "' for ID " + id);
+            }
+            final int resultId;
+
+            try {
+                resultId = Integer.parseInt(id);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
             } catch (NumberFormatException e) {
                 return;
             }
@@ -617,9 +1085,41 @@ class AccessibilityInjector {
                 if (resultId > mResultId) {
                     mResult = Boolean.parseBoolean(result);
                     mResultId = resultId;
+<<<<<<< HEAD
+=======
+                } else {
+                    if (DEBUG) {
+                        Log.w(TAG, "Result with ID " + resultId + " was stale vesus " + mResultId);
+                    }
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
                 }
                 mResultLock.notifyAll();
             }
         }
+<<<<<<< HEAD
+=======
+
+        /**
+         * Requests a callback to ensure that the JavaScript interface for this
+         * object has been added successfully.
+         *
+         * @param webView The web view to request a callback from.
+         * @param callbackRunnable Runnable to execute if a callback is received.
+         */
+        public void requestCallback(WebView webView, Runnable callbackRunnable) {
+            mCallbackRunnable = callbackRunnable;
+
+            webView.loadUrl("javascript:(function() { " + mInterfaceName + ".callback(); })();");
+        }
+
+        @JavascriptInterface
+        @SuppressWarnings("unused")
+        public void callback() {
+            if (mCallbackRunnable != null) {
+                mMainHandler.post(mCallbackRunnable);
+                mCallbackRunnable = null;
+            }
+        }
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     }
 }

@@ -119,11 +119,22 @@ public class DummyDataStateTracker implements NetworkStateTracker {
         return true;
     }
 
+<<<<<<< HEAD
+=======
+    public void captivePortalCheckComplete() {
+        // not implemented
+    }
+
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     /**
      * Record the detailed state of a network, and if it is a
      * change from the previous state, send a notification to
      * any listeners.
+<<<<<<< HEAD
      * @param state the new @{code DetailedState}
+=======
+     * @param state the new {@code DetailedState}
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
      * @param reason a {@code String} indicating a reason for the state change,
      * if one was supplied. May be {@code null}.
      * @param extraInfo optional {@code String} providing extra information about the state change

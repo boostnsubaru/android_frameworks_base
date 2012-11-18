@@ -32,25 +32,42 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="fill_vertical"
+<<<<<<< HEAD
         android:layout_marginLeft="@dimen/notification_large_icon_width"
         android:orientation="vertical"
         android:paddingTop="2dp"
+=======
+        android:layout_marginStart="@dimen/notification_large_icon_width"
+        android:orientation="vertical"
+        android:paddingTop="0dp"
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         android:paddingBottom="2dp"
         android:gravity="top"
         >
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+<<<<<<< HEAD
             android:orientation="vertical"
             android:layout_marginLeft="8dp"
             android:layout_marginRight="8dp"
+=======
+            android:minHeight="@dimen/notification_large_icon_height"
+            android:orientation="vertical"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp"
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
             android:layout_weight="1"
             >
             <LinearLayout
                 android:id="@+id/line1"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+<<<<<<< HEAD
                 android:paddingTop="6dp"
+=======
+                android:paddingTop="8dp"
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
                 android:orientation="horizontal"
                 android:layout_gravity="top"
                 android:layout_weight="0"
@@ -87,7 +104,11 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="-2dp"
                 android:layout_marginBottom="-2dp"
+<<<<<<< HEAD
                 android:layout_marginRight="8dp"
+=======
+                android:layout_marginEnd="8dp"
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
                 android:singleLine="true"
                 android:fadingEdge="horizontal"
                 android:ellipsize="marquee"
@@ -99,7 +120,11 @@
                 android:layout_width="match_parent"
                 android:layout_height="12dp"
                 android:layout_marginBottom="8dp"
+<<<<<<< HEAD
                 android:layout_marginRight="8dp"
+=======
+                android:layout_marginEnd="8dp"
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
                 android:visibility="gone"
                 android:layout_weight="0"
                 style="?android:attr/progressBarStyleHorizontal"
@@ -109,7 +134,11 @@
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:layout_marginBottom="10dp"
+<<<<<<< HEAD
                 android:layout_marginRight="8dp"
+=======
+                android:layout_marginEnd="8dp"
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
                 android:singleLine="false"
                 android:visibility="gone"
                 android:maxLines="8"
@@ -142,9 +171,15 @@
             android:id="@+id/line3"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+<<<<<<< HEAD
             android:layout_marginLeft="8dp"
             android:layout_marginBottom="8dp"
             android:layout_marginRight="8dp"
+=======
+            android:layout_marginStart="8dp"
+            android:layout_marginBottom="8dp"
+            android:layout_marginEnd="8dp"
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
             android:orientation="horizontal"
             android:layout_weight="0"
             android:gravity="center_vertical"
@@ -167,14 +202,22 @@
                 android:layout_weight="0"
                 android:singleLine="true"
                 android:gravity="center"
+<<<<<<< HEAD
                 android:paddingLeft="8dp"
+=======
+                android:paddingStart="8dp"
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
                 />
             <ImageView android:id="@+id/right_icon"
                 android:layout_width="16dp"
                 android:layout_height="16dp"
                 android:layout_gravity="center"
                 android:layout_weight="0"
+<<<<<<< HEAD
                 android:layout_marginLeft="8dp"
+=======
+                android:layout_marginStart="8dp"
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
                 android:scaleType="centerInside"
                 android:visibility="gone"
                 android:drawableAlpha="153"

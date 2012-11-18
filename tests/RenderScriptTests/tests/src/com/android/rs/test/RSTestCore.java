@@ -67,12 +67,25 @@ public class RSTestCore {
         unitTests.add(new UT_primitives(this, mRes, mCtx));
         unitTests.add(new UT_constant(this, mRes, mCtx));
         unitTests.add(new UT_vector(this, mRes, mCtx));
+<<<<<<< HEAD
         unitTests.add(new UT_array_init(this, mRes, mCtx));
         unitTests.add(new UT_array_alloc(this, mRes, mCtx));
+=======
+        unitTests.add(new UT_unsigned(this, mRes, mCtx));
+        unitTests.add(new UT_array_init(this, mRes, mCtx));
+        unitTests.add(new UT_array_alloc(this, mRes, mCtx));
+        unitTests.add(new UT_kernel(this, mRes, mCtx));
+        unitTests.add(new UT_kernel_struct(this, mRes, mCtx));
+        unitTests.add(new UT_bug_char(this, mRes, mCtx));
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         unitTests.add(new UT_clamp(this, mRes, mCtx));
         unitTests.add(new UT_clamp_relaxed(this, mRes, mCtx));
         unitTests.add(new UT_convert(this, mRes, mCtx));
         unitTests.add(new UT_convert_relaxed(this, mRes, mCtx));
+<<<<<<< HEAD
+=======
+        unitTests.add(new UT_copy_test(this, mRes, mCtx));
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         unitTests.add(new UT_rsdebug(this, mRes, mCtx));
         unitTests.add(new UT_rstime(this, mRes, mCtx));
         unitTests.add(new UT_rstypes(this, mRes, mCtx));
@@ -84,6 +97,12 @@ public class RSTestCore {
         unitTests.add(new UT_struct(this, mRes, mCtx));
         unitTests.add(new UT_math(this, mRes, mCtx));
         unitTests.add(new UT_math_conformance(this, mRes, mCtx));
+<<<<<<< HEAD
+=======
+        unitTests.add(new UT_math_agree(this, mRes, mCtx));
+        unitTests.add(new UT_min(this, mRes, mCtx));
+        unitTests.add(new UT_int4(this, mRes, mCtx));
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         unitTests.add(new UT_element(this, mRes, mCtx));
         unitTests.add(new UT_sampler(this, mRes, mCtx));
         unitTests.add(new UT_program_store(this, mRes, mCtx));

@@ -31,6 +31,10 @@ import android.util.Log;
 import android.util.Pair;
 
 import java.io.IOException;
+<<<<<<< HEAD
+=======
+import java.util.ArrayList;
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashSet;
@@ -73,7 +77,12 @@ import java.util.UUID;
  */
 public final class BluetoothAdapter {
     private static final String TAG = "BluetoothAdapter";
+<<<<<<< HEAD
     private static final boolean DBG = false;
+=======
+    private static final boolean DBG = true;
+    private static final boolean VDBG = false;
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 
     /**
      * Sentinel error value for this class. Guaranteed to not equal any other
@@ -343,7 +352,11 @@ public final class BluetoothAdapter {
     public static final int STATE_DISCONNECTING = 3;
 
     /** @hide */
+<<<<<<< HEAD
     public static final String BLUETOOTH_SERVICE = "bluetooth";
+=======
+    public static final String BLUETOOTH_MANAGER_SERVICE = "bluetooth_manager";
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 
     private static final int ADDRESS_LENGTH = 17;
 
@@ -353,7 +366,12 @@ public final class BluetoothAdapter {
      */
     private static BluetoothAdapter sAdapter;
 
+<<<<<<< HEAD
     private final IBluetooth mService;
+=======
+    private final IBluetoothManager mManagerService;
+    private IBluetooth mService;
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 
     private Handler mServiceRecordHandler;
 
@@ -367,10 +385,19 @@ public final class BluetoothAdapter {
      */
     public static synchronized BluetoothAdapter getDefaultAdapter() {
         if (sAdapter == null) {
+<<<<<<< HEAD
             IBinder b = ServiceManager.getService(BluetoothAdapter.BLUETOOTH_SERVICE);
             if (b != null) {
                 IBluetooth service = IBluetooth.Stub.asInterface(b);
                 sAdapter = new BluetoothAdapter(service);
+=======
+            IBinder b = ServiceManager.getService(BLUETOOTH_MANAGER_SERVICE);
+            if (b != null) {
+                IBluetoothManager managerService = IBluetoothManager.Stub.asInterface(b);
+                sAdapter = new BluetoothAdapter(managerService);
+            } else {
+                Log.e(TAG, "Bluetooth binder is null");
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
             }
         }
         return sAdapter;
@@ -378,6 +405,7 @@ public final class BluetoothAdapter {
 
     /**
      * Use {@link #getDefaultAdapter} to get the BluetoothAdapter instance.
+<<<<<<< HEAD
      * @hide
      */
     public BluetoothAdapter(IBluetooth service) {
@@ -385,6 +413,18 @@ public final class BluetoothAdapter {
             throw new IllegalArgumentException("service is null");
         }
         mService = service;
+=======
+     */
+    BluetoothAdapter(IBluetoothManager managerService) {
+
+        if (managerService == null) {
+            throw new IllegalArgumentException("bluetooth manager service is null");
+        }
+        try {
+            mService = managerService.registerAdapter(mManagerCallback);
+        } catch (RemoteException e) {Log.e(TAG, "", e);}
+        mManagerService = managerService;
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         mServiceRecordHandler = null;
     }
 
@@ -432,8 +472,16 @@ public final class BluetoothAdapter {
      * @return true if the local adapter is turned on
      */
     public boolean isEnabled() {
+<<<<<<< HEAD
         try {
             return mService.isEnabled();
+=======
+
+        try {
+            synchronized(mManagerCallback) {
+                if (mService != null) return mService.isEnabled();
+            }
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         } catch (RemoteException e) {Log.e(TAG, "", e);}
         return false;
     }
@@ -451,8 +499,23 @@ public final class BluetoothAdapter {
      */
     public int getState() {
         try {
+<<<<<<< HEAD
             return mService.getBluetoothState();
         } catch (RemoteException e) {Log.e(TAG, "", e);}
+=======
+            synchronized(mManagerCallback) {
+                if (mService != null)
+                {
+                    int state=  mService.getState();
+                    if (VDBG) Log.d(TAG, "" + hashCode() + ": getState(). Returning " + state);
+                    return state;
+                }
+                // TODO(BT) there might be a small gap during STATE_TURNING_ON that
+                //          mService is null, handle that case
+            }
+        } catch (RemoteException e) {Log.e(TAG, "", e);}
+        if (DBG) Log.d(TAG, "" + hashCode() + ": getState() :  mService = null. Returning STATE_OFF");
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         return STATE_OFF;
     }
 
@@ -484,8 +547,17 @@ public final class BluetoothAdapter {
      *         immediate error
      */
     public boolean enable() {
+<<<<<<< HEAD
         try {
             return mService.enable();
+=======
+        if (isEnabled() == true){
+            if (DBG) Log.d(TAG, "enable(): BT is already enabled..!");
+            return true;
+        }
+        try {
+            return mManagerService.enable();
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         } catch (RemoteException e) {Log.e(TAG, "", e);}
         return false;
     }
@@ -516,7 +588,29 @@ public final class BluetoothAdapter {
      */
     public boolean disable() {
         try {
+<<<<<<< HEAD
             return mService.disable(true);
+=======
+            return mManagerService.disable(true);
+        } catch (RemoteException e) {Log.e(TAG, "", e);}
+        return false;
+    }
+
+    /**
+     * Turn off the local Bluetooth adapter and don't persist the setting.
+     *
+     * <p>Requires the {@link android.Manifest.permission#BLUETOOTH_ADMIN}
+     * permission
+     *
+     * @return true to indicate adapter shutdown has begun, or false on
+     *         immediate error
+     * @hide
+     */
+    public boolean disable(boolean persist) {
+
+        try {
+            return mManagerService.disable(persist);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         } catch (RemoteException e) {Log.e(TAG, "", e);}
         return false;
     }
@@ -530,7 +624,11 @@ public final class BluetoothAdapter {
      */
     public String getAddress() {
         try {
+<<<<<<< HEAD
             return mService.getAddress();
+=======
+            return mManagerService.getAddress();
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         } catch (RemoteException e) {Log.e(TAG, "", e);}
         return null;
     }
@@ -544,7 +642,11 @@ public final class BluetoothAdapter {
      */
     public String getName() {
         try {
+<<<<<<< HEAD
             return mService.getName();
+=======
+            return mManagerService.getName();
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         } catch (RemoteException e) {Log.e(TAG, "", e);}
         return null;
     }
@@ -560,7 +662,13 @@ public final class BluetoothAdapter {
     public ParcelUuid[] getUuids() {
         if (getState() != STATE_ON) return null;
         try {
+<<<<<<< HEAD
             return mService.getUuids();
+=======
+            synchronized(mManagerCallback) {
+                if (mService != null) return mService.getUuids();
+            }
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         } catch (RemoteException e) {Log.e(TAG, "", e);}
         return null;
     }
@@ -583,7 +691,13 @@ public final class BluetoothAdapter {
     public boolean setName(String name) {
         if (getState() != STATE_ON) return false;
         try {
+<<<<<<< HEAD
             return mService.setName(name);
+=======
+            synchronized(mManagerCallback) {
+                if (mService != null) return mService.setName(name);
+            }
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         } catch (RemoteException e) {Log.e(TAG, "", e);}
         return false;
     }
@@ -607,7 +721,13 @@ public final class BluetoothAdapter {
     public int getScanMode() {
         if (getState() != STATE_ON) return SCAN_MODE_NONE;
         try {
+<<<<<<< HEAD
             return mService.getScanMode();
+=======
+            synchronized(mManagerCallback) {
+                if (mService != null) return mService.getScanMode();
+            }
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         } catch (RemoteException e) {Log.e(TAG, "", e);}
         return SCAN_MODE_NONE;
     }
@@ -643,7 +763,13 @@ public final class BluetoothAdapter {
     public boolean setScanMode(int mode, int duration) {
         if (getState() != STATE_ON) return false;
         try {
+<<<<<<< HEAD
             return mService.setScanMode(mode, duration);
+=======
+            synchronized(mManagerCallback) {
+                if (mService != null) return mService.setScanMode(mode, duration);
+            }
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         } catch (RemoteException e) {Log.e(TAG, "", e);}
         return false;
     }
@@ -651,14 +777,25 @@ public final class BluetoothAdapter {
     /** @hide */
     public boolean setScanMode(int mode) {
         if (getState() != STATE_ON) return false;
+<<<<<<< HEAD
         return setScanMode(mode, 120);
+=======
+        /* getDiscoverableTimeout() to use the latest from NV than use 0 */
+        return setScanMode(mode, getDiscoverableTimeout());
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     }
 
     /** @hide */
     public int getDiscoverableTimeout() {
         if (getState() != STATE_ON) return -1;
         try {
+<<<<<<< HEAD
             return mService.getDiscoverableTimeout();
+=======
+            synchronized(mManagerCallback) {
+                if (mService != null) return mService.getDiscoverableTimeout();
+            }
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         } catch (RemoteException e) {Log.e(TAG, "", e);}
         return -1;
     }
@@ -667,7 +804,13 @@ public final class BluetoothAdapter {
     public void setDiscoverableTimeout(int timeout) {
         if (getState() != STATE_ON) return;
         try {
+<<<<<<< HEAD
             mService.setDiscoverableTimeout(timeout);
+=======
+            synchronized(mManagerCallback) {
+                if (mService != null) mService.setDiscoverableTimeout(timeout);
+            }
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         } catch (RemoteException e) {Log.e(TAG, "", e);}
     }
 
@@ -704,7 +847,13 @@ public final class BluetoothAdapter {
     public boolean startDiscovery() {
         if (getState() != STATE_ON) return false;
         try {
+<<<<<<< HEAD
             return mService.startDiscovery();
+=======
+            synchronized(mManagerCallback) {
+                if (mService != null) return mService.startDiscovery();
+            }
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         } catch (RemoteException e) {Log.e(TAG, "", e);}
         return false;
     }
@@ -729,7 +878,13 @@ public final class BluetoothAdapter {
     public boolean cancelDiscovery() {
         if (getState() != STATE_ON) return false;
         try {
+<<<<<<< HEAD
             return mService.cancelDiscovery();
+=======
+            synchronized(mManagerCallback) {
+                if (mService != null) return mService.cancelDiscovery();
+            }
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         } catch (RemoteException e) {Log.e(TAG, "", e);}
         return false;
     }
@@ -756,7 +911,13 @@ public final class BluetoothAdapter {
     public boolean isDiscovering() {
         if (getState() != STATE_ON) return false;
         try {
+<<<<<<< HEAD
             return mService.isDiscovering();
+=======
+            synchronized(mManagerCallback) {
+                if (mService != null ) return mService.isDiscovering();
+            }
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         } catch (RemoteException e) {Log.e(TAG, "", e);}
         return false;
     }
@@ -774,10 +935,20 @@ public final class BluetoothAdapter {
      */
     public Set<BluetoothDevice> getBondedDevices() {
         if (getState() != STATE_ON) {
+<<<<<<< HEAD
             return toDeviceSet(new String[0]);
         }
         try {
             return toDeviceSet(mService.listBonds());
+=======
+            return toDeviceSet(new BluetoothDevice[0]);
+        }
+        try {
+            synchronized(mManagerCallback) {
+                if (mService != null) return toDeviceSet(mService.getBondedDevices());
+            }
+            return toDeviceSet(new BluetoothDevice[0]);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         } catch (RemoteException e) {Log.e(TAG, "", e);}
         return null;
     }
@@ -798,7 +969,13 @@ public final class BluetoothAdapter {
     public int getConnectionState() {
         if (getState() != STATE_ON) return BluetoothAdapter.STATE_DISCONNECTED;
         try {
+<<<<<<< HEAD
             return mService.getAdapterConnectionState();
+=======
+            synchronized(mManagerCallback) {
+                if (mService != null) return mService.getAdapterConnectionState();
+            }
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         } catch (RemoteException e) {Log.e(TAG, "getConnectionState:", e);}
         return BluetoothAdapter.STATE_DISCONNECTED;
     }
@@ -821,7 +998,13 @@ public final class BluetoothAdapter {
     public int getProfileConnectionState(int profile) {
         if (getState() != STATE_ON) return BluetoothProfile.STATE_DISCONNECTED;
         try {
+<<<<<<< HEAD
             return mService.getProfileConnectionState(profile);
+=======
+            synchronized(mManagerCallback) {
+                if (mService != null) return mService.getProfileConnectionState(profile);
+            }
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         } catch (RemoteException e) {
             Log.e(TAG, "getProfileConnectionState:", e);
         }
@@ -829,6 +1012,7 @@ public final class BluetoothAdapter {
     }
 
     /**
+<<<<<<< HEAD
     /**
      * Picks RFCOMM channels until none are left.
      * Avoids reserved channels.
@@ -874,6 +1058,8 @@ public final class BluetoothAdapter {
     }
 
     /**
+=======
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
      * Create a listening, secure RFCOMM Bluetooth socket.
      * <p>A remote device connecting to this socket will be authenticated and
      * communication on this socket will be encrypted.
@@ -892,10 +1078,17 @@ public final class BluetoothAdapter {
                 BluetoothSocket.TYPE_RFCOMM, true, true, channel);
         int errno = socket.mSocket.bindListen();
         if (errno != 0) {
+<<<<<<< HEAD
             try {
                 socket.close();
             } catch (IOException e) {}
             socket.mSocket.throwErrnoNative(errno);
+=======
+            //TODO(BT): Throw the same exception error code
+            // that the previous code was using.
+            //socket.mSocket.throwErrnoNative(errno);
+            throw new IOException("Error: " + errno);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         }
         return socket;
     }
@@ -996,6 +1189,7 @@ public final class BluetoothAdapter {
         return createNewRfcommSocketAndRecord(name, uuid, false, true);
     }
 
+<<<<<<< HEAD
     private BluetoothServerSocket createNewRfcommSocketAndRecord(String name, UUID uuid,
             boolean auth, boolean encrypt) throws IOException {
         RfcommChannelPicker picker = new RfcommChannelPicker(uuid);
@@ -1060,6 +1254,25 @@ public final class BluetoothAdapter {
     }
 
 
+=======
+
+    private BluetoothServerSocket createNewRfcommSocketAndRecord(String name, UUID uuid,
+            boolean auth, boolean encrypt) throws IOException {
+        BluetoothServerSocket socket;
+        socket = new BluetoothServerSocket(BluetoothSocket.TYPE_RFCOMM, auth,
+                        encrypt, new ParcelUuid(uuid));
+        socket.setServiceName(name);
+        int errno = socket.mSocket.bindListen();
+        if (errno != 0) {
+            //TODO(BT): Throw the same exception error code
+            // that the previous code was using.
+            //socket.mSocket.throwErrnoNative(errno);
+            throw new IOException("Error: " + errno);
+        }
+        return socket;
+    }
+
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     /**
      * Construct an unencrypted, unauthenticated, RFCOMM server socket.
      * Call #accept to retrieve connections to this socket.
@@ -1073,10 +1286,17 @@ public final class BluetoothAdapter {
                 BluetoothSocket.TYPE_RFCOMM, false, false, port);
         int errno = socket.mSocket.bindListen();
         if (errno != 0) {
+<<<<<<< HEAD
             try {
                 socket.close();
             } catch (IOException e) {}
             socket.mSocket.throwErrnoNative(errno);
+=======
+            //TODO(BT): Throw the same exception error code
+            // that the previous code was using.
+            //socket.mSocket.throwErrnoNative(errno);
+            throw new IOException("Error: " + errno);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         }
         return socket;
     }
@@ -1094,11 +1314,19 @@ public final class BluetoothAdapter {
         BluetoothServerSocket socket = new BluetoothServerSocket(
                 BluetoothSocket.TYPE_RFCOMM, false, true, port);
         int errno = socket.mSocket.bindListen();
+<<<<<<< HEAD
         if (errno != 0) {
             try {
                 socket.close();
             } catch (IOException e) {}
             socket.mSocket.throwErrnoNative(errno);
+=======
+        if (errno < 0) {
+            //TODO(BT): Throw the same exception error code
+            // that the previous code was using.
+            //socket.mSocket.throwErrnoNative(errno);
+            throw new IOException("Error: " + errno);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         }
         return socket;
     }
@@ -1115,11 +1343,18 @@ public final class BluetoothAdapter {
         BluetoothServerSocket socket = new BluetoothServerSocket(
                 BluetoothSocket.TYPE_SCO, false, false, -1);
         int errno = socket.mSocket.bindListen();
+<<<<<<< HEAD
         if (errno != 0) {
             try {
                 socket.close();
             } catch (IOException e) {}
             socket.mSocket.throwErrnoNative(errno);
+=======
+        if (errno < 0) {
+            //TODO(BT): Throw the same exception error code
+            // that the previous code was using.
+            //socket.mSocket.throwErrnoNative(errno);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         }
         return socket;
     }
@@ -1134,6 +1369,11 @@ public final class BluetoothAdapter {
      */
     public Pair<byte[], byte[]> readOutOfBandData() {
         if (getState() != STATE_ON) return null;
+<<<<<<< HEAD
+=======
+        //TODO(BT
+        /*
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         try {
             byte[] hash;
             byte[] randomizer;
@@ -1151,7 +1391,11 @@ public final class BluetoothAdapter {
             }
             return new Pair<byte[], byte[]>(hash, randomizer);
 
+<<<<<<< HEAD
         } catch (RemoteException e) {Log.e(TAG, "", e);}
+=======
+        } catch (RemoteException e) {Log.e(TAG, "", e);}*/
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         return null;
     }
 
@@ -1231,14 +1475,61 @@ public final class BluetoothAdapter {
         }
     }
 
+<<<<<<< HEAD
+=======
+    final private IBluetoothManagerCallback mManagerCallback =
+        new IBluetoothManagerCallback.Stub() {
+            public void onBluetoothServiceUp(IBluetooth bluetoothService) {
+                if (DBG) Log.d(TAG, "onBluetoothServiceUp: " + bluetoothService);
+                synchronized (mManagerCallback) {
+                    mService = bluetoothService;
+                    for (IBluetoothManagerCallback cb : mProxyServiceStateCallbacks ){
+                        try {
+                            if (cb != null) {
+                                cb.onBluetoothServiceUp(bluetoothService);
+                            } else {
+                                Log.d(TAG, "onBluetoothServiceUp: cb is null!!!");
+                            }
+                        } catch (Exception e)  { Log.e(TAG,"",e);}
+                    }
+                }
+            }
+
+            public void onBluetoothServiceDown() {
+                if (DBG) Log.d(TAG, "onBluetoothServiceDown: " + mService);
+                synchronized (mManagerCallback) {
+                    mService = null;
+                    for (IBluetoothManagerCallback cb : mProxyServiceStateCallbacks ){
+                        try {
+                            if (cb != null) {
+                                cb.onBluetoothServiceDown();
+                            } else {
+                                Log.d(TAG, "onBluetoothServiceDown: cb is null!!!");
+                            }
+                        } catch (Exception e)  { Log.e(TAG,"",e);}
+                    }
+                }
+            }
+    };
+
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     /**
      * Enable the Bluetooth Adapter, but don't auto-connect devices
      * and don't persist state. Only for use by system applications.
      * @hide
      */
     public boolean enableNoAutoConnect() {
+<<<<<<< HEAD
         try {
             return mService.enableNoAutoConnect();
+=======
+        if (isEnabled() == true){
+            if (DBG) Log.d(TAG, "enableNoAutoConnect(): BT is already enabled..!");
+            return true;
+        }
+        try {
+            return mManagerService.enableNoAutoConnect();
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         } catch (RemoteException e) {Log.e(TAG, "", e);}
         return false;
     }
@@ -1276,12 +1567,21 @@ public final class BluetoothAdapter {
                                                    BluetoothStateChangeCallback callback) {
         if (callback == null) return false;
 
+<<<<<<< HEAD
+=======
+        //TODO(BT)
+        /*
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         try {
             return mService.changeApplicationBluetoothState(on, new
                     StateChangeCallbackWrapper(callback), new Binder());
         } catch (RemoteException e) {
             Log.e(TAG, "changeBluetoothState", e);
+<<<<<<< HEAD
         }
+=======
+        }*/
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         return false;
     }
 
@@ -1309,6 +1609,7 @@ public final class BluetoothAdapter {
         }
     }
 
+<<<<<<< HEAD
     private Set<BluetoothDevice> toDeviceSet(String[] addresses) {
         Set<BluetoothDevice> devices = new HashSet<BluetoothDevice>(addresses.length);
         for (int i = 0; i < addresses.length; i++) {
@@ -1317,6 +1618,24 @@ public final class BluetoothAdapter {
         return Collections.unmodifiableSet(devices);
     }
 
+=======
+    private Set<BluetoothDevice> toDeviceSet(BluetoothDevice[] devices) {
+        Set<BluetoothDevice> deviceSet = new HashSet<BluetoothDevice>(Arrays.asList(devices));
+        return Collections.unmodifiableSet(deviceSet);
+    }
+
+    protected void finalize() throws Throwable {
+        try {
+            mManagerService.unregisterAdapter(mManagerCallback);
+        } catch (RemoteException e) {
+            Log.e(TAG, "", e);
+        } finally {
+            super.finalize();
+        }
+    }
+
+
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     /**
      * Validate a String Bluetooth address, such as "00:43:A8:23:10:F0"
      * <p>Alphabetic characters must be uppercase to be valid.
@@ -1347,4 +1666,30 @@ public final class BluetoothAdapter {
         }
         return true;
     }
+<<<<<<< HEAD
+=======
+
+    /*package*/ IBluetoothManager getBluetoothManager() {
+            return mManagerService;
+    }
+
+    private ArrayList<IBluetoothManagerCallback> mProxyServiceStateCallbacks = new ArrayList<IBluetoothManagerCallback>();
+
+    /*package*/ IBluetooth getBluetoothService(IBluetoothManagerCallback cb) {
+        synchronized (mManagerCallback) {
+            if (cb == null) {
+                Log.w(TAG, "getBluetoothService() called with no BluetoothManagerCallback");
+            } else if (!mProxyServiceStateCallbacks.contains(cb)) {
+                mProxyServiceStateCallbacks.add(cb);
+            }
+        }
+        return mService;
+    }
+
+    /*package*/ void removeServiceStateCallback(IBluetoothManagerCallback cb) {
+        synchronized (mManagerCallback) {
+            mProxyServiceStateCallbacks.remove(cb);
+        }
+    }
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 }

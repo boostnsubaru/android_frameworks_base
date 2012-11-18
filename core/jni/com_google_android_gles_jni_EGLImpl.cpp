@@ -326,7 +326,11 @@ not_valid_surface:
         return 0;
     }
 
+<<<<<<< HEAD
     window = android_Surface_getNativeWindow(_env, native_window);
+=======
+    window = android_view_Surface_getNativeWindow(_env, native_window);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     if (window == NULL)
         goto not_valid_surface;
 

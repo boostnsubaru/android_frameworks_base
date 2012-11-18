@@ -15,6 +15,11 @@
  */
 
 #define LOG_TAG "UEventObserver"
+<<<<<<< HEAD
+=======
+//#define LOG_NDEBUG 0
+
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 #include "utils/Log.h"
 
 #include "hardware_legacy/uevent.h"
@@ -22,6 +27,7 @@
 #include "JNIHelp.h"
 #include "android_runtime/AndroidRuntime.h"
 
+<<<<<<< HEAD
 namespace android
 {
 
@@ -50,6 +56,96 @@ android_os_UEventObserver_next_event(JNIEnv *env, jclass clazz, jbyteArray jbuff
 static JNINativeMethod gMethods[] = {
     {"native_setup", "()V",   (void *)android_os_UEventObserver_native_setup},
     {"next_event",   "([B)I", (void *)android_os_UEventObserver_next_event},
+=======
+#include <utils/Mutex.h>
+#include <utils/Vector.h>
+#include <utils/String8.h>
+#include <ScopedUtfChars.h>
+
+namespace android {
+
+static Mutex gMatchesMutex;
+static Vector<String8> gMatches;
+
+static void nativeSetup(JNIEnv *env, jclass clazz) {
+    if (!uevent_init()) {
+        jniThrowException(env, "java/lang/RuntimeException",
+                "Unable to open socket for UEventObserver");
+    }
+}
+
+static bool isMatch(const char* buffer, size_t length) {
+    AutoMutex _l(gMatchesMutex);
+
+    for (size_t i = 0; i < gMatches.size(); i++) {
+        const String8& match = gMatches.itemAt(i);
+
+        // Consider all zero-delimited fields of the buffer.
+        const char* field = buffer;
+        const char* end = buffer + length + 1;
+        do {
+            if (strstr(field, match.string())) {
+                ALOGV("Matched uevent message with pattern: %s", match.string());
+                return true;
+            }
+            field += strlen(field) + 1;
+        } while (field != end);
+    }
+    return false;
+}
+
+static jstring nativeWaitForNextEvent(JNIEnv *env, jclass clazz) {
+    char buffer[1024];
+
+    for (;;) {
+        int length = uevent_next_event(buffer, sizeof(buffer) - 1);
+        if (length <= 0) {
+            return NULL;
+        }
+        buffer[length] = '\0';
+
+        ALOGV("Received uevent message: %s", buffer);
+
+        if (isMatch(buffer, length)) {
+            // Assume the message is ASCII.
+            jchar message[length];
+            for (int i = 0; i < length; i++) {
+                message[i] = buffer[i];
+            }
+            return env->NewString(message, length);
+        }
+    }
+}
+
+static void nativeAddMatch(JNIEnv* env, jclass clazz, jstring matchStr) {
+    ScopedUtfChars match(env, matchStr);
+
+    AutoMutex _l(gMatchesMutex);
+    gMatches.add(String8(match.c_str()));
+}
+
+static void nativeRemoveMatch(JNIEnv* env, jclass clazz, jstring matchStr) {
+    ScopedUtfChars match(env, matchStr);
+
+    AutoMutex _l(gMatchesMutex);
+    for (size_t i = 0; i < gMatches.size(); i++) {
+        if (gMatches.itemAt(i) == match.c_str()) {
+            gMatches.removeAt(i);
+            break; // only remove first occurrence
+        }
+    }
+}
+
+static JNINativeMethod gMethods[] = {
+    { "nativeSetup", "()V",
+            (void *)nativeSetup },
+    { "nativeWaitForNextEvent", "()Ljava/lang/String;",
+            (void *)nativeWaitForNextEvent },
+    { "nativeAddMatch", "(Ljava/lang/String;)V",
+            (void *)nativeAddMatch },
+    { "nativeRemoveMatch", "(Ljava/lang/String;)V",
+            (void *)nativeRemoveMatch },
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 };
 
 
@@ -64,7 +160,11 @@ int register_android_os_UEventObserver(JNIEnv *env)
     }
 
     return AndroidRuntime::registerNativeMethods(env,
+<<<<<<< HEAD
                 "android/os/UEventObserver", gMethods, NELEM(gMethods));
+=======
+            "android/os/UEventObserver", gMethods, NELEM(gMethods));
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 }
 
 }   // namespace android

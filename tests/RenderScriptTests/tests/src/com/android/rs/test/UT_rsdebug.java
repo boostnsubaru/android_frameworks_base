@@ -30,7 +30,11 @@ public class UT_rsdebug extends UnitTest {
 
     public void run() {
         RenderScript pRS = RenderScript.create(mCtx);
+<<<<<<< HEAD
         ScriptC_rsdebug s = new ScriptC_rsdebug(pRS, mRes, R.raw.rsdebug);
+=======
+        ScriptC_rsdebug s = new ScriptC_rsdebug(pRS);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         pRS.setMessageHandler(mRsMessage);
         s.invoke_test_rsdebug(0, 0);
         pRS.finish();

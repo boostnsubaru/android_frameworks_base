@@ -26,20 +26,30 @@ import android.os.Looper;
 import android.os.RemoteException;
 import java.io.ByteArrayInputStream;
 import java.io.Closeable;
+<<<<<<< HEAD
 import java.io.IOException;
 import java.security.InvalidKeyException;
 import java.security.KeyPair;
+=======
+import java.security.InvalidKeyException;
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 import java.security.Principal;
 import java.security.PrivateKey;
 import java.security.cert.Certificate;
 import java.security.cert.CertificateException;
 import java.security.cert.CertificateFactory;
 import java.security.cert.X509Certificate;
+<<<<<<< HEAD
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 import libcore.util.Objects;
+=======
+import java.util.List;
+import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.LinkedBlockingQueue;
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 
 import org.apache.harmony.xnet.provider.jsse.OpenSSLEngine;
 import org.apache.harmony.xnet.provider.jsse.TrustedCertificateStore;
@@ -341,6 +351,7 @@ public final class KeyChain {
         try {
             IKeyChainService keyChainService = keyChainConnection.getService();
             byte[] certificateBytes = keyChainService.getCertificate(alias);
+<<<<<<< HEAD
             List<X509Certificate> chain = new ArrayList<X509Certificate>();
             chain.add(toCertificate(certificateBytes));
             TrustedCertificateStore store = new TrustedCertificateStore();
@@ -355,6 +366,11 @@ public final class KeyChain {
                 }
                 chain.add(issuer);
             }
+=======
+            TrustedCertificateStore store = new TrustedCertificateStore();
+            List<X509Certificate> chain = store
+                    .getCertificateChain(toCertificate(certificateBytes));
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
             return chain.toArray(new X509Certificate[chain.size()]);
         } catch (RemoteException e) {
             throw new KeyChainException(e);

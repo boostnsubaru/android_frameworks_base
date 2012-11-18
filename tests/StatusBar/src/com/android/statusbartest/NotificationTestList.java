@@ -28,6 +28,10 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.os.Vibrator;
 import android.os.Handler;
+<<<<<<< HEAD
+=======
+import android.os.UserHandle;
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 import android.util.Log;
 import android.net.Uri;
 import android.os.SystemClock;
@@ -798,7 +802,12 @@ public class NotificationTestList extends TestActivity
                             null, 
                             100, 
                             n,
+<<<<<<< HEAD
                             idOut);
+=======
+                            idOut,
+                            UserHandle.myUserId());
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
                 } catch (android.os.RemoteException ex) {
                     // oh well
                 }
@@ -822,7 +831,12 @@ public class NotificationTestList extends TestActivity
                             null, 
                             200, 
                             n,
+<<<<<<< HEAD
                             idOut);
+=======
+                            idOut,
+                            UserHandle.myUserId());
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
                 } catch (android.os.RemoteException ex) {
                     // oh well
                 }
@@ -846,7 +860,12 @@ public class NotificationTestList extends TestActivity
                             null, 
                             1, 
                             n,
+<<<<<<< HEAD
                             idOut);
+=======
+                            idOut,
+                            UserHandle.myUserId());
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
                 } catch (android.os.RemoteException ex) {
                     // oh well
                 }

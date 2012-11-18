@@ -26,12 +26,18 @@
         android:id="@+id/no_permissions"
         android:text="@string/no_permissions"
         android:textAppearance="?android:attr/textAppearanceMedium"
+<<<<<<< HEAD
         android:paddingLeft="16dip"
         android:paddingRight="12dip"
+=======
+        android:paddingStart="8dp"
+        android:paddingEnd="8dp"
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         android:visibility="gone"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
 
+<<<<<<< HEAD
     <!-- List view containing list of dangerous permissions categorized by groups. -->
     <LinearLayout
         android:id="@+id/dangerous_perms_list"
@@ -99,6 +105,13 @@
         android:paddingLeft="16dip"
         android:paddingRight="12dip"
         android:layout_width="match_parent"
+=======
+    <!-- Populated with all permissions. -->
+    <LinearLayout
+        android:id="@+id/perms_list"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         android:layout_height="wrap_content" />
 
 </LinearLayout>

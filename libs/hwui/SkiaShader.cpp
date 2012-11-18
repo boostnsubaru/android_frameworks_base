@@ -38,6 +38,25 @@ static const GLint gTileModes[] = {
         GL_MIRRORED_REPEAT  // == SkShader::kMirror_TileMode
 };
 
+<<<<<<< HEAD
+=======
+/**
+ * This function does not work for n == 0.
+ */
+static inline bool isPowerOfTwo(unsigned int n) {
+    return !(n & (n - 1));
+}
+
+static inline void bindUniformColor(int slot, uint32_t color) {
+    const float a = ((color >> 24) & 0xff) / 255.0f;
+    glUniform4f(slot,
+            a * ((color >> 16) & 0xff) / 255.0f,
+            a * ((color >>  8) & 0xff) / 255.0f,
+            a * ((color      ) & 0xff) / 255.0f,
+            a);
+}
+
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 ///////////////////////////////////////////////////////////////////////////////
 // Base shader
 ///////////////////////////////////////////////////////////////////////////////
@@ -139,10 +158,13 @@ void SkiaBitmapShader::setupProgram(Program* program, const mat4& modelView,
 
     // Uniforms
     bindTexture(texture, mWrapS, mWrapT);
+<<<<<<< HEAD
     // Assume linear here; we should really check the transform in
     // ::updateTransforms() but we don't have the texture object
     // available at that point. The optimization is not worth the
     // effort for now.
+=======
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     texture->setFilter(GL_LINEAR);
 
     glUniform1i(program->getUniform("bitmapSampler"), textureSlot);
@@ -151,6 +173,7 @@ void SkiaBitmapShader::setupProgram(Program* program, const mat4& modelView,
     glUniform2f(program->getUniform("textureDimension"), 1.0f / width, 1.0f / height);
 }
 
+<<<<<<< HEAD
 void SkiaBitmapShader::updateTransforms(Program* program, const mat4& modelView,
         const Snapshot& snapshot) {
     mat4 textureTransform;
@@ -159,6 +182,8 @@ void SkiaBitmapShader::updateTransforms(Program* program, const mat4& modelView,
             GL_FALSE, &textureTransform.data[0]);
 }
 
+=======
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 ///////////////////////////////////////////////////////////////////////////////
 // Linear gradient shader
 ///////////////////////////////////////////////////////////////////////////////
@@ -188,6 +213,11 @@ SkiaLinearGradientShader::SkiaLinearGradientShader(float* bounds, uint32_t* colo
     mUnitMatrix.load(unitMatrix);
 
     updateLocalMatrix(matrix);
+<<<<<<< HEAD
+=======
+
+    mIsSimple = count == 2 && tileMode == SkShader::kClamp_TileMode;
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 }
 
 SkiaLinearGradientShader::~SkiaLinearGradientShader() {
@@ -206,6 +236,10 @@ SkiaShader* SkiaLinearGradientShader::copy() {
     copy->mPositions = new float[mCount];
     memcpy(copy->mPositions, mPositions, sizeof(float) * mCount);
     copy->mCount = mCount;
+<<<<<<< HEAD
+=======
+    copy->mIsSimple = mIsSimple;
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     return copy;
 }
 
@@ -213,10 +247,15 @@ void SkiaLinearGradientShader::describe(ProgramDescription& description,
         const Extensions& extensions) {
     description.hasGradient = true;
     description.gradientType = ProgramDescription::kGradientLinear;
+<<<<<<< HEAD
+=======
+    description.isSimpleGradient = mIsSimple;
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 }
 
 void SkiaLinearGradientShader::setupProgram(Program* program, const mat4& modelView,
         const Snapshot& snapshot, GLuint* textureUnit) {
+<<<<<<< HEAD
     GLuint textureSlot = (*textureUnit)++;
     Caches::getInstance().activeTexture(textureSlot);
 
@@ -233,6 +272,24 @@ void SkiaLinearGradientShader::setupProgram(Program* program, const mat4& modelV
 
 void SkiaLinearGradientShader::updateTransforms(Program* program, const mat4& modelView,
         const Snapshot& snapshot) {
+=======
+    if (CC_UNLIKELY(!mIsSimple)) {
+        GLuint textureSlot = (*textureUnit)++;
+        Caches::getInstance().activeTexture(textureSlot);
+
+        Texture* texture = mGradientCache->get(mColors, mPositions, mCount);
+
+        // Uniforms
+        bindTexture(texture, gTileModes[mTileX], gTileModes[mTileY]);
+        glUniform1i(program->getUniform("gradientSampler"), textureSlot);
+    } else {
+        bindUniformColor(program->getUniform("startColor"), mColors[0]);
+        bindUniformColor(program->getUniform("endColor"), mColors[1]);
+    }
+
+    Caches::getInstance().dither.setupProgram(program, textureUnit);
+
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     mat4 screenSpace;
     computeScreenSpaceMatrix(screenSpace, modelView);
     glUniformMatrix4fv(program->getUniform("screenSpace"), 1, GL_FALSE, &screenSpace.data[0]);
@@ -269,6 +326,10 @@ SkiaShader* SkiaCircularGradientShader::copy() {
     copy->mPositions = new float[mCount];
     memcpy(copy->mPositions, mPositions, sizeof(float) * mCount);
     copy->mCount = mCount;
+<<<<<<< HEAD
+=======
+    copy->mIsSimple = mIsSimple;
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     return copy;
 }
 
@@ -276,6 +337,10 @@ void SkiaCircularGradientShader::describe(ProgramDescription& description,
         const Extensions& extensions) {
     description.hasGradient = true;
     description.gradientType = ProgramDescription::kGradientCircular;
+<<<<<<< HEAD
+=======
+    description.isSimpleGradient = mIsSimple;
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -296,6 +361,11 @@ SkiaSweepGradientShader::SkiaSweepGradientShader(float x, float y, uint32_t* col
     mUnitMatrix.load(unitMatrix);
 
     updateLocalMatrix(matrix);
+<<<<<<< HEAD
+=======
+
+    mIsSimple = count == 2;
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 }
 
 SkiaSweepGradientShader::SkiaSweepGradientShader(Type type, float x, float y, uint32_t* colors,
@@ -303,6 +373,11 @@ SkiaSweepGradientShader::SkiaSweepGradientShader(Type type, float x, float y, ui
         SkMatrix* matrix, bool blend):
         SkiaShader(type, key, tileMode, tileMode, matrix, blend),
         mColors(colors), mPositions(positions), mCount(count) {
+<<<<<<< HEAD
+=======
+
+    mIsSimple = count == 2 && tileMode == SkShader::kClamp_TileMode;
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 }
 
 SkiaSweepGradientShader::~SkiaSweepGradientShader() {
@@ -318,6 +393,10 @@ SkiaShader* SkiaSweepGradientShader::copy() {
     copy->mPositions = new float[mCount];
     memcpy(copy->mPositions, mPositions, sizeof(float) * mCount);
     copy->mCount = mCount;
+<<<<<<< HEAD
+=======
+    copy->mIsSimple = mIsSimple;
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     return copy;
 }
 
@@ -325,10 +404,15 @@ void SkiaSweepGradientShader::describe(ProgramDescription& description,
         const Extensions& extensions) {
     description.hasGradient = true;
     description.gradientType = ProgramDescription::kGradientSweep;
+<<<<<<< HEAD
+=======
+    description.isSimpleGradient = mIsSimple;
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 }
 
 void SkiaSweepGradientShader::setupProgram(Program* program, const mat4& modelView,
         const Snapshot& snapshot, GLuint* textureUnit) {
+<<<<<<< HEAD
     GLuint textureSlot = (*textureUnit)++;
     Caches::getInstance().activeTexture(textureSlot);
 
@@ -345,6 +429,24 @@ void SkiaSweepGradientShader::setupProgram(Program* program, const mat4& modelVi
 
 void SkiaSweepGradientShader::updateTransforms(Program* program, const mat4& modelView,
         const Snapshot& snapshot) {
+=======
+    if (CC_UNLIKELY(!mIsSimple)) {
+        GLuint textureSlot = (*textureUnit)++;
+        Caches::getInstance().activeTexture(textureSlot);
+
+        Texture* texture = mGradientCache->get(mColors, mPositions, mCount);
+
+        // Uniforms
+        bindTexture(texture, gTileModes[mTileX], gTileModes[mTileY]);
+        glUniform1i(program->getUniform("gradientSampler"), textureSlot);
+    } else {
+       bindUniformColor(program->getUniform("startColor"), mColors[0]);
+       bindUniformColor(program->getUniform("endColor"), mColors[1]);
+    }
+
+    Caches::getInstance().dither.setupProgram(program, textureUnit);
+
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     mat4 screenSpace;
     computeScreenSpaceMatrix(screenSpace, modelView);
     glUniformMatrix4fv(program->getUniform("screenSpace"), 1, GL_FALSE, &screenSpace.data[0]);

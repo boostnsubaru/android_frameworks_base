@@ -20,6 +20,10 @@ import android.os.Parcelable;
 import android.os.Parcel;
 import android.net.NetworkInfo.DetailedState;
 import android.net.NetworkUtils;
+<<<<<<< HEAD
+=======
+import android.text.TextUtils;
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 
 import java.net.InetAddress;
 import java.net.Inet6Address;
@@ -31,6 +35,10 @@ import java.util.EnumMap;
  * is in the process of being set up.
  */
 public class WifiInfo implements Parcelable {
+<<<<<<< HEAD
+=======
+    private static final String TAG = "WifiInfo";
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     /**
      * This is the map described in the Javadoc comment above. The positions
      * of the elements of the array must correspond to the ordinal values
@@ -57,7 +65,11 @@ public class WifiInfo implements Parcelable {
 
     private SupplicantState mSupplicantState;
     private String mBSSID;
+<<<<<<< HEAD
     private String mSSID;
+=======
+    private WifiSsid mWifiSsid;
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     private int mNetworkId;
     private boolean mHiddenSSID;
     /** Received Signal Strength Indicator */
@@ -77,7 +89,11 @@ public class WifiInfo implements Parcelable {
     private boolean mMeteredHint;
 
     WifiInfo() {
+<<<<<<< HEAD
         mSSID = null;
+=======
+        mWifiSsid = null;
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         mBSSID = null;
         mNetworkId = -1;
         mSupplicantState = SupplicantState.UNINITIALIZED;
@@ -94,7 +110,11 @@ public class WifiInfo implements Parcelable {
         if (source != null) {
             mSupplicantState = source.mSupplicantState;
             mBSSID = source.mBSSID;
+<<<<<<< HEAD
             mSSID = source.mSSID;
+=======
+            mWifiSsid = source.mWifiSsid;
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
             mNetworkId = source.mNetworkId;
             mHiddenSSID = source.mHiddenSSID;
             mRssi = source.mRssi;
@@ -105,21 +125,48 @@ public class WifiInfo implements Parcelable {
         }
     }
 
+<<<<<<< HEAD
     void setSSID(String SSID) {
         mSSID = SSID;
+=======
+    void setSSID(WifiSsid wifiSsid) {
+        mWifiSsid = wifiSsid;
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         // network is considered not hidden by default
         mHiddenSSID = false;
     }
 
     /**
      * Returns the service set identifier (SSID) of the current 802.11 network.
+<<<<<<< HEAD
      * If the SSID is an ASCII string, it will be returned surrounded by double
      * quotation marks.Otherwise, it is returned as a string of hex digits. The
+=======
+     * If the SSID can be decoded as UTF-8, it will be returned surrounded by double
+     * quotation marks. Otherwise, it is returned as a string of hex digits. The
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
      * SSID may be {@code null} if there is no network currently connected.
      * @return the SSID
      */
     public String getSSID() {
+<<<<<<< HEAD
         return mSSID;
+=======
+        if (mWifiSsid != null) {
+            String unicode = mWifiSsid.toString();
+            if (!TextUtils.isEmpty(unicode)) {
+                return "\"" + unicode + "\"";
+            } else {
+                return mWifiSsid.getHexString();
+            }
+        }
+        return WifiSsid.NONE;
+    }
+
+    /** @hide */
+    public WifiSsid getWifiSsid() {
+        return mWifiSsid;
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     }
 
     void setBSSID(String BSSID) {
@@ -279,7 +326,11 @@ public class WifiInfo implements Parcelable {
         StringBuffer sb = new StringBuffer();
         String none = "<none>";
 
+<<<<<<< HEAD
         sb.append("SSID: ").append(mSSID == null ? none : mSSID).
+=======
+        sb.append("SSID: ").append(mWifiSsid == null ? WifiSsid.NONE : mWifiSsid).
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
             append(", BSSID: ").append(mBSSID == null ? none : mBSSID).
             append(", MAC: ").append(mMacAddress == null ? none : mMacAddress).
             append(", Supplicant state: ").
@@ -308,7 +359,16 @@ public class WifiInfo implements Parcelable {
         } else {
             dest.writeByte((byte)0);
         }
+<<<<<<< HEAD
         dest.writeString(getSSID());
+=======
+        if (mWifiSsid != null) {
+            dest.writeInt(1);
+            mWifiSsid.writeToParcel(dest, flags);
+        } else {
+            dest.writeInt(0);
+        }
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         dest.writeString(mBSSID);
         dest.writeString(mMacAddress);
         dest.writeInt(mMeteredHint ? 1 : 0);
@@ -328,7 +388,13 @@ public class WifiInfo implements Parcelable {
                         info.setInetAddress(InetAddress.getByAddress(in.createByteArray()));
                     } catch (UnknownHostException e) {}
                 }
+<<<<<<< HEAD
                 info.setSSID(in.readString());
+=======
+                if (in.readInt() == 1) {
+                    info.mWifiSsid = WifiSsid.CREATOR.createFromParcel(in);
+                }
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
                 info.mBSSID = in.readString();
                 info.mMacAddress = in.readString();
                 info.mMeteredHint = in.readInt() != 0;

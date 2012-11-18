@@ -27,9 +27,15 @@ enabled.
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:minHeight="@android:dimen/alert_dialog_title_height"
+<<<<<<< HEAD
         android:paddingLeft="16dip"
         android:paddingRight="16dip"
         android:gravity="center_vertical|left" />
+=======
+        android:paddingStart="16dip"
+        android:paddingEnd="16dip"
+        android:gravity="center_vertical|start" />
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     <View android:id="@+id/titleDivider"
             android:layout_width="match_parent"
             android:layout_height="2dip"

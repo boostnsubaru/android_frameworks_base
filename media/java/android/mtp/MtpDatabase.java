@@ -84,11 +84,18 @@ public class MtpDatabase {
             Files.FileColumns._ID, // 0
             Files.FileColumns.DATA, // 1
     };
+<<<<<<< HEAD
     private static final String[] PATH_SIZE_FORMAT_PROJECTION = new String[] {
             Files.FileColumns._ID, // 0
             Files.FileColumns.DATA, // 1
             Files.FileColumns.SIZE, // 2
             Files.FileColumns.FORMAT, // 3
+=======
+    private static final String[] PATH_FORMAT_PROJECTION = new String[] {
+            Files.FileColumns._ID, // 0
+            Files.FileColumns.DATA, // 1
+            Files.FileColumns.FORMAT, // 2
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     };
     private static final String[] OBJECT_INFO_PROJECTION = new String[] {
             Files.FileColumns._ID, // 0
@@ -96,15 +103,24 @@ public class MtpDatabase {
             Files.FileColumns.FORMAT, // 2
             Files.FileColumns.PARENT, // 3
             Files.FileColumns.DATA, // 4
+<<<<<<< HEAD
             Files.FileColumns.SIZE, // 5
             Files.FileColumns.DATE_MODIFIED, // 6
+=======
+            Files.FileColumns.DATE_MODIFIED, // 5
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     };
     private static final String ID_WHERE = Files.FileColumns._ID + "=?";
     private static final String PATH_WHERE = Files.FileColumns.DATA + "=?";
 
     private static final String STORAGE_WHERE = Files.FileColumns.STORAGE_ID + "=?";
+<<<<<<< HEAD
     private static final String FORMAT_WHERE = Files.FileColumns.PARENT + "=?";
     private static final String PARENT_WHERE = Files.FileColumns.FORMAT + "=?";
+=======
+    private static final String FORMAT_WHERE = Files.FileColumns.FORMAT + "=?";
+    private static final String PARENT_WHERE = Files.FileColumns.PARENT + "=?";
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     private static final String STORAGE_FORMAT_WHERE = STORAGE_WHERE + " AND "
                                             + Files.FileColumns.FORMAT + "=?";
     private static final String STORAGE_PARENT_WHERE = STORAGE_WHERE + " AND "
@@ -492,6 +508,10 @@ public class MtpDatabase {
             MtpConstants.FORMAT_MPEG,
             MtpConstants.FORMAT_EXIF_JPEG,
             MtpConstants.FORMAT_TIFF_EP,
+<<<<<<< HEAD
+=======
+            MtpConstants.FORMAT_BMP,
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
             MtpConstants.FORMAT_GIF,
             MtpConstants.FORMAT_JFIF,
             MtpConstants.FORMAT_PNG,
@@ -834,7 +854,11 @@ public class MtpDatabase {
     }
 
     private boolean getObjectInfo(int handle, int[] outStorageFormatParent,
+<<<<<<< HEAD
                         char[] outName, long[] outSizeModified) {
+=======
+                        char[] outName, long[] outModified) {
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         Cursor c = null;
         try {
             c = mMediaProvider.query(mObjectsUri, OBJECT_INFO_PROJECTION,
@@ -855,8 +879,12 @@ public class MtpDatabase {
                 path.getChars(start, end, outName, 0);
                 outName[end - start] = 0;
 
+<<<<<<< HEAD
                 outSizeModified[0] = c.getLong(5);
                 outSizeModified[1] = c.getLong(6);
+=======
+                outModified[0] = c.getLong(5);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
                 return true;
             }
         } catch (RemoteException e) {
@@ -880,14 +908,25 @@ public class MtpDatabase {
         }
         Cursor c = null;
         try {
+<<<<<<< HEAD
             c = mMediaProvider.query(mObjectsUri, PATH_SIZE_FORMAT_PROJECTION,
+=======
+            c = mMediaProvider.query(mObjectsUri, PATH_FORMAT_PROJECTION,
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
                             ID_WHERE, new String[] {  Integer.toString(handle) }, null, null);
             if (c != null && c.moveToNext()) {
                 String path = c.getString(1);
                 path.getChars(0, path.length(), outFilePath, 0);
                 outFilePath[path.length()] = 0;
+<<<<<<< HEAD
                 outFileLengthFormat[0] = c.getLong(2);
                 outFileLengthFormat[1] = c.getLong(3);
+=======
+                // File transfers from device to host will likely fail if the size is incorrect.
+                // So to be safe, use the actual file size here.
+                outFileLengthFormat[0] = new File(path).length();
+                outFileLengthFormat[1] = c.getLong(2);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
                 return MtpConstants.RESPONSE_OK;
             } else {
                 return MtpConstants.RESPONSE_INVALID_OBJECT_HANDLE;
@@ -909,13 +948,21 @@ public class MtpDatabase {
 
         Cursor c = null;
         try {
+<<<<<<< HEAD
             c = mMediaProvider.query(mObjectsUri, PATH_SIZE_FORMAT_PROJECTION,
+=======
+            c = mMediaProvider.query(mObjectsUri, PATH_FORMAT_PROJECTION,
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
                             ID_WHERE, new String[] {  Integer.toString(handle) }, null, null);
             if (c != null && c.moveToNext()) {
                 // don't convert to media path here, since we will be matching
                 // against paths in the database matching /data/media
                 path = c.getString(1);
+<<<<<<< HEAD
                 format = c.getInt(3);
+=======
+                format = c.getInt(2);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
             } else {
                 return MtpConstants.RESPONSE_INVALID_OBJECT_HANDLE;
             }

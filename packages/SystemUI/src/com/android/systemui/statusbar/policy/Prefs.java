@@ -27,8 +27,12 @@ public class Prefs {
     public static final boolean DO_NOT_DISTURB_DEFAULT = false;
 
     public static final String SHOWN_COMPAT_MODE_HELP = "shown_compat_mode_help";
+<<<<<<< HEAD
 
     private static final String LAST_BATTERY_LEVEL = "last_battery_level";
+=======
+    public static final String SHOWN_QUICK_SETTINGS_HELP = "shown_quick_settings_help";
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 
     public static SharedPreferences read(Context context) {
         return context.getSharedPreferences(Prefs.SHARED_PREFS_NAME, Context.MODE_PRIVATE);
@@ -37,6 +41,7 @@ public class Prefs {
     public static SharedPreferences.Editor edit(Context context) {
         return context.getSharedPreferences(Prefs.SHARED_PREFS_NAME, Context.MODE_PRIVATE).edit();
     }
+<<<<<<< HEAD
 
     public static void setLastBatteryLevel(Context c, int level) {
         edit(c).putInt(LAST_BATTERY_LEVEL, level).commit();
@@ -45,4 +50,6 @@ public class Prefs {
     public static int getLastBatteryLevel(Context c) {
         return read(c).getInt(LAST_BATTERY_LEVEL, 50);
     }
+=======
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 }

@@ -262,7 +262,11 @@ public class DownloadManagerBaseTest extends InstrumentationTestCase {
         int state = enable ? 1 : 0;
 
         // Change the system setting
+<<<<<<< HEAD
         Settings.System.putInt(mContext.getContentResolver(), Settings.System.AIRPLANE_MODE_ON,
+=======
+        Settings.Global.putInt(mContext.getContentResolver(), Settings.Global.AIRPLANE_MODE_ON,
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
                 state);
 
         String timeoutMessage = "Timed out waiting for airplane mode to be " +
@@ -271,7 +275,11 @@ public class DownloadManagerBaseTest extends InstrumentationTestCase {
         // wait for airplane mode to change state
         int currentWaitTime = 0;
         while (Settings.System.getInt(mContext.getContentResolver(),
+<<<<<<< HEAD
                 Settings.System.AIRPLANE_MODE_ON, -1) != state) {
+=======
+                Settings.Global.AIRPLANE_MODE_ON, -1) != state) {
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
             timeoutWait(currentWaitTime, DEFAULT_WAIT_POLL_TIME, DEFAULT_MAX_WAIT_TIME,
                     timeoutMessage);
         }

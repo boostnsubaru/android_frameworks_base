@@ -1,6 +1,9 @@
 /*
  * Copyright (C) 2006 The Android Open Source Project
+<<<<<<< HEAD
  * This code has been modified.  Portions copyright (C) 2010, T-Mobile USA, Inc.
+=======
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -23,7 +26,10 @@
 
 #include <androidfw/Asset.h>
 #include <androidfw/AssetDir.h>
+<<<<<<< HEAD
 #include <androidfw/PackageRedirectionMap.h>
+=======
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 #include <utils/KeyedVector.h>
 #include <utils/SortedVector.h>
 #include <utils/String16.h>
@@ -94,7 +100,11 @@ public:
      * then on success, *cookie is set to the value corresponding to the
      * newly-added asset source.
      */
+<<<<<<< HEAD
     bool addAssetPath(const String8& path, void** cookie, bool asSkin=false);
+=======
+    bool addAssetPath(const String8& path, void** cookie);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 
     /*                                                                       
      * Convenience for adding the standard system assets.  Uses the
@@ -220,6 +230,7 @@ public:
      */
     void getLocales(Vector<String8>* locales) const;
 
+<<<<<<< HEAD
     /*
      * Remove existing source for assets.
      *
@@ -232,16 +243,23 @@ public:
     void addRedirections(PackageRedirectionMap* resMap);
     void clearRedirections();
 
+=======
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 private:
     struct asset_path
     {
         String8 path;
         FileType type;
         String8 idmap;
+<<<<<<< HEAD
         bool asSkin;
     };
 
     void updateResTableFromAssetPath(ResTable* rt, const asset_path& ap, void* cookie) const;
+=======
+    };
+
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     Asset* openInPathLocked(const char* fileName, AccessMode mode,
         const asset_path& path);
     Asset* openNonAssetInPathLocked(const char* fileName, AccessMode mode,

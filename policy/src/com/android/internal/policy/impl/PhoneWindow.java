@@ -192,6 +192,23 @@ public class PhoneWindow extends Window implements MenuBuilder.Callback {
 
     private int mUiOptions = 0;
 
+<<<<<<< HEAD
+=======
+    private boolean mInvalidatePanelMenuPosted;
+    private int mInvalidatePanelMenuFeatures;
+    private final Runnable mInvalidatePanelMenuRunnable = new Runnable() {
+        @Override public void run() {
+            for (int i = 0; i <= FEATURE_MAX; i++) {
+                if ((mInvalidatePanelMenuFeatures & 1 << i) != 0) {
+                    doInvalidatePanelMenu(i);
+                }
+            }
+            mInvalidatePanelMenuPosted = false;
+            mInvalidatePanelMenuFeatures = 0;
+        }
+    };
+
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     static class WindowManagerHolder {
         static final IWindowManager sWindowManager = IWindowManager.Stub.asInterface(
                 ServiceManager.getService("window"));
@@ -613,8 +630,12 @@ public class PhoneWindow extends Window implements MenuBuilder.Callback {
         WindowManager.LayoutParams lp = new WindowManager.LayoutParams(
                 width, WRAP_CONTENT,
                 st.x, st.y, WindowManager.LayoutParams.TYPE_APPLICATION_ATTACHED_DIALOG,
+<<<<<<< HEAD
                 WindowManager.LayoutParams.FLAG_DITHER
                 | WindowManager.LayoutParams.FLAG_ALT_FOCUSABLE_IM
+=======
+                WindowManager.LayoutParams.FLAG_ALT_FOCUSABLE_IM
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
                 | WindowManager.LayoutParams.FLAG_SPLIT_TOUCH,
                 st.decorView.mDefaultOpacity);
 
@@ -723,6 +744,18 @@ public class PhoneWindow extends Window implements MenuBuilder.Callback {
 
     @Override
     public void invalidatePanelMenu(int featureId) {
+<<<<<<< HEAD
+=======
+        mInvalidatePanelMenuFeatures |= 1 << featureId;
+
+        if (!mInvalidatePanelMenuPosted && mDecor != null) {
+            mDecor.postOnAnimation(mInvalidatePanelMenuRunnable);
+            mInvalidatePanelMenuPosted = true;
+        }
+    }
+
+    void doInvalidatePanelMenu(int featureId) {
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         PanelFeatureState st = getPanelState(featureId, true);
         Bundle savedActionViewStates = null;
         if (st.menu != null) {
@@ -971,7 +1004,15 @@ public class PhoneWindow extends Window implements MenuBuilder.Callback {
             if (!mActionBar.isOverflowMenuShowing() || !toggleMenuMode) {
                 if (cb != null && !isDestroyed() && mActionBar.getVisibility() == View.VISIBLE) {
                     final PanelFeatureState st = getPanelState(FEATURE_OPTIONS_PANEL, true);
+<<<<<<< HEAD
                     if (cb.onPreparePanel(FEATURE_OPTIONS_PANEL, st.createdPanelView, st.menu)) {
+=======
+
+                    // If we don't have a menu or we're waiting for a full content refresh,
+                    // forget it. This is a lingering event that no longer matters.
+                    if (st.menu != null && !st.refreshMenuContent &&
+                            cb.onPreparePanel(FEATURE_OPTIONS_PANEL, st.createdPanelView, st.menu)) {
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
                         cb.onMenuOpened(FEATURE_ACTION_BAR, st.menu);
                         mActionBar.showOverflowMenu();
                     }
@@ -1666,7 +1707,13 @@ public class PhoneWindow extends Window implements MenuBuilder.Callback {
      */
     private void restorePanelState(SparseArray<Parcelable> icicles) {
         PanelFeatureState st;
+<<<<<<< HEAD
         for (int curFeatureId = icicles.size() - 1; curFeatureId >= 0; curFeatureId--) {
+=======
+        int curFeatureId;
+        for (int i = icicles.size() - 1; i >= 0; i--) {
+            curFeatureId = icicles.keyAt(i);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
             st = getPanelState(curFeatureId, false /* required */);
             if (st == null) {
                 // The panel must not have been required, and is currently not around, skip it
@@ -2839,6 +2886,12 @@ public class PhoneWindow extends Window implements MenuBuilder.Callback {
             mDecor = generateDecor();
             mDecor.setDescendantFocusability(ViewGroup.FOCUS_AFTER_DESCENDANTS);
             mDecor.setIsRootNamespace(true);
+<<<<<<< HEAD
+=======
+            if (!mInvalidatePanelMenuPosted && mInvalidatePanelMenuFeatures != 0) {
+                mDecor.postOnAnimation(mInvalidatePanelMenuRunnable);
+            }
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         }
         if (mContentParent == null) {
             mContentParent = generateLayout(mDecor);
@@ -2848,6 +2901,10 @@ public class PhoneWindow extends Window implements MenuBuilder.Callback {
 
             mTitleView = (TextView)findViewById(com.android.internal.R.id.title);
             if (mTitleView != null) {
+<<<<<<< HEAD
+=======
+                mTitleView.setLayoutDirection(mDecor.getLayoutDirection());
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
                 if ((getLocalFeatures() & (1 << FEATURE_NO_TITLE)) != 0) {
                     View titleContainer = findViewById(com.android.internal.R.id.title_container);
                     if (titleContainer != null) {

@@ -1,6 +1,9 @@
 /*
  * Copyright (C) 2006 The Android Open Source Project
+<<<<<<< HEAD
  * This code has been modified.  Portions copyright (C) 2010, T-Mobile USA, Inc.
+=======
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,7 +22,10 @@ package android.content.res;
 
 import android.os.ParcelFileDescriptor;
 import android.util.Log;
+<<<<<<< HEAD
 import android.util.SparseArray;
+=======
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 import android.util.TypedValue;
 
 import java.io.FileNotFoundException;
@@ -79,6 +85,7 @@ public final class AssetManager {
     private boolean mOpen = true;
     private HashMap<Integer, RuntimeException> mRefStacks; 
  
+<<<<<<< HEAD
     private String mAssetDir;
     private String mAppName;
 
@@ -93,6 +100,8 @@ public final class AssetManager {
      */
     private SparseArray<PackageRedirectionMap> mRedirections;
 
+=======
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     /**
      * Create a new AssetManager containing only the basic system assets.
      * Applications will not generally use this method, instead retrieving the
@@ -268,12 +277,15 @@ public final class AssetManager {
         }
     }
 
+<<<<<<< HEAD
     /*package*/ final void recreateStringBlocks() {
         synchronized (this) {
             makeStringBlocks(true);
         }
     }
 
+=======
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     /*package*/ final void makeStringBlocks(boolean copyFromSystem) {
         final int sysNum = copyFromSystem ? sSystem.mStringBlocks.length : 0;
         final int num = getStringBlockCount();
@@ -482,6 +494,7 @@ public final class AssetManager {
 
     /**
      * {@hide}
+<<<<<<< HEAD
      * Split a theme package with DRM-protected resources into two files.
      * 
      * @param packageFileName Original theme package file name.
@@ -494,6 +507,8 @@ public final class AssetManager {
 
     /**
      * {@hide}
+=======
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
      * Retrieve a non-asset as a compiled XML file.  Not for use by
      * applications.
      * 
@@ -659,6 +674,7 @@ public final class AssetManager {
     }
 
     /**
+<<<<<<< HEAD
      * Delete a set of theme assets from the asset manager. Not for use by
      * applications. Returns true if succeeded or false on failure.
      *
@@ -763,6 +779,8 @@ public final class AssetManager {
     }
 
     /**
+=======
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
      * Determine whether the state in this asset manager is up-to-date with
      * the files on the filesystem.  If false is returned, you need to
      * instantiate a new AssetManager class to see the new data.
@@ -879,6 +897,7 @@ public final class AssetManager {
     private native final int[] getArrayStringInfo(int arrayRes);
     /*package*/ native final int[] getArrayIntResource(int arrayRes);
 
+<<<<<<< HEAD
     private native final int splitThemePackage(String srcFileName, String dstFileName, String [] drmProtectedAssetNames);
 
     /**
@@ -899,6 +918,8 @@ public final class AssetManager {
     private native final void addRedirectionsNative(int redirectionMapNativePointer);
     private native final void clearRedirectionsNative();
 
+=======
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     private native final void init();
     private native final void destroy();
 

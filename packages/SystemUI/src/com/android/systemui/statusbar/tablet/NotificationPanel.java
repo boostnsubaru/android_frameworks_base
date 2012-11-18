@@ -25,6 +25,10 @@ import android.graphics.Rect;
 import android.util.AttributeSet;
 import android.util.Slog;
 import android.view.Gravity;
+<<<<<<< HEAD
+=======
+import android.view.KeyEvent;
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -34,7 +38,10 @@ import android.view.animation.AccelerateInterpolator;
 import android.view.animation.DecelerateInterpolator;
 import android.view.animation.Interpolator;
 import android.widget.RelativeLayout;
+<<<<<<< HEAD
 import android.widget.ScrollView;
+=======
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 
 import com.android.systemui.ExpandHelper;
 import com.android.systemui.R;
@@ -197,6 +204,30 @@ public class NotificationPanel extends RelativeLayout implements StatusBarPanel,
         return true;
     }
 
+<<<<<<< HEAD
+=======
+    @Override
+    public boolean dispatchKeyEvent(KeyEvent event) {
+    final int keyCode = event.getKeyCode();
+        switch (keyCode) {
+            // We exclusively handle the back key by hiding this panel.
+            case KeyEvent.KEYCODE_BACK: {
+                if (event.getAction() == KeyEvent.ACTION_UP) {
+                    mBar.animateCollapsePanels();
+                }
+                return true;
+            }
+            // We react to the home key but let the system handle it.
+            case KeyEvent.KEYCODE_HOME: {
+                if (event.getAction() == KeyEvent.ACTION_UP) {
+                    mBar.animateCollapsePanels();
+                }
+            } break;
+        }
+        return super.dispatchKeyEvent(event);
+    }
+
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     /*
     @Override
     protected void onLayout(boolean changed, int l, int t, int r, int b) {

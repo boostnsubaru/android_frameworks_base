@@ -21,6 +21,11 @@
 #include <storage/IMountShutdownObserver.h>
 #include <storage/IObbActionListener.h>
 
+<<<<<<< HEAD
+=======
+#include <utils/String8.h>
+
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 #include <binder/IInterface.h>
 #include <binder/Parcel.h>
 
@@ -60,8 +65,14 @@ public:
             String16*& containers) = 0;
     virtual void shutdown(const sp<IMountShutdownObserver>& observer) = 0;
     virtual void finishMediaUpdate() = 0;
+<<<<<<< HEAD
     virtual void mountObb(const String16& filename, const String16& key,
             const sp<IObbActionListener>& token, const int32_t nonce) = 0;
+=======
+    virtual void mountObb(const String16& rawPath, const String16& canonicalPath,
+            const String16& key, const sp<IObbActionListener>& token,
+            const int32_t nonce) = 0;
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     virtual void unmountObb(const String16& filename, const bool force,
             const sp<IObbActionListener>& token, const int32_t nonce) = 0;
     virtual bool isObbMounted(const String16& filename) = 0;

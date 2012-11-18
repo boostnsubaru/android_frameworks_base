@@ -21,6 +21,10 @@ import org.apache.harmony.dalvik.ddmc.ChunkHandler;
 import org.apache.harmony.dalvik.ddmc.DdmServer;
 import android.util.Log;
 import android.os.Debug;
+<<<<<<< HEAD
+=======
+import android.os.UserHandle;
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 
 import java.nio.ByteBuffer;
 
@@ -119,7 +123,11 @@ public class DdmHandleHello extends ChunkHandler {
         //    appName = "unknown";
         String appName = DdmHandleAppName.getAppName();
 
+<<<<<<< HEAD
         ByteBuffer out = ByteBuffer.allocate(16
+=======
+        ByteBuffer out = ByteBuffer.allocate(20
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
                             + vmIdent.length()*2 + appName.length()*2);
         out.order(ChunkHandler.CHUNK_ORDER);
         out.putInt(DdmServer.CLIENT_PROTOCOL_VERSION);
@@ -128,6 +136,10 @@ public class DdmHandleHello extends ChunkHandler {
         out.putInt(appName.length());
         putString(out, vmIdent);
         putString(out, appName);
+<<<<<<< HEAD
+=======
+        out.putInt(UserHandle.myUserId());
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 
         Chunk reply = new Chunk(CHUNK_HELO, out);
 

@@ -19,7 +19,11 @@
 
 #include <arpa/inet.h>
 #include <stdint.h>
+<<<<<<< HEAD
 #include <linux/socket.h>
+=======
+#include <sys/socket.h>
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 
 #include <common_time/ICommonClock.h>
 #include <common_time/local_clock.h>
@@ -28,6 +32,10 @@
 #include "clock_recovery.h"
 #include "common_clock.h"
 #include "common_time_server_packets.h"
+<<<<<<< HEAD
+=======
+#include "utils.h"
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 
 #define RTT_LOG_SIZE 30
 
@@ -104,6 +112,7 @@ class CommonTimeServer : public Thread {
         int64_t rxTimes[RTT_LOG_SIZE];
     };
 
+<<<<<<< HEAD
     class TimeoutHelper {
       public:
         TimeoutHelper() : mTimeoutValid(false) { }
@@ -116,6 +125,8 @@ class CommonTimeServer : public Thread {
         nsecs_t     mEndTime;
     };
 
+=======
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     bool threadLoop();
 
     bool runStateMachine_l();
@@ -194,7 +205,11 @@ class CommonTimeServer : public Thread {
     bool shouldPanicNotGettingGoodData();
 
     // Helper to keep track of the state machine's current timeout
+<<<<<<< HEAD
     TimeoutHelper mCurTimeout;
+=======
+    Timeout mCurTimeout;
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 
     // common clock, local clock abstraction, and clock recovery loop
     CommonClock mCommonClock;
@@ -249,6 +264,14 @@ class CommonTimeServer : public Thread {
     // interface AND currently active common clock clients.
     bool mCommonClockHasClients;
 
+<<<<<<< HEAD
+=======
+    // Internal logs used for dumpsys.
+    LogRing                 mStateChangeLog;
+    LogRing                 mElectionLog;
+    LogRing                 mBadPktLog;
+
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     // Configuration info
     struct sockaddr_storage mMasterElectionEP;          // Endpoint over which we conduct master election
     String8                 mBindIface;                 // Endpoint for the service to bind to.

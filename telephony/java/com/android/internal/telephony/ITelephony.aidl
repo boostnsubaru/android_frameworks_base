@@ -45,6 +45,7 @@ interface ITelephony {
     void call(String number);
 
     /**
+<<<<<<< HEAD
      * Toggle between 3G and LTE (NT_MODE_CDMA, NT_MODE_GLOBAL)
      * @param boolean to turn on and off LTE
      * @hide
@@ -59,6 +60,8 @@ interface ITelephony {
       void toggle2G(boolean on);
 
     /**
+=======
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
      * If there is currently a call in progress, show the call screen.
      * The DTMF dialpad may or may not be visible initially, depending on
      * whether it was up when the user last exited the InCallScreen.
@@ -298,7 +301,10 @@ interface ITelephony {
      * Returns the all observed cell information of the device.
      */
     List<CellInfo> getAllCellInfo();
+<<<<<<< HEAD
 
     int getLteOnGsmMode();
+=======
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 }
 

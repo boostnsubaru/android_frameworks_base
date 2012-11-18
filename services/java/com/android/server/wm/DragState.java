@@ -23,12 +23,20 @@ import com.android.server.wm.WindowManagerService.H;
 
 import android.content.ClipData;
 import android.content.ClipDescription;
+<<<<<<< HEAD
+=======
+import android.graphics.Point;
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 import android.graphics.Region;
 import android.os.IBinder;
 import android.os.Message;
 import android.os.Process;
 import android.os.RemoteException;
 import android.util.Slog;
+<<<<<<< HEAD
+=======
+import android.view.Display;
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 import android.view.DragEvent;
 import android.view.InputChannel;
 import android.view.Surface;
@@ -58,6 +66,10 @@ class DragState {
     WindowState mTargetWindow;
     ArrayList<WindowState> mNotifiedWindows;
     boolean mDragInProgress;
+<<<<<<< HEAD
+=======
+    Display mDisplay;
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 
     private final Region mTmpRegion = new Region();
 
@@ -84,7 +96,15 @@ class DragState {
         mNotifiedWindows = null;
     }
 
+<<<<<<< HEAD
     void register() {
+=======
+    /**
+     * @param display The Display that the window being dragged is on.
+     */
+    void register(Display display) {
+        mDisplay = display;
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         if (WindowManagerService.DEBUG_DRAG) Slog.d(WindowManagerService.TAG, "registering drag input channel");
         if (mClientChannel != null) {
             Slog.e(WindowManagerService.TAG, "Duplicate register of drag input channel");
@@ -101,7 +121,12 @@ class DragState {
             mDragApplicationHandle.dispatchingTimeoutNanos =
                     WindowManagerService.DEFAULT_INPUT_DISPATCHING_TIMEOUT_NANOS;
 
+<<<<<<< HEAD
             mDragWindowHandle = new InputWindowHandle(mDragApplicationHandle, null);
+=======
+            mDragWindowHandle = new InputWindowHandle(mDragApplicationHandle, null,
+                    mDisplay.getDisplayId());
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
             mDragWindowHandle.name = "drag";
             mDragWindowHandle.inputChannel = mServerChannel;
             mDragWindowHandle.layer = getDragLayerLw();
@@ -125,8 +150,15 @@ class DragState {
             // The drag window covers the entire display
             mDragWindowHandle.frameLeft = 0;
             mDragWindowHandle.frameTop = 0;
+<<<<<<< HEAD
             mDragWindowHandle.frameRight = mService.mCurDisplayWidth;
             mDragWindowHandle.frameBottom = mService.mCurDisplayHeight;
+=======
+            Point p = new Point();
+            mDisplay.getRealSize(p);
+            mDragWindowHandle.frameRight = p.x;
+            mDragWindowHandle.frameBottom = p.y;
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 
             // Pause rotations before a drag.
             if (WindowManagerService.DEBUG_ORIENTATION) {
@@ -179,9 +211,18 @@ class DragState {
             Slog.d(WindowManagerService.TAG, "broadcasting DRAG_STARTED at (" + touchX + ", " + touchY + ")");
         }
 
+<<<<<<< HEAD
         final int N = mService.mWindows.size();
         for (int i = 0; i < N; i++) {
             sendDragStartedLw(mService.mWindows.get(i), touchX, touchY, mDataDescription);
+=======
+        final WindowList windows = mService.getWindowListLocked(mDisplay);
+        if (windows != null) {
+            final int N = windows.size();
+            for (int i = 0; i < N; i++) {
+                sendDragStartedLw(windows.get(i), touchX, touchY, mDataDescription);
+            }
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         }
     }
 
@@ -380,7 +421,15 @@ class DragState {
         WindowState touchedWin = null;
         final int x = (int) xf;
         final int y = (int) yf;
+<<<<<<< HEAD
         final ArrayList<WindowState> windows = mService.mWindows;
+=======
+
+        final WindowList windows = mService.getWindowListLocked(mDisplay);
+        if (windows == null) {
+            return null;
+        }
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         final int N = windows.size();
         for (int i = N - 1; i >= 0; i--) {
             WindowState child = windows.get(i);

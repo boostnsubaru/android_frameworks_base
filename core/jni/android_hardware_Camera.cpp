@@ -23,6 +23,10 @@
 #include "JNIHelp.h"
 #include "android_runtime/AndroidRuntime.h"
 
+<<<<<<< HEAD
+=======
+#include <cutils/properties.h>
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 #include <utils/Vector.h>
 
 #include <gui/SurfaceTexture.h>
@@ -38,6 +42,10 @@ struct fields_t {
     jfieldID    surfaceTexture;
     jfieldID    facing;
     jfieldID    orientation;
+<<<<<<< HEAD
+=======
+    jfieldID    canDisableShutterSound;
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     jfieldID    face_rect;
     jfieldID    face_score;
     jfieldID    rect_left;
@@ -453,6 +461,15 @@ static void android_hardware_Camera_getCameraInfo(JNIEnv *env, jobject thiz,
     }
     env->SetIntField(info_obj, fields.facing, cameraInfo.facing);
     env->SetIntField(info_obj, fields.orientation, cameraInfo.orientation);
+<<<<<<< HEAD
+=======
+
+    char value[PROPERTY_VALUE_MAX];
+    property_get("ro.camera.sound.forced", value, "0");
+    jboolean canDisableShutterSound = (strncmp(value, "0", 2) == 0);
+    env->SetBooleanField(info_obj, fields.canDisableShutterSound,
+            canDisableShutterSound);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 }
 
 // connect to camera service
@@ -611,6 +628,7 @@ static void android_hardware_Camera_setHasPreviewCallback(JNIEnv *env, jobject t
     context->setCallbackMode(env, installed, manualBuffer);
 }
 
+<<<<<<< HEAD
  static void android_hardware_Camera_sendHistogramData(JNIEnv *env, jobject thiz)
  {
 #ifdef QCOM_HARDWARE
@@ -647,6 +665,8 @@ static void android_hardware_Camera_setHasPreviewCallback(JNIEnv *env, jobject t
 #endif
  }
 
+=======
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 static void android_hardware_Camera_addCallbackBuffer(JNIEnv *env, jobject thiz, jbyteArray bytes, int msgType) {
     ALOGV("addCallbackBuffer: 0x%x", msgType);
 
@@ -817,6 +837,28 @@ static void android_hardware_Camera_setDisplayOrientation(JNIEnv *env, jobject t
     }
 }
 
+<<<<<<< HEAD
+=======
+static jboolean android_hardware_Camera_enableShutterSound(JNIEnv *env, jobject thiz,
+        jboolean enabled)
+{
+    ALOGV("enableShutterSound");
+    sp<Camera> camera = get_native_camera(env, thiz, NULL);
+    if (camera == 0) return JNI_FALSE;
+
+    int32_t value = (enabled == JNI_TRUE) ? 1 : 0;
+    status_t rc = camera->sendCommand(CAMERA_CMD_ENABLE_SHUTTER_SOUND, value, 0);
+    if (rc == NO_ERROR) {
+        return JNI_TRUE;
+    } else if (rc == PERMISSION_DENIED) {
+        return JNI_FALSE;
+    } else {
+        jniThrowRuntimeException(env, "enable shutter sound failed");
+        return JNI_FALSE;
+    }
+}
+
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 static void android_hardware_Camera_startFaceDetection(JNIEnv *env, jobject thiz,
         jint type)
 {
@@ -849,16 +891,22 @@ static void android_hardware_Camera_stopFaceDetection(JNIEnv *env, jobject thiz)
 static void android_hardware_Camera_enableFocusMoveCallback(JNIEnv *env, jobject thiz, jint enable)
 {
     ALOGV("enableFocusMoveCallback");
+<<<<<<< HEAD
 #ifdef ICS_CAMERA_BLOB
     return;
 #else
+=======
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     sp<Camera> camera = get_native_camera(env, thiz, NULL);
     if (camera == 0) return;
 
     if (camera->sendCommand(CAMERA_CMD_ENABLE_FOCUS_MOVE_MSG, enable, 0) != NO_ERROR) {
         jniThrowRuntimeException(env, "enable focus move callback failed");
     }
+<<<<<<< HEAD
 #endif
+=======
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 }
 
 //-------------------------------------------------
@@ -867,7 +915,11 @@ static JNINativeMethod camMethods[] = {
   { "getNumberOfCameras",
     "()I",
     (void *)android_hardware_Camera_getNumberOfCameras },
+<<<<<<< HEAD
   { "getCameraInfo",
+=======
+  { "_getCameraInfo",
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     "(ILandroid/hardware/Camera$CameraInfo;)V",
     (void*)android_hardware_Camera_getCameraInfo },
   { "native_setup",
@@ -906,12 +958,15 @@ static JNINativeMethod camMethods[] = {
   { "native_takePicture",
     "(I)V",
     (void *)android_hardware_Camera_takePicture },
+<<<<<<< HEAD
   { "native_setHistogramMode",
     "(Z)V",
     (void *)android_hardware_Camera_setHistogramMode },
   { "native_sendHistogramData",
     "()V",
     (void *)android_hardware_Camera_sendHistogramData },
+=======
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
   { "native_setParameters",
     "(Ljava/lang/String;)V",
     (void *)android_hardware_Camera_setParameters },
@@ -936,6 +991,12 @@ static JNINativeMethod camMethods[] = {
   { "setDisplayOrientation",
     "(I)V",
     (void *)android_hardware_Camera_setDisplayOrientation },
+<<<<<<< HEAD
+=======
+  { "_enableShutterSound",
+    "(Z)Z",
+    (void *)android_hardware_Camera_enableShutterSound },
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
   { "_startFaceDetection",
     "(I)V",
     (void *)android_hardware_Camera_startFaceDetection },
@@ -986,6 +1047,11 @@ int register_android_hardware_Camera(JNIEnv *env)
           ANDROID_GRAPHICS_SURFACETEXTURE_JNI_ID, "I", &fields.surfaceTexture },
         { "android/hardware/Camera$CameraInfo", "facing",   "I", &fields.facing },
         { "android/hardware/Camera$CameraInfo", "orientation",   "I", &fields.orientation },
+<<<<<<< HEAD
+=======
+        { "android/hardware/Camera$CameraInfo", "canDisableShutterSound",   "Z",
+          &fields.canDisableShutterSound },
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         { "android/hardware/Camera$Face", "rect", "Landroid/graphics/Rect;", &fields.face_rect },
         { "android/hardware/Camera$Face", "score", "I", &fields.face_score },
         { "android/graphics/Rect", "left", "I", &fields.rect_left },

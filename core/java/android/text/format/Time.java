@@ -21,6 +21,11 @@ import android.content.res.Resources;
 import java.util.Locale;
 import java.util.TimeZone;
 
+<<<<<<< HEAD
+=======
+import libcore.icu.LocaleData;
+
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 /**
  * An alternative to the {@link java.util.Calendar} and
  * {@link java.util.GregorianCalendar} classes. An instance of the Time class represents
@@ -149,6 +154,12 @@ public class Time {
     private static String sDateTimeFormat;
     private static String sAm;
     private static String sPm;
+<<<<<<< HEAD
+=======
+    private static char sZeroDigit;
+
+    // Referenced by native code.
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     private static String sDateCommand = "%a %b %e %H:%M:%S %Z %Y";
 
     /**
@@ -317,6 +328,7 @@ public class Time {
             Locale locale = Locale.getDefault();
 
             if (sLocale == null || locale == null || !(locale.equals(sLocale))) {
+<<<<<<< HEAD
                 Resources r = Resources.getSystem();
 
                 sShortMonths = new String[] {
@@ -384,16 +396,61 @@ public class Time {
                 sDateTimeFormat = r.getString(com.android.internal.R.string.date_and_time);
                 sAm = r.getString(com.android.internal.R.string.am);
                 sPm = r.getString(com.android.internal.R.string.pm);
+=======
+                LocaleData localeData = LocaleData.get(locale);
+
+                sAm = localeData.amPm[0];
+                sPm = localeData.amPm[1];
+                sZeroDigit = localeData.zeroDigit;
+
+                sShortMonths = localeData.shortMonthNames;
+                sLongMonths = localeData.longMonthNames;
+                sLongStandaloneMonths = localeData.longStandAloneMonthNames;
+                sShortWeekdays = localeData.shortWeekdayNames;
+                sLongWeekdays = localeData.longWeekdayNames;
+
+                Resources r = Resources.getSystem();
+                sTimeOnlyFormat = r.getString(com.android.internal.R.string.time_of_day);
+                sDateOnlyFormat = r.getString(com.android.internal.R.string.month_day_year);
+                sDateTimeFormat = r.getString(com.android.internal.R.string.date_and_time);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 
                 sLocale = locale;
             }
 
+<<<<<<< HEAD
             return format1(format);
+=======
+            String result = format1(format);
+            if (sZeroDigit != '0') {
+                result = localizeDigits(result);
+            }
+            return result;
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         }
     }
 
     native private String format1(String format);
 
+<<<<<<< HEAD
+=======
+    // TODO: unify this with java.util.Formatter's copy.
+    private String localizeDigits(String s) {
+        int length = s.length();
+        int offsetToLocalizedDigits = sZeroDigit - '0';
+        StringBuilder result = new StringBuilder(length);
+        for (int i = 0; i < length; ++i) {
+            char ch = s.charAt(i);
+            if (ch >= '0' && ch <= '9') {
+                ch += offsetToLocalizedDigits;
+            }
+            result.append(ch);
+        }
+        return result.toString();
+    }
+
+
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     /**
      * Return the current time in YYYYMMDDTHHMMSS<tz> format
      */
@@ -437,6 +494,12 @@ public class Time {
      * @throws android.util.TimeFormatException if s cannot be parsed.
      */
     public boolean parse(String s) {
+<<<<<<< HEAD
+=======
+        if (s == null) {
+            throw new NullPointerException("time string is null");
+        }
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         if (nativeParse(s)) {
             timezone = TIMEZONE_UTC;
             return true;
@@ -720,7 +783,11 @@ public class Time {
             int minutes = (offset % 3600) / 60;
             int hours = offset / 3600;
 
+<<<<<<< HEAD
             return String.format("%s%s%02d:%02d", base, sign, hours, minutes);
+=======
+            return String.format(Locale.US, "%s%s%02d:%02d", base, sign, hours, minutes);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         }
     }
 

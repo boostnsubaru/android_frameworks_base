@@ -18,9 +18,13 @@ package android.bluetooth;
 
 import android.bluetooth.IBluetoothCallback;
 import android.bluetooth.IBluetoothStateChangeCallback;
+<<<<<<< HEAD
 import android.bluetooth.IBluetoothHealthCallback;
 import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothHealthAppConfiguration;
+=======
+import android.bluetooth.BluetoothDevice;
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 import android.os.ParcelUuid;
 import android.os.ParcelFileDescriptor;
 
@@ -32,6 +36,7 @@ import android.os.ParcelFileDescriptor;
 interface IBluetooth
 {
     boolean isEnabled();
+<<<<<<< HEAD
     int getBluetoothState();
     boolean enable();
     boolean enableNoAutoConnect();
@@ -41,6 +46,17 @@ interface IBluetooth
     String getName();
     boolean setName(in String name);
     ParcelUuid[] getUuids();
+=======
+    int getState();
+    boolean enable();
+    boolean enableNoAutoConnect();
+    boolean disable();
+
+    String getAddress();
+    ParcelUuid[] getUuids();
+    boolean setName(in String name);
+    String getName();
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 
     int getScanMode();
     boolean setScanMode(int mode, int duration);
@@ -51,6 +67,7 @@ interface IBluetooth
     boolean startDiscovery();
     boolean cancelDiscovery();
     boolean isDiscovering();
+<<<<<<< HEAD
     byte[] readOutOfBandData();
 
     int getAdapterConnectionState();
@@ -124,4 +141,36 @@ interface IBluetooth
     int getHealthDeviceConnectionState(in BluetoothDevice device);
 
     void sendConnectionStateChange(in BluetoothDevice device, int profile, int state, int prevState);
+=======
+
+    int getAdapterConnectionState();
+    int getProfileConnectionState(int profile);
+
+    BluetoothDevice[] getBondedDevices();
+    boolean createBond(in BluetoothDevice device);
+    boolean cancelBondProcess(in BluetoothDevice device);
+    boolean removeBond(in BluetoothDevice device);
+    int getBondState(in BluetoothDevice device);
+
+    String getRemoteName(in BluetoothDevice device);
+    String getRemoteAlias(in BluetoothDevice device);
+    boolean setRemoteAlias(in BluetoothDevice device, in String name);
+    int getRemoteClass(in BluetoothDevice device);
+    ParcelUuid[] getRemoteUuids(in BluetoothDevice device);
+    boolean fetchRemoteUuids(in BluetoothDevice device);
+
+    boolean setPin(in BluetoothDevice device, boolean accept, int len, in byte[] pinCode);
+    boolean setPasskey(in BluetoothDevice device, boolean accept, int len, in byte[]
+    passkey);
+    boolean setPairingConfirmation(in BluetoothDevice device, boolean accept);
+
+    void sendConnectionStateChange(in BluetoothDevice device, int profile, int state, int prevState);
+
+    void registerCallback(in IBluetoothCallback callback);
+    void unregisterCallback(in IBluetoothCallback callback);
+
+    // For Socket
+    ParcelFileDescriptor connectSocket(in BluetoothDevice device, int type, in ParcelUuid uuid, int port, int flag);
+    ParcelFileDescriptor createSocketChannel(int type, in String serviceName, in ParcelUuid uuid, int port, int flag);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 }

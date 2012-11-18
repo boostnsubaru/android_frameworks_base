@@ -71,7 +71,11 @@ class CallbackProxy extends Handler {
     // Start with 100 to indicate it is not in load for the empty page.
     private volatile int mLatestProgress = 100;
     // Back/Forward list
+<<<<<<< HEAD
     private final WebBackForwardList mBackForwardList;
+=======
+    private final WebBackForwardListClassic mBackForwardList;
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     // Back/Forward list client
     private volatile WebBackForwardListClient mWebBackForwardListClient;
     // Used to call startActivity during url override.
@@ -117,12 +121,17 @@ class CallbackProxy extends Handler {
     private static final int ADD_HISTORY_ITEM                     = 135;
     private static final int HISTORY_INDEX_CHANGED                = 136;
     private static final int AUTH_CREDENTIALS                     = 137;
+<<<<<<< HEAD
     private static final int SET_INSTALLABLE_WEBAPP               = 138;
     private static final int NOTIFY_SEARCHBOX_LISTENERS           = 139;
     private static final int AUTO_LOGIN                           = 140;
     private static final int CLIENT_CERT_REQUEST                  = 141;
     private static final int SEARCHBOX_IS_SUPPORTED_CALLBACK      = 142;
     private static final int SEARCHBOX_DISPATCH_COMPLETE_CALLBACK = 143;
+=======
+    private static final int AUTO_LOGIN                           = 140;
+    private static final int CLIENT_CERT_REQUEST                  = 141;
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     private static final int PROCEEDED_AFTER_SSL_ERROR            = 144;
 
     // Message triggered by the client to resume execution
@@ -188,7 +197,11 @@ class CallbackProxy extends Handler {
         // Used to start a default activity.
         mContext = context;
         mWebView = w;
+<<<<<<< HEAD
         mBackForwardList = new WebBackForwardList(this);
+=======
+        mBackForwardList = new WebBackForwardListClassic(this);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     }
 
     protected synchronized void blockMessages() {
@@ -249,7 +262,11 @@ class CallbackProxy extends Handler {
      * Get the Back/Forward list to return to the user or to update the cached
      * history list.
      */
+<<<<<<< HEAD
     public WebBackForwardList getBackForwardList() {
+=======
+    public WebBackForwardListClassic getBackForwardList() {
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         return mBackForwardList;
     }
 
@@ -403,17 +420,30 @@ class CallbackProxy extends Handler {
                 break;
 
             case PROCEEDED_AFTER_SSL_ERROR:
+<<<<<<< HEAD
                 if (mWebViewClient != null) {
                     mWebViewClient.onProceededAfterSslError(mWebView.getWebView(),
+=======
+                if (mWebViewClient != null && mWebViewClient instanceof WebViewClientClassicExt) {
+                    ((WebViewClientClassicExt) mWebViewClient).onProceededAfterSslError(
+                            mWebView.getWebView(),
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
                             (SslError) msg.obj);
                 }
                 break;
 
             case CLIENT_CERT_REQUEST:
+<<<<<<< HEAD
                 if (mWebViewClient != null) {
                     HashMap<String, Object> map =
                         (HashMap<String, Object>) msg.obj;
                     mWebViewClient.onReceivedClientCertRequest(mWebView.getWebView(),
+=======
+                if (mWebViewClient != null  && mWebViewClient instanceof WebViewClientClassicExt) {
+                    HashMap<String, Object> map = (HashMap<String, Object>) msg.obj;
+                    ((WebViewClientClassicExt) mWebViewClient).onReceivedClientCertRequest(
+                            mWebView.getWebView(),
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
                             (ClientCertRequestHandler) map.get("handler"),
                             (String) map.get("host_and_port"));
                 }
@@ -452,10 +482,23 @@ class CallbackProxy extends Handler {
                     String contentDisposition =
                         msg.getData().getString("contentDisposition");
                     String mimetype = msg.getData().getString("mimetype");
+<<<<<<< HEAD
                     Long contentLength = msg.getData().getLong("contentLength");
 
                     mDownloadListener.onDownloadStart(url, userAgent,
                             contentDisposition, mimetype, contentLength);
+=======
+                    String referer = msg.getData().getString("referer");
+                    Long contentLength = msg.getData().getLong("contentLength");
+
+                    if (mDownloadListener instanceof BrowserDownloadListener) {
+                        ((BrowserDownloadListener) mDownloadListener).onDownloadStart(url,
+                             userAgent, contentDisposition, mimetype, referer, contentLength);
+                    } else {
+                        mDownloadListener.onDownloadStart(url, userAgent,
+                             contentDisposition, mimetype, contentLength);
+                    }
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
                 }
                 break;
 
@@ -736,6 +779,17 @@ class CallbackProxy extends Handler {
                                                 res.cancel();
                                             }
                                         })
+<<<<<<< HEAD
+=======
+                                .setOnCancelListener(
+                                        new DialogInterface.OnCancelListener() {
+                                            @Override
+                                            public void onCancel(
+                                                    DialogInterface dialog) {
+                                                res.cancel();
+                                            }
+                                        })
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
                                 .show();
                     }
                     receiver.setReady();
@@ -857,6 +911,7 @@ class CallbackProxy extends Handler {
                         host, realm, username, password);
                 break;
             }
+<<<<<<< HEAD
             case SET_INSTALLABLE_WEBAPP:
                 if (mWebChromeClient != null) {
                     mWebChromeClient.setInstallableWebApp();
@@ -870,6 +925,8 @@ class CallbackProxy extends Handler {
                 searchBox.handleSuggestions(msg.getData().getString("query"), suggestions);
                 break;
             }
+=======
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
             case AUTO_LOGIN: {
                 if (mWebViewClient != null) {
                     String realm = msg.getData().getString("realm");
@@ -880,6 +937,7 @@ class CallbackProxy extends Handler {
                 }
                 break;
             }
+<<<<<<< HEAD
             case SEARCHBOX_IS_SUPPORTED_CALLBACK: {
                 SearchBoxImpl searchBox = (SearchBoxImpl) mWebView.getSearchBox();
                 Boolean supported = (Boolean) msg.obj;
@@ -893,6 +951,8 @@ class CallbackProxy extends Handler {
                         msg.getData().getInt("id"), success);
                 break;
             }
+=======
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         }
     }
 
@@ -1081,7 +1141,11 @@ class CallbackProxy extends Handler {
     }
 
     public void onProceededAfterSslError(SslError error) {
+<<<<<<< HEAD
         if (mWebViewClient == null) {
+=======
+        if (mWebViewClient == null || !(mWebViewClient instanceof WebViewClientClassicExt)) {
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
             return;
         }
         Message msg = obtainMessage(PROCEEDED_AFTER_SSL_ERROR);
@@ -1092,7 +1156,11 @@ class CallbackProxy extends Handler {
     public void onReceivedClientCertRequest(ClientCertRequestHandler handler, String host_and_port) {
         // Do an unsynchronized quick check to avoid posting if no callback has
         // been set.
+<<<<<<< HEAD
         if (mWebViewClient == null) {
+=======
+        if (mWebViewClient == null || !(mWebViewClient instanceof WebViewClientClassicExt)) {
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
             handler.cancel();
             return;
         }
@@ -1176,7 +1244,12 @@ class CallbackProxy extends Handler {
      * return false.
      */
     public boolean onDownloadStart(String url, String userAgent,
+<<<<<<< HEAD
             String contentDisposition, String mimetype, long contentLength) {
+=======
+            String contentDisposition, String mimetype, String referer,
+            long contentLength) {
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         // Do an unsynchronized quick check to avoid posting if no callback has
         // been set.
         if (mDownloadListener == null) {
@@ -1189,6 +1262,10 @@ class CallbackProxy extends Handler {
         bundle.putString("url", url);
         bundle.putString("userAgent", userAgent);
         bundle.putString("mimetype", mimetype);
+<<<<<<< HEAD
+=======
+        bundle.putString("referer", referer);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         bundle.putLong("contentLength", contentLength);
         bundle.putString("contentDisposition", contentDisposition);
         sendMessage(msg);
@@ -1301,7 +1378,11 @@ class CallbackProxy extends Handler {
     public void onReceivedIcon(Bitmap icon) {
         // The current item might be null if the icon was already stored in the
         // database and this is a new WebView.
+<<<<<<< HEAD
         WebHistoryItem i = mBackForwardList.getCurrentItem();
+=======
+        WebHistoryItemClassic i = mBackForwardList.getCurrentItem();
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         if (i != null) {
             i.setFavicon(icon);
         }
@@ -1316,7 +1397,11 @@ class CallbackProxy extends Handler {
     /* package */ void onReceivedTouchIconUrl(String url, boolean precomposed) {
         // We should have a current item but we do not want to crash so check
         // for null.
+<<<<<<< HEAD
         WebHistoryItem i = mBackForwardList.getCurrentItem();
+=======
+        WebHistoryItemClassic i = mBackForwardList.getCurrentItem();
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         if (i != null) {
             i.setTouchIconUrl(url, precomposed);
         }
@@ -1608,6 +1693,7 @@ class CallbackProxy extends Handler {
         sendMessage(msg);
     }
 
+<<<<<<< HEAD
     void setInstallableWebApp() {
         if (mWebChromeClient == null) {
             return;
@@ -1615,6 +1701,8 @@ class CallbackProxy extends Handler {
         sendMessage(obtainMessage(SET_INSTALLABLE_WEBAPP));
     }
 
+=======
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     boolean canShowAlertDialog() {
         // We can only display the alert dialog if mContext is
         // an Activity context.
@@ -1625,6 +1713,7 @@ class CallbackProxy extends Handler {
         return mContext instanceof Activity;
     }
 
+<<<<<<< HEAD
     void onSearchboxSuggestionsReceived(String query, List<String> suggestions) {
         Message msg = obtainMessage(NOTIFY_SEARCHBOX_LISTENERS);
         msg.obj = suggestions;
@@ -1648,6 +1737,8 @@ class CallbackProxy extends Handler {
         sendMessage(msg);
     }
 
+=======
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     private synchronized void sendMessageToUiThreadSync(Message msg) {
         sendMessage(msg);
         WebCoreThreadWatchdog.pause();

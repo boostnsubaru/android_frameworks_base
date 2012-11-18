@@ -35,7 +35,11 @@ public class BootReceiver extends BroadcastReceiver {
         try {
             // Start the load average overlay, if activated
             ContentResolver res = context.getContentResolver();
+<<<<<<< HEAD
             if (Settings.System.getInt(res, Settings.System.SHOW_PROCESSES, 0) != 0) {
+=======
+            if (Settings.Global.getInt(res, Settings.Global.SHOW_PROCESSES, 0) != 0) {
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
                 Intent loadavg = new Intent(context, com.android.systemui.LoadAverageService.class);
                 context.startService(loadavg);
             }

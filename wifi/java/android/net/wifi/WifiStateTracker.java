@@ -23,8 +23,13 @@ import android.content.IntentFilter;
 import android.net.LinkCapabilities;
 import android.net.LinkProperties;
 import android.net.NetworkInfo;
+<<<<<<< HEAD
 import android.net.NetworkStateTracker;
 import android.net.wifi.p2p.WifiP2pManager;
+=======
+import android.net.NetworkInfo.DetailedState;
+import android.net.NetworkStateTracker;
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 import android.os.Handler;
 import android.os.Message;
 import android.util.Slog;
@@ -87,7 +92,10 @@ public class WifiStateTracker implements NetworkStateTracker {
         IntentFilter filter = new IntentFilter();
         filter.addAction(WifiManager.NETWORK_STATE_CHANGED_ACTION);
         filter.addAction(WifiManager.LINK_CONFIGURATION_CHANGED_ACTION);
+<<<<<<< HEAD
         filter.addAction(WifiP2pManager.WIFI_P2P_CONNECTION_CHANGED_ACTION);
+=======
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 
         mWifiStateReceiver = new WifiStateReceiver();
         mContext.registerReceiver(mWifiStateReceiver, filter);
@@ -113,6 +121,17 @@ public class WifiStateTracker implements NetworkStateTracker {
     }
 
     /**
+<<<<<<< HEAD
+=======
+     * Captive check is complete, switch to network
+     */
+    @Override
+    public void captivePortalCheckComplete() {
+        mWifiManager.captivePortalCheckComplete();
+    }
+
+    /**
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
      * Turn the wireless radio off for a network.
      * @param turnOn {@code true} to turn the radio on, {@code false}
      */
@@ -208,6 +227,7 @@ public class WifiStateTracker implements NetworkStateTracker {
         @Override
         public void onReceive(Context context, Intent intent) {
 
+<<<<<<< HEAD
             if (intent.getAction().equals(WifiP2pManager.WIFI_P2P_CONNECTION_CHANGED_ACTION)) {
                     mNetworkInfo = (NetworkInfo) intent.getParcelableExtra(
                             WifiP2pManager.EXTRA_NETWORK_INFO);
@@ -222,6 +242,9 @@ public class WifiStateTracker implements NetworkStateTracker {
                         mLinkCapabilities = new LinkCapabilities();
                     }
              } else if (intent.getAction().equals(WifiManager.NETWORK_STATE_CHANGED_ACTION)) {
+=======
+            if (intent.getAction().equals(WifiManager.NETWORK_STATE_CHANGED_ACTION)) {
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
                 mNetworkInfo = (NetworkInfo) intent.getParcelableExtra(
                         WifiManager.EXTRA_NETWORK_INFO);
                 mLinkProperties = intent.getParcelableExtra(
@@ -235,9 +258,16 @@ public class WifiStateTracker implements NetworkStateTracker {
                     mLinkCapabilities = new LinkCapabilities();
                 }
                 // don't want to send redundent state messages
+<<<<<<< HEAD
                 // TODO can this be fixed in WifiStateMachine?
                 NetworkInfo.State state = mNetworkInfo.getState();
                 if (mLastState == state) {
+=======
+                // but send portal check detailed state notice
+                NetworkInfo.State state = mNetworkInfo.getState();
+                if (mLastState == state &&
+                        mNetworkInfo.getDetailedState() != DetailedState.CAPTIVE_PORTAL_CHECK) {
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
                     return;
                 } else {
                     mLastState = state;

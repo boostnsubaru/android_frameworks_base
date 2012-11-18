@@ -170,8 +170,12 @@ public:
             const uint32_t* spotIdToIndex, BitSet32 spotIdBits);
     virtual void clearSpots();
 
+<<<<<<< HEAD
     void setDisplaySize(int32_t width, int32_t height);
     void setDisplayOrientation(int32_t orientation);
+=======
+    void setDisplayViewport(int32_t width, int32_t height, int32_t orientation);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     void setPointerIcon(const SpriteIcon& icon);
     void setInactivityTimeout(InactivityTimeout inactivityTimeout);
 

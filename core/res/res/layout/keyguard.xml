@@ -19,9 +19,15 @@
 -->
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" 
+<<<<<<< HEAD
     android:paddingLeft="20dip"
     android:paddingTop="20dip"
     android:paddingRight="20dip"
+=======
+    android:paddingStart="20dip"
+    android:paddingTop="20dip"
+    android:paddingEnd="20dip"
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     android:paddingBottom="20dip"
     android:orientation="vertical" 
     android:layout_width="wrap_content"

@@ -18,12 +18,29 @@ package android.content.pm;
 
 import android.os.Parcel;
 import android.os.Parcelable;
+<<<<<<< HEAD
+=======
+import android.os.UserHandle;
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 
 /**
  * Per-user information.
  * @hide
  */
 public class UserInfo implements Parcelable {
+<<<<<<< HEAD
+=======
+
+    /** 6 bits for user type */
+    public static final int FLAG_MASK_USER_TYPE = 0x0000003F;
+
+    /**
+     * *************************** NOTE ***************************
+     * These flag values CAN NOT CHANGE because they are written
+     * directly to storage.
+     */
+
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     /**
      * Primary user. Only one user can have this flag set. Meaning of this
      * flag TBD.
@@ -41,6 +58,7 @@ public class UserInfo implements Parcelable {
      */
     public static final int FLAG_GUEST   = 0x00000004;
 
+<<<<<<< HEAD
     public int id;
     public String name;
     public int flags;
@@ -49,6 +67,39 @@ public class UserInfo implements Parcelable {
         this.id = id;
         this.name = name;
         this.flags = flags;
+=======
+    /**
+     * Indicates the user has restrictions in privileges, in addition to those for normal users.
+     * Exact meaning TBD. For instance, maybe they can't install apps or administer WiFi access pts.
+     */
+    public static final int FLAG_RESTRICTED = 0x00000008;
+
+    /**
+     * Indicates that this user has gone through its first-time initialization.
+     */
+    public static final int FLAG_INITIALIZED = 0x00000010;
+
+    public int id;
+    public int serialNumber;
+    public String name;
+    public String iconPath;
+    public int flags;
+    public long creationTime;
+    public long lastLoggedInTime;
+
+    /** User is only partially created. */
+    public boolean partial;
+
+    public UserInfo(int id, String name, int flags) {
+        this(id, name, null, flags);
+    }
+
+    public UserInfo(int id, String name, String iconPath, int flags) {
+        this.id = id;
+        this.name = name;
+        this.flags = flags;
+        this.iconPath = iconPath;
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     }
 
     public boolean isPrimary() {
@@ -68,8 +119,22 @@ public class UserInfo implements Parcelable {
 
     public UserInfo(UserInfo orig) {
         name = orig.name;
+<<<<<<< HEAD
         id = orig.id;
         flags = orig.flags;
+=======
+        iconPath = orig.iconPath;
+        id = orig.id;
+        flags = orig.flags;
+        serialNumber = orig.serialNumber;
+        creationTime = orig.creationTime;
+        lastLoggedInTime = orig.lastLoggedInTime;
+        partial = orig.partial;
+    }
+
+    public UserHandle getUserHandle() {
+        return new UserHandle(id);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     }
 
     @Override
@@ -84,7 +149,16 @@ public class UserInfo implements Parcelable {
     public void writeToParcel(Parcel dest, int parcelableFlags) {
         dest.writeInt(id);
         dest.writeString(name);
+<<<<<<< HEAD
         dest.writeInt(flags);
+=======
+        dest.writeString(iconPath);
+        dest.writeInt(flags);
+        dest.writeInt(serialNumber);
+        dest.writeLong(creationTime);
+        dest.writeLong(lastLoggedInTime);
+        dest.writeInt(partial ? 1 : 0);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     }
 
     public static final Parcelable.Creator<UserInfo> CREATOR
@@ -100,6 +174,15 @@ public class UserInfo implements Parcelable {
     private UserInfo(Parcel source) {
         id = source.readInt();
         name = source.readString();
+<<<<<<< HEAD
         flags = source.readInt();
+=======
+        iconPath = source.readString();
+        flags = source.readInt();
+        serialNumber = source.readInt();
+        creationTime = source.readLong();
+        lastLoggedInTime = source.readLong();
+        partial = source.readInt() != 0;
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     }
 }

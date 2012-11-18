@@ -27,7 +27,10 @@ import java.nio.ByteBuffer;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
+<<<<<<< HEAD
 import android.os.SystemProperties;
+=======
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 import android.util.Log;
 
 /**
@@ -311,6 +314,7 @@ public class AudioRecord
         case AudioFormat.ENCODING_PCM_8BIT:
             mAudioFormat = audioFormat;
             break;
+<<<<<<< HEAD
         case AudioFormat.ENCODING_AMRNB:
         case AudioFormat.ENCODING_AMRWB:
         case AudioFormat.ENCODING_EVRC:
@@ -320,6 +324,8 @@ public class AudioRecord
                 mAudioFormat = audioFormat;
                 break;
             }
+=======
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         default:
             mAudioFormat = AudioFormat.ENCODING_INVALID;
         throw (new IllegalArgumentException("Unsupported sample encoding." 
@@ -486,12 +492,16 @@ public class AudioRecord
         }
         
         // PCM_8BIT is not supported at the moment
+<<<<<<< HEAD
         if (audioFormat != AudioFormat.ENCODING_PCM_16BIT
             && audioFormat != AudioFormat.ENCODING_AMRNB
             && audioFormat != AudioFormat.ENCODING_AMRWB
             && audioFormat != AudioFormat.ENCODING_EVRC
             && audioFormat != AudioFormat.ENCODING_EVRCB
             && audioFormat != AudioFormat.ENCODING_EVRCWB) {
+=======
+        if (audioFormat != AudioFormat.ENCODING_PCM_16BIT) {
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
             loge("getMinBufferSize(): Invalid audio format.");
             return AudioRecord.ERROR_BAD_VALUE;
         }

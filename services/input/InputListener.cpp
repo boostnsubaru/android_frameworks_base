@@ -69,12 +69,20 @@ void NotifyKeyArgs::notify(const sp<InputListenerInterface>& listener) const {
 NotifyMotionArgs::NotifyMotionArgs(nsecs_t eventTime, int32_t deviceId, uint32_t source,
         uint32_t policyFlags,
         int32_t action, int32_t flags, int32_t metaState, int32_t buttonState,
+<<<<<<< HEAD
         int32_t edgeFlags, uint32_t pointerCount,
+=======
+        int32_t edgeFlags, int32_t displayId, uint32_t pointerCount,
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         const PointerProperties* pointerProperties, const PointerCoords* pointerCoords,
         float xPrecision, float yPrecision, nsecs_t downTime) :
         eventTime(eventTime), deviceId(deviceId), source(source), policyFlags(policyFlags),
         action(action), flags(flags), metaState(metaState), buttonState(buttonState),
+<<<<<<< HEAD
         edgeFlags(edgeFlags), pointerCount(pointerCount),
+=======
+        edgeFlags(edgeFlags), displayId(displayId), pointerCount(pointerCount),
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         xPrecision(xPrecision), yPrecision(yPrecision), downTime(downTime) {
     for (uint32_t i = 0; i < pointerCount; i++) {
         this->pointerProperties[i].copyFrom(pointerProperties[i]);
@@ -87,7 +95,12 @@ NotifyMotionArgs::NotifyMotionArgs(const NotifyMotionArgs& other) :
         policyFlags(other.policyFlags),
         action(other.action), flags(other.flags),
         metaState(other.metaState), buttonState(other.buttonState),
+<<<<<<< HEAD
         edgeFlags(other.edgeFlags), pointerCount(other.pointerCount),
+=======
+        edgeFlags(other.edgeFlags), displayId(other.displayId),
+        pointerCount(other.pointerCount),
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         xPrecision(other.xPrecision), yPrecision(other.yPrecision), downTime(other.downTime) {
     for (uint32_t i = 0; i < pointerCount; i++) {
         pointerProperties[i].copyFrom(other.pointerProperties[i]);
@@ -103,14 +116,24 @@ void NotifyMotionArgs::notify(const sp<InputListenerInterface>& listener) const 
 // --- NotifySwitchArgs ---
 
 NotifySwitchArgs::NotifySwitchArgs(nsecs_t eventTime, uint32_t policyFlags,
+<<<<<<< HEAD
         int32_t switchCode, int32_t switchValue) :
         eventTime(eventTime), policyFlags(policyFlags),
         switchCode(switchCode), switchValue(switchValue) {
+=======
+        uint32_t switchValues, uint32_t switchMask) :
+        eventTime(eventTime), policyFlags(policyFlags),
+        switchValues(switchValues), switchMask(switchMask) {
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 }
 
 NotifySwitchArgs::NotifySwitchArgs(const NotifySwitchArgs& other) :
         eventTime(other.eventTime), policyFlags(other.policyFlags),
+<<<<<<< HEAD
         switchCode(other.switchCode), switchValue(other.switchValue) {
+=======
+        switchValues(other.switchValues), switchMask(other.switchMask) {
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 }
 
 void NotifySwitchArgs::notify(const sp<InputListenerInterface>& listener) const {

@@ -45,7 +45,28 @@ public final class BridgeWindowSession implements IWindowSession {
     }
 
     @Override
+<<<<<<< HEAD
     public int addWithoutInputChannel(IWindow arg0, int seq, LayoutParams arg1, int arg2, Rect arg3)
+=======
+    public int addToDisplay(IWindow arg0, int seq, LayoutParams arg1, int arg2, int displayId,
+                            Rect arg3, InputChannel outInputchannel)
+            throws RemoteException {
+        // pass for now.
+        return 0;
+    }
+
+    @Override
+    public int addWithoutInputChannel(IWindow arg0, int seq, LayoutParams arg1, int arg2,
+                                      Rect arg3)
+            throws RemoteException {
+        // pass for now.
+        return 0;
+    }
+
+    @Override
+    public int addToDisplayWithoutInputChannel(IWindow arg0, int seq, LayoutParams arg1, int arg2,
+                                               int displayId, Rect arg3)
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
             throws RemoteException {
         // pass for now.
         return 0;
@@ -167,8 +188,25 @@ public final class BridgeWindowSession implements IWindowSession {
     }
 
     @Override
+<<<<<<< HEAD
+=======
+    public void setUniverseTransform(IBinder window, float alpha, float offx, float offy,
+            float dsdx, float dtdx, float dsdy, float dtdy) {
+        // pass for now.
+    }
+
+    @Override
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     public IBinder asBinder() {
         // pass for now.
         return null;
     }
+<<<<<<< HEAD
+=======
+
+    @Override
+    public void onRectangleOnScreenRequested(IBinder window, Rect rectangle, boolean immediate) {
+        // pass for now.
+    }
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 }

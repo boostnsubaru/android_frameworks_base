@@ -52,9 +52,15 @@ interface IAppWidgetService {
     AppWidgetProviderInfo getAppWidgetInfo(int appWidgetId);
     boolean hasBindAppWidgetPermission(in String packageName);
     void setBindAppWidgetPermission(in String packageName, in boolean permission);
+<<<<<<< HEAD
     void bindAppWidgetId(int appWidgetId, in ComponentName provider);
     boolean bindAppWidgetIdIfAllowed(
             in String packageName, int appWidgetId, in ComponentName provider);
+=======
+    void bindAppWidgetId(int appWidgetId, in ComponentName provider, in Bundle options);
+    boolean bindAppWidgetIdIfAllowed(
+            in String packageName, int appWidgetId, in ComponentName provider, in Bundle options);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     void bindRemoteViewsService(int appWidgetId, in Intent intent, in IBinder connection);
     void unbindRemoteViewsService(int appWidgetId, in Intent intent);
     int[] getAppWidgetIds(in ComponentName provider);

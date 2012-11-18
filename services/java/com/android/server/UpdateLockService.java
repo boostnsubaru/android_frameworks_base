@@ -27,6 +27,10 @@ import android.os.RemoteException;
 import android.os.SystemClock;
 import android.os.TokenWatcher;
 import android.os.UpdateLock;
+<<<<<<< HEAD
+=======
+import android.os.UserHandle;
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 import android.util.Slog;
 
 import java.io.FileDescriptor;
@@ -78,7 +82,11 @@ public class UpdateLockService extends IUpdateLock.Stub {
                     .putExtra(UpdateLock.NOW_IS_CONVENIENT, state)
                     .putExtra(UpdateLock.TIMESTAMP, System.currentTimeMillis())
                     .addFlags(Intent.FLAG_RECEIVER_REGISTERED_ONLY_BEFORE_BOOT);
+<<<<<<< HEAD
             mContext.sendStickyBroadcast(intent);
+=======
+            mContext.sendStickyBroadcastAsUser(intent, UserHandle.ALL);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         } finally {
             Binder.restoreCallingIdentity(oldIdent);
         }

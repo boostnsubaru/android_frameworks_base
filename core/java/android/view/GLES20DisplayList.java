@@ -25,9 +25,18 @@ import java.util.ArrayList;
  * An implementation of display list for OpenGL ES 2.0.
  */
 class GLES20DisplayList extends DisplayList {
+<<<<<<< HEAD
     // These lists ensure that any Bitmaps recorded by a DisplayList are kept alive as long
     // as the DisplayList is alive.  The Bitmaps are populated by the GLES20RecordingCanvas.
     final ArrayList<Bitmap> mBitmaps = new ArrayList<Bitmap>(5);
+=======
+    // These lists ensure that any Bitmaps and DisplayLists recorded by a DisplayList are kept
+    // alive as long as the DisplayList is alive.  The Bitmap and DisplayList lists
+    // are populated by the GLES20RecordingCanvas during appropriate drawing calls and are
+    // cleared at the start of a new drawing frame or when the view is detached from the window.
+    final ArrayList<Bitmap> mBitmaps = new ArrayList<Bitmap>(5);
+    final ArrayList<DisplayList> mChildDisplayLists = new ArrayList<DisplayList>();
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 
     private GLES20RecordingCanvas mCanvas;
     private boolean mValid;
@@ -79,6 +88,17 @@ class GLES20DisplayList extends DisplayList {
     public void clear() {
         if (!mValid) {
             mBitmaps.clear();
+<<<<<<< HEAD
+=======
+            mChildDisplayLists.clear();
+        }
+    }
+
+    @Override
+    public void reset() {
+        if (hasNativeDisplayList()) {
+            nReset(mFinalizer.mNativeDisplayList);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         }
     }
 
@@ -290,6 +310,10 @@ class GLES20DisplayList extends DisplayList {
         }
     }
 
+<<<<<<< HEAD
+=======
+    private static native void nReset(int displayList);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     private static native void nOffsetTopBottom(int displayList, int offset);
     private static native void nOffsetLeftRight(int displayList, int offset);
     private static native void nSetLeftTopRightBottom(int displayList, int left, int top,

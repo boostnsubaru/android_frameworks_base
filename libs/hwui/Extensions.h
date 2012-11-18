@@ -39,9 +39,12 @@ namespace uirenderer {
     #define EXT_LOGD(...)
 #endif
 
+<<<<<<< HEAD
 // Vendor strings
 #define VENDOR_IMG "Imagination Technologies"
 
+=======
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 ///////////////////////////////////////////////////////////////////////////////
 // Classes
 ///////////////////////////////////////////////////////////////////////////////
@@ -68,6 +71,7 @@ public:
         mHasDiscardFramebuffer = hasExtension("GL_EXT_discard_framebuffer");
         mHasDebugMarker = hasExtension("GL_EXT_debug_marker");
         mHasDebugLabel = hasExtension("GL_EXT_debug_label");
+<<<<<<< HEAD
 
         const char* vendor = (const char*) glGetString(GL_VENDOR);
         EXT_LOGD("Vendor: %s", vendor);
@@ -77,14 +81,30 @@ public:
         // guarantees the result of glGetString to point to a
         // static string as long as our OpenGL context is valid
         mExtensions = buffer;
+=======
+        mHasTiledRendering = hasExtension("GL_QCOM_tiled_rendering");
+
+        mExtensions = strdup(buffer);
+    }
+
+    ~Extensions() {
+        free(mExtensions);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     }
 
     inline bool hasNPot() const { return mHasNPot; }
     inline bool hasFramebufferFetch() const { return mHasFramebufferFetch; }
+<<<<<<< HEAD
     inline bool needsHighpTexCoords() const { return mNeedsHighpTexCoords; }
     inline bool hasDiscardFramebuffer() const { return mHasDiscardFramebuffer; }
     inline bool hasDebugMarker() const { return mHasDebugMarker; }
     inline bool hasDebugLabel() const { return mHasDebugLabel; }
+=======
+    inline bool hasDiscardFramebuffer() const { return mHasDiscardFramebuffer; }
+    inline bool hasDebugMarker() const { return mHasDebugMarker; }
+    inline bool hasDebugLabel() const { return mHasDebugLabel; }
+    inline bool hasTiledRendering() const { return mHasTiledRendering; }
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 
     bool hasExtension(const char* extension) const {
         const String8 s(extension);
@@ -98,14 +118,24 @@ public:
 private:
     SortedVector<String8> mExtensionList;
 
+<<<<<<< HEAD
     const char* mExtensions;
 
     bool mHasNPot;
     bool mNeedsHighpTexCoords;
+=======
+    char* mExtensions;
+
+    bool mHasNPot;
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     bool mHasFramebufferFetch;
     bool mHasDiscardFramebuffer;
     bool mHasDebugMarker;
     bool mHasDebugLabel;
+<<<<<<< HEAD
+=======
+    bool mHasTiledRendering;
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 }; // class Extensions
 
 }; // namespace uirenderer

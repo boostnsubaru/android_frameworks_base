@@ -16,9 +16,13 @@
 
 package android.view;
 
+<<<<<<< HEAD
 import android.app.Application;
 import android.content.Context;
 import android.content.res.CompatibilityInfo;
+=======
+import android.content.Context;
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 import android.content.res.Configuration;
 import android.content.res.TypedArray;
 import android.graphics.PixelFormat;
@@ -27,7 +31,10 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.os.SystemProperties;
+<<<<<<< HEAD
 import android.util.Slog;
+=======
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 import android.view.accessibility.AccessibilityEvent;
 
 /**
@@ -92,6 +99,16 @@ public abstract class Window {
      * If overlay is enabled, the action mode UI will be allowed to cover existing window content.
      */
     public static final int FEATURE_ACTION_MODE_OVERLAY = 10;
+<<<<<<< HEAD
+=======
+
+    /**
+     * Max value used as a feature ID
+     * @hide
+     */
+    public static final int FEATURE_MAX = FEATURE_ACTION_MODE_OVERLAY;
+
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     /** Flag for setting the progress bar's visibility to VISIBLE */
     public static final int PROGRESS_VISIBILITY_ON = -1;
     /** Flag for setting the progress bar's visibility to GONE */
@@ -119,6 +136,11 @@ public abstract class Window {
      */
     public static final int ID_ANDROID_CONTENT = com.android.internal.R.id.content;
 
+<<<<<<< HEAD
+=======
+    private static final String PROPERTY_HARDWARE_UI = "persist.sys.ui.hw";
+
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     private final Context mContext;
     
     private TypedArray mWindowStyle;
@@ -126,6 +148,10 @@ public abstract class Window {
     private WindowManager mWindowManager;
     private IBinder mAppToken;
     private String mAppName;
+<<<<<<< HEAD
+=======
+    private boolean mHardwareAccelerated;
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     private Window mContainer;
     private Window mActiveChild;
     private boolean mIsActive = false;
@@ -454,7 +480,11 @@ public abstract class Window {
      * display panels.  This is <em>not</em> used for displaying the
      * Window itself -- that must be done by the client.
      *
+<<<<<<< HEAD
      * @param wm The ViewManager for adding new windows.
+=======
+     * @param wm The window manager for adding new windows.
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
      */
     public void setWindowManager(WindowManager wm, IBinder appToken, String appName) {
         setWindowManager(wm, appToken, appName, false);
@@ -465,12 +495,17 @@ public abstract class Window {
      * display panels.  This is <em>not</em> used for displaying the
      * Window itself -- that must be done by the client.
      *
+<<<<<<< HEAD
      * @param wm The ViewManager for adding new windows.
+=======
+     * @param wm The window manager for adding new windows.
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
      */
     public void setWindowManager(WindowManager wm, IBinder appToken, String appName,
             boolean hardwareAccelerated) {
         mAppToken = appToken;
         mAppName = appName;
+<<<<<<< HEAD
         if (wm == null) {
             wm = WindowManagerImpl.getDefault();
         }
@@ -545,6 +580,60 @@ public abstract class Window {
                 wp.flags |= WindowManager.LayoutParams.FLAG_HARDWARE_ACCELERATED;
             }
             super.addView(view, params);
+=======
+        mHardwareAccelerated = hardwareAccelerated
+                || SystemProperties.getBoolean(PROPERTY_HARDWARE_UI, false);
+        if (wm == null) {
+            wm = (WindowManager)mContext.getSystemService(Context.WINDOW_SERVICE);
+        }
+        mWindowManager = ((WindowManagerImpl)wm).createLocalWindowManager(this);
+    }
+
+    void adjustLayoutParamsForSubWindow(WindowManager.LayoutParams wp) {
+        CharSequence curTitle = wp.getTitle();
+        if (wp.type >= WindowManager.LayoutParams.FIRST_SUB_WINDOW &&
+            wp.type <= WindowManager.LayoutParams.LAST_SUB_WINDOW) {
+            if (wp.token == null) {
+                View decor = peekDecorView();
+                if (decor != null) {
+                    wp.token = decor.getWindowToken();
+                }
+            }
+            if (curTitle == null || curTitle.length() == 0) {
+                String title;
+                if (wp.type == WindowManager.LayoutParams.TYPE_APPLICATION_MEDIA) {
+                    title="Media";
+                } else if (wp.type == WindowManager.LayoutParams.TYPE_APPLICATION_MEDIA_OVERLAY) {
+                    title="MediaOvr";
+                } else if (wp.type == WindowManager.LayoutParams.TYPE_APPLICATION_PANEL) {
+                    title="Panel";
+                } else if (wp.type == WindowManager.LayoutParams.TYPE_APPLICATION_SUB_PANEL) {
+                    title="SubPanel";
+                } else if (wp.type == WindowManager.LayoutParams.TYPE_APPLICATION_ATTACHED_DIALOG) {
+                    title="AtchDlg";
+                } else {
+                    title=Integer.toString(wp.type);
+                }
+                if (mAppName != null) {
+                    title += ":" + mAppName;
+                }
+                wp.setTitle(title);
+            }
+        } else {
+            if (wp.token == null) {
+                wp.token = mContainer == null ? mAppToken : mContainer.mAppToken;
+            }
+            if ((curTitle == null || curTitle.length() == 0)
+                    && mAppName != null) {
+                wp.setTitle(mAppName);
+            }
+        }
+        if (wp.packageName == null) {
+            wp.packageName = mContext.getPackageName();
+        }
+        if (mHardwareAccelerated) {
+            wp.flags |= WindowManager.LayoutParams.FLAG_HARDWARE_ACCELERATED;
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         }
     }
 
@@ -718,6 +807,10 @@ public abstract class Window {
      * per {@link #setFlags}.
      * @param flags The flag bits to be set.
      * @see #setFlags
+<<<<<<< HEAD
+=======
+     * @see #clearFlags
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
      */
     public void addFlags(int flags) {
         setFlags(flags, flags);
@@ -728,6 +821,10 @@ public abstract class Window {
      * per {@link #setFlags}.
      * @param flags The flag bits to be cleared.
      * @see #setFlags
+<<<<<<< HEAD
+=======
+     * @see #addFlags
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
      */
     public void clearFlags(int flags) {
         setFlags(0, flags);
@@ -749,11 +846,18 @@ public abstract class Window {
      *
      * @param flags The new window flags (see WindowManager.LayoutParams).
      * @param mask Which of the window flag bits to modify.
+<<<<<<< HEAD
      */
     public void setFlags(int flags, int mask) {
         if ((flags & mask & WindowManager.LayoutParams.PREVENT_POWER_KEY) != 0){
             mContext.enforceCallingOrSelfPermission("android.permission.PREVENT_POWER_KEY", "No permission to prevent power key");
         }
+=======
+     * @see #addFlags
+     * @see #clearFlags
+     */
+    public void setFlags(int flags, int mask) {
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         final WindowManager.LayoutParams attrs = getAttributes();
         attrs.flags = (attrs.flags&~mask) | (flags&mask);
         if ((mask&WindowManager.LayoutParams.FLAG_NEEDS_MENU_KEY) != 0) {
@@ -793,9 +897,12 @@ public abstract class Window {
      *          current values.
      */
     public void setAttributes(WindowManager.LayoutParams a) {
+<<<<<<< HEAD
         if ((a.flags & WindowManager.LayoutParams.PREVENT_POWER_KEY) != 0){
             mContext.enforceCallingOrSelfPermission("android.permission.PREVENT_POWER_KEY", "No permission to prevent power key");
         }
+=======
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         mWindowAttributes.copyFrom(a);
         if (mCallback != null) {
             mCallback.onWindowAttributesChanged(mWindowAttributes);

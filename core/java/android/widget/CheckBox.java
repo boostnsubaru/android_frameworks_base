@@ -44,8 +44,13 @@ import android.view.accessibility.AccessibilityNodeInfo;
  * }
  * </pre>
  *
+<<<<<<< HEAD
  * <p>See the <a href="{@docRoot}resources/tutorials/views/hello-formstuff.html">Form Stuff
  * tutorial</a>.</p>
+=======
+ * <p>See the <a href="{@docRoot}guide/topics/ui/controls/checkbox.html">Checkboxes</a>
+ * guide.</p>
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
  *  
  * <p><strong>XML attributes</strong></p> 
  * <p>

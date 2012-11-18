@@ -15,6 +15,11 @@
  */
 package com.android.internal.view.menu;
 
+<<<<<<< HEAD
+=======
+import com.android.internal.R;
+
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 import android.content.Context;
 import android.content.res.Configuration;
 import android.content.res.TypedArray;
@@ -26,8 +31,11 @@ import android.view.ViewGroup;
 import android.view.accessibility.AccessibilityEvent;
 import android.widget.LinearLayout;
 
+<<<<<<< HEAD
 import com.android.internal.R;
 
+=======
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 /**
  * @hide
  */
@@ -73,6 +81,14 @@ public class ActionMenuView extends LinearLayout implements MenuBuilder.ItemInvo
         return mFormatItems;
     }
 
+<<<<<<< HEAD
+=======
+    public void setMaxItemHeight(int maxItemHeight) {
+        mMaxItemHeight = maxItemHeight;
+        requestLayout();
+    }
+
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     @Override
     public void onConfigurationChanged(Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
@@ -395,6 +411,10 @@ public class ActionMenuView extends LinearLayout implements MenuBuilder.ItemInvo
         int nonOverflowCount = 0;
         int widthRemaining = right - left - getPaddingRight() - getPaddingLeft();
         boolean hasOverflow = false;
+<<<<<<< HEAD
+=======
+        final boolean isLayoutRtl = isLayoutRtl();
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         for (int i = 0; i < childCount; i++) {
             final View v = getChildAt(i);
             if (v.getVisibility() == GONE) {
@@ -409,8 +429,20 @@ public class ActionMenuView extends LinearLayout implements MenuBuilder.ItemInvo
                 }
 
                 int height = v.getMeasuredHeight();
+<<<<<<< HEAD
                 int r = getWidth() - getPaddingRight() - p.rightMargin;
                 int l = r - overflowWidth;
+=======
+                int r;
+                int l;
+                if (isLayoutRtl) {
+                    l = getPaddingLeft() + p.leftMargin;
+                    r = l + overflowWidth;
+                } else {
+                    r = getWidth() - getPaddingRight() - p.rightMargin;
+                    l = r - overflowWidth;
+                }
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
                 int t = midVertical - (height / 2);
                 int b = t + height;
                 v.layout(l, t, r, b);
@@ -443,6 +475,7 @@ public class ActionMenuView extends LinearLayout implements MenuBuilder.ItemInvo
         final int spacerCount = nonOverflowCount - (hasOverflow ? 0 : 1);
         final int spacerSize = Math.max(0, spacerCount > 0 ? widthRemaining / spacerCount : 0);
 
+<<<<<<< HEAD
         int startLeft = getPaddingLeft();
         for (int i = 0; i < childCount; i++) {
             final View v = getChildAt(i);
@@ -457,6 +490,40 @@ public class ActionMenuView extends LinearLayout implements MenuBuilder.ItemInvo
             int t = midVertical - height / 2;
             v.layout(startLeft, t, startLeft + width, t + height);
             startLeft += width + lp.rightMargin + spacerSize;
+=======
+        if (isLayoutRtl) {
+            int startRight = getWidth() - getPaddingRight();
+            for (int i = 0; i < childCount; i++) {
+                final View v = getChildAt(i);
+                final LayoutParams lp = (LayoutParams) v.getLayoutParams();
+                if (v.getVisibility() == GONE || lp.isOverflowButton) {
+                    continue;
+                }
+
+                startRight -= lp.rightMargin;
+                int width = v.getMeasuredWidth();
+                int height = v.getMeasuredHeight();
+                int t = midVertical - height / 2;
+                v.layout(startRight - width, t, startRight, t + height);
+                startRight -= width + lp.leftMargin + spacerSize;
+            }
+        } else {
+            int startLeft = getPaddingLeft();
+            for (int i = 0; i < childCount; i++) {
+                final View v = getChildAt(i);
+                final LayoutParams lp = (LayoutParams) v.getLayoutParams();
+                if (v.getVisibility() == GONE || lp.isOverflowButton) {
+                    continue;
+                }
+
+                startLeft += lp.leftMargin;
+                int width = v.getMeasuredWidth();
+                int height = v.getMeasuredHeight();
+                int t = midVertical - height / 2;
+                v.layout(startLeft, t, startLeft + width, t + height);
+                startLeft += width + lp.rightMargin + spacerSize;
+            }
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         }
     }
 
@@ -489,8 +556,15 @@ public class ActionMenuView extends LinearLayout implements MenuBuilder.ItemInvo
 
     @Override
     protected LayoutParams generateLayoutParams(ViewGroup.LayoutParams p) {
+<<<<<<< HEAD
         if (p instanceof LayoutParams) {
             LayoutParams result = new LayoutParams((LayoutParams) p);
+=======
+        if (p != null) {
+            final LayoutParams result = p instanceof LayoutParams
+                    ? new LayoutParams((LayoutParams) p)
+                    : new LayoutParams(p);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
             if (result.gravity <= Gravity.NO_GRAVITY) {
                 result.gravity = Gravity.CENTER_VERTICAL;
             }
@@ -524,6 +598,12 @@ public class ActionMenuView extends LinearLayout implements MenuBuilder.ItemInvo
 
     @Override
     protected boolean hasDividerBeforeChildAt(int childIndex) {
+<<<<<<< HEAD
+=======
+        if (childIndex == 0) {
+            return false;
+        }
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         final View childBefore = getChildAt(childIndex - 1);
         final View child = getChildAt(childIndex);
         boolean result = false;
@@ -563,6 +643,13 @@ public class ActionMenuView extends LinearLayout implements MenuBuilder.ItemInvo
             super(c, attrs);
         }
 
+<<<<<<< HEAD
+=======
+        public LayoutParams(ViewGroup.LayoutParams other) {
+            super(other);
+        }
+
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         public LayoutParams(LayoutParams other) {
             super((LinearLayout.LayoutParams) other);
             isOverflowButton = other.isOverflowButton;

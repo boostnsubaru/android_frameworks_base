@@ -42,7 +42,11 @@ manages the application download.</p>
 <h3 id="payment-methods">Convenient payment options</h3>
 
 <p>Users can purchase your products on Google Play using several convenient
+<<<<<<< HEAD
 payment methods&mdash;credit cards, Direct Carrier Billing, and Google Play balance.</p>
+=======
+payment methods&mdash;credit cards, Direct Carrier Billing, gift cards, and Google Play balance.</p>
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 
 <p><span style="font-weight:500">Credit card</span> is the most common method of payment. Users can pay using any credit card
 that they’ve registered in Google Play. To make it easy for users to get started,
@@ -52,8 +56,14 @@ registration is offered as a part of initial device setup process.</p>
 <div class="sidebox">
 <h2>Payment methods on Google Play</h2>
 <ul>
+<<<<<<< HEAD
 <li>Credit Card</li>
 <li>Direct Carrier Billing</li>
+=======
+<li>Credit card</li>
+<li>Direct Carrier Billing</li>
+<li>Gift card</li>
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 <li>Google Play balance (stored value)</li>
 </ul>
 </div>
@@ -75,7 +85,11 @@ games, or other content.
 <p>The payment methods available to users worldwide may vary, based on
 location, carrier network, and other factors.</p>
 
+<<<<<<< HEAD
 <div style="float:left;margin-right:2em;margin-top:1em;width:220px;">
+=======
+<div style="float:left;margin-right:2em;margin-top:3em;margin-bottom:1em;width:220px;">
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 <img src="{@docRoot}images/gp-subs.png" style="width:220px">
 </div>
 
@@ -96,7 +110,11 @@ targeted advertising.</p>
 <ul>
 <li>Free (no charge to download)</li>
 <li>Priced (user charged before download)</li>
+<<<<<<< HEAD
 <li>In-App products and subscriptions</li>
+=======
+<li>In-app products and subscriptions</li>
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 </ul>
 </div>
 </div>
@@ -110,6 +128,12 @@ could set a nominal price for your app at download and sell value add-ons,
 gameplay levels, and upgrades as in-app products. The only restriction is that
 free apps must remain free (to download) for the life of the app.</p>
 
+<<<<<<< HEAD
+=======
+<p>For details about in-app products or subscriptions,
+see <a href="/guide/google/play/billing/index.html">Google Play In-app Billing</a>.</p>
+
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 <h2 id="buyer-currency" style="margin-top:1.5em;">Flexible pricing in the currencies of your customers</h2>
 
 <div style="float:right;margin-left:18px;border:1px solid #DDD;">

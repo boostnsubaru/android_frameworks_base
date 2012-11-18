@@ -82,10 +82,13 @@ struct SkiaShader {
         mGradientCache = gradientCache;
     }
 
+<<<<<<< HEAD
     virtual void updateTransforms(Program* program, const mat4& modelView,
             const Snapshot& snapshot) {
     }
 
+=======
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     uint32_t getGenerationId() {
         return mGenerationId;
     }
@@ -148,12 +151,16 @@ struct SkiaBitmapShader: public SkiaShader {
     void describe(ProgramDescription& description, const Extensions& extensions);
     void setupProgram(Program* program, const mat4& modelView, const Snapshot& snapshot,
             GLuint* textureUnit);
+<<<<<<< HEAD
     void updateTransforms(Program* program, const mat4& modelView, const Snapshot& snapshot);
+=======
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 
 private:
     SkiaBitmapShader() {
     }
 
+<<<<<<< HEAD
     /**
      * This method does not work for n == 0.
      */
@@ -161,6 +168,8 @@ private:
         return !(n & (n - 1));
     }
 
+=======
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     SkBitmap* mBitmap;
     Texture* mTexture;
     GLenum mWrapS;
@@ -179,12 +188,19 @@ struct SkiaLinearGradientShader: public SkiaShader {
     void describe(ProgramDescription& description, const Extensions& extensions);
     void setupProgram(Program* program, const mat4& modelView, const Snapshot& snapshot,
             GLuint* textureUnit);
+<<<<<<< HEAD
     void updateTransforms(Program* program, const mat4& modelView, const Snapshot& snapshot);
+=======
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 
 private:
     SkiaLinearGradientShader() {
     }
 
+<<<<<<< HEAD
+=======
+    bool mIsSimple;
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     float* mBounds;
     uint32_t* mColors;
     float* mPositions;
@@ -203,7 +219,10 @@ struct SkiaSweepGradientShader: public SkiaShader {
     virtual void describe(ProgramDescription& description, const Extensions& extensions);
     void setupProgram(Program* program, const mat4& modelView, const Snapshot& snapshot,
             GLuint* textureUnit);
+<<<<<<< HEAD
     void updateTransforms(Program* program, const mat4& modelView, const Snapshot& snapshot);
+=======
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 
 protected:
     SkiaSweepGradientShader(Type type, float x, float y, uint32_t* colors, float* positions,
@@ -211,6 +230,10 @@ protected:
     SkiaSweepGradientShader() {
     }
 
+<<<<<<< HEAD
+=======
+    bool mIsSimple;
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     uint32_t* mColors;
     float* mPositions;
     int mCount;

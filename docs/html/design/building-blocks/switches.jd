@@ -23,3 +23,14 @@ consider a spinner, which uses less space.</p>
 <p>On/off switches toggle the state of a single settings option.</p>
 
   <img src="{@docRoot}design/media/switches_switches.png">
+<<<<<<< HEAD
+=======
+
+<div class="note develop">
+<p><strong>Developer Guide</strong></p>
+  <p>For information about how to create these different switches,
+  see the <a href="{@docRoot}guide/topics/ui/controls/checkbox.html">Checkboxes</a>,
+  <a href="{@docRoot}guide/topics/ui/controls/radiobutton.html">Radio Buttons</a>, or
+  <a href="{@docRoot}guide/topics/ui/controls/togglebutton.html">Toggle Buttons</a> API guides.</p>
+</div>
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a

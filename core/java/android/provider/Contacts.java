@@ -308,6 +308,7 @@ public class Contacts {
         public static final String CUSTOM_RINGTONE = "custom_ringtone";
 
         /**
+<<<<<<< HEAD
          * A custom vibration associated with a person. Not always present.
          * <P>Type: TEXT (URI to the vibration)</P>
          * @deprecated see {@link android.provider.ContactsContract}
@@ -316,6 +317,8 @@ public class Contacts {
         public static final String CUSTOM_VIBRATION = "custom_vibration";
 
         /**
+=======
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
          * Whether the person should always be sent to voicemail. Not always
          * present.
          * <P>Type: INTEGER (0 for false, 1 for true)</P>

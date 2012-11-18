@@ -18,8 +18,11 @@ package android.util;
 
 import junit.framework.TestCase;
 
+<<<<<<< HEAD
 import android.util.TimeUtils;
 
+=======
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 import java.util.Calendar;
 import java.util.TimeZone;
 
@@ -442,6 +445,16 @@ public class TimeUtilsTest extends TestCase {
         assertFormatDuration("+10s24ms", 10024);
     }
 
+<<<<<<< HEAD
+=======
+    public void testFormatHugeDuration() {
+        //assertFormatDuration("+15542d1h11m11s555ms", 1342833071555L);
+        // TODO: improve formatDuration() API
+        assertFormatDuration("+999d23h59m59s999ms", 1342833071555L);
+        assertFormatDuration("-999d23h59m59s999ms", -1342833071555L);
+    }
+
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     private void assertFormatDuration(String expected, long duration) {
         StringBuilder sb = new StringBuilder();
         TimeUtils.formatDuration(duration, sb);

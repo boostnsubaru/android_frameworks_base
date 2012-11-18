@@ -26,6 +26,10 @@ import android.os.Binder;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.os.Parcel;
+<<<<<<< HEAD
+=======
+import android.os.UserHandle;
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 import android.test.FlakyTest;
 import android.test.suitebuilder.annotation.Suppress;
 import android.util.Log;
@@ -304,9 +308,15 @@ public class BroadcastTest extends ActivityTestsBase {
         Intent intent = new Intent(LaunchpadActivity.BROADCAST_STICKY1, null);
         intent.putExtra("test", LaunchpadActivity.DATA_1);
         ActivityManagerNative.getDefault().unbroadcastIntent(null, intent,
+<<<<<<< HEAD
                 Binder.getOrigCallingUser());
 
         ActivityManagerNative.broadcastStickyIntent(intent, null);
+=======
+                UserHandle.myUserId());
+
+        ActivityManagerNative.broadcastStickyIntent(intent, null, UserHandle.myUserId());
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         addIntermediate("finished-broadcast");
 
         IntentFilter filter = new IntentFilter(LaunchpadActivity.BROADCAST_STICKY1);
@@ -318,11 +328,19 @@ public class BroadcastTest extends ActivityTestsBase {
     public void testClearSticky() throws Exception {
         Intent intent = new Intent(LaunchpadActivity.BROADCAST_STICKY1, null);
         intent.putExtra("test", LaunchpadActivity.DATA_1);
+<<<<<<< HEAD
         ActivityManagerNative.broadcastStickyIntent(intent, null);
 
         ActivityManagerNative.getDefault().unbroadcastIntent(
                 null, new Intent(LaunchpadActivity.BROADCAST_STICKY1, null),
                 Binder.getOrigCallingUser());
+=======
+        ActivityManagerNative.broadcastStickyIntent(intent, null, UserHandle.myUserId());
+
+        ActivityManagerNative.getDefault().unbroadcastIntent(
+                null, new Intent(LaunchpadActivity.BROADCAST_STICKY1, null),
+                UserHandle.myUserId());
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         addIntermediate("finished-unbroadcast");
 
         IntentFilter filter = new IntentFilter(LaunchpadActivity.BROADCAST_STICKY1);
@@ -333,10 +351,17 @@ public class BroadcastTest extends ActivityTestsBase {
     public void testReplaceSticky() throws Exception {
         Intent intent = new Intent(LaunchpadActivity.BROADCAST_STICKY1, null);
         intent.putExtra("test", LaunchpadActivity.DATA_1);
+<<<<<<< HEAD
         ActivityManagerNative.broadcastStickyIntent(intent, null);
         intent.putExtra("test", LaunchpadActivity.DATA_2);
 
         ActivityManagerNative.broadcastStickyIntent(intent, null);
+=======
+        ActivityManagerNative.broadcastStickyIntent(intent, null, UserHandle.myUserId());
+        intent.putExtra("test", LaunchpadActivity.DATA_2);
+
+        ActivityManagerNative.broadcastStickyIntent(intent, null, UserHandle.myUserId());
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         addIntermediate("finished-broadcast");
 
         IntentFilter filter = new IntentFilter(LaunchpadActivity.BROADCAST_STICKY1);
@@ -350,7 +375,11 @@ public class BroadcastTest extends ActivityTestsBase {
     public void testReceiveSticky() throws Exception {
         Intent intent = new Intent(LaunchpadActivity.BROADCAST_STICKY1, null);
         intent.putExtra("test", LaunchpadActivity.DATA_1);
+<<<<<<< HEAD
         ActivityManagerNative.broadcastStickyIntent(intent, null);
+=======
+        ActivityManagerNative.broadcastStickyIntent(intent, null, UserHandle.myUserId());
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 
         runLaunchpad(LaunchpadActivity.BROADCAST_STICKY1);
     }
@@ -360,10 +389,17 @@ public class BroadcastTest extends ActivityTestsBase {
     public void testReceive2Sticky() throws Exception {
         Intent intent = new Intent(LaunchpadActivity.BROADCAST_STICKY1, null);
         intent.putExtra("test", LaunchpadActivity.DATA_1);
+<<<<<<< HEAD
         ActivityManagerNative.broadcastStickyIntent(intent, null);
         intent = new Intent(LaunchpadActivity.BROADCAST_STICKY2, null);
         intent.putExtra("test", LaunchpadActivity.DATA_2);
         ActivityManagerNative.broadcastStickyIntent(intent, null);
+=======
+        ActivityManagerNative.broadcastStickyIntent(intent, null, UserHandle.myUserId());
+        intent = new Intent(LaunchpadActivity.BROADCAST_STICKY2, null);
+        intent.putExtra("test", LaunchpadActivity.DATA_2);
+        ActivityManagerNative.broadcastStickyIntent(intent, null, UserHandle.myUserId());
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 
         runLaunchpad(LaunchpadActivity.BROADCAST_STICKY2);
     }

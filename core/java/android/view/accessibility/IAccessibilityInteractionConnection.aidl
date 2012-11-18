@@ -28,6 +28,7 @@ import android.view.accessibility.IAccessibilityInteractionConnectionCallback;
  */
 oneway interface IAccessibilityInteractionConnection {
 
+<<<<<<< HEAD
     void findAccessibilityNodeInfoByAccessibilityId(long accessibilityNodeId, int windowLeft,
         int windowTop, int interactionId, IAccessibilityInteractionConnectionCallback callback,
         int flags, int interrogatingPid, long interrogatingTid);
@@ -47,6 +48,27 @@ oneway interface IAccessibilityInteractionConnection {
     void focusSearch(long accessibilityNodeId, int direction, int windowLeft, int windowTop,
         int interactionId, IAccessibilityInteractionConnectionCallback callback, int flags,
         int interrogatingPid, long interrogatingTid);
+=======
+    void findAccessibilityNodeInfoByAccessibilityId(long accessibilityNodeId, int interactionId,
+        IAccessibilityInteractionConnectionCallback callback, int flags, int interrogatingPid,
+        long interrogatingTid);
+
+    void findAccessibilityNodeInfoByViewId(long accessibilityNodeId, int viewId, int interactionId,
+        IAccessibilityInteractionConnectionCallback callback, int flags, int interrogatingPid,
+        long interrogatingTid);
+
+    void findAccessibilityNodeInfosByText(long accessibilityNodeId, String text, int interactionId,
+        IAccessibilityInteractionConnectionCallback callback, int flags, int interrogatingPid,
+        long interrogatingTid);
+
+    void findFocus(long accessibilityNodeId, int focusType, int interactionId,
+        IAccessibilityInteractionConnectionCallback callback, int flags, int interrogatingPid,
+        long interrogatingTid);
+
+    void focusSearch(long accessibilityNodeId, int direction, int interactionId,
+        IAccessibilityInteractionConnectionCallback callback, int flags, int interrogatingPid,
+        long interrogatingTid);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 
     void performAccessibilityAction(long accessibilityNodeId, int action, in Bundle arguments,
         int interactionId, IAccessibilityInteractionConnectionCallback callback, int flags,

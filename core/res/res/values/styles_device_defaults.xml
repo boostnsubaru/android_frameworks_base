@@ -50,6 +50,12 @@ easier.
     <style name="Widget.DeviceDefault.TextView" parent="Widget.Holo.TextView" >
 
     </style>
+<<<<<<< HEAD
+=======
+    <style name="Widget.DeviceDefault.CheckedTextView" parent="Widget.Holo.CheckedTextView" >
+
+    </style>
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     <style name="Widget.DeviceDefault.AutoCompleteTextView" parent="Widget.Holo.AutoCompleteTextView" >
 
     </style>
@@ -288,6 +294,12 @@ easier.
     <style name="Widget.DeviceDefault.Light.TextView" parent="Widget.Holo.Light.TextView" >
 
     </style>
+<<<<<<< HEAD
+=======
+    <style name="Widget.DeviceDefault.Light.CheckedTextView" parent="Widget.Holo.Light.CheckedTextView" >
+
+    </style>
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     <style name="Widget.DeviceDefault.Light.AutoCompleteTextView" parent="Widget.Holo.Light.AutoCompleteTextView" >
 
     </style>
@@ -673,7 +685,10 @@ easier.
 
     </style>
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     <!-- Animation Styles -->
     <style name="Animation.DeviceDefault.Activity" parent="Animation.Holo.Activity">
 

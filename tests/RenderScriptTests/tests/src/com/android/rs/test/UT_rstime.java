@@ -30,7 +30,11 @@ public class UT_rstime extends UnitTest {
 
     public void run() {
         RenderScript pRS = RenderScript.create(mCtx);
+<<<<<<< HEAD
         ScriptC_rstime s = new ScriptC_rstime(pRS, mRes, R.raw.rstime);
+=======
+        ScriptC_rstime s = new ScriptC_rstime(pRS);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         pRS.setMessageHandler(mRsMessage);
         s.setTimeZone("America/Los_Angeles");
         s.invoke_test_rstime(0, 0);

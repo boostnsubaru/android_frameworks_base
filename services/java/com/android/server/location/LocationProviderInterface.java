@@ -16,14 +16,25 @@
 
 package com.android.server.location;
 
+<<<<<<< HEAD
 import android.location.Criteria;
 import android.location.Location;
 import android.net.NetworkInfo;
+=======
+import java.io.FileDescriptor;
+import java.io.PrintWriter;
+
+import com.android.internal.location.ProviderProperties;
+import com.android.internal.location.ProviderRequest;
+
+
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 import android.os.Bundle;
 import android.os.WorkSource;
 
 /**
  * Location Manager's interface for location providers.
+<<<<<<< HEAD
  *
  * {@hide}
  */
@@ -54,4 +65,25 @@ public interface LocationProviderInterface {
     boolean sendExtraCommand(String command, Bundle extras);
     void addListener(int uid);
     void removeListener(int uid);
+=======
+ * @hide
+ */
+public interface LocationProviderInterface {
+    public String getName();
+
+    public void enable();
+    public void disable();
+    public boolean isEnabled();
+    public void setRequest(ProviderRequest request, WorkSource source);
+
+    public void switchUser(int userId);
+
+    public void dump(FileDescriptor fd, PrintWriter pw, String[] args);
+
+    // --- deprecated (but still supported) ---
+    public ProviderProperties getProperties();
+    public int getStatus(Bundle extras);
+    public long getStatusUpdateTime();
+    public boolean sendExtraCommand(String command, Bundle extras);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 }

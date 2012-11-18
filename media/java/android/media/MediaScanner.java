@@ -314,6 +314,10 @@ public class MediaScanner
     private int mMtpObjectHandle;
 
     private final String mExternalStoragePath;
+<<<<<<< HEAD
+=======
+    private final boolean mExternalIsEmulated;
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 
     /** whether to use bulk inserts or individual inserts for each item */
     private static final boolean ENABLE_BULK_INSERTS = true;
@@ -392,6 +396,10 @@ public class MediaScanner
         setDefaultRingtoneFileNames();
 
         mExternalStoragePath = Environment.getExternalStorageDirectory().getAbsolutePath();
+<<<<<<< HEAD
+=======
+        mExternalIsEmulated = Environment.isExternalStorageEmulated();
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         //mClient.testGenreNameConverter();
     }
 
@@ -543,6 +551,7 @@ public class MediaScanner
                         boolean music = (lowpath.indexOf(MUSIC_DIR) > 0) ||
                             (!ringtones && !notifications && !alarms && !podcasts);
 
+<<<<<<< HEAD
                         // we only extract metadata for audio and video files
                         if (MediaFile.isAudioFileType(mFileType)
                                 || MediaFile.isVideoFileType(mFileType)) {
@@ -550,6 +559,30 @@ public class MediaScanner
                         }
 
                         if (MediaFile.isImageFileType(mFileType)) {
+=======
+                        boolean isaudio = MediaFile.isAudioFileType(mFileType);
+                        boolean isvideo = MediaFile.isVideoFileType(mFileType);
+                        boolean isimage = MediaFile.isImageFileType(mFileType);
+
+                        if (isaudio || isvideo || isimage) {
+                            if (mExternalIsEmulated && path.startsWith(mExternalStoragePath)) {
+                                // try to rewrite the path to bypass the sd card fuse layer
+                                String directPath = Environment.getMediaStorageDirectory() +
+                                        path.substring(mExternalStoragePath.length());
+                                File f = new File(directPath);
+                                if (f.exists()) {
+                                    path = directPath;
+                                }
+                            }
+                        }
+
+                        // we only extract metadata for audio and video files
+                        if (isaudio || isvideo) {
+                            processFile(path, mimeType, this);
+                        }
+
+                        if (isimage) {
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
                             processImageFile(path);
                         }
 
@@ -972,7 +1005,10 @@ public class MediaScanner
                     }
                     values.put(FileColumns.MEDIA_TYPE, mediaType);
                 }
+<<<<<<< HEAD
 
+=======
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
                 mMediaProvider.update(result, values, null, null);
             }
 
@@ -1399,7 +1435,12 @@ public class MediaScanner
         long lastModifiedSeconds = file.lastModified() / 1000;
 
         if (!MediaFile.isAudioFileType(fileType) && !MediaFile.isVideoFileType(fileType) &&
+<<<<<<< HEAD
             !MediaFile.isImageFileType(fileType) && !MediaFile.isPlayListFileType(fileType)) {
+=======
+            !MediaFile.isImageFileType(fileType) && !MediaFile.isPlayListFileType(fileType) &&
+            !MediaFile.isDrmFileType(fileType)) {
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 
             // no need to use the media scanner, but we need to update last modified and file size
             ContentValues values = new ContentValues();
@@ -1447,6 +1488,7 @@ public class MediaScanner
     }
 
     FileEntry makeEntryFor(String path) {
+<<<<<<< HEAD
         String key = path;
         String where;
         String[] selectionArgs;
@@ -1465,6 +1507,44 @@ public class MediaScanner
             c = mMediaProvider.query(mFilesUri, FILES_PRESCAN_PROJECTION,
                     where, selectionArgs, null, null);
             if (c.moveToNext()) {
+=======
+        String where;
+        String[] selectionArgs;
+
+        Cursor c = null;
+        try {
+            boolean hasWildCards = path.contains("_") || path.contains("%");
+
+            if (hasWildCards || !mCaseInsensitivePaths) {
+                // if there are wildcard characters in the path, the "like" match
+                // will be slow, and it's worth trying an "=" comparison
+                // first, since in most cases the case will match.
+                // Also, we shouldn't do a "like" match on case-sensitive filesystems
+                where = Files.FileColumns.DATA + "=?";
+                selectionArgs = new String[] { path };
+            } else {
+                // if there are no wildcard characters in the path, then the "like"
+                // match will be just as fast as the "=" case, because of the index
+                where = "_data LIKE ?1 AND lower(_data)=lower(?1)";
+                selectionArgs = new String[] { path };
+            }
+            c = mMediaProvider.query(mFilesUri, FILES_PRESCAN_PROJECTION,
+                    where, selectionArgs, null, null);
+            if (!c.moveToFirst() && hasWildCards && mCaseInsensitivePaths) {
+                // Try again with case-insensitive match. This will be slower, especially
+                // if the path contains wildcard characters.
+                // The 'like' makes it use the index, the 'lower()' makes it correct
+                // when the path contains sqlite wildcard characters,
+                where = "_data LIKE ?1 AND lower(_data)=lower(?1)";
+                selectionArgs = new String[] { path };
+                c.close();
+                c = mMediaProvider.query(mFilesUri, FILES_PRESCAN_PROJECTION,
+                        where, selectionArgs, null, null);
+                // TODO update the path in the db with the correct case so the fast
+                // path works next time?
+            }
+            if (c.moveToFirst()) {
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
                 long rowId = c.getLong(FILES_PRESCAN_ID_COLUMN_INDEX);
                 int format = c.getInt(FILES_PRESCAN_FORMAT_COLUMN_INDEX);
                 long lastModified = c.getLong(FILES_PRESCAN_DATE_MODIFIED_COLUMN_INDEX);

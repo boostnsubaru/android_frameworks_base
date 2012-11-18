@@ -56,8 +56,13 @@
         android:layout_gravity="center_vertical"
         android:layout_marginTop="4dip"
         android:layout_marginBottom="4dip"
+<<<<<<< HEAD
         android:layout_marginLeft="8dip"
         android:layout_marginRight="8dip"
+=======
+        android:layout_marginStart="8dip"
+        android:layout_marginEnd="8dip"
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         android:orientation="horizontal">
 
         <ImageView
@@ -65,7 +70,11 @@
             android:layout_width="@dimen/dropdownitem_icon_width"
             android:layout_height="wrap_content"
             android:scaleType="centerInside"
+<<<<<<< HEAD
             android:layout_marginLeft="@dimen/dropdownitem_text_padding_left"
+=======
+            android:layout_marginStart="@dimen/dropdownitem_text_padding_left"
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
             android:layout_gravity="center_vertical"
             android:src="?android:attr/searchViewSearchIcon"
             android:visibility="gone"
@@ -88,8 +97,13 @@
                 android:layout_weight="1"
                 android:minWidth="@dimen/search_view_text_min_width"
                 android:layout_gravity="bottom"
+<<<<<<< HEAD
                 android:paddingLeft="@dimen/dropdownitem_text_padding_left"
                 android:paddingRight="@dimen/dropdownitem_text_padding_right"
+=======
+                android:paddingStart="@dimen/dropdownitem_text_padding_left"
+                android:paddingEnd="@dimen/dropdownitem_text_padding_right"
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
                 android:singleLine="true"
                 android:ellipsize="end"
                 android:background="@null"
@@ -106,8 +120,13 @@
                 android:id="@+id/search_close_btn"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
+<<<<<<< HEAD
                 android:paddingLeft="8dip"
                 android:paddingRight="8dip"
+=======
+                android:paddingStart="8dip"
+                android:paddingEnd="8dip"
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
                 android:layout_gravity="center_vertical"
                 android:background="?android:attr/selectableItemBackground"
                 android:src="?android:attr/searchViewCloseIcon"
@@ -129,8 +148,13 @@
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_gravity="center_vertical"
+<<<<<<< HEAD
                 android:paddingLeft="16dip"
                 android:paddingRight="16dip"
+=======
+                android:paddingStart="16dip"
+                android:paddingEnd="16dip"
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
                 android:background="?android:attr/selectableItemBackground"
                 android:src="?android:attr/searchViewGoIcon"
                 android:visibility="gone"
@@ -143,8 +167,13 @@
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_gravity="center_vertical"
+<<<<<<< HEAD
                 android:paddingLeft="16dip"
                 android:paddingRight="16dip"
+=======
+                android:paddingStart="16dip"
+                android:paddingEnd="16dip"
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
                 android:src="?android:attr/searchViewVoiceIcon"
                 android:background="?android:attr/selectableItemBackground"
                 android:visibility="gone"

@@ -16,6 +16,11 @@
 
 package android.os;
 
+<<<<<<< HEAD
+=======
+import android.util.Log;
+
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -37,14 +42,103 @@ import java.util.HashMap;
  * @hide
 */
 public abstract class UEventObserver {
+<<<<<<< HEAD
     private static final String TAG = UEventObserver.class.getSimpleName();
+=======
+    private static final String TAG = "UEventObserver";
+    private static final boolean DEBUG = false;
+
+    private static UEventThread sThread;
+
+    private static native void nativeSetup();
+    private static native String nativeWaitForNextEvent();
+    private static native void nativeAddMatch(String match);
+    private static native void nativeRemoveMatch(String match);
+
+    public UEventObserver() {
+    }
+
+    @Override
+    protected void finalize() throws Throwable {
+        try {
+            stopObserving();
+        } finally {
+            super.finalize();
+        }
+    }
+
+    private static UEventThread getThread() {
+        synchronized (UEventObserver.class) {
+            if (sThread == null) {
+                sThread = new UEventThread();
+                sThread.start();
+            }
+            return sThread;
+        }
+    }
+
+    private static UEventThread peekThread() {
+        synchronized (UEventObserver.class) {
+            return sThread;
+        }
+    }
+
+    /**
+     * Begin observation of UEvent's.<p>
+     * This method will cause the UEvent thread to start if this is the first
+     * invocation of startObserving in this process.<p>
+     * Once called, the UEvent thread will call onUEvent() when an incoming
+     * UEvent matches the specified string.<p>
+     * This method can be called multiple times to register multiple matches.
+     * Only one call to stopObserving is required even with multiple registered
+     * matches.
+     *
+     * @param match A substring of the UEvent to match.  Try to be as specific
+     * as possible to avoid incurring unintended additional cost from processing
+     * irrelevant messages.  Netlink messages can be moderately high bandwidth and
+     * are expensive to parse.  For example, some devices may send one netlink message
+     * for each vsync period.
+     */
+    public final void startObserving(String match) {
+        if (match == null || match.isEmpty()) {
+            throw new IllegalArgumentException("match substring must be non-empty");
+        }
+
+        final UEventThread t = getThread();
+        t.addObserver(match, this);
+    }
+
+    /**
+     * End observation of UEvent's.<p>
+     * This process's UEvent thread will never call onUEvent() on this
+     * UEventObserver after this call. Repeated calls have no effect.
+     */
+    public final void stopObserving() {
+        final UEventThread t = getThread();
+        if (t != null) {
+            t.removeObserver(this);
+        }
+    }
+
+    /**
+     * Subclasses of UEventObserver should override this method to handle
+     * UEvents.
+     */
+    public abstract void onUEvent(UEvent event);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 
     /**
      * Representation of a UEvent.
      */
+<<<<<<< HEAD
     static public class UEvent {
         // collection of key=value pairs parsed from the uevent message
         public HashMap<String,String> mMap = new HashMap<String,String>();
+=======
+    public static final class UEvent {
+        // collection of key=value pairs parsed from the uevent message
+        private final HashMap<String,String> mMap = new HashMap<String,String>();
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 
         public UEvent(String message) {
             int offset = 0;
@@ -52,7 +146,11 @@ public abstract class UEventObserver {
 
             while (offset < length) {
                 int equals = message.indexOf('=', offset);
+<<<<<<< HEAD
                 int at = message.indexOf(0, offset);
+=======
+                int at = message.indexOf('\0', offset);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
                 if (at < 0) break;
 
                 if (equals > offset && equals < at) {
@@ -79,14 +177,19 @@ public abstract class UEventObserver {
         }
     }
 
+<<<<<<< HEAD
     private static UEventThread sThread;
     private static boolean sThreadStarted = false;
 
     private static class UEventThread extends Thread {
+=======
+    private static final class UEventThread extends Thread {
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         /** Many to many mapping of string match to observer.
          *  Multimap would be better, but not available in android, so use
          *  an ArrayList where even elements are the String match and odd
          *  elements the corresponding UEventObserver observer */
+<<<<<<< HEAD
         private ArrayList<Object> mObservers = new ArrayList<Object>();
         
         UEventThread() {
@@ -132,11 +235,80 @@ public abstract class UEventObserver {
                             found = true;
                             break;
                         }
+=======
+        private final ArrayList<Object> mKeysAndObservers = new ArrayList<Object>();
+
+        private final ArrayList<UEventObserver> mTempObserversToSignal =
+                new ArrayList<UEventObserver>();
+
+        public UEventThread() {
+            super("UEventObserver");
+        }
+
+        @Override
+        public void run() {
+            nativeSetup();
+
+            while (true) {
+                String message = nativeWaitForNextEvent();
+                if (message != null) {
+                    if (DEBUG) {
+                        Log.d(TAG, message);
+                    }
+                    sendEvent(message);
+                }
+            }
+        }
+
+        private void sendEvent(String message) {
+            synchronized (mKeysAndObservers) {
+                final int N = mKeysAndObservers.size();
+                for (int i = 0; i < N; i += 2) {
+                    final String key = (String)mKeysAndObservers.get(i);
+                    if (message.contains(key)) {
+                        final UEventObserver observer =
+                                (UEventObserver)mKeysAndObservers.get(i + 1);
+                        mTempObserversToSignal.add(observer);
+                    }
+                }
+            }
+
+            if (!mTempObserversToSignal.isEmpty()) {
+                final UEvent event = new UEvent(message);
+                final int N = mTempObserversToSignal.size();
+                for (int i = 0; i < N; i++) {
+                    final UEventObserver observer = mTempObserversToSignal.get(i);
+                    observer.onUEvent(event);
+                }
+                mTempObserversToSignal.clear();
+            }
+        }
+
+        public void addObserver(String match, UEventObserver observer) {
+            synchronized (mKeysAndObservers) {
+                mKeysAndObservers.add(match);
+                mKeysAndObservers.add(observer);
+                nativeAddMatch(match);
+            }
+        }
+
+        /** Removes every key/value pair where value=observer from mObservers */
+        public void removeObserver(UEventObserver observer) {
+            synchronized (mKeysAndObservers) {
+                for (int i = 0; i < mKeysAndObservers.size(); ) {
+                    if (mKeysAndObservers.get(i + 1) == observer) {
+                        mKeysAndObservers.remove(i + 1);
+                        final String match = (String)mKeysAndObservers.remove(i);
+                        nativeRemoveMatch(match);
+                    } else {
+                        i += 2;
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
                     }
                 }
             }
         }
     }
+<<<<<<< HEAD
 
     private static native void native_setup();
     private static native int next_event(byte[] buffer);
@@ -188,4 +360,6 @@ public abstract class UEventObserver {
             super.finalize();
         }
     }
+=======
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 }

@@ -245,8 +245,13 @@ public class WebChromeClient {
     }
 
    /**
+<<<<<<< HEAD
     * Tell the client that the quota has been reached for the Application Cache
     * API and request a new quota. The client must respond by invoking the
+=======
+    * Notify the host application that the Application Cache has reached the
+    * maximum size. The client must respond by invoking the
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     * {@link WebStorage.QuotaUpdater#updateQuota(long) updateQuota(long)}
     * method of the supplied {@link WebStorage.QuotaUpdater} instance. The
     * minimum value that can be set for the new quota is the current quota. The
@@ -255,7 +260,11 @@ public class WebChromeClient {
     * @param requiredStorage The amount of storage required by the Application
     *                        Cache operation that triggered this notification,
     *                        in bytes.
+<<<<<<< HEAD
     * @param quota The quota, in bytes
+=======
+    * @param quota the current maximum Application Cache size, in bytes
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     * @param quotaUpdater An instance of {@link WebStorage.QuotaUpdater} which
     *                     must be used to inform the WebView of the new quota.
     */
@@ -297,7 +306,16 @@ public class WebChromeClient {
      * will continue to occur if the script does not finish at the next check
      * point.
      * @return boolean Whether the JavaScript execution should be interrupted.
+<<<<<<< HEAD
      */
+=======
+     * @deprecated This method is no longer supported and will not be invoked.
+     */
+    // This method was only called when using the JSC javascript engine. V8 became
+    // the default JS engine with Froyo and support for building with JSC was
+    // removed in b/5495373. V8 does not have a mechanism for making a callback such
+    // as this.
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     public boolean onJsTimeout() {
         return true;
     }
@@ -372,6 +390,7 @@ public class WebChromeClient {
     }
 
     /**
+<<<<<<< HEAD
      * Tell the client that the page being viewed is web app capable,
      * i.e. has specified the fullscreen-web-app-capable meta tag.
      * @hide
@@ -379,6 +398,8 @@ public class WebChromeClient {
     public void setInstallableWebApp() { }
 
     /**
+=======
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
      * Tell the client that the page being viewed has an autofillable
      * form and the user would like to set a profile up.
      * @param msg A Message to send once the user has successfully

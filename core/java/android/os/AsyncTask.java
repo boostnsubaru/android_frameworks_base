@@ -110,7 +110,11 @@ import java.util.concurrent.atomic.AtomicInteger;
  * <h2>The 4 steps</h2>
  * <p>When an asynchronous task is executed, the task goes through 4 steps:</p>
  * <ol>
+<<<<<<< HEAD
  *     <li>{@link #onPreExecute()}, invoked on the UI thread immediately after the task
+=======
+ *     <li>{@link #onPreExecute()}, invoked on the UI thread before the task
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
  *     is executed. This step is normally used to setup the task, for instance by
  *     showing a progress bar in the user interface.</li>
  *     <li>{@link #doInBackground}, invoked on the background thread

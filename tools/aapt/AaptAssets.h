@@ -51,6 +51,10 @@ enum {
     AXIS_SMALLESTSCREENWIDTHDP,
     AXIS_SCREENWIDTHDP,
     AXIS_SCREENHEIGHTDP,
+<<<<<<< HEAD
+=======
+    AXIS_LAYOUTDIR,
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     AXIS_VERSION,
 
     AXIS_START = AXIS_MCC,
@@ -95,6 +99,10 @@ public:
     static bool getSmallestScreenWidthDpName(const char* name, ResTable_config* out = NULL);
     static bool getScreenWidthDpName(const char* name, ResTable_config* out = NULL);
     static bool getScreenHeightDpName(const char* name, ResTable_config* out = NULL);
+<<<<<<< HEAD
+=======
+    static bool getLayoutDirectionName(const char* name, ResTable_config* out = NULL);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     static bool getVersionName(const char* name, ResTable_config* out = NULL);
 
     int compare(const AaptGroupEntry& o) const;
@@ -133,6 +141,10 @@ private:
     String8 navHidden;
     String8 navigation;
     String8 screenSize;
+<<<<<<< HEAD
+=======
+    String8 layoutDirection;
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     String8 version;
 
     mutable bool mParamsChanged;

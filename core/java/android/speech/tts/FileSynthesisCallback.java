@@ -95,6 +95,25 @@ class FileSynthesisCallback extends AbstractSynthesisCallback {
         }
     }
 
+<<<<<<< HEAD
+=======
+    /**
+     * Checks whether a given file exists, and deletes it if it does.
+     */
+    private boolean maybeCleanupExistingFile(File file) {
+        if (file.exists()) {
+            Log.v(TAG, "File " + file + " exists, deleting.");
+            if (!file.delete()) {
+                Log.e(TAG, "Failed to delete " + file);
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     @Override
     public int getMaxBufferSize() {
         return MAX_AUDIO_BUFFER_SIZE;
@@ -120,6 +139,14 @@ class FileSynthesisCallback extends AbstractSynthesisCallback {
                 cleanUp();
                 throw new IllegalArgumentException("FileSynthesisRequest.start() called twice");
             }
+<<<<<<< HEAD
+=======
+
+            if (!maybeCleanupExistingFile(mFileName)) {
+                return TextToSpeech.ERROR;
+            }
+
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
             mSampleRateInHz = sampleRateInHz;
             mAudioFormat = audioFormat;
             mChannelCount = channelCount;
@@ -166,6 +193,15 @@ class FileSynthesisCallback extends AbstractSynthesisCallback {
     public int done() {
         if (DBG) Log.d(TAG, "FileSynthesisRequest.done()");
         synchronized (mStateLock) {
+<<<<<<< HEAD
+=======
+            if (mDone) {
+                if (DBG) Log.d(TAG, "Duplicate call to done()");
+                // This preserves existing behaviour. Earlier, if done was called twice
+                // we'd return ERROR because mFile == null and we'd add to logspam.
+                return TextToSpeech.ERROR;
+            }
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
             if (mStopped) {
                 if (DBG) Log.d(TAG, "Request has been aborted.");
                 return TextToSpeech.ERROR;

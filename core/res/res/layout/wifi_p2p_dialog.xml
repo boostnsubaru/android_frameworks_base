@@ -37,8 +37,15 @@
                     style="@style/wifi_item_label" />
 
                 <EditText android:id="@+id/wifi_p2p_wps_pin"
+<<<<<<< HEAD
                     android:inputType="textNoSuggestions"
                     style="@style/wifi_item_content" />
+=======
+                        android:singleLine="true"
+                        android:maxLines="8"
+                        android:inputType="number"
+                        style="@style/wifi_item_content" />
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
             </LinearLayout>
         </LinearLayout>
     </LinearLayout>

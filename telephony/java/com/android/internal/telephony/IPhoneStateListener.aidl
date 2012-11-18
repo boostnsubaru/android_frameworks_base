@@ -34,6 +34,10 @@ oneway interface IPhoneStateListener {
     void onDataActivity(int direction);
     void onSignalStrengthsChanged(in SignalStrength signalStrength);
     void onOtaspChanged(in int otaspMode);
+<<<<<<< HEAD
     void onCellInfoChanged(in CellInfo cellInfo);
+=======
+    void onCellInfoChanged(in List<CellInfo> cellInfo);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 }
 

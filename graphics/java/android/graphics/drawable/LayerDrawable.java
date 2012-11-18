@@ -590,6 +590,22 @@ public class LayerDrawable extends Drawable implements Drawable.Callback {
         return this;
     }
 
+<<<<<<< HEAD
+=======
+    /** @hide */
+    @Override
+    public void setLayoutDirection(int layoutDirection) {
+        if (getLayoutDirection() != layoutDirection) {
+            final ChildDrawable[] array = mLayerState.mChildren;
+            final int N = mLayerState.mNum;
+            for (int i = 0; i < N; i++) {
+                array[i].mDrawable.setLayoutDirection(layoutDirection);
+            }
+        }
+        super.setLayoutDirection(layoutDirection);
+    }
+
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     static class ChildDrawable {
         public Drawable mDrawable;
         public int mInsetL, mInsetT, mInsetR, mInsetB;

@@ -41,4 +41,9 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.WRITE_SDCARD" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+<<<<<<< HEAD
+=======
+    <uses-sdk android:minSdkVersion="5"
+              android:targetSdkVersion="5" />
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 </manifest>

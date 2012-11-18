@@ -79,7 +79,10 @@ class WindowToken {
     }
 
     void dump(PrintWriter pw, String prefix) {
+<<<<<<< HEAD
         pw.print(prefix); pw.print("token="); pw.println(token);
+=======
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         pw.print(prefix); pw.print("windows="); pw.println(windows);
         pw.print(prefix); pw.print("windowType="); pw.print(windowType);
                 pw.print(" hidden="); pw.print(hidden);
@@ -97,7 +100,11 @@ class WindowToken {
             StringBuilder sb = new StringBuilder();
             sb.append("WindowToken{");
             sb.append(Integer.toHexString(System.identityHashCode(this)));
+<<<<<<< HEAD
             sb.append(" token="); sb.append(token); sb.append('}');
+=======
+            sb.append(" "); sb.append(token); sb.append('}');
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
             stringName = sb.toString();
         }
         return stringName;

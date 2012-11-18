@@ -26,6 +26,10 @@ import com.android.internal.view.menu.MenuPresenter;
 import com.android.internal.view.menu.MenuView;
 import com.android.internal.view.menu.SubMenuBuilder;
 
+<<<<<<< HEAD
+=======
+import android.animation.LayoutTransition;
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 import android.app.ActionBar;
 import android.app.ActionBar.OnNavigationListener;
 import android.app.Activity;
@@ -84,7 +88,11 @@ public class ActionBarView extends AbsActionBarView {
             ActionBar.DISPLAY_SHOW_CUSTOM |
             ActionBar.DISPLAY_SHOW_TITLE;
 
+<<<<<<< HEAD
     private static final int DEFAULT_CUSTOM_GRAVITY = Gravity.LEFT | Gravity.CENTER_VERTICAL;
+=======
+    private static final int DEFAULT_CUSTOM_GRAVITY = Gravity.START | Gravity.CENTER_VERTICAL;
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     
     private int mNavigationMode;
     private int mDisplayOptions = -1;
@@ -555,12 +563,25 @@ public class ActionBarView extends AbsActionBarView {
         // Make sure the home button has an accurate content description for accessibility.
         if (!enable) {
             mHomeLayout.setContentDescription(null);
+<<<<<<< HEAD
         } else if ((mDisplayOptions & ActionBar.DISPLAY_HOME_AS_UP) != 0) {
             mHomeLayout.setContentDescription(mContext.getResources().getText(
                     R.string.action_bar_up_description));
         } else {
             mHomeLayout.setContentDescription(mContext.getResources().getText(
                     R.string.action_bar_home_description));
+=======
+            mHomeLayout.setImportantForAccessibility(IMPORTANT_FOR_ACCESSIBILITY_NO);
+        } else {
+            mHomeLayout.setImportantForAccessibility(IMPORTANT_FOR_ACCESSIBILITY_AUTO);
+            if ((mDisplayOptions & ActionBar.DISPLAY_HOME_AS_UP) != 0) {
+                mHomeLayout.setContentDescription(mContext.getResources().getText(
+                        R.string.action_bar_up_description));
+            } else {
+                mHomeLayout.setContentDescription(mContext.getResources().getText(
+                        R.string.action_bar_home_description));
+            }
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         }
     }
 
@@ -623,12 +644,25 @@ public class ActionBarView extends AbsActionBarView {
         // Make sure the home button has an accurate content description for accessibility.
         if (!mHomeLayout.isEnabled()) {
             mHomeLayout.setContentDescription(null);
+<<<<<<< HEAD
         } else if ((options & ActionBar.DISPLAY_HOME_AS_UP) != 0) {
             mHomeLayout.setContentDescription(mContext.getResources().getText(
                     R.string.action_bar_up_description));
         } else {
             mHomeLayout.setContentDescription(mContext.getResources().getText(
                     R.string.action_bar_home_description));
+=======
+            mHomeLayout.setImportantForAccessibility(IMPORTANT_FOR_ACCESSIBILITY_NO);
+        } else {
+            mHomeLayout.setImportantForAccessibility(IMPORTANT_FOR_ACCESSIBILITY_AUTO);
+            if ((options & ActionBar.DISPLAY_HOME_AS_UP) != 0) {
+                mHomeLayout.setContentDescription(mContext.getResources().getText(
+                        R.string.action_bar_up_description));
+            } else {
+                mHomeLayout.setContentDescription(mContext.getResources().getText(
+                        R.string.action_bar_home_description));
+            }
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         }
     }
 
@@ -847,7 +881,11 @@ public class ActionBarView extends AbsActionBarView {
 
         int contentWidth = MeasureSpec.getSize(widthMeasureSpec);
 
+<<<<<<< HEAD
         int maxHeight = mContentHeight > 0 ?
+=======
+        int maxHeight = mContentHeight >= 0 ?
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
                 mContentHeight : MeasureSpec.getSize(heightMeasureSpec);
         
         final int verticalPadding = getPaddingTop() + getPaddingBottom();
@@ -855,6 +893,10 @@ public class ActionBarView extends AbsActionBarView {
         final int paddingRight = getPaddingRight();
         final int height = maxHeight - verticalPadding;
         final int childSpecHeight = MeasureSpec.makeMeasureSpec(height, MeasureSpec.AT_MOST);
+<<<<<<< HEAD
+=======
+        final int exactHeightSpec = MeasureSpec.makeMeasureSpec(height, MeasureSpec.EXACTLY);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 
         int availableWidth = contentWidth - paddingLeft - paddingRight;
         int leftOfCenter = availableWidth / 2;
@@ -870,16 +912,25 @@ public class ActionBarView extends AbsActionBarView {
             } else {
                 homeWidthSpec = MeasureSpec.makeMeasureSpec(lp.width, MeasureSpec.EXACTLY);
             }
+<<<<<<< HEAD
             homeLayout.measure(homeWidthSpec,
                     MeasureSpec.makeMeasureSpec(height, MeasureSpec.EXACTLY));
             final int homeWidth = homeLayout.getMeasuredWidth() + homeLayout.getLeftOffset();
+=======
+            homeLayout.measure(homeWidthSpec, exactHeightSpec);
+            final int homeWidth = homeLayout.getMeasuredWidth() + homeLayout.getStartOffset();
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
             availableWidth = Math.max(0, availableWidth - homeWidth);
             leftOfCenter = Math.max(0, availableWidth - homeWidth);
         }
         
         if (mMenuView != null && mMenuView.getParent() == this) {
+<<<<<<< HEAD
             availableWidth = measureChildView(mMenuView, availableWidth,
                     childSpecHeight, 0);
+=======
+            availableWidth = measureChildView(mMenuView, availableWidth, exactHeightSpec, 0);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
             rightOfCenter = Math.max(0, rightOfCenter - mMenuView.getMeasuredWidth());
         }
 
@@ -1010,8 +1061,11 @@ public class ActionBarView extends AbsActionBarView {
 
     @Override
     protected void onLayout(boolean changed, int l, int t, int r, int b) {
+<<<<<<< HEAD
         int x = getPaddingLeft();
         final int y = getPaddingTop();
+=======
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         final int contentHeight = b - t - getPaddingTop() - getPaddingBottom();
 
         if (contentHeight <= 0) {
@@ -1019,13 +1073,31 @@ public class ActionBarView extends AbsActionBarView {
             return;
         }
 
+<<<<<<< HEAD
+=======
+        final boolean isLayoutRtl = isLayoutRtl();
+        final int direction = isLayoutRtl ? +1 : -1;
+        int menuStart = isLayoutRtl ? getPaddingLeft() : r - l - getPaddingRight();
+        // In LTR mode, we start from left padding and go to the right; in RTL mode, we start
+        // from the padding right and go to the left (in reverse way)
+        int x = isLayoutRtl ? r - l - getPaddingRight() : getPaddingLeft();
+        final int y = getPaddingTop();
+
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         HomeView homeLayout = mExpandedActionView != null ? mExpandedHomeLayout : mHomeLayout;
         boolean needsTouchDelegate = false;
         int homeSlop = mMaxHomeSlop;
         int homeRight = 0;
         if (homeLayout.getVisibility() != GONE) {
+<<<<<<< HEAD
             final int leftOffset = homeLayout.getLeftOffset();
             x += positionChild(homeLayout, x + leftOffset, y, contentHeight) + leftOffset;
+=======
+            final int startOffset = homeLayout.getStartOffset();
+            x += positionChild(homeLayout,
+                            next(x, startOffset, isLayoutRtl), y, contentHeight, isLayoutRtl);
+            x = next(x, startOffset, isLayoutRtl);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
             needsTouchDelegate = homeLayout == mHomeLayout;
             homeRight = x;
         }
@@ -1034,7 +1106,11 @@ public class ActionBarView extends AbsActionBarView {
             final boolean showTitle = mTitleLayout != null && mTitleLayout.getVisibility() != GONE &&
                     (mDisplayOptions & ActionBar.DISPLAY_SHOW_TITLE) != 0;
             if (showTitle) {
+<<<<<<< HEAD
                 x += positionChild(mTitleLayout, x, y, contentHeight);
+=======
+                x += positionChild(mTitleLayout, x, y, contentHeight, isLayoutRtl);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
             }
 
             switch (mNavigationMode) {
@@ -1042,31 +1118,58 @@ public class ActionBarView extends AbsActionBarView {
                     break;
                 case ActionBar.NAVIGATION_MODE_LIST:
                     if (mListNavLayout != null) {
+<<<<<<< HEAD
                         if (showTitle) x += mItemPadding;
                         homeSlop = Math.min(homeSlop, Math.max(x - homeRight, 0));
                         x += positionChild(mListNavLayout, x, y, contentHeight) + mItemPadding;
+=======
+                        if (showTitle) {
+                            x = next(x, mItemPadding, isLayoutRtl);
+                        }
+                        homeSlop = Math.min(homeSlop, Math.max(x - homeRight, 0));
+                        x += positionChild(mListNavLayout, x, y, contentHeight, isLayoutRtl);
+                        x = next(x, mItemPadding, isLayoutRtl);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
                     }
                     break;
                 case ActionBar.NAVIGATION_MODE_TABS:
                     if (mTabScrollView != null) {
+<<<<<<< HEAD
                         if (showTitle) x += mItemPadding;
                         homeSlop = Math.min(homeSlop, Math.max(x - homeRight, 0));
                         x += positionChild(mTabScrollView, x, y, contentHeight) + mItemPadding;
+=======
+                        if (showTitle) x = next(x, mItemPadding, isLayoutRtl);
+                        homeSlop = Math.min(homeSlop, Math.max(x - homeRight, 0));
+                        x += positionChild(mTabScrollView, x, y, contentHeight, isLayoutRtl);
+                        x = next(x, mItemPadding, isLayoutRtl);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
                     }
                     break;
             }
         }
 
+<<<<<<< HEAD
         int menuLeft = r - l - getPaddingRight();
         if (mMenuView != null && mMenuView.getParent() == this) {
             positionChildInverse(mMenuView, menuLeft, y, contentHeight);
             menuLeft -= mMenuView.getMeasuredWidth();
+=======
+        if (mMenuView != null && mMenuView.getParent() == this) {
+            positionChild(mMenuView, menuStart, y, contentHeight, !isLayoutRtl);
+            menuStart += direction * mMenuView.getMeasuredWidth();
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         }
 
         if (mIndeterminateProgressView != null &&
                 mIndeterminateProgressView.getVisibility() != GONE) {
+<<<<<<< HEAD
             positionChildInverse(mIndeterminateProgressView, menuLeft, y, contentHeight);
             menuLeft -= mIndeterminateProgressView.getMeasuredWidth();
+=======
+            positionChild(mIndeterminateProgressView, menuStart, y, contentHeight, !isLayoutRtl);
+            menuStart += direction * mIndeterminateProgressView.getMeasuredWidth();
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         }
 
         View customView = null;
@@ -1077,22 +1180,35 @@ public class ActionBarView extends AbsActionBarView {
             customView = mCustomNavView;
         }
         if (customView != null) {
+<<<<<<< HEAD
             ViewGroup.LayoutParams lp = customView.getLayoutParams();
             final ActionBar.LayoutParams ablp = lp instanceof ActionBar.LayoutParams ?
                     (ActionBar.LayoutParams) lp : null;
 
+=======
+            final int layoutDirection = getLayoutDirection();
+            ViewGroup.LayoutParams lp = customView.getLayoutParams();
+            final ActionBar.LayoutParams ablp = lp instanceof ActionBar.LayoutParams ?
+                    (ActionBar.LayoutParams) lp : null;
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
             final int gravity = ablp != null ? ablp.gravity : DEFAULT_CUSTOM_GRAVITY;
             final int navWidth = customView.getMeasuredWidth();
 
             int topMargin = 0;
             int bottomMargin = 0;
             if (ablp != null) {
+<<<<<<< HEAD
                 x += ablp.leftMargin;
                 menuLeft -= ablp.rightMargin;
+=======
+                x = next(x, ablp.getMarginStart(), isLayoutRtl);
+                menuStart += direction * ablp.getMarginEnd();
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
                 topMargin = ablp.topMargin;
                 bottomMargin = ablp.bottomMargin;
             }
 
+<<<<<<< HEAD
             int hgravity = gravity & Gravity.HORIZONTAL_GRAVITY_MASK;
             // See if we actually have room to truly center; if not push against left or right.
             if (hgravity == Gravity.CENTER_HORIZONTAL) {
@@ -1108,20 +1224,60 @@ public class ActionBarView extends AbsActionBarView {
 
             int xpos = 0;
             switch (hgravity) {
+=======
+            int hgravity = gravity & Gravity.RELATIVE_HORIZONTAL_GRAVITY_MASK;
+            // See if we actually have room to truly center; if not push against left or right.
+            if (hgravity == Gravity.CENTER_HORIZONTAL) {
+                final int centeredLeft = ((mRight - mLeft) - navWidth) / 2;
+                if (isLayoutRtl) {
+                    final int centeredStart = centeredLeft + navWidth;
+                    final int centeredEnd = centeredLeft;
+                    if (centeredStart > x) {
+                        hgravity = Gravity.RIGHT;
+                    } else if (centeredEnd < menuStart) {
+                        hgravity = Gravity.LEFT;
+                    }
+                } else {
+                    final int centeredStart = centeredLeft;
+                    final int centeredEnd = centeredLeft + navWidth;
+                    if (centeredStart < x) {
+                        hgravity = Gravity.LEFT;
+                    } else if (centeredEnd > menuStart) {
+                        hgravity = Gravity.RIGHT;
+                    }
+                }
+            } else if (gravity == Gravity.NO_GRAVITY) {
+                hgravity = Gravity.START;
+            }
+
+            int xpos = 0;
+            switch (Gravity.getAbsoluteGravity(hgravity, layoutDirection)) {
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
                 case Gravity.CENTER_HORIZONTAL:
                     xpos = ((mRight - mLeft) - navWidth) / 2;
                     break;
                 case Gravity.LEFT:
+<<<<<<< HEAD
                     xpos = x;
                     break;
                 case Gravity.RIGHT:
                     xpos = menuLeft - navWidth;
+=======
+                    xpos = isLayoutRtl ? menuStart : x;
+                    break;
+                case Gravity.RIGHT:
+                    xpos = isLayoutRtl ? x - navWidth : menuStart - navWidth;
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
                     break;
             }
 
             int vgravity = gravity & Gravity.VERTICAL_GRAVITY_MASK;
 
+<<<<<<< HEAD
             if (gravity == -1) {
+=======
+            if (gravity == Gravity.NO_GRAVITY) {
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
                 vgravity = Gravity.CENTER_VERTICAL;
             }
 
@@ -1144,7 +1300,11 @@ public class ActionBarView extends AbsActionBarView {
             customView.layout(xpos, ypos, xpos + customWidth,
                     ypos + customView.getMeasuredHeight());
             homeSlop = Math.min(homeSlop, Math.max(xpos - homeRight, 0));
+<<<<<<< HEAD
             x += customWidth;
+=======
+            x = next(x, customWidth, isLayoutRtl);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         }
 
         if (mProgressView != null) {
@@ -1247,12 +1407,25 @@ public class ActionBarView extends AbsActionBarView {
         private ImageView mIconView;
         private int mUpWidth;
 
+<<<<<<< HEAD
+=======
+        private static final long DEFAULT_TRANSITION_DURATION = 150;
+
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         public HomeView(Context context) {
             this(context, null);
         }
 
         public HomeView(Context context, AttributeSet attrs) {
             super(context, attrs);
+<<<<<<< HEAD
+=======
+            LayoutTransition t = getLayoutTransition();
+            if (t != null) {
+                // Set a lower duration than the default
+                t.setDuration(DEFAULT_TRANSITION_DURATION);
+            }
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         }
 
         public void setUp(boolean isUp) {
@@ -1290,7 +1463,11 @@ public class ActionBarView extends AbsActionBarView {
             mIconView = (ImageView) findViewById(com.android.internal.R.id.home);
         }
 
+<<<<<<< HEAD
         public int getLeftOffset() {
+=======
+        public int getStartOffset() {
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
             return mUpView.getVisibility() == GONE ? mUpWidth : 0;
         }
 
@@ -1340,25 +1517,67 @@ public class ActionBarView extends AbsActionBarView {
         @Override
         protected void onLayout(boolean changed, int l, int t, int r, int b) {
             final int vCenter = (b - t) / 2;
+<<<<<<< HEAD
             int width = r - l;
+=======
+            final boolean isLayoutRtl = isLayoutRtl();
+            final int width = getWidth();
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
             int upOffset = 0;
             if (mUpView.getVisibility() != GONE) {
                 final LayoutParams upLp = (LayoutParams) mUpView.getLayoutParams();
                 final int upHeight = mUpView.getMeasuredHeight();
                 final int upWidth = mUpView.getMeasuredWidth();
+<<<<<<< HEAD
                 final int upTop = vCenter - upHeight / 2;
                 mUpView.layout(0, upTop, upWidth, upTop + upHeight);
                 upOffset = upLp.leftMargin + upWidth + upLp.rightMargin;
                 width -= upOffset;
                 l += upOffset;
             }
+=======
+                upOffset = upLp.leftMargin + upWidth + upLp.rightMargin;
+                final int upTop = vCenter - upHeight / 2;
+                final int upBottom = upTop + upHeight;
+                final int upRight;
+                final int upLeft;
+                if (isLayoutRtl) {
+                    upRight = width;
+                    upLeft = upRight - upWidth;
+                    r -= upOffset;
+                } else {
+                    upRight = upWidth;
+                    upLeft = 0;
+                    l += upOffset;
+                }
+                mUpView.layout(upLeft, upTop, upRight, upBottom);
+            }
+
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
             final LayoutParams iconLp = (LayoutParams) mIconView.getLayoutParams();
             final int iconHeight = mIconView.getMeasuredHeight();
             final int iconWidth = mIconView.getMeasuredWidth();
             final int hCenter = (r - l) / 2;
+<<<<<<< HEAD
             final int iconLeft = upOffset + Math.max(iconLp.leftMargin, hCenter - iconWidth / 2);
             final int iconTop = Math.max(iconLp.topMargin, vCenter - iconHeight / 2);
             mIconView.layout(iconLeft, iconTop, iconLeft + iconWidth, iconTop + iconHeight);
+=======
+            final int iconTop = Math.max(iconLp.topMargin, vCenter - iconHeight / 2);
+            final int iconBottom = iconTop + iconHeight;
+            final int iconLeft;
+            final int iconRight;
+            int marginStart = iconLp.getMarginStart();
+            final int delta = Math.max(marginStart, hCenter - iconWidth / 2);
+            if (isLayoutRtl) {
+                iconRight = width - upOffset - delta;
+                iconLeft = iconRight - iconWidth;
+            } else {
+                iconLeft = upOffset + delta;
+                iconRight = iconLeft + iconWidth;
+            }
+            mIconView.layout(iconLeft, iconTop, iconRight, iconBottom);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         }
     }
 

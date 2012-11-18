@@ -16,9 +16,15 @@
 
 package com.android.systemui.statusbar.policy;
 
+<<<<<<< HEAD
 import java.util.ArrayList;
 
 import android.bluetooth.BluetoothAdapter;
+=======
+import android.bluetooth.BluetoothAdapter;
+import android.bluetooth.BluetoothAdapter.BluetoothStateChangeCallback;
+import android.bluetooth.BluetoothDevice;
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -28,6 +34,13 @@ import android.widget.ImageView;
 
 import com.android.systemui.R;
 
+<<<<<<< HEAD
+=======
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Set;
+
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 public class BluetoothController extends BroadcastReceiver {
     private static final String TAG = "StatusBar.BluetoothController";
 
@@ -38,12 +51,24 @@ public class BluetoothController extends BroadcastReceiver {
     private int mContentDescriptionId = 0;
     private boolean mEnabled = false;
 
+<<<<<<< HEAD
+=======
+    private Set<BluetoothDevice> mBondedDevices = new HashSet<BluetoothDevice>();
+
+    private ArrayList<BluetoothStateChangeCallback> mChangeCallbacks =
+            new ArrayList<BluetoothStateChangeCallback>();
+
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     public BluetoothController(Context context) {
         mContext = context;
 
         IntentFilter filter = new IntentFilter();
         filter.addAction(BluetoothAdapter.ACTION_STATE_CHANGED);
         filter.addAction(BluetoothAdapter.ACTION_CONNECTION_STATE_CHANGED);
+<<<<<<< HEAD
+=======
+        filter.addAction(BluetoothDevice.ACTION_BOND_STATE_CHANGED);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         context.registerReceiver(this, filter);
 
         final BluetoothAdapter adapter = BluetoothAdapter.getDefaultAdapter();
@@ -52,12 +77,27 @@ public class BluetoothController extends BroadcastReceiver {
             handleConnectionStateChange(adapter.getConnectionState());
         }
         refreshViews();
+<<<<<<< HEAD
+=======
+        updateBondedBluetoothDevices();
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     }
 
     public void addIconView(ImageView v) {
         mIconViews.add(v);
     }
 
+<<<<<<< HEAD
+=======
+    public void addStateChangedCallback(BluetoothStateChangeCallback cb) {
+        mChangeCallbacks.add(cb);
+    }
+
+    public Set<BluetoothDevice> getBondedBluetoothDevices() {
+        return mBondedDevices;
+    }
+
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     @Override
     public void onReceive(Context context, Intent intent) {
         final String action = intent.getAction();
@@ -69,8 +109,32 @@ public class BluetoothController extends BroadcastReceiver {
             handleConnectionStateChange(
                     intent.getIntExtra(BluetoothAdapter.EXTRA_CONNECTION_STATE,
                         BluetoothAdapter.STATE_DISCONNECTED));
+<<<<<<< HEAD
         }
         refreshViews();
+=======
+        } else if (action.equals(BluetoothDevice.ACTION_BOND_STATE_CHANGED)) {
+            // Fall through and update bonded devices and refresh view
+        }
+        refreshViews();
+        updateBondedBluetoothDevices();
+    }
+
+    private void updateBondedBluetoothDevices() {
+        mBondedDevices.clear();
+
+        BluetoothAdapter adapter = BluetoothAdapter.getDefaultAdapter();
+        if (adapter != null) {
+            Set<BluetoothDevice> devices = adapter.getBondedDevices();
+            if (devices != null) {
+                for (BluetoothDevice device : devices) {
+                    if (device.getBondState() != BluetoothDevice.BOND_NONE) {
+                        mBondedDevices.add(device);
+                    }
+                }
+            }
+        }
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     }
 
     public void handleAdapterStateChange(int adapterState) {
@@ -98,5 +162,11 @@ public class BluetoothController extends BroadcastReceiver {
                     ? null
                     : mContext.getString(mContentDescriptionId));
         }
+<<<<<<< HEAD
+=======
+        for (BluetoothStateChangeCallback cb : mChangeCallbacks) {
+            cb.onBluetoothStateChange(mEnabled);
+        }
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     }
 }

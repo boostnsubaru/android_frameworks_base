@@ -26,6 +26,10 @@ import java.io.UTFDataFormatException;
 import java.nio.charset.Charsets;
 import java.nio.charset.ModifiedUtf8;
 import java.util.ArrayList;
+<<<<<<< HEAD
+=======
+import java.util.Date;
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 
 /**
  * @hide This should not be made public in its present form because it
@@ -228,6 +232,26 @@ public class KeyStore {
         return ungrant(getKeyBytes(key), getUidBytes(uid));
     }
 
+<<<<<<< HEAD
+=======
+    private long getmtime(byte[] key) {
+        final ArrayList<byte[]> values = execute('c', key);
+        if (values == null || values.isEmpty()) {
+            return -1L;
+        }
+
+        return Long.parseLong(new String(values.get(0))) * 1000L;
+    }
+
+    /**
+     * Returns the last modification time of the key in milliseconds since the
+     * epoch. Will return -1L if the key could not be found or other error.
+     */
+    public long getmtime(String key) {
+        return getmtime(getKeyBytes(key));
+    }
+
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     public int getLastError() {
         return mError;
     }

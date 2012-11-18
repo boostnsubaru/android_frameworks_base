@@ -23,6 +23,10 @@ import android.app.INotificationManager;
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.content.ComponentName;
+<<<<<<< HEAD
+=======
+import android.content.Context;
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 import android.content.Intent;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
@@ -31,7 +35,11 @@ import android.os.Binder;
 import android.os.IBinder;
 import android.os.RemoteException;
 import android.os.SystemClock;
+<<<<<<< HEAD
 import android.os.UserId;
+=======
+import android.os.UserHandle;
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 import android.util.Slog;
 import android.util.TimeUtils;
 
@@ -260,6 +268,12 @@ class ServiceRecord extends Binder {
                 IntentBindRecord b = it.next();
                 pw.print(prefix); pw.print("* IntentBindRecord{");
                         pw.print(Integer.toHexString(System.identityHashCode(b)));
+<<<<<<< HEAD
+=======
+                        if ((b.collectFlags()&Context.BIND_AUTO_CREATE) != 0) {
+                            pw.append(" CREATE");
+                        }
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
                         pw.println("}:");
                 b.dumpInService(pw, prefix + "  ");
             }
@@ -296,7 +310,11 @@ class ServiceRecord extends Binder {
         this.restarter = restarter;
         createTime = SystemClock.elapsedRealtime();
         lastActivity = SystemClock.uptimeMillis();
+<<<<<<< HEAD
         userId = UserId.getUserId(appInfo.uid);
+=======
+        userId = UserHandle.getUserId(appInfo.uid);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     }
 
     public AppBindRecord retrieveAppBindingLocked(Intent intent,
@@ -366,7 +384,11 @@ class ServiceRecord extends Binder {
                     try {
                         int[] outId = new int[1];
                         nm.enqueueNotificationInternal(localPackageName, appUid, appPid,
+<<<<<<< HEAD
                                 null, localForegroundId, localForegroundNoti, outId);
+=======
+                                null, localForegroundId, localForegroundNoti, outId, userId);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
                     } catch (RuntimeException e) {
                         Slog.w(ActivityManagerService.TAG,
                                 "Error showing notification for service", e);
@@ -395,7 +417,12 @@ class ServiceRecord extends Binder {
                         return;
                     }
                     try {
+<<<<<<< HEAD
                         inm.cancelNotification(localPackageName, localForegroundId);
+=======
+                        inm.cancelNotificationWithTag(localPackageName, null,
+                                localForegroundId, userId);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
                     } catch (RuntimeException e) {
                         Slog.w(ActivityManagerService.TAG,
                                 "Error canceling notification for service", e);
@@ -420,6 +447,10 @@ class ServiceRecord extends Binder {
         StringBuilder sb = new StringBuilder(128);
         sb.append("ServiceRecord{")
             .append(Integer.toHexString(System.identityHashCode(this)))
+<<<<<<< HEAD
+=======
+            .append(" u").append(userId)
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
             .append(' ').append(shortName).append('}');
         return stringName = sb.toString();
     }

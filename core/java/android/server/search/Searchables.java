@@ -16,6 +16,10 @@
 
 package android.server.search;
 
+<<<<<<< HEAD
+=======
+import android.app.AppGlobals;
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 import android.app.SearchManager;
 import android.app.SearchableInfo;
 import android.content.ComponentName;
@@ -23,13 +27,27 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.content.pm.ApplicationInfo;
+<<<<<<< HEAD
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.os.Bundle;
+=======
+import android.content.pm.IPackageManager;
+import android.content.pm.PackageManager;
+import android.content.pm.ResolveInfo;
+import android.os.Binder;
+import android.os.Bundle;
+import android.os.RemoteException;
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 import android.provider.Settings;
 import android.text.TextUtils;
 import android.util.Log;
 
+<<<<<<< HEAD
+=======
+import java.io.FileDescriptor;
+import java.io.PrintWriter;
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -38,6 +56,10 @@ import java.util.List;
 
 /**
  * This class maintains the information about all searchable activities.
+<<<<<<< HEAD
+=======
+ * This is a hidden class.
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
  */
 public class Searchables {
 
@@ -65,12 +87,27 @@ public class Searchables {
     public static String ENHANCED_GOOGLE_SEARCH_COMPONENT_NAME =
             "com.google.android.providers.enhancedgooglesearch/.Launcher";
 
+<<<<<<< HEAD
+=======
+    // Cache the package manager instance
+    final private IPackageManager mPm;
+    // User for which this Searchables caches information
+    private int mUserId;
+
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     /**
      *
      * @param context Context to use for looking up activities etc.
      */
+<<<<<<< HEAD
     public Searchables (Context context) {
         mContext = context;
+=======
+    public Searchables (Context context, int userId) {
+        mContext = context;
+        mUserId = userId;
+        mPm = AppGlobals.getPackageManager();
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     }
 
     /**
@@ -115,6 +152,7 @@ public class Searchables {
 
         ActivityInfo ai = null;
         try {
+<<<<<<< HEAD
             ai = mContext.getPackageManager().
                        getActivityInfo(activity, PackageManager.GET_META_DATA );
             String refActivityName = null;
@@ -159,6 +197,52 @@ public class Searchables {
             }
         } catch (PackageManager.NameNotFoundException e) {
             // case 3: no metadata
+=======
+            ai = mPm.getActivityInfo(activity, PackageManager.GET_META_DATA, mUserId);
+        } catch (RemoteException re) {
+            Log.e(LOG_TAG, "Error getting activity info " + re);
+            return null;
+        }
+        String refActivityName = null;
+
+        // First look for activity-specific reference
+        Bundle md = ai.metaData;
+        if (md != null) {
+            refActivityName = md.getString(MD_LABEL_DEFAULT_SEARCHABLE);
+        }
+        // If not found, try for app-wide reference
+        if (refActivityName == null) {
+            md = ai.applicationInfo.metaData;
+            if (md != null) {
+                refActivityName = md.getString(MD_LABEL_DEFAULT_SEARCHABLE);
+            }
+        }
+
+        // Irrespective of source, if a reference was found, follow it.
+        if (refActivityName != null)
+        {
+            // This value is deprecated, return null
+            if (refActivityName.equals(MD_SEARCHABLE_SYSTEM_SEARCH)) {
+                return null;
+            }
+            String pkg = activity.getPackageName();
+            ComponentName referredActivity;
+            if (refActivityName.charAt(0) == '.') {
+                referredActivity = new ComponentName(pkg, pkg + refActivityName);
+            } else {
+                referredActivity = new ComponentName(pkg, refActivityName);
+            }
+
+            // Now try the referred activity, and if found, cache
+            // it against the original name so we can skip the check
+            synchronized (this) {
+                result = mSearchablesMap.get(referredActivity);
+                if (result != null) {
+                    mSearchablesMap.put(activity, result);
+                    return result;
+                }
+            }
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         }
 
         // Step 3.  None found. Return null.
@@ -195,6 +279,7 @@ public class Searchables {
         ArrayList<SearchableInfo> newSearchablesInGlobalSearchList
                                 = new ArrayList<SearchableInfo>();
 
+<<<<<<< HEAD
         final PackageManager pm = mContext.getPackageManager();
 
         // Use intent resolver to generate list of ACTION_SEARCH & ACTION_WEB_SEARCH receivers.
@@ -225,10 +310,46 @@ public class Searchables {
                         newSearchablesMap.put(searchable.getSearchActivity(), searchable);
                         if (searchable.shouldIncludeInGlobalSearch()) {
                             newSearchablesInGlobalSearchList.add(searchable);
+=======
+        // Use intent resolver to generate list of ACTION_SEARCH & ACTION_WEB_SEARCH receivers.
+        List<ResolveInfo> searchList;
+        final Intent intent = new Intent(Intent.ACTION_SEARCH);
+
+        long ident = Binder.clearCallingIdentity();
+        try {
+            searchList = queryIntentActivities(intent, PackageManager.GET_META_DATA);
+
+            List<ResolveInfo> webSearchInfoList;
+            final Intent webSearchIntent = new Intent(Intent.ACTION_WEB_SEARCH);
+            webSearchInfoList = queryIntentActivities(webSearchIntent, PackageManager.GET_META_DATA);
+
+            // analyze each one, generate a Searchables record, and record
+            if (searchList != null || webSearchInfoList != null) {
+                int search_count = (searchList == null ? 0 : searchList.size());
+                int web_search_count = (webSearchInfoList == null ? 0 : webSearchInfoList.size());
+                int count = search_count + web_search_count;
+                for (int ii = 0; ii < count; ii++) {
+                    // for each component, try to find metadata
+                    ResolveInfo info = (ii < search_count)
+                            ? searchList.get(ii)
+                            : webSearchInfoList.get(ii - search_count);
+                    ActivityInfo ai = info.activityInfo;
+                    // Check first to avoid duplicate entries.
+                    if (newSearchablesMap.get(new ComponentName(ai.packageName, ai.name)) == null) {
+                        SearchableInfo searchable = SearchableInfo.getActivityMetaData(mContext, ai,
+                                mUserId);
+                        if (searchable != null) {
+                            newSearchablesList.add(searchable);
+                            newSearchablesMap.put(searchable.getSearchActivity(), searchable);
+                            if (searchable.shouldIncludeInGlobalSearch()) {
+                                newSearchablesInGlobalSearchList.add(searchable);
+                            }
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
                         }
                     }
                 }
             }
+<<<<<<< HEAD
         }
 
         List<ResolveInfo> newGlobalSearchActivities = findGlobalSearchActivities();
@@ -250,6 +371,32 @@ public class Searchables {
             mWebSearchActivity = newWebSearchActivity;
         }
     }
+=======
+
+            List<ResolveInfo> newGlobalSearchActivities = findGlobalSearchActivities();
+
+            // Find the global search activity
+            ComponentName newGlobalSearchActivity = findGlobalSearchActivity(
+                    newGlobalSearchActivities);
+
+            // Find the web search activity
+            ComponentName newWebSearchActivity = findWebSearchActivity(newGlobalSearchActivity);
+
+            // Store a consistent set of new values
+            synchronized (this) {
+                mSearchablesMap = newSearchablesMap;
+                mSearchablesList = newSearchablesList;
+                mSearchablesInGlobalSearchList = newSearchablesInGlobalSearchList;
+                mGlobalSearchActivities = newGlobalSearchActivities;
+                mCurrentGlobalSearchActivity = newGlobalSearchActivity;
+                mWebSearchActivity = newWebSearchActivity;
+            }
+        } finally {
+            Binder.restoreCallingIdentity(ident);
+        }
+    }
+
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     /**
      * Returns a sorted list of installed search providers as per
      * the following heuristics:
@@ -262,10 +409,15 @@ public class Searchables {
         // Step 1 : Query the package manager for a list
         // of activities that can handle the GLOBAL_SEARCH intent.
         Intent intent = new Intent(SearchManager.INTENT_ACTION_GLOBAL_SEARCH);
+<<<<<<< HEAD
         PackageManager pm = mContext.getPackageManager();
         List<ResolveInfo> activities =
                 pm.queryIntentActivities(intent, PackageManager.MATCH_DEFAULT_ONLY);
 
+=======
+        List<ResolveInfo> activities =
+                    queryIntentActivities(intent, PackageManager.MATCH_DEFAULT_ONLY);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         if (activities != null && !activities.isEmpty()) {
             // Step 2: Rank matching activities according to our heuristics.
             Collections.sort(activities, GLOBAL_SEARCH_RANKER);
@@ -301,10 +453,15 @@ public class Searchables {
         Intent intent = new Intent(SearchManager.INTENT_ACTION_GLOBAL_SEARCH);
         intent.setComponent(globalSearch);
 
+<<<<<<< HEAD
         PackageManager pm = mContext.getPackageManager();
         List<ResolveInfo> activities =
                 pm.queryIntentActivities(intent, PackageManager.MATCH_DEFAULT_ONLY);
 
+=======
+        List<ResolveInfo> activities = queryIntentActivities(intent,
+                PackageManager.MATCH_DEFAULT_ONLY);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         if (activities != null && !activities.isEmpty()) {
             return true;
         }
@@ -374,9 +531,14 @@ public class Searchables {
         }
         Intent intent = new Intent(Intent.ACTION_WEB_SEARCH);
         intent.setPackage(globalSearchActivity.getPackageName());
+<<<<<<< HEAD
         PackageManager pm = mContext.getPackageManager();
         List<ResolveInfo> activities =
                 pm.queryIntentActivities(intent, PackageManager.MATCH_DEFAULT_ONLY);
+=======
+        List<ResolveInfo> activities =
+                queryIntentActivities(intent, PackageManager.MATCH_DEFAULT_ONLY);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 
         if (activities != null && !activities.isEmpty()) {
             ActivityInfo ai = activities.get(0).activityInfo;
@@ -387,6 +549,22 @@ public class Searchables {
         return null;
     }
 
+<<<<<<< HEAD
+=======
+    private List<ResolveInfo> queryIntentActivities(Intent intent, int flags) {
+        List<ResolveInfo> activities = null;
+        try {
+            activities =
+                    mPm.queryIntentActivities(intent,
+                    intent.resolveTypeIfNeeded(mContext.getContentResolver()),
+                    flags, mUserId);
+        } catch (RemoteException re) {
+            // Local call
+        }
+        return activities;
+    }
+
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     /**
      * Returns the list of searchable activities.
      */
@@ -422,4 +600,18 @@ public class Searchables {
     public synchronized ComponentName getWebSearchActivity() {
         return mWebSearchActivity;
     }
+<<<<<<< HEAD
+=======
+
+    void dump(FileDescriptor fd, PrintWriter pw, String[] args) {
+        pw.println("Searchable authorities:");
+        synchronized (this) {
+            if (mSearchablesList != null) {
+                for (SearchableInfo info: mSearchablesList) {
+                    pw.print("  "); pw.println(info.getSuggestAuthority());
+                }
+            }
+        }
+    }
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 }

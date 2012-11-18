@@ -787,6 +787,43 @@ size_t EventHub::getEvents(int timeoutMillis, RawEvent* buffer, size_t bufferSiz
                         event->when = nsecs_t(iev.time.tv_sec) * 1000000000LL
                                 + nsecs_t(iev.time.tv_usec) * 1000LL;
                         ALOGV("event time %lld, now %lld", event->when, now);
+<<<<<<< HEAD
+=======
+
+                        // Bug 7291243: Add a guard in case the kernel generates timestamps
+                        // that appear to be far into the future because they were generated
+                        // using the wrong clock source.
+                        //
+                        // This can happen because when the input device is initially opened
+                        // it has a default clock source of CLOCK_REALTIME.  Any input events
+                        // enqueued right after the device is opened will have timestamps
+                        // generated using CLOCK_REALTIME.  We later set the clock source
+                        // to CLOCK_MONOTONIC but it is already too late.
+                        //
+                        // Invalid input event timestamps can result in ANRs, crashes and
+                        // and other issues that are hard to track down.  We must not let them
+                        // propagate through the system.
+                        //
+                        // Log a warning so that we notice the problem and recover gracefully.
+                        if (event->when >= now + 10 * 1000000000LL) {
+                            // Double-check.  Time may have moved on.
+                            nsecs_t time = systemTime(SYSTEM_TIME_MONOTONIC);
+                            if (event->when > time) {
+                                ALOGW("An input event from %s has a timestamp that appears to "
+                                        "have been generated using the wrong clock source "
+                                        "(expected CLOCK_MONOTONIC): "
+                                        "event time %lld, current time %lld, call time %lld.  "
+                                        "Using current time instead.",
+                                        device->path.string(), event->when, time, now);
+                                event->when = time;
+                            } else {
+                                ALOGV("Event time is ok but failed the fast path and required "
+                                        "an extra call to systemTime: "
+                                        "event time %lld, current time %lld, call time %lld.",
+                                        event->when, time, now);
+                            }
+                        }
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 #else
                         event->when = now;
 #endif
@@ -1114,6 +1151,7 @@ status_t EventHub::openDeviceLocked(const char *devicePath) {
     // We need to do this for joysticks too because the key layout may specify axes.
     status_t keyMapStatus = NAME_NOT_FOUND;
     if (device->classes & (INPUT_DEVICE_CLASS_KEYBOARD | INPUT_DEVICE_CLASS_JOYSTICK)) {
+<<<<<<< HEAD
         String8 layout;
         if (mOrKeyLayouts.tryGetProperty(device->identifier.name, layout)) {
             ALOGI("Replacing key layout and character map of %s with %s",
@@ -1125,6 +1163,8 @@ status_t EventHub::openDeviceLocked(const char *devicePath) {
             device->configuration->addProperty(String8("keyboard.characterMap"), layout);
         }
         
+=======
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         // Load the keymap for the device.
         keyMapStatus = loadKeyMapLocked(device);
     }
@@ -1489,8 +1529,11 @@ void EventHub::monitor() {
     mLock.unlock();
 }
 
+<<<<<<< HEAD
 void EventHub::setKeyLayout(const char* deviceName, const char* keyLayout) {
     mOrKeyLayouts.addProperty(String8(deviceName), String8(keyLayout));
 }
+=======
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 
 }; // namespace android

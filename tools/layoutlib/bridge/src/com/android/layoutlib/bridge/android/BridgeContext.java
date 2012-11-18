@@ -25,6 +25,10 @@ import com.android.ide.common.rendering.api.ResourceValue;
 import com.android.ide.common.rendering.api.StyleResourceValue;
 import com.android.layoutlib.bridge.Bridge;
 import com.android.layoutlib.bridge.BridgeConstants;
+<<<<<<< HEAD
+=======
+import com.android.layoutlib.bridge.android.view.WindowManagerImpl;
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 import com.android.layoutlib.bridge.impl.ParserFactory;
 import com.android.layoutlib.bridge.impl.Stack;
 import com.android.resources.ResourceType;
@@ -61,13 +65,25 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.PowerManager;
+<<<<<<< HEAD
+=======
+import android.os.UserHandle;
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 import android.util.AttributeSet;
 import android.util.DisplayMetrics;
 import android.util.TypedValue;
 import android.view.BridgeInflater;
+<<<<<<< HEAD
 import android.view.Surface;
 import android.view.View;
 import android.view.ViewGroup;
+=======
+import android.view.CompatibilityInfoHolder;
+import android.view.Display;
+import android.view.View;
+import android.view.ViewGroup;
+import android.view.WindowManager;
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 import android.view.textservice.TextServicesManager;
 
 import java.io.File;
@@ -95,7 +111,11 @@ public final class BridgeContext extends Context {
     private final Configuration mConfig;
     private final ApplicationInfo mApplicationInfo;
     private final IProjectCallback mProjectCallback;
+<<<<<<< HEAD
     private final BridgeWindowManager mIWindowManager;
+=======
+    private final WindowManager mWindowManager;
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 
     private Resources.Theme mTheme;
 
@@ -136,10 +156,17 @@ public final class BridgeContext extends Context {
         mRenderResources = renderResources;
         mConfig = config;
 
+<<<<<<< HEAD
         mIWindowManager = new BridgeWindowManager(mConfig, metrics, Surface.ROTATION_0);
 
         mApplicationInfo = new ApplicationInfo();
         mApplicationInfo.targetSdkVersion = targetSdkVersion;
+=======
+        mApplicationInfo = new ApplicationInfo();
+        mApplicationInfo.targetSdkVersion = targetSdkVersion;
+
+        mWindowManager = new WindowManagerImpl(mMetrics);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     }
 
     /**
@@ -195,14 +222,24 @@ public final class BridgeContext extends Context {
         return mRenderResources;
     }
 
+<<<<<<< HEAD
     public BridgeWindowManager getIWindowManager() {
         return mIWindowManager;
     }
 
+=======
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     public Map<String, String> getDefaultPropMap(Object key) {
         return mDefaultPropMaps.get(key);
     }
 
+<<<<<<< HEAD
+=======
+    public Configuration getConfiguration() {
+        return mConfig;
+    }
+
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     /**
      * Adds a parser to the stack.
      * @param parser the parser to add.
@@ -428,10 +465,15 @@ public final class BridgeContext extends Context {
             return TextServicesManager.getInstance();
         }
 
+<<<<<<< HEAD
         // AutoCompleteTextView and MultiAutoCompleteTextView want a window
         // service. We don't have any but it's not worth an exception.
         if (WINDOW_SERVICE.equals(service)) {
             return null;
+=======
+        if (WINDOW_SERVICE.equals(service)) {
+            return mWindowManager;
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         }
 
         // needed by SearchView
@@ -440,7 +482,11 @@ public final class BridgeContext extends Context {
         }
 
         if (POWER_SERVICE.equals(service)) {
+<<<<<<< HEAD
             return new PowerManager(new BridgePowerManager(), new Handler());
+=======
+            return new PowerManager(this, new BridgePowerManager(), new Handler());
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         }
 
         throw new UnsupportedOperationException("Unsupported Service: " + service);
@@ -917,6 +963,27 @@ public final class BridgeContext extends Context {
     }
 
     @Override
+<<<<<<< HEAD
+=======
+    public Context createPackageContextAsUser(String arg0, int arg1, UserHandle user) {
+        // pass
+        return null;
+    }
+
+    @Override
+    public Context createConfigurationContext(Configuration overrideConfiguration) {
+        // pass
+        return null;
+    }
+
+    @Override
+    public Context createDisplayContext(Display display) {
+        // pass
+        return null;
+    }
+
+    @Override
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     public String[] databaseList() {
         // pass
         return null;
@@ -1149,6 +1216,16 @@ public final class BridgeContext extends Context {
     }
 
     @Override
+<<<<<<< HEAD
+=======
+    public Intent registerReceiverAsUser(BroadcastReceiver arg0, UserHandle arg0p5,
+            IntentFilter arg1, String arg2, Handler arg3) {
+        // pass
+        return null;
+    }
+
+    @Override
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     public void removeStickyBroadcast(Intent arg0) {
         // pass
 
@@ -1187,6 +1264,27 @@ public final class BridgeContext extends Context {
     }
 
     @Override
+<<<<<<< HEAD
+=======
+    public void sendBroadcastAsUser(Intent intent, UserHandle user) {
+        // pass
+    }
+
+    @Override
+    public void sendBroadcastAsUser(Intent intent, UserHandle user,
+            String receiverPermission) {
+        // pass
+    }
+
+    @Override
+    public void sendOrderedBroadcastAsUser(Intent intent, UserHandle user,
+            String receiverPermission, BroadcastReceiver resultReceiver, Handler scheduler,
+            int initialCode, String initialData, Bundle initialExtras) {
+        // pass
+    }
+
+    @Override
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     public void sendStickyBroadcast(Intent arg0) {
         // pass
 
@@ -1200,6 +1298,27 @@ public final class BridgeContext extends Context {
     }
 
     @Override
+<<<<<<< HEAD
+=======
+    public void sendStickyBroadcastAsUser(Intent intent, UserHandle user) {
+        // pass
+    }
+
+    @Override
+    public void sendStickyOrderedBroadcastAsUser(Intent intent,
+            UserHandle user, BroadcastReceiver resultReceiver,
+            Handler scheduler, int initialCode, String initialData,
+            Bundle initialExtras) {
+        // pass
+    }
+
+    @Override
+    public void removeStickyBroadcastAsUser(Intent intent, UserHandle user) {
+        // pass
+    }
+
+    @Override
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     public void setTheme(int arg0) {
         // pass
 
@@ -1261,6 +1380,21 @@ public final class BridgeContext extends Context {
     }
 
     @Override
+<<<<<<< HEAD
+=======
+    public ComponentName startServiceAsUser(Intent arg0, UserHandle arg1) {
+        // pass
+        return null;
+    }
+
+    @Override
+    public boolean stopServiceAsUser(Intent arg0, UserHandle arg1) {
+        // pass
+        return false;
+    }
+
+    @Override
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     public void unbindService(ServiceConnection arg0) {
         // pass
 
@@ -1299,4 +1433,13 @@ public final class BridgeContext extends Context {
         Bridge.getLog().error(LayoutLog.TAG_UNSUPPORTED, "OBB not supported", null);
         return null;
     }
+<<<<<<< HEAD
+=======
+
+    @Override
+    public CompatibilityInfoHolder getCompatibilityInfo(int displayId) {
+        // pass
+        return null;
+    }
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 }

@@ -37,7 +37,11 @@ import android.os.Message;
 import android.os.Process;
 import android.os.RemoteException;
 import android.os.SystemClock;
+<<<<<<< HEAD
 import android.os.UserId;
+=======
+import android.os.UserHandle;
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 import android.util.EventLog;
 import android.util.Log;
 import android.util.Slog;
@@ -219,7 +223,17 @@ final class ActivityRecord {
         pw.print(prefix); pw.print("frozenBeforeDestroy="); pw.print(frozenBeforeDestroy);
                 pw.print(" thumbnailNeeded="); pw.print(thumbnailNeeded);
                 pw.print(" forceNewConfig="); pw.println(forceNewConfig);
+<<<<<<< HEAD
         pw.print(prefix); pw.print("thumbHolder="); pw.println(thumbHolder);
+=======
+        pw.print(prefix); pw.print("thumbHolder: ");
+                pw.print(Integer.toHexString(System.identityHashCode(thumbHolder)));
+                if (thumbHolder != null) {
+                    pw.print(" bm="); pw.print(thumbHolder.lastThumbnail);
+                    pw.print(" desc="); pw.print(thumbHolder.lastDescription);
+                }
+                pw.println();
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         if (launchTime != 0 || startTime != 0) {
             pw.print(prefix); pw.print("launchTime=");
                     if (launchTime == 0) pw.print("0");
@@ -321,7 +335,11 @@ final class ActivityRecord {
         appToken = new Token(this);
         info = aInfo;
         launchedFromUid = _launchedFromUid;
+<<<<<<< HEAD
         userId = UserId.getUserId(aInfo.applicationInfo.uid);
+=======
+        userId = UserHandle.getUserId(aInfo.applicationInfo.uid);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         intent = _intent;
         shortComponentName = _intent.getComponent().flattenToShortString();
         resolvedType = _resolvedType;
@@ -333,7 +351,10 @@ final class ActivityRecord {
         state = ActivityState.INITIALIZING;
         frontOfTask = false;
         launchFailed = false;
+<<<<<<< HEAD
         haveState = false;
+=======
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         stopped = false;
         delayedResume = false;
         finishing = false;
@@ -347,6 +368,14 @@ final class ActivityRecord {
         idle = false;
         hasBeenLaunched = false;
 
+<<<<<<< HEAD
+=======
+        // This starts out true, since the initial state of an activity
+        // is that we have everything, and we shouldn't never consider it
+        // lacking in state to be removed if it dies.
+        haveState = true;
+
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         if (aInfo != null) {
             if (aInfo.targetActivity == null
                     || aInfo.launchMode == ActivityInfo.LAUNCH_MULTIPLE
@@ -592,6 +621,18 @@ final class ActivityRecord {
         }
     }
 
+<<<<<<< HEAD
+=======
+    void updateOptionsLocked(ActivityOptions options) {
+        if (options != null) {
+            if (pendingOptions != null) {
+                pendingOptions.abort();
+            }
+            pendingOptions = options;
+        }
+    }
+
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     void applyOptionsLocked() {
         if (pendingOptions != null) {
             final int animationType = pendingOptions.getAnimationType();
@@ -614,14 +655,24 @@ final class ActivityRecord {
                                 pendingOptions.getStartY()+pendingOptions.getStartHeight()));
                     }
                     break;
+<<<<<<< HEAD
                 case ActivityOptions.ANIM_THUMBNAIL:
                 case ActivityOptions.ANIM_THUMBNAIL_DELAYED:
                     boolean delayed = (animationType == ActivityOptions.ANIM_THUMBNAIL_DELAYED);
+=======
+                case ActivityOptions.ANIM_THUMBNAIL_SCALE_UP:
+                case ActivityOptions.ANIM_THUMBNAIL_SCALE_DOWN:
+                    boolean scaleUp = (animationType == ActivityOptions.ANIM_THUMBNAIL_SCALE_UP);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
                     service.mWindowManager.overridePendingAppTransitionThumb(
                             pendingOptions.getThumbnail(),
                             pendingOptions.getStartX(), pendingOptions.getStartY(),
                             pendingOptions.getOnAnimationStartListener(),
+<<<<<<< HEAD
                             delayed);
+=======
+                            scaleUp);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
                     if (intent.getSourceBounds() == null) {
                         intent.setSourceBounds(new Rect(pendingOptions.getStartX(),
                                 pendingOptions.getStartY(),
@@ -643,6 +694,15 @@ final class ActivityRecord {
         }
     }
 
+<<<<<<< HEAD
+=======
+    ActivityOptions takeOptionsLocked() {
+        ActivityOptions opts = pendingOptions;
+        pendingOptions = null;
+        return opts;
+    }
+
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     void removeUriPermissionsLocked() {
         if (uriPermissions != null) {
             uriPermissions.removeUriPermissionsLocked();
@@ -670,12 +730,19 @@ final class ActivityRecord {
         }
         if (thumbHolder != null) {
             if (newThumbnail != null) {
+<<<<<<< HEAD
+=======
+                if (ActivityManagerService.DEBUG_THUMBNAILS) Slog.i(ActivityManagerService.TAG,
+                        "Setting thumbnail of " + this + " holder " + thumbHolder
+                        + " to " + newThumbnail);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
                 thumbHolder.lastThumbnail = newThumbnail;
             }
             thumbHolder.lastDescription = description;
         }
     }
 
+<<<<<<< HEAD
     void clearThumbnail() {
         if (thumbHolder != null) {
             thumbHolder.lastThumbnail = null;
@@ -683,6 +750,8 @@ final class ActivityRecord {
         }
     }
 
+=======
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     void startLaunchTickingLocked() {
         if (ActivityManagerService.IS_USER_BUILD) {
             return;
@@ -740,8 +809,13 @@ final class ActivityRecord {
                 final long totalTime = stack.mInitialStartTime != 0
                         ? (curTime - stack.mInitialStartTime) : thisTime;
                 if (ActivityManagerService.SHOW_ACTIVITY_START_TIME) {
+<<<<<<< HEAD
                     EventLog.writeEvent(EventLogTags.ACTIVITY_LAUNCH_TIME,
                             System.identityHashCode(this), shortComponentName,
+=======
+                    EventLog.writeEvent(EventLogTags.AM_ACTIVITY_LAUNCH_TIME,
+                            userId, System.identityHashCode(this), shortComponentName,
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
                             thisTime, totalTime);
                     StringBuilder sb = service.mStringBuilder;
                     sb.setLength(0);
@@ -835,6 +909,10 @@ final class ActivityRecord {
     }
 
     public boolean keyDispatchingTimedOut() {
+<<<<<<< HEAD
+=======
+        // TODO: Unify this code with ActivityManagerService.inputDispatchingTimedOut().
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         ActivityRecord r;
         ProcessRecord anrApp = null;
         synchronized(service) {
@@ -863,8 +941,12 @@ final class ActivityRecord {
         }
         
         if (anrApp != null) {
+<<<<<<< HEAD
             service.appNotResponding(anrApp, r, this,
                     "keyDispatchingTimedOut");
+=======
+            service.appNotResponding(anrApp, r, this, false, "keyDispatchingTimedOut");
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         }
         
         return true;
@@ -917,6 +999,11 @@ final class ActivityRecord {
         StringBuilder sb = new StringBuilder(128);
         sb.append("ActivityRecord{");
         sb.append(Integer.toHexString(System.identityHashCode(this)));
+<<<<<<< HEAD
+=======
+        sb.append(" u");
+        sb.append(userId);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         sb.append(' ');
         sb.append(intent.getComponent().flattenToShortString());
         sb.append('}');

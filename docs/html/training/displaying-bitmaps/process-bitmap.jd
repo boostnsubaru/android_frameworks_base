@@ -62,13 +62,22 @@ decodeSampledBitmapFromResource()}</a>: </p>
 
 <a name="BitmapWorkerTask"></a>
 <pre>
+<<<<<<< HEAD
 class BitmapWorkerTask extends AsyncTask<Integer, Void, Bitmap> {
     private final WeakReference<ImageView> imageViewReference;
+=======
+class BitmapWorkerTask extends AsyncTask&lt;Integer, Void, Bitmap&gt; {
+    private final WeakReference&lt;ImageView&gt; imageViewReference;
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     private int data = 0;
 
     public BitmapWorkerTask(ImageView imageView) {
         // Use a WeakReference to ensure the ImageView can be garbage collected
+<<<<<<< HEAD
         imageViewReference = new WeakReference<ImageView>(imageView);
+=======
+        imageViewReference = new WeakReference&lt;ImageView&gt;(imageView);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     }
 
     // Decode image in background.
@@ -133,13 +142,21 @@ completes:</p>
 <a name="AsyncDrawable"></a>
 <pre>
 static class AsyncDrawable extends BitmapDrawable {
+<<<<<<< HEAD
     private final WeakReference<BitmapWorkerTask> bitmapWorkerTaskReference;
+=======
+    private final WeakReference&lt;BitmapWorkerTask&gt; bitmapWorkerTaskReference;
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 
     public AsyncDrawable(Resources res, Bitmap bitmap,
             BitmapWorkerTask bitmapWorkerTask) {
         super(res, bitmap);
         bitmapWorkerTaskReference =
+<<<<<<< HEAD
             new WeakReference<BitmapWorkerTask>(bitmapWorkerTask);
+=======
+            new WeakReference&lt;BitmapWorkerTask&gt;(bitmapWorkerTask);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     }
 
     public BitmapWorkerTask getBitmapWorkerTask() {
@@ -211,7 +228,11 @@ one associated with the {@link android.widget.ImageView}:</p>
 
 <a name="BitmapWorkerTaskUpdated"></a>
 <pre>
+<<<<<<< HEAD
 class BitmapWorkerTask extends AsyncTask<Integer, Void, Bitmap> {
+=======
+class BitmapWorkerTask extends AsyncTask&lt;Integer, Void, Bitmap&gt; {
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     ...
 
     &#64;Override
@@ -236,4 +257,8 @@ class BitmapWorkerTask extends AsyncTask<Integer, Void, Bitmap> {
 android.widget.GridView} components as well as any other components that recycle their child
 views. Simply call {@code loadBitmap} where you normally set an image to your {@link
 android.widget.ImageView}. For example, in a {@link android.widget.GridView} implementation this
+<<<<<<< HEAD
 would be in the {@link android.widget.Adapter#getView getView()} method of the backing adapter.</p>
+=======
+would be in the {@link android.widget.Adapter#getView getView()} method of the backing adapter.</p>
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a

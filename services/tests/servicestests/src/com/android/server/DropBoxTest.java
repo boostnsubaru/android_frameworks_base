@@ -45,10 +45,17 @@ import java.util.zip.GZIPOutputStream;
 public class DropBoxTest extends AndroidTestCase {
     public void tearDown() throws Exception {
         ContentResolver cr = getContext().getContentResolver();
+<<<<<<< HEAD
         Settings.Secure.putString(cr, Settings.Secure.DROPBOX_AGE_SECONDS, "");
         Settings.Secure.putString(cr, Settings.Secure.DROPBOX_MAX_FILES, "");
         Settings.Secure.putString(cr, Settings.Secure.DROPBOX_QUOTA_KB, "");
         Settings.Secure.putString(cr, Settings.Secure.DROPBOX_TAG_PREFIX + "DropBoxTest", "");
+=======
+        Settings.Global.putString(cr, Settings.Global.DROPBOX_AGE_SECONDS, "");
+        Settings.Global.putString(cr, Settings.Global.DROPBOX_MAX_FILES, "");
+        Settings.Global.putString(cr, Settings.Global.DROPBOX_QUOTA_KB, "");
+        Settings.Global.putString(cr, Settings.Global.DROPBOX_TAG_PREFIX + "DropBoxTest", "");
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     }
 
     public void testAddText() throws Exception {
@@ -254,13 +261,21 @@ public class DropBoxTest extends AndroidTestCase {
         assertTrue(dropbox.isTagEnabled("DropBoxTest"));
 
         ContentResolver cr = getContext().getContentResolver();
+<<<<<<< HEAD
         Settings.Secure.putString(cr, Settings.Secure.DROPBOX_TAG_PREFIX + "DropBoxTest",
+=======
+        Settings.Global.putString(cr, Settings.Global.DROPBOX_TAG_PREFIX + "DropBoxTest",
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
                                   "disabled");
 
         dropbox.addText("DropBoxTest", "TEST-DISABLED");
         assertFalse(dropbox.isTagEnabled("DropBoxTest"));
 
+<<<<<<< HEAD
         Settings.Secure.putString(cr, Settings.Secure.DROPBOX_TAG_PREFIX + "DropBoxTest",
+=======
+        Settings.Global.putString(cr, Settings.Global.DROPBOX_TAG_PREFIX + "DropBoxTest",
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
                                   "");
 
         dropbox.addText("DropBoxTest", "TEST-ENABLED-AGAIN");
@@ -330,7 +345,11 @@ public class DropBoxTest extends AndroidTestCase {
         // Limit storage to 10 blocks
         int kb = blockSize * 10 / 1024;
         ContentResolver cr = getContext().getContentResolver();
+<<<<<<< HEAD
         Settings.Secure.putString(cr, Settings.Secure.DROPBOX_QUOTA_KB, Integer.toString(kb));
+=======
+        Settings.Global.putString(cr, Settings.Global.DROPBOX_QUOTA_KB, Integer.toString(kb));
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 
         // Three tags using a total of 12 blocks:
         // DropBoxTest0 [ ][ ]
@@ -432,8 +451,13 @@ public class DropBoxTest extends AndroidTestCase {
         // Limit storage to 10 blocks with an expiration of 1 second
         int kb = blockSize * 10 / 1024;
         ContentResolver cr = getContext().getContentResolver();
+<<<<<<< HEAD
         Settings.Secure.putString(cr, Settings.Secure.DROPBOX_AGE_SECONDS, "1");
         Settings.Secure.putString(cr, Settings.Secure.DROPBOX_QUOTA_KB, Integer.toString(kb));
+=======
+        Settings.Global.putString(cr, Settings.Global.DROPBOX_AGE_SECONDS, "1");
+        Settings.Global.putString(cr, Settings.Global.DROPBOX_QUOTA_KB, Integer.toString(kb));
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 
         // Write one normal entry and another so big that it is instantly tombstoned
         long before = System.currentTimeMillis();
@@ -497,7 +521,11 @@ public class DropBoxTest extends AndroidTestCase {
 
         // Limit to 3 files and add one more entry
         ContentResolver cr = getContext().getContentResolver();
+<<<<<<< HEAD
         Settings.Secure.putString(cr, Settings.Secure.DROPBOX_MAX_FILES, "3");
+=======
+        Settings.Global.putString(cr, Settings.Global.DROPBOX_MAX_FILES, "3");
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         dropbox.addText("DropBoxTest", "TEST6");
 
         // Verify only 3 files left

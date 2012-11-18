@@ -679,6 +679,18 @@ it doesn't mean anything to most users and would have taken up a lot of space.</
   </div>
 </div>
 
+<<<<<<< HEAD
+=======
+
+<div class="note develop">
+<p><strong>Developer Guide</strong></p>
+  <p>For information about how to build a settings interface, see the
+  <a href="{@docRoot}guide/topics/ui/settings.html">Settings</a>
+  API guide.</p>
+</div>
+
+
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 <h2 id="checklist">Checklist</h2>
 <ul>
 <li><p>Make sure each item in Settings meets the criteria for belonging there.</p></li>

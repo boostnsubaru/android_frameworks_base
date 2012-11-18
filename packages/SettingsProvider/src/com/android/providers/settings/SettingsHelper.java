@@ -20,11 +20,16 @@ import java.util.Locale;
 
 import android.app.ActivityManagerNative;
 import android.app.IActivityManager;
+<<<<<<< HEAD
 import android.app.backup.BackupDataInput;
 import android.app.backup.IBackupManager;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.content.IContentService;
+=======
+import android.app.backup.IBackupManager;
+import android.content.Context;
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 import android.content.res.Configuration;
 import android.location.LocationManager;
 import android.media.AudioManager;
@@ -33,6 +38,7 @@ import android.os.RemoteException;
 import android.os.ServiceManager;
 import android.provider.Settings;
 import android.text.TextUtils;
+<<<<<<< HEAD
 import android.util.Log;
 
 public class SettingsHelper {
@@ -42,14 +48,23 @@ public class SettingsHelper {
     private AudioManager mAudioManager;
     private IContentService mContentService;
     private IPowerManager mPowerManager;
+=======
+
+public class SettingsHelper {
+    private Context mContext;
+    private AudioManager mAudioManager;
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 
     public SettingsHelper(Context context) {
         mContext = context;
         mAudioManager = (AudioManager) context
                 .getSystemService(Context.AUDIO_SERVICE);
+<<<<<<< HEAD
         mContentService = ContentResolver.getContentService();
         mPowerManager = IPowerManager.Stub.asInterface(
                 ServiceManager.getService("power"));
+=======
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     }
 
     /**
@@ -71,10 +86,37 @@ public class SettingsHelper {
             return false;
         } else if (Settings.Secure.BACKUP_AUTO_RESTORE.equals(name)) {
             setAutoRestore(Integer.parseInt(value) == 1);
+<<<<<<< HEAD
+=======
+        } else if (isAlreadyConfiguredCriticalAccessibilitySetting(name)) {
+            return false;
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         }
         return true;
     }
 
+<<<<<<< HEAD
+=======
+    private boolean isAlreadyConfiguredCriticalAccessibilitySetting(String name) {
+        // These are the critical accessibility settings that are required for a
+        // blind user to be able to interact with the device. If these settings are
+        // already configured, we will not overwrite them. If they are already set,
+        // it means that the user has performed a global gesture to enable accessibility
+        // and definitely needs these features working after the restore.
+        if (Settings.Secure.ACCESSIBILITY_ENABLED.equals(name)
+                || Settings.Secure.ACCESSIBILITY_SCRIPT_INJECTION.equals(name)
+                || Settings.Secure.ACCESSIBILITY_SPEAK_PASSWORD.equals(name)
+                || Settings.Secure.TOUCH_EXPLORATION_ENABLED.equals(name)) {
+            return Settings.Secure.getInt(mContext.getContentResolver(), name, 0) != 0;
+        } else if (Settings.Secure.TOUCH_EXPLORATION_GRANTED_ACCESSIBILITY_SERVICES.equals(name)
+                || Settings.Secure.ENABLED_ACCESSIBILITY_SERVICES.equals(name)) {
+            return !TextUtils.isEmpty(Settings.Secure.getString(
+                    mContext.getContentResolver(), name));
+        }
+        return false;
+    }
+
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     private void setAutoRestore(boolean enabled) {
         try {
             IBackupManager bm = IBackupManager.Stub.asInterface(
@@ -109,7 +151,11 @@ public class SettingsHelper {
             IPowerManager power = IPowerManager.Stub.asInterface(
                     ServiceManager.getService("power"));
             if (power != null) {
+<<<<<<< HEAD
                 power.setBacklightBrightness(brightness);
+=======
+                power.setTemporaryScreenBrightnessSettingOverride(brightness);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
             }
         } catch (RemoteException doe) {
 

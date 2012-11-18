@@ -1,6 +1,9 @@
 /*
  * Copyright (C) 2007 The Android Open Source Project
+<<<<<<< HEAD
  * This code has been modified.  Portions copyright (C) 2010, T-Mobile USA, Inc.
+=======
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -299,11 +302,30 @@ public class ApplicationInfo extends PackageItemInfo implements Parcelable {
      * activity's manifest.
      *
      * Default value is false (no support for RTL).
+<<<<<<< HEAD
      * @hide
+=======
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
      */
     public static final int FLAG_SUPPORTS_RTL = 1<<22;
 
     /**
+<<<<<<< HEAD
+=======
+     * Value for {@link #flags}: true if the application is currently
+     * installed for the calling user.
+     */
+    public static final int FLAG_INSTALLED = 1<<23;
+
+    /**
+     * Value for {@link #flags}: true if the application only has its
+     * data installed; the application package itself does not currently
+     * exist on the device.
+     */
+    public static final int FLAG_IS_DATA_ONLY = 1<<24;
+
+    /**
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
      * Value for {@link #flags}: Set to true if the application has been
      * installed using the forward lock option.
      *
@@ -336,7 +358,12 @@ public class ApplicationInfo extends PackageItemInfo implements Parcelable {
      * {@link #FLAG_SUPPORTS_NORMAL_SCREENS},
      * {@link #FLAG_SUPPORTS_LARGE_SCREENS}, {@link #FLAG_SUPPORTS_XLARGE_SCREENS},
      * {@link #FLAG_RESIZEABLE_FOR_SCREENS},
+<<<<<<< HEAD
      * {@link #FLAG_SUPPORTS_SCREEN_DENSITIES}, {@link #FLAG_VM_SAFE_MODE}
+=======
+     * {@link #FLAG_SUPPORTS_SCREEN_DENSITIES}, {@link #FLAG_VM_SAFE_MODE},
+     * {@link #FLAG_INSTALLED}.
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
      */
     public int flags = 0;
     
@@ -432,6 +459,7 @@ public class ApplicationInfo extends PackageItemInfo implements Parcelable {
      * @hide
      */
     public int enabledSetting = PackageManager.COMPONENT_ENABLED_STATE_DEFAULT;
+<<<<<<< HEAD
     /**
      * Is given application theme agnostic, i.e. behaves properly when default theme is changed.
      * {@hide}
@@ -456,6 +484,8 @@ public class ApplicationInfo extends PackageItemInfo implements Parcelable {
     public static boolean isPlutoNamespace(String namespace) {
         return namespace != null && namespace.equalsIgnoreCase(PLUTO_SCHEMA);
     }
+=======
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 
     /**
      * For convenient access to package's install location.
@@ -566,7 +596,11 @@ public class ApplicationInfo extends PackageItemInfo implements Parcelable {
         manageSpaceActivityName = orig.manageSpaceActivityName;
         descriptionRes = orig.descriptionRes;
         uiOptions = orig.uiOptions;
+<<<<<<< HEAD
         isThemeable = orig.isThemeable;
+=======
+        backupAgentName = orig.backupAgentName;
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     }
 
 
@@ -606,7 +640,10 @@ public class ApplicationInfo extends PackageItemInfo implements Parcelable {
         dest.writeString(backupAgentName);
         dest.writeInt(descriptionRes);
         dest.writeInt(uiOptions);
+<<<<<<< HEAD
         dest.writeInt(isThemeable? 1 : 0);
+=======
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     }
 
     public static final Parcelable.Creator<ApplicationInfo> CREATOR
@@ -645,7 +682,10 @@ public class ApplicationInfo extends PackageItemInfo implements Parcelable {
         backupAgentName = source.readString();
         descriptionRes = source.readInt();
         uiOptions = source.readInt();
+<<<<<<< HEAD
         isThemeable = source.readInt() != 0;
+=======
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     }
 
     /**

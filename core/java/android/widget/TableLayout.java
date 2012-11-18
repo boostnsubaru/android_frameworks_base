@@ -184,6 +184,13 @@ public class TableLayout extends LinearLayout {
             mShrinkableColumns = new SparseBooleanArray();
         }
 
+<<<<<<< HEAD
+=======
+        // TableLayouts are always in vertical orientation; keep this tracked
+        // for shared LinearLayout code.
+        setOrientation(VERTICAL);
+
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         mPassThroughListener = new PassThroughHierarchyChangeListener();
         // make sure to call the parent class method to avoid potential
         // infinite loops
@@ -737,7 +744,12 @@ public class TableLayout extends LinearLayout {
          * @param heightAttr the height attribute to fetch
          */
         @Override
+<<<<<<< HEAD
         protected void setBaseAttributes(TypedArray a, int widthAttr, int heightAttr) {
+=======
+        protected void setBaseAttributes(TypedArray a,
+                int widthAttr, int heightAttr) {
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
             this.width = MATCH_PARENT;
             if (a.hasValue(heightAttr)) {
                 this.height = a.getLayoutDimension(heightAttr, "layout_height");

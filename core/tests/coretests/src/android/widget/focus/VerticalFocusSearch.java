@@ -66,7 +66,11 @@ public class VerticalFocusSearch extends Activity {
 
         mLayout = new LinearLayout(this);
         mLayout.setOrientation(LinearLayout.VERTICAL);
+<<<<<<< HEAD
         mLayout.setHorizontalGravity(Gravity.LEFT);
+=======
+        mLayout.setHorizontalGravity(Gravity.START);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         mLayout.setLayoutParams(new ViewGroup.LayoutParams(
                 ViewGroup.LayoutParams.MATCH_PARENT,
                 ViewGroup.LayoutParams.MATCH_PARENT));

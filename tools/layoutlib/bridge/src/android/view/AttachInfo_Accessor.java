@@ -19,6 +19,10 @@ package android.view;
 import com.android.layoutlib.bridge.android.BridgeWindow;
 import com.android.layoutlib.bridge.android.BridgeWindowSession;
 
+<<<<<<< HEAD
+=======
+import android.content.Context;
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 import android.os.Handler;
 import android.view.View.AttachInfo;
 
@@ -28,8 +32,17 @@ import android.view.View.AttachInfo;
 public class AttachInfo_Accessor {
 
     public static void setAttachInfo(View view) {
+<<<<<<< HEAD
         AttachInfo info = new AttachInfo(new BridgeWindowSession(), new BridgeWindow(),
                 new ViewRootImpl(view.getContext()), new Handler(), null);
+=======
+        Context context = view.getContext();
+        WindowManager wm = (WindowManager)context.getSystemService(Context.WINDOW_SERVICE);
+        Display display = wm.getDefaultDisplay();
+        ViewRootImpl root = new ViewRootImpl(context, display);
+        AttachInfo info = new AttachInfo(new BridgeWindowSession(), new BridgeWindow(),
+                display, root, new Handler(), null);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         info.mHasWindowFocus = true;
         info.mWindowVisibility = View.VISIBLE;
         info.mInTouchMode = false; // this is so that we can display selections.

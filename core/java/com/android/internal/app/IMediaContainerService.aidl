@@ -36,4 +36,8 @@ interface IMediaContainerService {
     /** Return file system stats: [0] is total bytes, [1] is available bytes */
     long[] getFileSystemStats(in String path);
     void clearDirectory(in String directory);
+<<<<<<< HEAD
+=======
+    long calculateInstalledSize(in String packagePath, boolean isForwardLocked);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 }

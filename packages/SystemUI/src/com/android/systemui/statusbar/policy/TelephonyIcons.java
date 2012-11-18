@@ -35,6 +35,22 @@ class TelephonyIcons {
           R.drawable.stat_sys_signal_4_fully }
     };
 
+<<<<<<< HEAD
+=======
+    static final int[][] QS_TELEPHONY_SIGNAL_STRENGTH = {
+        { R.drawable.ic_qs_signal_0,
+          R.drawable.ic_qs_signal_1,
+          R.drawable.ic_qs_signal_2,
+          R.drawable.ic_qs_signal_3,
+          R.drawable.ic_qs_signal_4 },
+        { R.drawable.ic_qs_signal_full_0,
+          R.drawable.ic_qs_signal_full_1,
+          R.drawable.ic_qs_signal_full_2,
+          R.drawable.ic_qs_signal_full_3,
+          R.drawable.ic_qs_signal_full_4 }
+    };
+
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     static final int[][] TELEPHONY_SIGNAL_STRENGTH_ROAMING = {
         { R.drawable.stat_sys_signal_0,
           R.drawable.stat_sys_signal_1,
@@ -98,6 +114,7 @@ class TelephonyIcons {
               R.drawable.stat_sys_data_fully_connected_h }
     };
 
+<<<<<<< HEAD
     //HPSPA+
     static final int[][] DATA_HP = {
             { R.drawable.stat_sys_data_connected_hp,
@@ -110,6 +127,8 @@ class TelephonyIcons {
               R.drawable.stat_sys_data_fully_connected_hp }
     };
 
+=======
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     //CDMA
     // Use 3G icons for EVDO data and 1x icons for 1XRTT data
     static final int[][] DATA_1X = {

@@ -18,8 +18,16 @@ package android.util;
 
 import android.content.res.Resources;
 import android.content.res.XmlResourceParser;
+<<<<<<< HEAD
 
 import libcore.util.ZoneInfoDB;
+=======
+import android.os.SystemClock;
+import android.text.format.DateUtils;
+
+import com.android.internal.util.XmlUtils;
+
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
 
@@ -28,10 +36,17 @@ import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collection;
+<<<<<<< HEAD
 import java.util.TimeZone;
 import java.util.Date;
 
 import com.android.internal.util.XmlUtils;
+=======
+import java.util.Date;
+import java.util.TimeZone;
+
+import libcore.util.ZoneInfoDB;
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 
 /**
  * A class containing utility methods related to time zones.
@@ -245,6 +260,11 @@ public class TimeUtils {
     private static final Object sFormatSync = new Object();
     private static char[] sFormatStr = new char[HUNDRED_DAY_FIELD_LEN+5];
 
+<<<<<<< HEAD
+=======
+    private static final long LARGEST_DURATION = (1000 * DateUtils.DAY_IN_MILLIS) - 1;
+
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     static private int accumField(int amt, int suffix, boolean always, int zeropad) {
         if (amt > 99 || (always && zeropad >= 3)) {
             return 3+suffix;
@@ -307,6 +327,13 @@ public class TimeUtils {
             duration = -duration;
         }
 
+<<<<<<< HEAD
+=======
+        if (duration > LARGEST_DURATION) {
+            duration = LARGEST_DURATION;
+        }
+
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         int millis = (int)(duration%1000);
         int seconds = (int) Math.floor(duration / 1000);
         int days = 0, hours = 0, minutes = 0;
@@ -383,6 +410,21 @@ public class TimeUtils {
         formatDuration(time-now, pw, 0);
     }
 
+<<<<<<< HEAD
+=======
+    /** @hide Just for debugging; not internationalized. */
+    public static String formatUptime(long time) {
+        final long diff = time - SystemClock.uptimeMillis();
+        if (diff > 0) {
+            return time + " (in " + diff + " ms)";
+        }
+        if (diff < 0) {
+            return time + " (" + -diff + " ms ago)";
+        }
+        return time + " (now)";
+    }
+
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     /**
      * Convert a System.currentTimeMillis() value to a time of day value like
      * that printed in logs. MM-DD HH:MM:SS.MMM

@@ -17,6 +17,7 @@
 package android.view;
 
 import android.content.Context;
+<<<<<<< HEAD
 import android.util.DisplayMetrics;
 import android.util.FloatMath;
 import android.util.Log;
@@ -25,6 +26,17 @@ import android.util.Log;
  * Detects transformation gestures involving more than one pointer ("multitouch")
  * using the supplied {@link MotionEvent}s. The {@link OnScaleGestureListener}
  * callback will notify users when a particular gesture event has occurred.
+=======
+import android.content.res.Resources;
+import android.os.SystemClock;
+import android.util.FloatMath;
+
+/**
+ * Detects scaling transformation gestures using the supplied {@link MotionEvent}s.
+ * The {@link OnScaleGestureListener} callback will notify users when a particular
+ * gesture event has occurred.
+ *
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
  * This class should only be used with {@link MotionEvent}s reported via touch.
  *
  * To use this class:
@@ -87,8 +99,13 @@ public class ScaleGestureDetector {
          * pointers going up.
          *
          * Once a scale has ended, {@link ScaleGestureDetector#getFocusX()}
+<<<<<<< HEAD
          * and {@link ScaleGestureDetector#getFocusY()} will return the location
          * of the pointer remaining on the screen.
+=======
+         * and {@link ScaleGestureDetector#getFocusY()} will return focal point
+         * of the pointers remaining on the screen.
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
          *
          * @param detector The detector reporting the event - use this to
          *          retrieve extended info about event state.
@@ -121,6 +138,7 @@ public class ScaleGestureDetector {
         }
     }
 
+<<<<<<< HEAD
     /**
      * This value is the threshold ratio between our previous combined pressure
      * and the current combined pressure. We will only fire an onScale event if
@@ -158,6 +176,37 @@ public class ScaleGestureDetector {
     private int mActiveId0;
     private int mActiveId1;
     private boolean mActive0MostRecent;
+=======
+    private final Context mContext;
+    private final OnScaleGestureListener mListener;
+
+    private float mFocusX;
+    private float mFocusY;
+
+    private float mCurrSpan;
+    private float mPrevSpan;
+    private float mInitialSpan;
+    private float mCurrSpanX;
+    private float mCurrSpanY;
+    private float mPrevSpanX;
+    private float mPrevSpanY;
+    private long mCurrTime;
+    private long mPrevTime;
+    private boolean mInProgress;
+    private int mSpanSlop;
+    private int mMinSpan;
+
+    // Bounds for recently seen values
+    private float mTouchUpper;
+    private float mTouchLower;
+    private float mTouchHistoryLastAccepted;
+    private int mTouchHistoryDirection;
+    private long mTouchHistoryLastAcceptedTime;
+    private int mTouchMinMajor;
+
+    private static final long TOUCH_STABILIZE_TIME = 128; // ms
+    private static final int TOUCH_MIN_MAJOR = 48; // dp
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 
     /**
      * Consistency verifier for debugging purposes.
@@ -169,6 +218,7 @@ public class ScaleGestureDetector {
     public ScaleGestureDetector(Context context, OnScaleGestureListener listener) {
         mContext = context;
         mListener = listener;
+<<<<<<< HEAD
     }
 
     public boolean onTouchEvent(MotionEvent event) {
@@ -429,14 +479,230 @@ public class ScaleGestureDetector {
      */
     public boolean isInProgress() {
         return mGestureInProgress;
+=======
+        mSpanSlop = ViewConfiguration.get(context).getScaledTouchSlop() * 2;
+
+        final Resources res = context.getResources();
+        mTouchMinMajor = res.getDimensionPixelSize(
+                com.android.internal.R.dimen.config_minScalingTouchMajor);
+        mMinSpan = res.getDimensionPixelSize(
+                com.android.internal.R.dimen.config_minScalingSpan);
+    }
+
+    /**
+     * The touchMajor/touchMinor elements of a MotionEvent can flutter/jitter on
+     * some hardware/driver combos. Smooth it out to get kinder, gentler behavior.
+     * @param ev MotionEvent to add to the ongoing history
+     */
+    private void addTouchHistory(MotionEvent ev) {
+        final long currentTime = SystemClock.uptimeMillis();
+        final int count = ev.getPointerCount();
+        boolean accept = currentTime - mTouchHistoryLastAcceptedTime >= TOUCH_STABILIZE_TIME;
+        float total = 0;
+        int sampleCount = 0;
+        for (int i = 0; i < count; i++) {
+            final boolean hasLastAccepted = !Float.isNaN(mTouchHistoryLastAccepted);
+            final int historySize = ev.getHistorySize();
+            final int pointerSampleCount = historySize + 1;
+            for (int h = 0; h < pointerSampleCount; h++) {
+                float major;
+                if (h < historySize) {
+                    major = ev.getHistoricalTouchMajor(i, h);
+                } else {
+                    major = ev.getTouchMajor(i);
+                }
+                if (major < mTouchMinMajor) major = mTouchMinMajor;
+                total += major;
+
+                if (Float.isNaN(mTouchUpper) || major > mTouchUpper) {
+                    mTouchUpper = major;
+                }
+                if (Float.isNaN(mTouchLower) || major < mTouchLower) {
+                    mTouchLower = major;
+                }
+
+                if (hasLastAccepted) {
+                    final int directionSig = (int) Math.signum(major - mTouchHistoryLastAccepted);
+                    if (directionSig != mTouchHistoryDirection ||
+                            (directionSig == 0 && mTouchHistoryDirection == 0)) {
+                        mTouchHistoryDirection = directionSig;
+                        final long time = h < historySize ? ev.getHistoricalEventTime(h)
+                                : ev.getEventTime();
+                        mTouchHistoryLastAcceptedTime = time;
+                        accept = false;
+                    }
+                }
+            }
+            sampleCount += pointerSampleCount;
+        }
+
+        final float avg = total / sampleCount;
+
+        if (accept) {
+            float newAccepted = (mTouchUpper + mTouchLower + avg) / 3;
+            mTouchUpper = (mTouchUpper + newAccepted) / 2;
+            mTouchLower = (mTouchLower + newAccepted) / 2;
+            mTouchHistoryLastAccepted = newAccepted;
+            mTouchHistoryDirection = 0;
+            mTouchHistoryLastAcceptedTime = ev.getEventTime();
+        }
+    }
+
+    /**
+     * Clear all touch history tracking. Useful in ACTION_CANCEL or ACTION_UP.
+     * @see #addTouchHistory(MotionEvent)
+     */
+    private void clearTouchHistory() {
+        mTouchUpper = Float.NaN;
+        mTouchLower = Float.NaN;
+        mTouchHistoryLastAccepted = Float.NaN;
+        mTouchHistoryDirection = 0;
+        mTouchHistoryLastAcceptedTime = 0;
+    }
+
+    /**
+     * Accepts MotionEvents and dispatches events to a {@link OnScaleGestureListener}
+     * when appropriate.
+     *
+     * <p>Applications should pass a complete and consistent event stream to this method.
+     * A complete and consistent event stream involves all MotionEvents from the initial
+     * ACTION_DOWN to the final ACTION_UP or ACTION_CANCEL.</p>
+     *
+     * @param event The event to process
+     * @return true if the event was processed and the detector wants to receive the
+     *         rest of the MotionEvents in this event stream.
+     */
+    public boolean onTouchEvent(MotionEvent event) {
+        if (mInputEventConsistencyVerifier != null) {
+            mInputEventConsistencyVerifier.onTouchEvent(event, 0);
+        }
+
+        final int action = event.getActionMasked();
+
+        final boolean streamComplete = action == MotionEvent.ACTION_UP ||
+                action == MotionEvent.ACTION_CANCEL;
+        if (action == MotionEvent.ACTION_DOWN || streamComplete) {
+            // Reset any scale in progress with the listener.
+            // If it's an ACTION_DOWN we're beginning a new event stream.
+            // This means the app probably didn't give us all the events. Shame on it.
+            if (mInProgress) {
+                mListener.onScaleEnd(this);
+                mInProgress = false;
+                mInitialSpan = 0;
+            }
+
+            if (streamComplete) {
+                clearTouchHistory();
+                return true;
+            }
+        }
+
+        final boolean configChanged = action == MotionEvent.ACTION_DOWN ||
+                action == MotionEvent.ACTION_POINTER_UP ||
+                action == MotionEvent.ACTION_POINTER_DOWN;
+        final boolean pointerUp = action == MotionEvent.ACTION_POINTER_UP;
+        final int skipIndex = pointerUp ? event.getActionIndex() : -1;
+
+        // Determine focal point
+        float sumX = 0, sumY = 0;
+        final int count = event.getPointerCount();
+        for (int i = 0; i < count; i++) {
+            if (skipIndex == i) continue;
+            sumX += event.getX(i);
+            sumY += event.getY(i);
+        }
+        final int div = pointerUp ? count - 1 : count;
+        final float focusX = sumX / div;
+        final float focusY = sumY / div;
+
+
+        addTouchHistory(event);
+
+        // Determine average deviation from focal point
+        float devSumX = 0, devSumY = 0;
+        for (int i = 0; i < count; i++) {
+            if (skipIndex == i) continue;
+
+            // Convert the resulting diameter into a radius.
+            final float touchSize = mTouchHistoryLastAccepted / 2;
+            devSumX += Math.abs(event.getX(i) - focusX) + touchSize;
+            devSumY += Math.abs(event.getY(i) - focusY) + touchSize;
+        }
+        final float devX = devSumX / div;
+        final float devY = devSumY / div;
+
+        // Span is the average distance between touch points through the focal point;
+        // i.e. the diameter of the circle with a radius of the average deviation from
+        // the focal point.
+        final float spanX = devX * 2;
+        final float spanY = devY * 2;
+        final float span = FloatMath.sqrt(spanX * spanX + spanY * spanY);
+
+        // Dispatch begin/end events as needed.
+        // If the configuration changes, notify the app to reset its current state by beginning
+        // a fresh scale event stream.
+        final boolean wasInProgress = mInProgress;
+        mFocusX = focusX;
+        mFocusY = focusY;
+        if (mInProgress && (span < mMinSpan || configChanged)) {
+            mListener.onScaleEnd(this);
+            mInProgress = false;
+            mInitialSpan = span;
+        }
+        if (configChanged) {
+            mPrevSpanX = mCurrSpanX = spanX;
+            mPrevSpanY = mCurrSpanY = spanY;
+            mInitialSpan = mPrevSpan = mCurrSpan = span;
+        }
+        if (!mInProgress && span >= mMinSpan &&
+                (wasInProgress || Math.abs(span - mInitialSpan) > mSpanSlop)) {
+            mPrevSpanX = mCurrSpanX = spanX;
+            mPrevSpanY = mCurrSpanY = spanY;
+            mPrevSpan = mCurrSpan = span;
+            mInProgress = mListener.onScaleBegin(this);
+        }
+
+        // Handle motion; focal point and span/scale factor are changing.
+        if (action == MotionEvent.ACTION_MOVE) {
+            mCurrSpanX = spanX;
+            mCurrSpanY = spanY;
+            mCurrSpan = span;
+
+            boolean updatePrev = true;
+            if (mInProgress) {
+                updatePrev = mListener.onScale(this);
+            }
+
+            if (updatePrev) {
+                mPrevSpanX = mCurrSpanX;
+                mPrevSpanY = mCurrSpanY;
+                mPrevSpan = mCurrSpan;
+            }
+        }
+
+        return true;
+    }
+
+    /**
+     * Returns {@code true} if a scale gesture is in progress.
+     */
+    public boolean isInProgress() {
+        return mInProgress;
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     }
 
     /**
      * Get the X coordinate of the current gesture's focal point.
+<<<<<<< HEAD
      * If a gesture is in progress, the focal point is directly between
      * the two pointers forming the gesture.
      * If a gesture is ending, the focal point is the location of the
      * remaining pointer on the screen.
+=======
+     * If a gesture is in progress, the focal point is between
+     * each of the pointers forming the gesture.
+     *
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
      * If {@link #isInProgress()} would return false, the result of this
      * function is undefined.
      *
@@ -448,10 +714,16 @@ public class ScaleGestureDetector {
 
     /**
      * Get the Y coordinate of the current gesture's focal point.
+<<<<<<< HEAD
      * If a gesture is in progress, the focal point is directly between
      * the two pointers forming the gesture.
      * If a gesture is ending, the focal point is the location of the
      * remaining pointer on the screen.
+=======
+     * If a gesture is in progress, the focal point is between
+     * each of the pointers forming the gesture.
+     *
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
      * If {@link #isInProgress()} would return false, the result of this
      * function is undefined.
      *
@@ -462,12 +734,18 @@ public class ScaleGestureDetector {
     }
 
     /**
+<<<<<<< HEAD
      * Return the current distance between the two pointers forming the
      * gesture in progress.
+=======
+     * Return the average distance between each of the pointers forming the
+     * gesture in progress through the focal point.
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
      *
      * @return Distance between pointers in pixels.
      */
     public float getCurrentSpan() {
+<<<<<<< HEAD
         if (mCurrLen == -1) {
             final float cvx = mCurrFingerDiffX;
             final float cvy = mCurrFingerDiffY;
@@ -479,30 +757,57 @@ public class ScaleGestureDetector {
     /**
      * Return the current x distance between the two pointers forming the
      * gesture in progress.
+=======
+        return mCurrSpan;
+    }
+
+    /**
+     * Return the average X distance between each of the pointers forming the
+     * gesture in progress through the focal point.
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
      *
      * @return Distance between pointers in pixels.
      */
     public float getCurrentSpanX() {
+<<<<<<< HEAD
         return mCurrFingerDiffX;
     }
 
     /**
      * Return the current y distance between the two pointers forming the
      * gesture in progress.
+=======
+        return mCurrSpanX;
+    }
+
+    /**
+     * Return the average Y distance between each of the pointers forming the
+     * gesture in progress through the focal point.
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
      *
      * @return Distance between pointers in pixels.
      */
     public float getCurrentSpanY() {
+<<<<<<< HEAD
         return mCurrFingerDiffY;
     }
 
     /**
      * Return the previous distance between the two pointers forming the
      * gesture in progress.
+=======
+        return mCurrSpanY;
+    }
+
+    /**
+     * Return the previous average distance between each of the pointers forming the
+     * gesture in progress through the focal point.
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
      *
      * @return Previous distance between pointers in pixels.
      */
     public float getPreviousSpan() {
+<<<<<<< HEAD
         if (mPrevLen == -1) {
             final float pvx = mPrevFingerDiffX;
             final float pvy = mPrevFingerDiffY;
@@ -514,21 +819,42 @@ public class ScaleGestureDetector {
     /**
      * Return the previous x distance between the two pointers forming the
      * gesture in progress.
+=======
+        return mPrevSpan;
+    }
+
+    /**
+     * Return the previous average X distance between each of the pointers forming the
+     * gesture in progress through the focal point.
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
      *
      * @return Previous distance between pointers in pixels.
      */
     public float getPreviousSpanX() {
+<<<<<<< HEAD
         return mPrevFingerDiffX;
     }
 
     /**
      * Return the previous y distance between the two pointers forming the
      * gesture in progress.
+=======
+        return mPrevSpanX;
+    }
+
+    /**
+     * Return the previous average Y distance between each of the pointers forming the
+     * gesture in progress through the focal point.
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
      *
      * @return Previous distance between pointers in pixels.
      */
     public float getPreviousSpanY() {
+<<<<<<< HEAD
         return mPrevFingerDiffY;
+=======
+        return mPrevSpanY;
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     }
 
     /**
@@ -539,10 +865,14 @@ public class ScaleGestureDetector {
      * @return The current scaling factor.
      */
     public float getScaleFactor() {
+<<<<<<< HEAD
         if (mScaleFactor == -1) {
             mScaleFactor = getCurrentSpan() / getPreviousSpan();
         }
         return mScaleFactor;
+=======
+        return mPrevSpan > 0 ? mCurrSpan / mPrevSpan : 1;
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     }
 
     /**
@@ -552,7 +882,11 @@ public class ScaleGestureDetector {
      * @return Time difference since the last scaling event in milliseconds.
      */
     public long getTimeDelta() {
+<<<<<<< HEAD
         return mTimeDelta;
+=======
+        return mCurrTime - mPrevTime;
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     }
 
     /**
@@ -561,6 +895,10 @@ public class ScaleGestureDetector {
      * @return Current event time in milliseconds.
      */
     public long getEventTime() {
+<<<<<<< HEAD
         return mCurrEvent.getEventTime();
+=======
+        return mCurrTime;
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     }
 }

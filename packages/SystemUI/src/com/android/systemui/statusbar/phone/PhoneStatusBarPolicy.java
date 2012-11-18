@@ -39,6 +39,10 @@ import android.telephony.TelephonyManager;
 import android.util.Slog;
 
 import com.android.internal.telephony.IccCard;
+<<<<<<< HEAD
+=======
+import com.android.internal.telephony.IccCardConstants;
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 import com.android.internal.telephony.TelephonyIntents;
 import com.android.internal.telephony.cdma.EriInfo;
 import com.android.internal.telephony.cdma.TtyIntent;
@@ -76,7 +80,11 @@ public class PhoneStatusBarPolicy {
 
     // Assume it's all good unless we hear otherwise.  We don't always seem
     // to get broadcasts that it *is* there.
+<<<<<<< HEAD
     IccCard.State mSimState = IccCard.State.READY;
+=======
+    IccCardConstants.State mSimState = IccCardConstants.State.READY;
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 
     // ringer volume
     private boolean mVolumeVisible;
@@ -205,6 +213,7 @@ public class PhoneStatusBarPolicy {
     }
 
     private final void updateSimState(Intent intent) {
+<<<<<<< HEAD
         String stateExtra = intent.getStringExtra(IccCard.INTENT_KEY_ICC_STATE);
         if (IccCard.INTENT_VALUE_ICC_ABSENT.equals(stateExtra)) {
             mSimState = IccCard.State.ABSENT;
@@ -225,6 +234,29 @@ public class PhoneStatusBarPolicy {
             }
         } else {
             mSimState = IccCard.State.UNKNOWN;
+=======
+        String stateExtra = intent.getStringExtra(IccCardConstants.INTENT_KEY_ICC_STATE);
+        if (IccCardConstants.INTENT_VALUE_ICC_ABSENT.equals(stateExtra)) {
+            mSimState = IccCardConstants.State.ABSENT;
+        }
+        else if (IccCardConstants.INTENT_VALUE_ICC_READY.equals(stateExtra)) {
+            mSimState = IccCardConstants.State.READY;
+        }
+        else if (IccCardConstants.INTENT_VALUE_ICC_LOCKED.equals(stateExtra)) {
+            final String lockedReason =
+                    intent.getStringExtra(IccCardConstants.INTENT_KEY_LOCKED_REASON);
+            if (IccCardConstants.INTENT_VALUE_LOCKED_ON_PIN.equals(lockedReason)) {
+                mSimState = IccCardConstants.State.PIN_REQUIRED;
+            }
+            else if (IccCardConstants.INTENT_VALUE_LOCKED_ON_PUK.equals(lockedReason)) {
+                mSimState = IccCardConstants.State.PUK_REQUIRED;
+            }
+            else {
+                mSimState = IccCardConstants.State.NETWORK_LOCKED;
+            }
+        } else {
+            mSimState = IccCardConstants.State.UNKNOWN;
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         }
     }
 

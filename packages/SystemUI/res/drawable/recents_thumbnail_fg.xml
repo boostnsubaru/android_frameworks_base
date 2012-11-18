@@ -16,5 +16,9 @@
 <selector xmlns:android="http://schemas.android.com/apk/res/android">
     <item android:drawable="@drawable/recents_thumbnail_bg_press" android:state_selected="true" />
     <item android:drawable="@drawable/recents_thumbnail_bg_press" android:state_pressed="true" />
+<<<<<<< HEAD
     <item android:drawable="@*android:color/transparent"/>
+=======
+    <item android:drawable="@drawable/recents_thumbnail_no_press"/>
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 </selector>

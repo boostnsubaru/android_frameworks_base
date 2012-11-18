@@ -20,11 +20,22 @@ import static android.content.pm.PackageManager.COMPONENT_ENABLED_STATE_DEFAULT;
 import static android.content.pm.PackageManager.COMPONENT_ENABLED_STATE_DISABLED;
 import static android.content.pm.PackageManager.COMPONENT_ENABLED_STATE_ENABLED;
 
+<<<<<<< HEAD
 import android.util.SparseArray;
 import android.util.SparseIntArray;
 
 import java.io.File;
 import java.util.HashSet;
+=======
+import android.content.pm.ApplicationInfo;
+import android.content.pm.PackageUserState;
+import android.content.pm.UserInfo;
+import android.util.SparseArray;
+
+import java.io.File;
+import java.util.HashSet;
+import java.util.List;
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 
 /**
  * Settings base class for pending and resolved classes.
@@ -62,6 +73,7 @@ class PackageSettingBase extends GrantedPermissions {
     boolean permissionsFixed;
     boolean haveGids;
 
+<<<<<<< HEAD
     // Whether this package is currently stopped, thus can not be
     // started until explicitly launched by the user.
     private SparseArray<Boolean> stopped = new SparseArray<Boolean>();
@@ -75,6 +87,13 @@ class PackageSettingBase extends GrantedPermissions {
     private SparseArray<HashSet<String>> enabledComponents = new SparseArray<HashSet<String>>();
     /* Enabled state */
     private SparseIntArray enabled = new SparseIntArray();
+=======
+    private static final PackageUserState DEFAULT_USER_STATE = new PackageUserState();
+
+    // Whether this package is currently stopped, thus can not be
+    // started until explicitly launched by the user.
+    private final SparseArray<PackageUserState> userState = new SparseArray<PackageUserState>();
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 
     int installStatus = PKG_INSTALL_COMPLETE;
 
@@ -115,12 +134,20 @@ class PackageSettingBase extends GrantedPermissions {
 
         permissionsFixed = base.permissionsFixed;
         haveGids = base.haveGids;
+<<<<<<< HEAD
         notLaunched = base.notLaunched;
 
         disabledComponents = (SparseArray<HashSet<String>>) base.disabledComponents.clone();
         enabledComponents = (SparseArray<HashSet<String>>) base.enabledComponents.clone();
         enabled = (SparseIntArray) base.enabled.clone();
         stopped = (SparseArray<Boolean>) base.stopped.clone();
+=======
+        userState.clear();
+        for (int i=0; i<base.userState.size(); i++) {
+            userState.put(base.userState.keyAt(i),
+                    new PackageUserState(base.userState.valueAt(i)));
+        }
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         installStatus = base.installStatus;
 
         origPackage = base.origPackage;
@@ -171,6 +198,7 @@ class PackageSettingBase extends GrantedPermissions {
         signatures = base.signatures;
         permissionsFixed = base.permissionsFixed;
         haveGids = base.haveGids;
+<<<<<<< HEAD
         stopped = base.stopped;
         notLaunched = base.notLaunched;
         disabledComponents = base.disabledComponents;
@@ -243,31 +271,201 @@ class PackageSettingBase extends GrantedPermissions {
         HashSet<String> enabled = getComponentHashSet(enabledComponents, userId);
         boolean changed = disabled.remove(componentClassName);
         changed |= enabled.add(componentClassName);
+=======
+        userState.clear();
+        for (int i=0; i<base.userState.size(); i++) {
+            userState.put(base.userState.keyAt(i), base.userState.valueAt(i));
+        }
+        installStatus = base.installStatus;
+    }
+
+    private PackageUserState modifyUserState(int userId) {
+        PackageUserState state = userState.get(userId);
+        if (state == null) {
+            state = new PackageUserState();
+            userState.put(userId, state);
+        }
+        return state;
+    }
+
+    public PackageUserState readUserState(int userId) {
+        PackageUserState state = userState.get(userId);
+        if (state != null) {
+            return state;
+        }
+        return DEFAULT_USER_STATE;
+    }
+
+    void setEnabled(int state, int userId) {
+        modifyUserState(userId).enabled = state;
+    }
+
+    int getEnabled(int userId) {
+        return readUserState(userId).enabled;
+    }
+
+    void setInstalled(boolean inst, int userId) {
+        modifyUserState(userId).installed = inst;
+    }
+
+    boolean getInstalled(int userId) {
+        return readUserState(userId).installed;
+    }
+
+    boolean isAnyInstalled(int[] users) {
+        for (int user: users) {
+            if (readUserState(user).installed) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    int[] queryInstalledUsers(int[] users, boolean installed) {
+        int num = 0;
+        for (int user : users) {
+            if (getInstalled(user) == installed) {
+                num++;
+            }
+        }
+        int[] res = new int[num];
+        num = 0;
+        for (int user : users) {
+            if (getInstalled(user) == installed) {
+                res[num] = user;
+                num++;
+            }
+        }
+        return res;
+    }
+
+    boolean getStopped(int userId) {
+        return readUserState(userId).stopped;
+    }
+
+    void setStopped(boolean stop, int userId) {
+        modifyUserState(userId).stopped = stop;
+    }
+
+    boolean getNotLaunched(int userId) {
+        return readUserState(userId).notLaunched;
+    }
+
+    void setNotLaunched(boolean stop, int userId) {
+        modifyUserState(userId).notLaunched = stop;
+    }
+
+    void setUserState(int userId, int enabled, boolean installed, boolean stopped,
+            boolean notLaunched, HashSet<String> enabledComponents,
+            HashSet<String> disabledComponents) {
+        PackageUserState state = modifyUserState(userId);
+        state.enabled = enabled;
+        state.installed = installed;
+        state.stopped = stopped;
+        state.notLaunched = notLaunched;
+        state.enabledComponents = enabledComponents;
+        state.disabledComponents = disabledComponents;
+    }
+
+    HashSet<String> getEnabledComponents(int userId) {
+        return readUserState(userId).enabledComponents;
+    }
+
+    HashSet<String> getDisabledComponents(int userId) {
+        return readUserState(userId).disabledComponents;
+    }
+
+    void setEnabledComponents(HashSet<String> components, int userId) {
+        modifyUserState(userId).enabledComponents = components;
+    }
+
+    void setDisabledComponents(HashSet<String> components, int userId) {
+        modifyUserState(userId).disabledComponents = components;
+    }
+
+    void setEnabledComponentsCopy(HashSet<String> components, int userId) {
+        modifyUserState(userId).enabledComponents = components != null
+                ? new HashSet<String>(components) : null;
+    }
+
+    void setDisabledComponentsCopy(HashSet<String> components, int userId) {
+        modifyUserState(userId).disabledComponents = components != null
+                ? new HashSet<String>(components) : null;
+    }
+
+    PackageUserState modifyUserStateComponents(int userId, boolean disabled, boolean enabled) {
+        PackageUserState state = modifyUserState(userId);
+        if (disabled && state.disabledComponents == null) {
+            state.disabledComponents = new HashSet<String>(1);
+        }
+        if (enabled && state.enabledComponents == null) {
+            state.enabledComponents = new HashSet<String>(1);
+        }
+        return state;
+    }
+
+    void addDisabledComponent(String componentClassName, int userId) {
+        modifyUserStateComponents(userId, true, false).disabledComponents.add(componentClassName);
+    }
+
+    void addEnabledComponent(String componentClassName, int userId) {
+        modifyUserStateComponents(userId, false, true).enabledComponents.add(componentClassName);
+    }
+
+    boolean enableComponentLPw(String componentClassName, int userId) {
+        PackageUserState state = modifyUserStateComponents(userId, false, true);
+        boolean changed = state.disabledComponents != null
+                ? state.disabledComponents.remove(componentClassName) : false;
+        changed |= state.enabledComponents.add(componentClassName);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         return changed;
     }
 
     boolean disableComponentLPw(String componentClassName, int userId) {
+<<<<<<< HEAD
         HashSet<String> disabled = getComponentHashSet(disabledComponents, userId);
         HashSet<String> enabled = getComponentHashSet(enabledComponents, userId);
         boolean changed = enabled.remove(componentClassName);
         changed |= disabled.add(componentClassName);
+=======
+        PackageUserState state = modifyUserStateComponents(userId, true, false);
+        boolean changed = state.enabledComponents != null
+                ? state.enabledComponents.remove(componentClassName) : false;
+        changed |= state.disabledComponents.add(componentClassName);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         return changed;
     }
 
     boolean restoreComponentLPw(String componentClassName, int userId) {
+<<<<<<< HEAD
         HashSet<String> disabled = getComponentHashSet(disabledComponents, userId);
         HashSet<String> enabled = getComponentHashSet(enabledComponents, userId);
         boolean changed = enabled.remove(componentClassName);
         changed |= disabled.remove(componentClassName);
+=======
+        PackageUserState state = modifyUserStateComponents(userId, true, true);
+        boolean changed = state.disabledComponents != null
+                ? state.disabledComponents.remove(componentClassName) : false;
+        changed |= state.enabledComponents != null
+                ? state.enabledComponents.remove(componentClassName) : false;
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         return changed;
     }
 
     int getCurrentEnabledStateLPr(String componentName, int userId) {
+<<<<<<< HEAD
         HashSet<String> disabled = getComponentHashSet(disabledComponents, userId);
         HashSet<String> enabled = getComponentHashSet(enabledComponents, userId);
         if (enabled.contains(componentName)) {
             return COMPONENT_ENABLED_STATE_ENABLED;
         } else if (disabled.contains(componentName)) {
+=======
+        PackageUserState state = readUserState(userId);
+        if (state.enabledComponents != null && state.enabledComponents.contains(componentName)) {
+            return COMPONENT_ENABLED_STATE_ENABLED;
+        } else if (state.disabledComponents != null
+                && state.disabledComponents.contains(componentName)) {
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
             return COMPONENT_ENABLED_STATE_DISABLED;
         } else {
             return COMPONENT_ENABLED_STATE_DEFAULT;
@@ -275,6 +473,7 @@ class PackageSettingBase extends GrantedPermissions {
     }
 
     void removeUser(int userId) {
+<<<<<<< HEAD
         enabled.delete(userId);
         stopped.delete(userId);
         enabledComponents.delete(userId);
@@ -282,4 +481,8 @@ class PackageSettingBase extends GrantedPermissions {
         notLaunched.delete(userId);
     }
 
+=======
+        userState.delete(userId);
+    }
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 }

@@ -76,6 +76,7 @@ LOCAL_MODULE_TAGS := optional
 LOCAL_MODULE_PATH := $(TARGET_OUT)/fonts
 include $(BUILD_PREBUILT)
 
+<<<<<<< HEAD
 include $(CLEAR_VARS)
 LOCAL_MODULE := fallback_fonts-ja.xml
 LOCAL_SRC_FILES := $(LOCAL_MODULE)
@@ -84,6 +85,8 @@ LOCAL_MODULE_TAGS := optional
 LOCAL_MODULE_PATH := $(TARGET_OUT_ETC)
 include $(BUILD_PREBUILT)
 
+=======
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 droidsans_fallback_src := DroidSansFallbackFull.ttf
 extra_font_files := \
 	DroidSans.ttf \
@@ -91,8 +94,12 @@ extra_font_files := \
 	DroidSansEthiopic-Regular.ttf \
 	DroidSansTamil-Regular.ttf \
 	DroidSansTamil-Bold.ttf \
+<<<<<<< HEAD
 	MTLmr3m.ttf \
 	fallback_fonts-ja.xml
+=======
+	MTLmr3m.ttf
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 endif  # SMALLER_FONT_FOOTPRINT
 
 ################################
@@ -143,6 +150,11 @@ ifeq ($(MINIMAL_FONT_FOOTPRINT),true)
 
 $(eval $(call create-font-symlink,Roboto-Light.ttf,Roboto-Regular.ttf))
 $(eval $(call create-font-symlink,Roboto-LightItalic.ttf,Roboto-Italic.ttf))
+<<<<<<< HEAD
+=======
+$(eval $(call create-font-symlink,Roboto-Thin.ttf,Roboto-Regular.ttf))
+$(eval $(call create-font-symlink,Roboto-ThinItalic.ttf,Roboto-Italic.ttf))
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 $(eval $(call create-font-symlink,RobotoCondensed-Regular.ttf,Roboto-Regular.ttf))
 $(eval $(call create-font-symlink,RobotoCondensed-Bold.ttf,Roboto-Bold.ttf))
 $(eval $(call create-font-symlink,RobotoCondensed-Italic.ttf,Roboto-Italic.ttf))
@@ -152,6 +164,11 @@ else # !MINIMAL_FONT
 font_src_files += \
     Roboto-Light.ttf \
     Roboto-LightItalic.ttf \
+<<<<<<< HEAD
+=======
+    Roboto-Thin.ttf \
+    Roboto-ThinItalic.ttf \
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     RobotoCondensed-Regular.ttf \
     RobotoCondensed-Bold.ttf \
     RobotoCondensed-Italic.ttf \

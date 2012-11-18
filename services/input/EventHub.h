@@ -238,8 +238,11 @@ public:
 
     /* Called by the heatbeat to ensures that the reader has not deadlocked. */
     virtual void monitor() = 0;
+<<<<<<< HEAD
 
     virtual void setKeyLayout(const char* deviceName, const char* keyLayout) = 0;
+=======
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 };
 
 class EventHub : public EventHubInterface
@@ -298,8 +301,11 @@ public:
     virtual void dump(String8& dump);
     virtual void monitor();
 
+<<<<<<< HEAD
     virtual void setKeyLayout(const char* deviceName, const char* keyLayout);
 
+=======
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 protected:
     virtual ~EventHub();
 
@@ -415,9 +421,12 @@ private:
     size_t mPendingEventCount;
     size_t mPendingEventIndex;
     bool mPendingINotify;
+<<<<<<< HEAD
 
     // List of key layouts and character maps to be overridden
     PropertyMap mOrKeyLayouts;
+=======
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 };
 
 }; // namespace android

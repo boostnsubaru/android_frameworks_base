@@ -33,8 +33,15 @@ import android.hardware.usb.UsbDevice;
 import android.hardware.usb.UsbInterface;
 import android.hardware.usb.UsbManager;
 import android.os.Binder;
+<<<<<<< HEAD
 import android.os.FileUtils;
 import android.os.Process;
+=======
+import android.os.Environment;
+import android.os.UserHandle;
+import android.util.AtomicFile;
+import android.util.Log;
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 import android.util.Slog;
 import android.util.SparseBooleanArray;
 import android.util.Xml;
@@ -47,7 +54,10 @@ import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
 import org.xmlpull.v1.XmlSerializer;
 
+<<<<<<< HEAD
 import java.io.BufferedOutputStream;
+=======
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 import java.io.File;
 import java.io.FileDescriptor;
 import java.io.FileInputStream;
@@ -59,6 +69,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+<<<<<<< HEAD
 class UsbSettingsManager {
 
     private static final String TAG = "UsbSettingsManager";
@@ -66,6 +77,23 @@ class UsbSettingsManager {
     private static final File sSettingsFile = new File("/data/system/usb_device_manager.xml");
 
     private final Context mContext;
+=======
+import libcore.io.IoUtils;
+
+class UsbSettingsManager {
+    private static final String TAG = "UsbSettingsManager";
+    private static final boolean DEBUG = false;
+
+    /** Legacy settings file, before multi-user */
+    private static final File sSingleUserSettingsFile = new File(
+            "/data/system/usb_device_manager.xml");
+
+    private final UserHandle mUser;
+    private final AtomicFile mSettingsFile;
+
+    private final Context mContext;
+    private final Context mUserContext;
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     private final PackageManager mPackageManager;
 
     // Temporary mapping USB device name to list of UIDs with permissions for the device
@@ -349,19 +377,32 @@ class UsbSettingsManager {
     }
 
     private class MyPackageMonitor extends PackageMonitor {
+<<<<<<< HEAD
 
+=======
+        @Override
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         public void onPackageAdded(String packageName, int uid) {
             handlePackageUpdate(packageName);
         }
 
+<<<<<<< HEAD
+=======
+        @Override
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         public void onPackageChanged(String packageName, int uid, String[] components) {
             handlePackageUpdate(packageName);
         }
 
+<<<<<<< HEAD
+=======
+        @Override
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         public void onPackageRemoved(String packageName, int uid) {
             clearDefaults(packageName);
         }
     }
+<<<<<<< HEAD
     MyPackageMonitor mPackageMonitor = new MyPackageMonitor();
 
     public UsbSettingsManager(Context context) {
@@ -371,6 +412,36 @@ class UsbSettingsManager {
             readSettingsLocked();
         }
         mPackageMonitor.register(context, null, true);
+=======
+
+    MyPackageMonitor mPackageMonitor = new MyPackageMonitor();
+
+    public UsbSettingsManager(Context context, UserHandle user) {
+        if (DEBUG) Slog.v(TAG, "Creating settings for " + user);
+
+        try {
+            mUserContext = context.createPackageContextAsUser("android", 0, user);
+        } catch (NameNotFoundException e) {
+            throw new RuntimeException("Missing android package");
+        }
+
+        mContext = context;
+        mPackageManager = mUserContext.getPackageManager();
+
+        mUser = user;
+        mSettingsFile = new AtomicFile(new File(
+                Environment.getUserSystemDirectory(user.getIdentifier()),
+                "usb_device_manager.xml"));
+
+        synchronized (mLock) {
+            if (UserHandle.OWNER.equals(user)) {
+                upgradeSingleUserLocked();
+            }
+            readSettingsLocked();
+        }
+
+        mPackageMonitor.register(mUserContext, null, true);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     }
 
     private void readPreference(XmlPullParser parser)
@@ -394,10 +465,61 @@ class UsbSettingsManager {
         XmlUtils.nextElement(parser);
     }
 
+<<<<<<< HEAD
     private void readSettingsLocked() {
         FileInputStream stream = null;
         try {
             stream = new FileInputStream(sSettingsFile);
+=======
+    /**
+     * Upgrade any single-user settings from {@link #sSingleUserSettingsFile}.
+     * Should only by called by owner.
+     */
+    private void upgradeSingleUserLocked() {
+        if (sSingleUserSettingsFile.exists()) {
+            mDevicePreferenceMap.clear();
+            mAccessoryPreferenceMap.clear();
+
+            FileInputStream fis = null;
+            try {
+                fis = new FileInputStream(sSingleUserSettingsFile);
+                XmlPullParser parser = Xml.newPullParser();
+                parser.setInput(fis, null);
+
+                XmlUtils.nextElement(parser);
+                while (parser.getEventType() != XmlPullParser.END_DOCUMENT) {
+                    final String tagName = parser.getName();
+                    if ("preference".equals(tagName)) {
+                        readPreference(parser);
+                    } else {
+                        XmlUtils.nextElement(parser);
+                    }
+                }
+            } catch (IOException e) {
+                Log.wtf(TAG, "Failed to read single-user settings", e);
+            } catch (XmlPullParserException e) {
+                Log.wtf(TAG, "Failed to read single-user settings", e);
+            } finally {
+                IoUtils.closeQuietly(fis);
+            }
+
+            writeSettingsLocked();
+
+            // Success or failure, we delete single-user file
+            sSingleUserSettingsFile.delete();
+        }
+    }
+
+    private void readSettingsLocked() {
+        if (DEBUG) Slog.v(TAG, "readSettingsLocked()");
+
+        mDevicePreferenceMap.clear();
+        mAccessoryPreferenceMap.clear();
+
+        FileInputStream stream = null;
+        try {
+            stream = mSettingsFile.openRead();
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
             XmlPullParser parser = Xml.newPullParser();
             parser.setInput(stream, null);
 
@@ -406,7 +528,11 @@ class UsbSettingsManager {
                 String tagName = parser.getName();
                 if ("preference".equals(tagName)) {
                     readPreference(parser);
+<<<<<<< HEAD
                  } else {
+=======
+                } else {
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
                     XmlUtils.nextElement(parser);
                 }
             }
@@ -414,6 +540,7 @@ class UsbSettingsManager {
             if (DEBUG) Slog.d(TAG, "settings file not found");
         } catch (Exception e) {
             Slog.e(TAG, "error reading settings file, deleting to start fresh", e);
+<<<<<<< HEAD
             sSettingsFile.delete();
         } finally {
             if (stream != null) {
@@ -422,10 +549,16 @@ class UsbSettingsManager {
                 } catch (IOException e) {
                 }
             }
+=======
+            mSettingsFile.delete();
+        } finally {
+            IoUtils.closeQuietly(stream);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         }
     }
 
     private void writeSettingsLocked() {
+<<<<<<< HEAD
         FileOutputStream fos = null;
         try {
             FileOutputStream fstr = new FileOutputStream(sSettingsFile);
@@ -433,6 +566,16 @@ class UsbSettingsManager {
             BufferedOutputStream str = new BufferedOutputStream(fstr);
             FastXmlSerializer serializer = new FastXmlSerializer();
             serializer.setOutput(str, "utf-8");
+=======
+        if (DEBUG) Slog.v(TAG, "writeSettingsLocked()");
+
+        FileOutputStream fos = null;
+        try {
+            fos = mSettingsFile.startWrite();
+
+            FastXmlSerializer serializer = new FastXmlSerializer();
+            serializer.setOutput(fos, "utf-8");
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
             serializer.startDocument(null, true);
             serializer.setFeature("http://xmlpull.org/v1/doc/features.html#indent-output", true);
             serializer.startTag(null, "settings");
@@ -454,12 +597,21 @@ class UsbSettingsManager {
             serializer.endTag(null, "settings");
             serializer.endDocument();
 
+<<<<<<< HEAD
             str.flush();
             FileUtils.sync(fstr);
             str.close();
         } catch (Exception e) {
             Slog.e(TAG, "error writing settings file, deleting to start fresh", e);
             sSettingsFile.delete();
+=======
+            mSettingsFile.finishWrite(fos);
+        } catch (IOException e) {
+            Slog.e(TAG, "Failed to write settings", e);
+            if (fos != null) {
+                mSettingsFile.failWrite(fos);
+            }
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         }
     }
 
@@ -545,6 +697,13 @@ class UsbSettingsManager {
             defaultPackage = mDevicePreferenceMap.get(new DeviceFilter(device));
         }
 
+<<<<<<< HEAD
+=======
+        // Send broadcast to running activity with registered intent
+        mUserContext.sendBroadcast(intent);
+
+        // Start activity with registered intent
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         resolveActivity(intent, matches, defaultPackage, device, null);
     }
 
@@ -555,7 +714,11 @@ class UsbSettingsManager {
         Intent intent = new Intent(UsbManager.ACTION_USB_DEVICE_DETACHED);
         intent.putExtra(UsbManager.EXTRA_DEVICE, device);
         if (DEBUG) Slog.d(TAG, "usbDeviceRemoved, sending " + intent);
+<<<<<<< HEAD
         mContext.sendBroadcast(intent);
+=======
+        mContext.sendBroadcastAsUser(intent, UserHandle.ALL);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     }
 
     public void accessoryAttached(UsbAccessory accessory) {
@@ -582,7 +745,11 @@ class UsbSettingsManager {
         Intent intent = new Intent(
                 UsbManager.ACTION_USB_ACCESSORY_DETACHED);
         intent.putExtra(UsbManager.EXTRA_ACCESSORY, accessory);
+<<<<<<< HEAD
         mContext.sendBroadcast(intent);
+=======
+        mContext.sendBroadcastAsUser(intent, UserHandle.ALL);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     }
 
     private void resolveActivity(Intent intent, ArrayList<ResolveInfo> matches,
@@ -603,7 +770,11 @@ class UsbSettingsManager {
                     dialogIntent.putExtra(UsbManager.EXTRA_ACCESSORY, accessory);
                     dialogIntent.putExtra("uri", uri);
                     try {
+<<<<<<< HEAD
                         mContext.startActivity(dialogIntent);
+=======
+                        mUserContext.startActivityAsUser(dialogIntent, mUser);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
                     } catch (ActivityNotFoundException e) {
                         Slog.e(TAG, "unable to start UsbAccessoryUriActivity");
                     }
@@ -651,7 +822,11 @@ class UsbSettingsManager {
                 intent.setComponent(
                         new ComponentName(defaultRI.activityInfo.packageName,
                                 defaultRI.activityInfo.name));
+<<<<<<< HEAD
                 mContext.startActivity(intent);
+=======
+                mUserContext.startActivityAsUser(intent, mUser);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
             } catch (ActivityNotFoundException e) {
                 Slog.e(TAG, "startActivity failed", e);
             }
@@ -678,7 +853,11 @@ class UsbSettingsManager {
                 resolverIntent.putExtra(Intent.EXTRA_INTENT, intent);
             }
             try {
+<<<<<<< HEAD
                 mContext.startActivity(resolverIntent);
+=======
+                mUserContext.startActivityAsUser(resolverIntent, mUser);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
             } catch (ActivityNotFoundException e) {
                 Slog.e(TAG, "unable to start activity " + resolverIntent);
             }
@@ -809,7 +988,11 @@ class UsbSettingsManager {
     }
 
     private void requestPermissionDialog(Intent intent, String packageName, PendingIntent pi) {
+<<<<<<< HEAD
         int uid = Binder.getCallingUid();
+=======
+        final int uid = Binder.getCallingUid();
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 
         // compare uid with packageName to foil apps pretending to be someone else
         try {
@@ -828,9 +1011,15 @@ class UsbSettingsManager {
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         intent.putExtra(Intent.EXTRA_INTENT, pi);
         intent.putExtra("package", packageName);
+<<<<<<< HEAD
         intent.putExtra("uid", uid);
         try {
             mContext.startActivity(intent);
+=======
+        intent.putExtra(Intent.EXTRA_UID, uid);
+        try {
+            mUserContext.startActivityAsUser(intent, mUser);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         } catch (ActivityNotFoundException e) {
             Slog.e(TAG, "unable to start UsbPermissionActivity");
         } finally {
@@ -846,7 +1035,11 @@ class UsbSettingsManager {
             intent.putExtra(UsbManager.EXTRA_DEVICE, device);
             intent.putExtra(UsbManager.EXTRA_PERMISSION_GRANTED, true);
             try {
+<<<<<<< HEAD
                 pi.send(mContext, 0, intent);
+=======
+                pi.send(mUserContext, 0, intent);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
             } catch (PendingIntent.CanceledException e) {
                 if (DEBUG) Slog.d(TAG, "requestPermission PendingIntent was cancelled");
             }
@@ -859,14 +1052,23 @@ class UsbSettingsManager {
     }
 
     public void requestPermission(UsbAccessory accessory, String packageName, PendingIntent pi) {
+<<<<<<< HEAD
       Intent intent = new Intent();
+=======
+        Intent intent = new Intent();
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 
         // respond immediately if permission has already been granted
         if (hasPermission(accessory)) {
             intent.putExtra(UsbManager.EXTRA_ACCESSORY, accessory);
             intent.putExtra(UsbManager.EXTRA_PERMISSION_GRANTED, true);
+<<<<<<< HEAD
            try {
                 pi.send(mContext, 0, intent);
+=======
+            try {
+                pi.send(mUserContext, 0, intent);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
             } catch (PendingIntent.CanceledException e) {
                 if (DEBUG) Slog.d(TAG, "requestPermission PendingIntent was cancelled");
             }

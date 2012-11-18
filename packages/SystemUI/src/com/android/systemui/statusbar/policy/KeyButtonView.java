@@ -18,6 +18,7 @@ package com.android.systemui.statusbar.policy;
 
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
+<<<<<<< HEAD
 import android.content.ContentResolver;
 import android.content.Context;
 import android.content.res.TypedArray;
@@ -37,6 +38,21 @@ import android.util.AttributeSet;
 import android.util.Log;
 import android.view.accessibility.AccessibilityEvent;
 import android.view.HapticFeedbackConstants;
+=======
+import android.content.Context;
+import android.content.res.TypedArray;
+import android.graphics.drawable.Drawable;
+import android.graphics.Canvas;
+import android.graphics.RectF;
+import android.hardware.input.InputManager;
+import android.os.RemoteException;
+import android.os.SystemClock;
+import android.os.ServiceManager;
+import android.util.AttributeSet;
+import android.view.accessibility.AccessibilityEvent;
+import android.view.HapticFeedbackConstants;
+import android.view.IWindowManager;
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 import android.view.InputDevice;
 import android.view.KeyCharacterMap;
 import android.view.KeyEvent;
@@ -52,12 +68,17 @@ public class KeyButtonView extends ImageView {
     private static final String TAG = "StatusBar.KeyButtonView";
 
     final float GLOW_MAX_SCALE_FACTOR = 1.8f;
+<<<<<<< HEAD
     float BUTTON_QUIESCENT_ALPHA = 1f;
+=======
+    final float BUTTON_QUIESCENT_ALPHA = 0.70f;
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 
     long mDownTime;
     int mCode;
     int mTouchSlop;
     Drawable mGlowBG;
+<<<<<<< HEAD
     int mGlowBGColor = Integer.MIN_VALUE;
     int mGlowWidth, mGlowHeight;
     float mGlowAlpha = 0f, mGlowScale = 1f, mDrawingAlpha = 1f;
@@ -78,6 +99,24 @@ public class KeyButtonView extends ImageView {
                     // do long click on the primary 'key'
                     sendEvent(KeyEvent.ACTION_DOWN, KeyEvent.FLAG_LONG_PRESS);
                     sendAccessibilityEvent(AccessibilityEvent.TYPE_VIEW_LONG_CLICKED);
+=======
+    int mGlowWidth, mGlowHeight;
+    float mGlowAlpha = 0f, mGlowScale = 1f, mDrawingAlpha = 1f;
+    boolean mSupportsLongpress = true;
+    RectF mRect = new RectF(0f,0f,0f,0f);
+    AnimatorSet mPressedAnim;
+
+    Runnable mCheckLongPress = new Runnable() {
+        public void run() {
+            if (isPressed()) {
+                // Slog.d("KeyButtonView", "longpressed: " + this);
+                if (mCode != 0) {
+                    sendEvent(KeyEvent.ACTION_DOWN, KeyEvent.FLAG_LONG_PRESS);
+                    sendAccessibilityEvent(AccessibilityEvent.TYPE_VIEW_LONG_CLICKED);
+                } else {
+                    // Just an old-fashioned ImageView
+                    performLongClick();
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
                 }
             }
         }
@@ -103,11 +142,16 @@ public class KeyButtonView extends ImageView {
             mGlowWidth = mGlowBG.getIntrinsicWidth();
             mGlowHeight = mGlowBG.getIntrinsicHeight();
         }
+<<<<<<< HEAD
      
+=======
+        
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         a.recycle();
 
         setClickable(true);
         mTouchSlop = ViewConfiguration.get(context).getScaledTouchSlop();
+<<<<<<< HEAD
         SettingsObserver settingsObserver = new SettingsObserver(new Handler());
         settingsObserver.observe();
     }
@@ -150,6 +194,10 @@ public class KeyButtonView extends ImageView {
         }
     }
     
+=======
+    }
+
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     @Override
     protected void onDraw(Canvas canvas) {
         if (mGlowBG != null) {
@@ -183,7 +231,10 @@ public class KeyButtonView extends ImageView {
         // the alpha on this ImageView's drawable directly
         setAlpha((int) (x * 255));
         mDrawingAlpha = x;
+<<<<<<< HEAD
         invalidate();
+=======
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     }
 
     public float getGlowAlpha() {
@@ -238,19 +289,31 @@ public class KeyButtonView extends ImageView {
                         mGlowScale = GLOW_MAX_SCALE_FACTOR;
                     if (mGlowAlpha < BUTTON_QUIESCENT_ALPHA)
                         mGlowAlpha = BUTTON_QUIESCENT_ALPHA;
+<<<<<<< HEAD
                     setDrawingAlpha(BUTTON_QUIESCENT_ALPHA);
+=======
+                    setDrawingAlpha(1f);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
                     as.playTogether(
                         ObjectAnimator.ofFloat(this, "glowAlpha", 1f),
                         ObjectAnimator.ofFloat(this, "glowScale", GLOW_MAX_SCALE_FACTOR)
                     );
+<<<<<<< HEAD
                     as.setDuration(durationSpeedOff);
+=======
+                    as.setDuration(50);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
                 } else {
                     as.playTogether(
                         ObjectAnimator.ofFloat(this, "glowAlpha", 0f),
                         ObjectAnimator.ofFloat(this, "glowScale", 1f),
                         ObjectAnimator.ofFloat(this, "drawingAlpha", BUTTON_QUIESCENT_ALPHA)
                     );
+<<<<<<< HEAD
                     as.setDuration(durationSpeedOn);
+=======
+                    as.setDuration(500);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
                 }
                 as.start();
             }
@@ -265,7 +328,10 @@ public class KeyButtonView extends ImageView {
         switch (action) {
             case MotionEvent.ACTION_DOWN:
                 //Slog.d("KeyButtonView", "press");
+<<<<<<< HEAD
             	setHandlingLongpress(false);
+=======
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
                 mDownTime = SystemClock.uptimeMillis();
                 setPressed(true);
                 if (mCode != 0) {
@@ -300,7 +366,11 @@ public class KeyButtonView extends ImageView {
                 final boolean doIt = isPressed();
                 setPressed(false);
                 if (mCode != 0) {
+<<<<<<< HEAD
                 	if ((doIt) && (!mHandlingLongpress)) {
+=======
+                    if (doIt) {
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
                         sendEvent(KeyEvent.ACTION_UP, 0);
                         sendAccessibilityEvent(AccessibilityEvent.TYPE_VIEW_CLICKED);
                         playSoundEffect(SoundEffectConstants.CLICK);
@@ -309,7 +379,11 @@ public class KeyButtonView extends ImageView {
                     }
                 } else {
                     // no key code, just a regular ImageView
+<<<<<<< HEAD
                     if ((doIt) && (!mHandlingLongpress)) {
+=======
+                    if (doIt) {
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
                         performClick();
                     }
                 }
@@ -335,6 +409,7 @@ public class KeyButtonView extends ImageView {
         InputManager.getInstance().injectInputEvent(ev,
                 InputManager.INJECT_INPUT_EVENT_MODE_ASYNC);
     }
+<<<<<<< HEAD
 	
     class SettingsObserver extends ContentObserver {
         SettingsObserver(Handler handler) {
@@ -406,6 +481,8 @@ public class KeyButtonView extends ImageView {
         }
         invalidate();
     }
+=======
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 }
 
 

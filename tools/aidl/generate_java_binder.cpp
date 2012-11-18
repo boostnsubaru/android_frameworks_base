@@ -54,7 +54,11 @@ StubClass::StubClass(Type* type, Type* interfaceType)
 
     // asBinder
     Method* asBinder = new Method;
+<<<<<<< HEAD
         asBinder->modifiers = PUBLIC;
+=======
+        asBinder->modifiers = PUBLIC | OVERRIDE;
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         asBinder->returnType = IBINDER_TYPE;
         asBinder->name = "asBinder";
         asBinder->statements = new StatementBlock;
@@ -117,7 +121,11 @@ StubClass::make_as_interface(Type *interfaceType)
     queryLocalInterface->arguments.push_back(new LiteralExpression("DESCRIPTOR"));
     IInterfaceType* iinType = new IInterfaceType();
     Variable *iin = new Variable(iinType, "iin");
+<<<<<<< HEAD
     VariableDeclaration* iinVd = new VariableDeclaration(iin, queryLocalInterface, iinType);
+=======
+    VariableDeclaration* iinVd = new VariableDeclaration(iin, queryLocalInterface, NULL);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     m->statements->Add(iinVd);
 
     // Ensure the instance type of the local object is as expected.
@@ -181,7 +189,11 @@ ProxyClass::ProxyClass(Type* type, InterfaceType* interfaceType)
 
     // IBinder asBinder()
     Method* asBinder = new Method;
+<<<<<<< HEAD
         asBinder->modifiers = PUBLIC;
+=======
+        asBinder->modifiers = PUBLIC | OVERRIDE;
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         asBinder->returnType = IBINDER_TYPE;
         asBinder->name = "asBinder";
         asBinder->statements = new StatementBlock;
@@ -384,7 +396,11 @@ generate_method(const method_type* method, Class* interface,
     // == the proxy method ===================================================
     Method* proxy = new Method;
         proxy->comment = gather_comments(method->comments_token->extra);
+<<<<<<< HEAD
         proxy->modifiers = PUBLIC;
+=======
+        proxy->modifiers = PUBLIC | OVERRIDE;
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         proxy->returnType = NAMES.Search(method->type.type.data);
         proxy->returnTypeDimension = method->type.dimension;
         proxy->name = method->name.data;

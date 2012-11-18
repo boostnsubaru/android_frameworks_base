@@ -24,8 +24,15 @@ import android.app.backup.FullBackup;
 import android.app.backup.FullBackupDataOutput;
 import android.app.backup.WallpaperBackupHelper;
 import android.content.Context;
+<<<<<<< HEAD
 import android.os.ParcelFileDescriptor;
 import android.os.ServiceManager;
+=======
+import android.os.Environment;
+import android.os.ParcelFileDescriptor;
+import android.os.ServiceManager;
+import android.os.UserHandle;
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 import android.util.Slog;
 
 
@@ -45,11 +52,21 @@ public class SystemBackupAgent extends BackupAgentHelper {
     private static final String WALLPAPER_INFO_FILENAME = "wallpaper_info.xml";
 
     // TODO: Will need to change if backing up non-primary user's wallpaper
+<<<<<<< HEAD
     private static final String WALLPAPER_IMAGE_DIR = "/data/system/users/0";
     private static final String WALLPAPER_IMAGE = WallpaperBackupHelper.WALLPAPER_IMAGE;
 
     // TODO: Will need to change if backing up non-primary user's wallpaper
     private static final String WALLPAPER_INFO_DIR = "/data/system/users/0";
+=======
+    private static final String WALLPAPER_IMAGE_DIR =
+            Environment.getUserSystemDirectory(UserHandle.USER_OWNER).getAbsolutePath();
+    private static final String WALLPAPER_IMAGE = WallpaperBackupHelper.WALLPAPER_IMAGE;
+
+    // TODO: Will need to change if backing up non-primary user's wallpaper
+    private static final String WALLPAPER_INFO_DIR =
+            Environment.getUserSystemDirectory(UserHandle.USER_OWNER).getAbsolutePath();
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     private static final String WALLPAPER_INFO = WallpaperBackupHelper.WALLPAPER_INFO;
     // Use old keys to keep legacy data compatibility and avoid writing two wallpapers
     private static final String WALLPAPER_IMAGE_KEY = WallpaperBackupHelper.WALLPAPER_IMAGE_KEY;

@@ -76,6 +76,10 @@ class GLES20RecordingCanvas extends GLES20Canvas implements Poolable<GLES20Recor
 
     void start() {
         mDisplayList.mBitmaps.clear();
+<<<<<<< HEAD
+=======
+        mDisplayList.mChildDisplayLists.clear();
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     }
 
     int end(int nativeDisplayList) {
@@ -156,6 +160,16 @@ class GLES20RecordingCanvas extends GLES20Canvas implements Poolable<GLES20Recor
     }
 
     @Override
+<<<<<<< HEAD
+=======
+    public int drawDisplayList(DisplayList displayList, Rect dirty, int flags) {
+        int status = super.drawDisplayList(displayList, dirty, flags);
+        mDisplayList.mChildDisplayLists.add(displayList);
+        return status;
+    }
+
+    @Override
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     public void drawLine(float startX, float startY, float stopX, float stopY, Paint paint) {
         super.drawLine(startX, startY, stopX, stopY, paint);
         recordShaderBitmap(paint);
@@ -228,6 +242,7 @@ class GLES20RecordingCanvas extends GLES20Canvas implements Poolable<GLES20Recor
     }
 
     @Override
+<<<<<<< HEAD
     public void drawRect(Rect r, Paint paint) {
         super.drawRect(r, paint);
         recordShaderBitmap(paint);
@@ -240,6 +255,8 @@ class GLES20RecordingCanvas extends GLES20Canvas implements Poolable<GLES20Recor
     }
 
     @Override
+=======
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     public void drawRoundRect(RectF rect, float rx, float ry, Paint paint) {
         super.drawRoundRect(rect, rx, ry, paint);
         recordShaderBitmap(paint);

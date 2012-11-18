@@ -44,6 +44,10 @@ class BroadcastRecord extends Binder {
     final boolean ordered;  // serialize the send to receivers?
     final boolean sticky;   // originated from existing sticky data?
     final boolean initialSticky; // initial broadcast from register to sticky?
+<<<<<<< HEAD
+=======
+    final int userId;       // user id this broadcast was for
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     final String requiredPermission; // a permission the caller has required
     final List receivers;   // contains BroadcastFilter and ResolveInfo
     IIntentReceiver resultTo; // who receives final result if non-null
@@ -79,6 +83,7 @@ class BroadcastRecord extends Binder {
     void dump(PrintWriter pw, String prefix) {
         final long now = SystemClock.uptimeMillis();
 
+<<<<<<< HEAD
         pw.print(prefix); pw.println(this);
         pw.print(prefix); pw.println(intent);
         if (sticky) {
@@ -86,6 +91,13 @@ class BroadcastRecord extends Binder {
             if (bundle != null) {
                 pw.print(prefix); pw.print("extras: "); pw.println(bundle.toString());
             }
+=======
+        pw.print(prefix); pw.print(this); pw.print(" to user "); pw.println(userId);
+        pw.print(prefix); pw.println(intent.toInsecureString());
+        Bundle bundle = intent.getExtras();
+        if (bundle != null) {
+            pw.print(prefix); pw.print("extras: "); pw.println(bundle.toString());
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         }
         pw.print(prefix); pw.print("caller="); pw.print(callerPackage); pw.print(" ");
                 pw.print(callerApp != null ? callerApp.toShortString() : "null");
@@ -140,6 +152,7 @@ class BroadcastRecord extends Binder {
                         pw.println(curReceiver.applicationInfo.sourceDir);
             }
         }
+<<<<<<< HEAD
         String stateStr = " (?)";
         switch (state) {
             case IDLE:              stateStr=" (IDLE)"; break;
@@ -148,6 +161,17 @@ class BroadcastRecord extends Binder {
             case CALL_DONE_RECEIVE: stateStr=" (CALL_DONE_RECEIVE)"; break;
         }
         pw.print(prefix); pw.print("state="); pw.print(state); pw.println(stateStr);
+=======
+        if (state != IDLE) {
+            String stateStr = " (?)";
+            switch (state) {
+                case APP_RECEIVE:       stateStr=" (APP_RECEIVE)"; break;
+                case CALL_IN_RECEIVE:   stateStr=" (CALL_IN_RECEIVE)"; break;
+                case CALL_DONE_RECEIVE: stateStr=" (CALL_DONE_RECEIVE)"; break;
+            }
+            pw.print(prefix); pw.print("state="); pw.print(state); pw.println(stateStr);
+        }
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         final int N = receivers != null ? receivers.size() : 0;
         String p2 = prefix + "  ";
         PrintWriterPrinter printer = new PrintWriterPrinter(pw);
@@ -167,7 +191,12 @@ class BroadcastRecord extends Binder {
             int _callingPid, int _callingUid, String _requiredPermission,
             List _receivers, IIntentReceiver _resultTo, int _resultCode,
             String _resultData, Bundle _resultExtras, boolean _serialized,
+<<<<<<< HEAD
             boolean _sticky, boolean _initialSticky) {
+=======
+            boolean _sticky, boolean _initialSticky,
+            int _userId) {
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         queue = _queue;
         intent = _intent;
         callerApp = _callerApp;
@@ -183,6 +212,10 @@ class BroadcastRecord extends Binder {
         ordered = _serialized;
         sticky = _sticky;
         initialSticky = _initialSticky;
+<<<<<<< HEAD
+=======
+        userId = _userId;
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         nextReceiver = 0;
         state = IDLE;
     }
@@ -190,6 +223,10 @@ class BroadcastRecord extends Binder {
     public String toString() {
         return "BroadcastRecord{"
             + Integer.toHexString(System.identityHashCode(this))
+<<<<<<< HEAD
             + " " + intent.getAction() + "}";
+=======
+            + " u" + userId + " " + intent.getAction() + "}";
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     }
 }

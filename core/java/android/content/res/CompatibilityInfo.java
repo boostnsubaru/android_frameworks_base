@@ -92,6 +92,7 @@ public class CompatibilityInfo implements Parcelable {
      */
     public final float applicationInvertedScale;
 
+<<<<<<< HEAD
     /**
      * Whether the application supports third-party theming.
      */
@@ -101,6 +102,11 @@ public class CompatibilityInfo implements Parcelable {
             boolean forceCompat) {
         int compatFlags = 0;
         isThemeable = appInfo.isThemeable;
+=======
+    public CompatibilityInfo(ApplicationInfo appInfo, int screenLayout, int sw,
+            boolean forceCompat) {
+        int compatFlags = 0;
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 
         if (appInfo.requiresSmallestWidthDp != 0 || appInfo.compatibleWidthLimitDp != 0
                 || appInfo.largestWidthLimitDp != 0) {
@@ -248,19 +254,30 @@ public class CompatibilityInfo implements Parcelable {
     }
 
     private CompatibilityInfo(int compFlags,
+<<<<<<< HEAD
             int dens, float scale, float invertedScale, boolean isThemeable) {
+=======
+            int dens, float scale, float invertedScale) {
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         mCompatibilityFlags = compFlags;
         applicationDensity = dens;
         applicationScale = scale;
         applicationInvertedScale = invertedScale;
+<<<<<<< HEAD
         this.isThemeable = isThemeable;
+=======
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     }
 
     private CompatibilityInfo() {
         this(NEVER_NEEDS_COMPAT, DisplayMetrics.DENSITY_DEVICE,
                 1.0f,
+<<<<<<< HEAD
                 1.0f,
                 true);
+=======
+                1.0f);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     }
 
     /**
@@ -447,7 +464,11 @@ public class CompatibilityInfo implements Parcelable {
         if (isScalingRequired()) {
             float invertedRatio = applicationInvertedScale;
             inoutDm.density = inoutDm.noncompatDensity * invertedRatio;
+<<<<<<< HEAD
             inoutDm.densityDpi = (int)((inoutDm.density*DisplayMetrics.DENSITY_DEFAULT)+.5f);
+=======
+            inoutDm.densityDpi = (int)((inoutDm.noncompatDensityDpi * invertedRatio) + .5f);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
             inoutDm.scaledDensity = inoutDm.noncompatScaledDensity * invertedRatio;
             inoutDm.xdpi = inoutDm.noncompatXdpi * invertedRatio;
             inoutDm.ydpi = inoutDm.noncompatYdpi * invertedRatio;
@@ -456,7 +477,11 @@ public class CompatibilityInfo implements Parcelable {
         }
     }
 
+<<<<<<< HEAD
     public void applyToConfiguration(Configuration inoutConfig) {
+=======
+    public void applyToConfiguration(int displayDensity, Configuration inoutConfig) {
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         if (!supportsScreen()) {
             // This is a larger screen device and the app is not
             // compatible with large screens, so we are forcing it to
@@ -468,6 +493,14 @@ public class CompatibilityInfo implements Parcelable {
             inoutConfig.screenHeightDp = inoutConfig.compatScreenHeightDp;
             inoutConfig.smallestScreenWidthDp = inoutConfig.compatSmallestScreenWidthDp;
         }
+<<<<<<< HEAD
+=======
+        inoutConfig.densityDpi = displayDensity;
+        if (isScalingRequired()) {
+            float invertedRatio = applicationInvertedScale;
+            inoutConfig.densityDpi = (int)((inoutConfig.densityDpi * invertedRatio) + .5f);
+        }
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     }
 
     /**
@@ -527,7 +560,10 @@ public class CompatibilityInfo implements Parcelable {
             if (applicationDensity != oc.applicationDensity) return false;
             if (applicationScale != oc.applicationScale) return false;
             if (applicationInvertedScale != oc.applicationInvertedScale) return false;
+<<<<<<< HEAD
             if (isThemeable != oc.isThemeable) return false;
+=======
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
             return true;
         } catch (ClassCastException e) {
             return false;
@@ -565,7 +601,10 @@ public class CompatibilityInfo implements Parcelable {
         result = 31 * result + applicationDensity;
         result = 31 * result + Float.floatToIntBits(applicationScale);
         result = 31 * result + Float.floatToIntBits(applicationInvertedScale);
+<<<<<<< HEAD
         result = 31 * result + (isThemeable ? 1 : 0);
+=======
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         return result;
     }
 
@@ -580,7 +619,10 @@ public class CompatibilityInfo implements Parcelable {
         dest.writeInt(applicationDensity);
         dest.writeFloat(applicationScale);
         dest.writeFloat(applicationInvertedScale);
+<<<<<<< HEAD
         dest.writeInt(isThemeable ? 1 : 0);
+=======
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     }
 
     public static final Parcelable.Creator<CompatibilityInfo> CREATOR
@@ -599,6 +641,9 @@ public class CompatibilityInfo implements Parcelable {
         applicationDensity = source.readInt();
         applicationScale = source.readFloat();
         applicationInvertedScale = source.readFloat();
+<<<<<<< HEAD
         isThemeable = source.readInt() == 1 ? true : false;
+=======
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     }
 }

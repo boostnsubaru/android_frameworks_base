@@ -12,7 +12,12 @@ You can also download individual files listed below.</p>
   <div class="layout-content-col span-4">
 
 <p>
+<<<<<<< HEAD
   <a class="download-button" href="{@docRoot}downloads/design/Android_Design_Downloads_20120814.zip">Download All</a>
+=======
+  <a class="download-button" onClick="_gaq.push(['_trackEvent', 'Design', 'Download', 'All Design Assets']);"
+    href="{@docRoot}downloads/design/Android_Design_Downloads_20120823.zip">Download All</a>
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 </p>
 
   </div>
@@ -37,10 +42,21 @@ available.</p>
   <div class="layout-content-col span-4">
 
 <p>
+<<<<<<< HEAD
   <a class="download-button" href="{@docRoot}downloads/design/Android_Design_Fireworks_Stencil_20120814.png">Adobe&reg; Fireworks&reg; PNG Stencil</a>
   <a class="download-button" href="{@docRoot}downloads/design/Android_Design_Illustrator_Vectors_20120814.ai">Adobe&reg; Illustrator&reg; Stencil</a>
   <a class="download-button" href="{@docRoot}downloads/design/Android_Design_OmniGraffle_Stencil_20120814.graffle">Omni&reg; OmniGraffle&reg; Stencil</a>
   <a class="download-button" href="{@docRoot}downloads/design/Android_Design_Holo_Widgets_20120814.zip">Adobe&reg; Photoshop&reg; Sources</a>
+=======
+  <a class="download-button"  onClick="_gaq.push(['_trackEvent', 'Design', 'Download', 'Fireworks Stencil']);"
+    href="{@docRoot}downloads/design/Android_Design_Fireworks_Stencil_20120814.png">Adobe&reg; Fireworks&reg; PNG Stencil</a>
+  <a class="download-button"  onClick="_gaq.push(['_trackEvent', 'Design', 'Download', 'Illustrator Stencil']);"
+    href="{@docRoot}downloads/design/Android_Design_Illustrator_Vectors_20120814.ai">Adobe&reg; Illustrator&reg; Stencil</a>
+  <a class="download-button"  onClick="_gaq.push(['_trackEvent', 'Design', 'Download', 'OmniGraffle Stencil']);"
+    href="{@docRoot}downloads/design/Android_Design_OmniGraffle_Stencil_20120814.graffle">Omni&reg; OmniGraffle&reg; Stencil</a>
+  <a class="download-button"  onClick="_gaq.push(['_trackEvent', 'Design', 'Download', 'Photoshop Sources']);"
+    href="{@docRoot}downloads/design/Android_Design_Holo_Widgets_20120814.zip">Adobe&reg; Photoshop&reg; Sources</a>
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 </p>
 
   </div>
@@ -66,7 +82,12 @@ modify to match your theme, plus source files.</p>
   <div class="layout-content-col span-4">
 
 <p>
+<<<<<<< HEAD
   <a class="download-button" href="{@docRoot}downloads/design/Android_Design_Icons_20120814.zip">Action Bar Icon Pack</a>
+=======
+  <a class="download-button"  onClick="_gaq.push(['_trackEvent', 'Design', 'Download', 'Action Bar Icons']);"
+    href="{@docRoot}downloads/design/Android_Design_Icons_20120814.zip">Action Bar Icon Pack</a>
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 </p>
 
   </div>
@@ -91,8 +112,15 @@ requirements of UI and high-resolution screens.</p>
   <div class="layout-content-col span-4">
 
 <p>
+<<<<<<< HEAD
   <a class="download-button" href="{@docRoot}downloads/design/Roboto_Hinted_20111129.zip">Roboto</a>
   <a class="download-button" href="{@docRoot}downloads/design/Roboto_Specimen_Book_20111129.pdf">Specimen Book</a>
+=======
+  <a class="download-button"  onClick="_gaq.push(['_trackEvent', 'Design', 'Download', 'Roboto ZIP']);"
+    href="{@docRoot}downloads/design/Roboto_Hinted_20120823.zip">Roboto</a>
+  <a class="download-button"  onClick="_gaq.push(['_trackEvent', 'Design', 'Download', 'Roboto Specemin Book']);"
+    href="{@docRoot}downloads/design/Roboto_Specimen_Book_20111129.pdf">Specimen Book</a>
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 </p>
 
   </div>
@@ -115,7 +143,12 @@ shade that can be used as a complement when needed.</p>
   <div class="layout-content-col span-4">
 
 <p>
+<<<<<<< HEAD
   <a class="download-button" href="{@docRoot}downloads/design/Android_Design_Color_Swatches_20120229.zip">Color Swatches</a>
+=======
+  <a class="download-button"  onClick="_gaq.push(['_trackEvent', 'Design', 'Download', 'Color Swatches']);"
+    href="{@docRoot}downloads/design/Android_Design_Color_Swatches_20120229.zip">Color Swatches</a>
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 </p>
 
   </div>

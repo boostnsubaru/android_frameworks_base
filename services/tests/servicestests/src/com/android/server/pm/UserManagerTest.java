@@ -16,6 +16,7 @@
 
 package com.android.server.pm;
 
+<<<<<<< HEAD
 import com.android.server.pm.UserManager;
 
 import android.content.pm.UserInfo;
@@ -23,12 +24,26 @@ import android.os.Debug;
 import android.os.Environment;
 import android.test.AndroidTestCase;
 
+=======
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
+import android.content.pm.UserInfo;
+import android.os.Debug;
+import android.os.Environment;
+import android.os.UserManager;
+import android.test.AndroidTestCase;
+
+import java.util.ArrayList;
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 import java.util.List;
 
 /** Test {@link UserManager} functionality. */
 public class UserManagerTest extends AndroidTestCase {
 
     UserManager mUserManager = null;
+<<<<<<< HEAD
 
     @Override
     public void setUp() throws Exception {
@@ -45,6 +60,22 @@ public class UserManagerTest extends AndroidTestCase {
                 mUserManager.removeUser(user.id);
             }
         }
+=======
+    Object mUserLock = new Object();
+
+    @Override
+    public void setUp() throws Exception {
+        mUserManager = (UserManager) getContext().getSystemService(Context.USER_SERVICE);
+        IntentFilter filter = new IntentFilter(Intent.ACTION_USER_REMOVED);
+        getContext().registerReceiver(new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                synchronized (mUserLock) {
+                    mUserLock.notifyAll();
+                }
+            }
+        }, filter);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     }
 
     public void testHasPrimary() throws Exception {
@@ -52,12 +83,19 @@ public class UserManagerTest extends AndroidTestCase {
     }
 
     public void testAddUser() throws Exception {
+<<<<<<< HEAD
         final UserManager details = mUserManager;
 
         UserInfo userInfo = details.createUser("Guest 1", UserInfo.FLAG_GUEST);
         assertTrue(userInfo != null);
 
         List<UserInfo> list = details.getUsers();
+=======
+        UserInfo userInfo = mUserManager.createUser("Guest 1", UserInfo.FLAG_GUEST);
+        assertTrue(userInfo != null);
+
+        List<UserInfo> list = mUserManager.getUsers();
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         boolean found = false;
         for (UserInfo user : list) {
             if (user.id == userInfo.id && user.name.equals("Guest 1")
@@ -68,6 +106,7 @@ public class UserManagerTest extends AndroidTestCase {
             }
         }
         assertTrue(found);
+<<<<<<< HEAD
     }
 
     public void testAdd2Users() throws Exception {
@@ -75,6 +114,14 @@ public class UserManagerTest extends AndroidTestCase {
 
         UserInfo user1 = details.createUser("Guest 1", UserInfo.FLAG_GUEST);
         UserInfo user2 = details.createUser("User 2", UserInfo.FLAG_ADMIN);
+=======
+        removeUser(userInfo.id);
+    }
+
+    public void testAdd2Users() throws Exception {
+        UserInfo user1 = mUserManager.createUser("Guest 1", UserInfo.FLAG_GUEST);
+        UserInfo user2 = mUserManager.createUser("User 2", UserInfo.FLAG_ADMIN);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 
         assertTrue(user1 != null);
         assertTrue(user2 != null);
@@ -82,6 +129,7 @@ public class UserManagerTest extends AndroidTestCase {
         assertTrue(findUser(0));
         assertTrue(findUser(user1.id));
         assertTrue(findUser(user2.id));
+<<<<<<< HEAD
     }
 
     public void testRemoveUser() throws Exception {
@@ -90,6 +138,15 @@ public class UserManagerTest extends AndroidTestCase {
         UserInfo userInfo = details.createUser("Guest 1", UserInfo.FLAG_GUEST);
 
         details.removeUser(userInfo.id);
+=======
+        removeUser(user1.id);
+        removeUser(user2.id);
+    }
+
+    public void testRemoveUser() throws Exception {
+        UserInfo userInfo = mUserManager.createUser("Guest 1", UserInfo.FLAG_GUEST);
+        removeUser(userInfo.id);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 
         assertFalse(findUser(userInfo.id));
     }
@@ -104,4 +161,56 @@ public class UserManagerTest extends AndroidTestCase {
         }
         return false;
     }
+<<<<<<< HEAD
+=======
+
+    public void testSerialNumber() {
+        UserInfo user1 = mUserManager.createUser("User 1", UserInfo.FLAG_RESTRICTED);
+        int serialNumber1 = user1.serialNumber;
+        assertEquals(serialNumber1, mUserManager.getUserSerialNumber(user1.id));
+        assertEquals(user1.id, mUserManager.getUserHandle(serialNumber1));
+        removeUser(user1.id);
+        UserInfo user2 = mUserManager.createUser("User 2", UserInfo.FLAG_RESTRICTED);
+        int serialNumber2 = user2.serialNumber;
+        assertFalse(serialNumber1 == serialNumber2);
+        assertEquals(serialNumber2, mUserManager.getUserSerialNumber(user2.id));
+        assertEquals(user2.id, mUserManager.getUserHandle(serialNumber2));
+        removeUser(user2.id);
+    }
+
+    public void testMaxUsers() {
+        int N = UserManager.getMaxSupportedUsers();
+        int count = mUserManager.getUsers().size();
+        List<UserInfo> created = new ArrayList<UserInfo>();
+        // Create as many users as permitted and make sure creation passes
+        while (count < N) {
+            UserInfo ui = mUserManager.createUser("User " + count, 0);
+            assertNotNull(ui);
+            created.add(ui);
+            count++;
+        }
+        // Try to create one more user and make sure it fails
+        UserInfo extra = null;
+        assertNull(extra = mUserManager.createUser("One more", 0));
+        if (extra != null) {
+            removeUser(extra.id);
+        }
+        while (!created.isEmpty()) {
+            UserInfo user = created.remove(0);
+            removeUser(user.id);
+        }
+    }
+
+    private void removeUser(int userId) {
+        synchronized (mUserLock) {
+            mUserManager.removeUser(userId);
+            while (mUserManager.getUserInfo(userId) != null) {
+                try {
+                    mUserLock.wait(1000);
+                } catch (InterruptedException ie) {
+                }
+            }
+        }
+    }
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 }

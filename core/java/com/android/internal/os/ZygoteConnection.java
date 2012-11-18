@@ -18,8 +18,13 @@ package com.android.internal.os;
 
 import android.net.Credentials;
 import android.net.LocalSocket;
+<<<<<<< HEAD
 import android.os.Build;
 import android.os.Process;
+=======
+import android.os.Process;
+import android.os.SELinux;
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 import android.os.SystemProperties;
 import android.util.Log;
 
@@ -73,6 +78,10 @@ class ZygoteConnection {
     private final DataOutputStream mSocketOutStream;
     private final BufferedReader mSocketReader;
     private final Credentials peer;
+<<<<<<< HEAD
+=======
+    private final String peerSecurityContext;
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 
     /**
      * A long-lived reference to the original command socket used to launch
@@ -109,6 +118,11 @@ class ZygoteConnection {
             Log.e(TAG, "Cannot read peer credentials", ex);
             throw ex;
         }
+<<<<<<< HEAD
+=======
+
+        peerSecurityContext = SELinux.getPeerContext(mSocket.getFileDescriptor());
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     }
 
     /**
@@ -207,10 +221,18 @@ class ZygoteConnection {
         try {
             parsedArgs = new Arguments(args);
 
+<<<<<<< HEAD
             applyUidSecurityPolicy(parsedArgs, peer);
             applyRlimitSecurityPolicy(parsedArgs, peer);
             applyCapabilitiesSecurityPolicy(parsedArgs, peer);
             applyInvokeWithSecurityPolicy(parsedArgs, peer);
+=======
+            applyUidSecurityPolicy(parsedArgs, peer, peerSecurityContext);
+            applyRlimitSecurityPolicy(parsedArgs, peer, peerSecurityContext);
+            applyCapabilitiesSecurityPolicy(parsedArgs, peer, peerSecurityContext);
+            applyInvokeWithSecurityPolicy(parsedArgs, peer, peerSecurityContext);
+            applyseInfoSecurityPolicy(parsedArgs, peer, peerSecurityContext);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 
             applyDebuggerSystemProperty(parsedArgs);
             applyInvokeWithSystemProperty(parsedArgs);
@@ -228,8 +250,14 @@ class ZygoteConnection {
                 ZygoteInit.setCloseOnExec(serverPipeFd, true);
             }
 
+<<<<<<< HEAD
             pid = Zygote.forkAndSpecialize(parsedArgs.uid, parsedArgs.gid,
                     parsedArgs.gids, parsedArgs.debugFlags, rlimits);
+=======
+            pid = Zygote.forkAndSpecialize(parsedArgs.uid, parsedArgs.gid, parsedArgs.gids,
+                    parsedArgs.debugFlags, rlimits, parsedArgs.mountExternal, parsedArgs.seInfo,
+                    parsedArgs.niceName);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         } catch (IOException ex) {
             logAndPrintError(newStderr, "Exception creating pipe", ex);
         } catch (ErrnoException ex) {
@@ -334,6 +362,12 @@ class ZygoteConnection {
          */
         int debugFlags;
 
+<<<<<<< HEAD
+=======
+        /** From --mount-external */
+        int mountExternal = Zygote.MOUNT_EXTERNAL_NONE;
+
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         /** from --target-sdk-version. */
         int targetSdkVersion;
         boolean targetSdkVersionSpecified;
@@ -352,6 +386,13 @@ class ZygoteConnection {
         long permittedCapabilities;
         long effectiveCapabilities;
 
+<<<<<<< HEAD
+=======
+        /** from --seinfo */
+        boolean seInfoSpecified;
+        String seInfo;
+
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         /** from all --rlimit=r,c,m */
         ArrayList<int[]> rlimits;
 
@@ -429,6 +470,16 @@ class ZygoteConnection {
                     peerWait = true;
                 } else if (arg.equals("--runtime-init")) {
                     runtimeInit = true;
+<<<<<<< HEAD
+=======
+                } else if (arg.startsWith("--seinfo=")) {
+                    if (seInfoSpecified) {
+                        throw new IllegalArgumentException(
+                                "Duplicate arg specified");
+                    }
+                    seInfoSpecified = true;
+                    seInfo = arg.substring(arg.indexOf('=') + 1);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
                 } else if (arg.startsWith("--capabilities=")) {
                     if (capabilitiesSpecified) {
                         throw new IllegalArgumentException(
@@ -508,6 +559,13 @@ class ZygoteConnection {
                                 "Duplicate arg specified");
                     }
                     niceName = arg.substring(arg.indexOf('=') + 1);
+<<<<<<< HEAD
+=======
+                } else if (arg.equals("--mount-external-multiuser")) {
+                    mountExternal = Zygote.MOUNT_EXTERNAL_MULTIUSER;
+                } else if (arg.equals("--mount-external-multiuser-all")) {
+                    mountExternal = Zygote.MOUNT_EXTERNAL_MULTIUSER_ALL;
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
                 } else {
                     break;
                 }
@@ -591,7 +649,12 @@ class ZygoteConnection {
      * @param peer non-null; peer credentials
      * @throws ZygoteSecurityException
      */
+<<<<<<< HEAD
     private static void applyUidSecurityPolicy(Arguments args, Credentials peer)
+=======
+    private static void applyUidSecurityPolicy(Arguments args, Credentials peer,
+            String peerSecurityContext)
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
             throws ZygoteSecurityException {
 
         int peerUid = peer.getUid();
@@ -624,6 +687,20 @@ class ZygoteConnection {
             }
         }
 
+<<<<<<< HEAD
+=======
+        if (args.uidSpecified || args.gidSpecified || args.gids != null) {
+            boolean allowed = SELinux.checkSELinuxAccess(peerSecurityContext,
+                                                         peerSecurityContext,
+                                                         "zygote",
+                                                         "specifyids");
+            if (!allowed) {
+                throw new ZygoteSecurityException(
+                        "Peer may not specify uid's or gid's");
+            }
+        }
+
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         // If not otherwise specified, uid and gid are inherited from peer
         if (!args.uidSpecified) {
             args.uid = peer.getUid();
@@ -664,7 +741,11 @@ class ZygoteConnection {
      * @throws ZygoteSecurityException
      */
     private static void applyRlimitSecurityPolicy(
+<<<<<<< HEAD
             Arguments args, Credentials peer)
+=======
+            Arguments args, Credentials peer, String peerSecurityContext)
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
             throws ZygoteSecurityException {
 
         int peerUid = peer.getUid();
@@ -676,6 +757,20 @@ class ZygoteConnection {
                         "This UID may not specify rlimits.");
             }
         }
+<<<<<<< HEAD
+=======
+
+        if (args.rlimits != null) {
+            boolean allowed = SELinux.checkSELinuxAccess(peerSecurityContext,
+                                                         peerSecurityContext,
+                                                         "zygote",
+                                                         "specifyrlimits");
+            if (!allowed) {
+                throw new ZygoteSecurityException(
+                        "Peer may not specify rlimits");
+            }
+         }
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     }
 
     /**
@@ -689,7 +784,11 @@ class ZygoteConnection {
      * @throws ZygoteSecurityException
      */
     private static void applyCapabilitiesSecurityPolicy(
+<<<<<<< HEAD
             Arguments args, Credentials peer)
+=======
+            Arguments args, Credentials peer, String peerSecurityContext)
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
             throws ZygoteSecurityException {
 
         if (args.permittedCapabilities == 0
@@ -698,6 +797,18 @@ class ZygoteConnection {
             return;
         }
 
+<<<<<<< HEAD
+=======
+        boolean allowed = SELinux.checkSELinuxAccess(peerSecurityContext,
+                                                     peerSecurityContext,
+                                                     "zygote",
+                                                     "specifycapabilities");
+        if (!allowed) {
+            throw new ZygoteSecurityException(
+                    "Peer may not specify capabilities");
+        }
+
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         if (peer.getUid() == 0) {
             // root may specify anything
             return;
@@ -747,7 +858,12 @@ class ZygoteConnection {
      * @param peer non-null; peer credentials
      * @throws ZygoteSecurityException
      */
+<<<<<<< HEAD
     private static void applyInvokeWithSecurityPolicy(Arguments args, Credentials peer)
+=======
+    private static void applyInvokeWithSecurityPolicy(Arguments args, Credentials peer,
+            String peerSecurityContext)
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
             throws ZygoteSecurityException {
         int peerUid = peer.getUid();
 
@@ -755,6 +871,55 @@ class ZygoteConnection {
             throw new ZygoteSecurityException("Peer is not permitted to specify "
                     + "an explicit invoke-with wrapper command");
         }
+<<<<<<< HEAD
+=======
+
+        if (args.invokeWith != null) {
+            boolean allowed = SELinux.checkSELinuxAccess(peerSecurityContext,
+                                                         peerSecurityContext,
+                                                         "zygote",
+                                                         "specifyinvokewith");
+            if (!allowed) {
+                throw new ZygoteSecurityException("Peer is not permitted to specify "
+                    + "an explicit invoke-with wrapper command");
+            }
+        }
+    }
+
+    /**
+     * Applies zygote security policy for SEAndroid information.
+     *
+     * @param args non-null; zygote spawner arguments
+     * @param peer non-null; peer credentials
+     * @throws ZygoteSecurityException
+     */
+    private static void applyseInfoSecurityPolicy(
+            Arguments args, Credentials peer, String peerSecurityContext)
+            throws ZygoteSecurityException {
+        int peerUid = peer.getUid();
+
+        if (args.seInfo == null) {
+            // nothing to check
+            return;
+        }
+
+        if (!(peerUid == 0 || peerUid == Process.SYSTEM_UID)) {
+            // All peers with UID other than root or SYSTEM_UID
+            throw new ZygoteSecurityException(
+                    "This UID may not specify SEAndroid info.");
+        }
+
+        boolean allowed = SELinux.checkSELinuxAccess(peerSecurityContext,
+                                                     peerSecurityContext,
+                                                     "zygote",
+                                                     "specifyseinfo");
+        if (!allowed) {
+            throw new ZygoteSecurityException(
+                    "Peer may not specify SEAndroid info");
+        }
+
+        return;
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     }
 
     /**

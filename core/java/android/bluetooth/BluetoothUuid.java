@@ -56,10 +56,13 @@ public final class BluetoothUuid {
             ParcelUuid.fromString("00001105-0000-1000-8000-00805f9b34fb");
     public static final ParcelUuid Hid =
             ParcelUuid.fromString("00001124-0000-1000-8000-00805f9b34fb");
+<<<<<<< HEAD
     public static final ParcelUuid MessageAccessServer =
             ParcelUuid.fromString("00001132-0000-1000-8000-00805f9b34fb");
     public static final ParcelUuid MessageNotificationServer =
             ParcelUuid.fromString("00001133-0000-1000-8000-00805f9b34fb");
+=======
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     public static final ParcelUuid PANU =
             ParcelUuid.fromString("00001115-0000-1000-8000-00805F9B34FB");
     public static final ParcelUuid NAP =
@@ -71,7 +74,11 @@ public final class BluetoothUuid {
 
     public static final ParcelUuid[] RESERVED_UUIDS = {
         AudioSink, AudioSource, AdvAudioDist, HSP, Handsfree, AvrcpController, AvrcpTarget,
+<<<<<<< HEAD
         ObexObjectPush, MessageAccessServer, MessageNotificationServer, PANU, NAP};
+=======
+        ObexObjectPush, PANU, NAP};
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 
     public static boolean isAudioSource(ParcelUuid uuid) {
         return uuid.equals(AudioSource);
@@ -135,6 +142,7 @@ public final class BluetoothUuid {
         return false;
     }
 
+<<<<<<< HEAD
     public static boolean isMessageAccessServer(ParcelUuid uuid) {
         return uuid.equals(MessageAccessServer);
     }
@@ -143,6 +151,8 @@ public final class BluetoothUuid {
         return uuid.equals(MessageNotificationServer);
     }
 
+=======
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     /**
      * Returns true if there any common ParcelUuids in uuidA and uuidB.
      *

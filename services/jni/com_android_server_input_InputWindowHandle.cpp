@@ -52,6 +52,10 @@ static struct {
     jfieldID ownerPid;
     jfieldID ownerUid;
     jfieldID inputFeatures;
+<<<<<<< HEAD
+=======
+    jfieldID displayId;
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 } gInputWindowHandleClassInfo;
 
 static Mutex gHandleMutex;
@@ -151,6 +155,11 @@ bool NativeInputWindowHandle::updateInfo() {
             gInputWindowHandleClassInfo.ownerUid);
     mInfo->inputFeatures = env->GetIntField(obj,
             gInputWindowHandleClassInfo.inputFeatures);
+<<<<<<< HEAD
+=======
+    mInfo->displayId = env->GetIntField(obj,
+            gInputWindowHandleClassInfo.displayId);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 
     env->DeleteLocalRef(obj);
     return true;
@@ -291,6 +300,12 @@ int register_android_server_InputWindowHandle(JNIEnv* env) {
 
     GET_FIELD_ID(gInputWindowHandleClassInfo.inputFeatures, clazz,
             "inputFeatures", "I");
+<<<<<<< HEAD
+=======
+
+    GET_FIELD_ID(gInputWindowHandleClassInfo.displayId, clazz,
+            "displayId", "I");
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     return 0;
 }
 

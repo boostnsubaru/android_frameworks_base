@@ -25,7 +25,11 @@ This is a custom layout for a dialog.
         android:layout_width="match_parent"
         android:layout_height="@dimen/alert_dialog_title_height"
         android:layout_weight="0"
+<<<<<<< HEAD
         android:gravity="center_vertical|left"
+=======
+        android:gravity="center_vertical|start"
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         style="?android:attr/windowTitleBackgroundStyle">
     </FrameLayout>
     <View android:id="@+id/titleDivider"

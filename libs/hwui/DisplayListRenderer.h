@@ -103,9 +103,15 @@ public:
         DrawPath,
         DrawLines,
         DrawPoints,
+<<<<<<< HEAD
         DrawText,
         DrawTextOnPath,
         DrawPosText,
+=======
+        DrawTextOnPath,
+        DrawPosText,
+        DrawText,
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         ResetShader,
         SetupShader,
         ResetColorFilter,
@@ -137,6 +143,11 @@ public:
 
     void output(OpenGLRenderer& renderer, uint32_t level = 0);
 
+<<<<<<< HEAD
+=======
+    ANDROID_API void reset();
+
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     void setRenderable(bool renderable) {
         mIsRenderable = renderable;
     }
@@ -399,7 +410,10 @@ public:
 
 private:
     void init();
+<<<<<<< HEAD
     void initProperties();
+=======
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 
     void clearResources();
 
@@ -496,12 +510,20 @@ private:
     SortedVector<SkPath*> mSourcePaths;
     Vector<SkMatrix*> mMatrices;
     Vector<SkiaShader*> mShaders;
+<<<<<<< HEAD
+=======
+    Vector<Layer*> mLayers;
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 
     mutable SkFlattenableReadBuffer mReader;
 
     size_t mSize;
 
     bool mIsRenderable;
+<<<<<<< HEAD
+=======
+    uint32_t mFunctorCount;
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 
     String8 mName;
 
@@ -547,7 +569,11 @@ public:
     virtual bool isDeferred();
 
     virtual void setViewport(int width, int height);
+<<<<<<< HEAD
     virtual int prepareDirty(float left, float top, float right, float bottom, bool opaque);
+=======
+    virtual status_t prepareDirty(float left, float top, float right, float bottom, bool opaque);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     virtual void finish();
 
     virtual status_t callDrawGLFunction(Functor *functor, Rect& dirty);
@@ -599,12 +625,20 @@ public:
     virtual status_t drawPath(SkPath* path, SkPaint* paint);
     virtual status_t drawLines(float* points, int count, SkPaint* paint);
     virtual status_t drawPoints(float* points, int count, SkPaint* paint);
+<<<<<<< HEAD
     virtual status_t drawText(const char* text, int bytesCount, int count, float x, float y,
             SkPaint* paint, float length = -1.0f);
+=======
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     virtual status_t drawTextOnPath(const char* text, int bytesCount, int count, SkPath* path,
             float hOffset, float vOffset, SkPaint* paint);
     virtual status_t drawPosText(const char* text, int bytesCount, int count,
             const float* positions, SkPaint* paint);
+<<<<<<< HEAD
+=======
+    virtual status_t drawText(const char* text, int bytesCount, int count,
+            float x, float y, const float* positions, SkPaint* paint, float length);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 
     virtual void resetShader();
     virtual void setupShader(SkiaShader* shader);
@@ -652,10 +686,24 @@ public:
         return mSourcePaths;
     }
 
+<<<<<<< HEAD
+=======
+    const Vector<Layer*>& getLayers() const {
+        return mLayers;
+    }
+
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     const Vector<SkMatrix*>& getMatrices() const {
         return mMatrices;
     }
 
+<<<<<<< HEAD
+=======
+    uint32_t getFunctorCount() const {
+        return mFunctorCount;
+    }
+
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 private:
     void insertRestoreToCount() {
         if (mRestoreSaveCount >= 0) {
@@ -763,17 +811,28 @@ private:
             mPaths.add(pathCopy);
         }
         if (mSourcePaths.indexOf(path) < 0) {
+<<<<<<< HEAD
             Caches::getInstance().resourceCache.incrementRefcount(path);
+=======
+            mCaches.resourceCache.incrementRefcount(path);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
             mSourcePaths.add(path);
         }
 
         addInt((int) pathCopy);
     }
 
+<<<<<<< HEAD
     inline void addPaint(SkPaint* paint) {
         if (!paint) {
             addInt((int) NULL);
             return;
+=======
+    inline SkPaint* addPaint(SkPaint* paint) {
+        if (!paint) {
+            addInt((int) NULL);
+            return paint;
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         }
 
         SkPaint* paintCopy = mPaintMap.valueFor(paint);
@@ -785,6 +844,11 @@ private:
         }
 
         addInt((int) paintCopy);
+<<<<<<< HEAD
+=======
+
+        return paintCopy;
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     }
 
     inline void addDisplayList(DisplayList* displayList) {
@@ -802,6 +866,15 @@ private:
         mMatrices.add(copy);
     }
 
+<<<<<<< HEAD
+=======
+    inline void addLayer(Layer* layer) {
+        addInt((int) layer);
+        mLayers.add(layer);
+        mCaches.resourceCache.incrementRefcount(layer);
+    }
+
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     inline void addBitmap(SkBitmap* bitmap) {
         // Note that this assumes the bitmap is immutable. There are cases this won't handle
         // correctly, such as creating the bitmap from scratch, drawing with it, changing its
@@ -809,13 +882,21 @@ private:
         // which doesn't seem worth the extra cycles for this unlikely case.
         addInt((int) bitmap);
         mBitmapResources.add(bitmap);
+<<<<<<< HEAD
         Caches::getInstance().resourceCache.incrementRefcount(bitmap);
+=======
+        mCaches.resourceCache.incrementRefcount(bitmap);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     }
 
     void addBitmapData(SkBitmap* bitmap) {
         addInt((int) bitmap);
         mOwnedBitmapResources.add(bitmap);
+<<<<<<< HEAD
         Caches::getInstance().resourceCache.incrementRefcount(bitmap);
+=======
+        mCaches.resourceCache.incrementRefcount(bitmap);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     }
 
     inline void addShader(SkiaShader* shader) {
@@ -831,7 +912,11 @@ private:
             // replaceValueFor() performs an add if the entry doesn't exist
             mShaderMap.replaceValueFor(shader, shaderCopy);
             mShaders.add(shaderCopy);
+<<<<<<< HEAD
             Caches::getInstance().resourceCache.incrementRefcount(shaderCopy);
+=======
+            mCaches.resourceCache.incrementRefcount(shaderCopy);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         }
 
         addInt((int) shaderCopy);
@@ -840,7 +925,11 @@ private:
     inline void addColorFilter(SkiaColorFilter* colorFilter) {
         addInt((int) colorFilter);
         mFilterResources.add(colorFilter);
+<<<<<<< HEAD
         Caches::getInstance().resourceCache.incrementRefcount(colorFilter);
+=======
+        mCaches.resourceCache.incrementRefcount(colorFilter);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     }
 
     Vector<SkBitmap*> mBitmapResources;
@@ -860,17 +949,35 @@ private:
 
     Vector<SkMatrix*> mMatrices;
 
+<<<<<<< HEAD
     SkWriter32 mWriter;
+=======
+    Vector<Layer*> mLayers;
+
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     uint32_t mBufferSize;
 
     int mRestoreSaveCount;
 
+<<<<<<< HEAD
     float mTranslateX;
     float mTranslateY;
     bool mHasTranslate;
 
     bool mHasDrawOps;
 
+=======
+    Caches& mCaches;
+    SkWriter32 mWriter;
+
+    float mTranslateX;
+    float mTranslateY;
+    bool mHasTranslate;
+    bool mHasDrawOps;
+
+    uint32_t mFunctorCount;
+
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     friend class DisplayList;
 
 }; // class DisplayListRenderer

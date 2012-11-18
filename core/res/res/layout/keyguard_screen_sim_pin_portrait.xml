@@ -51,8 +51,13 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
+<<<<<<< HEAD
             android:layout_marginRight="6dip"
             android:layout_marginLeft="6dip"
+=======
+            android:layout_marginEnd="6dip"
+            android:layout_marginStart="6dip"
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
             android:gravity="center_vertical"
             android:background="@android:drawable/edit_text">
 
@@ -72,7 +77,11 @@
                 android:src="@android:drawable/ic_input_delete"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+<<<<<<< HEAD
                 android:layout_marginRight="-3dip"
+=======
+                android:layout_marginEnd="-3dip"
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
                 android:layout_marginBottom="-3dip"
             />
         </LinearLayout>

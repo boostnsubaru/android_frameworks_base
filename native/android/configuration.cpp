@@ -123,6 +123,14 @@ int32_t AConfiguration_getSmallestScreenWidthDp(AConfiguration* config) {
     return config->smallestScreenWidthDp;
 }
 
+<<<<<<< HEAD
+=======
+int32_t AConfiguration_getLayoutDirection(AConfiguration* config) {
+    return (config->screenLayout&ResTable_config::MASK_LAYOUTDIR)
+            >> ResTable_config::SHIFT_LAYOUTDIR;
+}
+
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 // ----------------------------------------------------------------------
 
 void AConfiguration_setMcc(AConfiguration* config, int32_t mcc) {
@@ -210,6 +218,14 @@ void AConfiguration_setSmallestScreenWidthDp(AConfiguration* config, int32_t val
     config->smallestScreenWidthDp = value;
 }
 
+<<<<<<< HEAD
+=======
+void AConfiguration_setLayoutDirection(AConfiguration* config, int32_t value) {
+    config->screenLayout = (config->screenLayout&~ResTable_config::MASK_LAYOUTDIR)
+            | ((value<<ResTable_config::SHIFT_LAYOUTDIR)&ResTable_config::MASK_LAYOUTDIR);
+}
+
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 // ----------------------------------------------------------------------
 
 int32_t AConfiguration_diff(AConfiguration* config1, AConfiguration* config2) {

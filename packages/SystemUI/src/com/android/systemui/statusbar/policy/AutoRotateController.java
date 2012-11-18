@@ -19,6 +19,10 @@ package com.android.systemui.statusbar.policy;
 import com.android.internal.view.RotationPolicy;
 
 import android.content.Context;
+<<<<<<< HEAD
+=======
+import android.os.UserHandle;
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 import android.widget.CompoundButton;
 
 public final class AutoRotateController implements CompoundButton.OnCheckedChangeListener {
@@ -44,7 +48,12 @@ public final class AutoRotateController implements CompoundButton.OnCheckedChang
 
         mCheckbox.setOnCheckedChangeListener(this);
 
+<<<<<<< HEAD
         RotationPolicy.registerRotationPolicyListener(context, mRotationPolicyListener);
+=======
+        RotationPolicy.registerRotationPolicyListener(context, mRotationPolicyListener,
+                UserHandle.USER_ALL);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         updateState();
     }
 

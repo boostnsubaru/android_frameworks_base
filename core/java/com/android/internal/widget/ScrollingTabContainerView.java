@@ -23,7 +23,13 @@ import android.animation.TimeInterpolator;
 import android.app.ActionBar;
 import android.content.Context;
 import android.content.res.Configuration;
+<<<<<<< HEAD
 import android.graphics.drawable.Drawable;
+=======
+import android.graphics.Rect;
+import android.graphics.drawable.Drawable;
+import android.text.TextUtils;
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 import android.text.TextUtils.TruncateAt;
 import android.view.Gravity;
 import android.view.View;
@@ -38,6 +44,10 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
+<<<<<<< HEAD
+=======
+import android.widget.Toast;
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 
 /**
  * This widget implements the dynamic action bar tab behavior that can change
@@ -352,7 +362,11 @@ public class ScrollingTabContainerView extends HorizontalScrollView
         tabView.getTab().select();
     }
 
+<<<<<<< HEAD
     private class TabView extends LinearLayout {
+=======
+    private class TabView extends LinearLayout implements OnLongClickListener {
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         private ActionBar.Tab mTab;
         private TextView mTextView;
         private ImageView mIconView;
@@ -363,7 +377,11 @@ public class ScrollingTabContainerView extends HorizontalScrollView
             mTab = tab;
 
             if (forList) {
+<<<<<<< HEAD
                 setGravity(Gravity.LEFT | Gravity.CENTER_VERTICAL);
+=======
+                setGravity(Gravity.START | Gravity.CENTER_VERTICAL);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
             }
 
             update();
@@ -426,7 +444,12 @@ public class ScrollingTabContainerView extends HorizontalScrollView
                     mIconView.setImageDrawable(null);
                 }
 
+<<<<<<< HEAD
                 if (text != null) {
+=======
+                final boolean hasText = !TextUtils.isEmpty(text);
+                if (hasText) {
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
                     if (mTextView == null) {
                         TextView textView = new TextView(getContext(), null,
                                 com.android.internal.R.attr.actionBarTabTextStyle);
@@ -448,9 +471,41 @@ public class ScrollingTabContainerView extends HorizontalScrollView
                 if (mIconView != null) {
                     mIconView.setContentDescription(tab.getContentDescription());
                 }
+<<<<<<< HEAD
             }
         }
 
+=======
+
+                if (!hasText && !TextUtils.isEmpty(tab.getContentDescription())) {
+                    setOnLongClickListener(this);
+                } else {
+                    setOnLongClickListener(null);
+                    setLongClickable(false);
+                }
+            }
+        }
+
+        public boolean onLongClick(View v) {
+            final int[] screenPos = new int[2];
+            getLocationOnScreen(screenPos);
+
+            final Context context = getContext();
+            final int width = getWidth();
+            final int height = getHeight();
+            final int screenWidth = context.getResources().getDisplayMetrics().widthPixels;
+
+            Toast cheatSheet = Toast.makeText(context, mTab.getContentDescription(),
+                    Toast.LENGTH_SHORT);
+            // Show under the tab
+            cheatSheet.setGravity(Gravity.TOP | Gravity.CENTER_HORIZONTAL,
+                    (screenPos[0] + width / 2) - screenWidth / 2, height);
+
+            cheatSheet.show();
+            return true;
+        }
+
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         public ActionBar.Tab getTab() {
             return mTab;
         }

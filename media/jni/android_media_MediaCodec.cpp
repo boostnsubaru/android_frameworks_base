@@ -96,7 +96,14 @@ status_t JMediaCodec::initCheck() const {
 }
 
 JMediaCodec::~JMediaCodec() {
+<<<<<<< HEAD
     mCodec->release();
+=======
+    if (mCodec != NULL) {
+        mCodec->release();
+        mCodec.clear();
+    }
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 
     JNIEnv *env = AndroidRuntime::getJNIEnv();
 
@@ -367,7 +374,11 @@ static void android_media_MediaCodec_native_configure(
 
     sp<ISurfaceTexture> surfaceTexture;
     if (jsurface != NULL) {
+<<<<<<< HEAD
         sp<Surface> surface(Surface_getSurface(env, jsurface));
+=======
+        sp<Surface> surface(android_view_Surface_getSurface(env, jsurface));
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         if (surface != NULL) {
             surfaceTexture = surface->getSurfaceTexture();
         } else {

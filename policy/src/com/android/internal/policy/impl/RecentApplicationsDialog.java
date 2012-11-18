@@ -94,7 +94,11 @@ public class RecentApplicationsDialog extends Dialog implements OnClickListener 
 
         Window window = getWindow();
         window.requestFeature(Window.FEATURE_NO_TITLE);
+<<<<<<< HEAD
         window.setType(WindowManager.LayoutParams.TYPE_SYSTEM_DIALOG);
+=======
+        window.setType(WindowManager.LayoutParams.TYPE_RECENTS_OVERLAY);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         window.setFlags(WindowManager.LayoutParams.FLAG_ALT_FOCUSABLE_IM,
                 WindowManager.LayoutParams.FLAG_ALT_FOCUSABLE_IM);
         window.setTitle("Recents");

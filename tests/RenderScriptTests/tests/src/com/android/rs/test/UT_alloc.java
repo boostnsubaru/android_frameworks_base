@@ -56,7 +56,11 @@ public class UT_alloc extends UnitTest {
 
     public void run() {
         RenderScript pRS = RenderScript.create(mCtx);
+<<<<<<< HEAD
         ScriptC_alloc s = new ScriptC_alloc(pRS, mRes, R.raw.alloc);
+=======
+        ScriptC_alloc s = new ScriptC_alloc(pRS);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         pRS.setMessageHandler(mRsMessage);
         initializeGlobals(pRS, s);
         s.invoke_alloc_test();

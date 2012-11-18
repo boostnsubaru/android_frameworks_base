@@ -19,6 +19,10 @@ package android.view;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Matrix;
+<<<<<<< HEAD
+=======
+import android.graphics.Paint;
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 import android.graphics.Rect;
 
 /**
@@ -62,6 +66,17 @@ abstract class HardwareLayer {
     }
 
     /**
+<<<<<<< HEAD
+=======
+     * Update the paint used when drawing this layer.
+     *
+     * @param paint The paint used when the layer is drawn into the destination canvas.
+     * @see View#setLayerPaint(android.graphics.Paint)
+     */
+    void setLayerPaint(Paint paint) {}
+
+    /**
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
      * Returns the minimum width of the layer.
      * 
      * @return The minimum desired width of the hardware layer 
@@ -107,6 +122,16 @@ abstract class HardwareLayer {
     }
 
     /**
+<<<<<<< HEAD
+=======
+     * Sets whether or not this layer should be considered opaque.
+     * 
+     * @param isOpaque True if the layer is opaque, false otherwise
+     */
+    abstract void setOpaque(boolean isOpaque);
+
+    /**
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
      * Indicates whether this layer can be rendered.
      * 
      * @return True if the layer can be rendered into, false otherwise
@@ -119,8 +144,14 @@ abstract class HardwareLayer {
      * 
      * @param width The new desired minimum width for this layer
      * @param height The new desired minimum height for this layer
+<<<<<<< HEAD
      */
     abstract void resize(int width, int height);
+=======
+     * @return True if the resulting layer is valid, false otherwise
+     */
+    abstract boolean resize(int width, int height);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 
     /**
      * Returns a hardware canvas that can be used to render onto
@@ -136,11 +167,14 @@ abstract class HardwareLayer {
     abstract void destroy();
 
     /**
+<<<<<<< HEAD
      * Flush the render queue associated with this layer.
      */
     abstract void flush();
 
     /**
+=======
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
      * This must be invoked before drawing onto this layer.
      * @param currentCanvas
      */
@@ -191,5 +225,14 @@ abstract class HardwareLayer {
      *                    execute in this layer
      * @param dirtyRect The dirty region of the layer that needs to be redrawn
      */
+<<<<<<< HEAD
     abstract void redraw(DisplayList displayList, Rect dirtyRect);
+=======
+    abstract void redrawLater(DisplayList displayList, Rect dirtyRect);
+
+    /**
+     * Indicates that this layer has lost its underlying storage.
+     */
+    abstract void clearStorage();
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 }

@@ -43,9 +43,12 @@ import com.android.internal.R;
  * <p>
  * The secondary progress should not be modified by the client as it is used
  * internally as the background for a fractionally filled star.
+<<<<<<< HEAD
  *
  * <p>See the <a href="{@docRoot}resources/tutorials/views/hello-formstuff.html">Form Stuff
  * tutorial</a>.</p>
+=======
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
  * 
  * @attr ref android.R.styleable#RatingBar_numStars
  * @attr ref android.R.styleable#RatingBar_rating

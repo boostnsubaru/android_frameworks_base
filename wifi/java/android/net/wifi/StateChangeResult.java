@@ -23,15 +23,26 @@
  * @hide
  */
 public class StateChangeResult {
+<<<<<<< HEAD
     StateChangeResult(int networkId, String SSID, String BSSID, SupplicantState state) {
         this.state = state;
         this.SSID = SSID;
+=======
+    StateChangeResult(int networkId, WifiSsid wifiSsid, String BSSID,
+            SupplicantState state) {
+        this.state = state;
+        this.wifiSsid= wifiSsid;
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         this.BSSID = BSSID;
         this.networkId = networkId;
     }
 
     int networkId;
+<<<<<<< HEAD
     String SSID;
+=======
+    WifiSsid wifiSsid;
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     String BSSID;
     SupplicantState state;
 }

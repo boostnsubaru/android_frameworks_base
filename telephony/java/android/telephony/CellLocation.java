@@ -26,7 +26,11 @@ import android.provider.Settings;
 import android.telephony.cdma.CdmaCellLocation;
 import android.telephony.gsm.GsmCellLocation;
 import com.android.internal.telephony.ITelephony;
+<<<<<<< HEAD
 import com.android.internal.telephony.Phone;
+=======
+import com.android.internal.telephony.PhoneConstants;
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 
 /**
  * Abstract class that represents the location of the device.  {@more}
@@ -64,9 +68,15 @@ public abstract class CellLocation {
         // TelephonyManager.getDefault().getCurrentPhoneType() handles the case when
         // ITelephony interface is not up yet.
         switch(TelephonyManager.getDefault().getCurrentPhoneType()) {
+<<<<<<< HEAD
         case Phone.PHONE_TYPE_CDMA:
             return new CdmaCellLocation(bundle);
         case Phone.PHONE_TYPE_GSM:
+=======
+        case PhoneConstants.PHONE_TYPE_CDMA:
+            return new CdmaCellLocation(bundle);
+        case PhoneConstants.PHONE_TYPE_GSM:
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
             return new GsmCellLocation(bundle);
         default:
             return null;
@@ -92,9 +102,15 @@ public abstract class CellLocation {
         // TelephonyManager.getDefault().getCurrentPhoneType() handles the case when
         // ITelephony interface is not up yet.
         switch(TelephonyManager.getDefault().getCurrentPhoneType()) {
+<<<<<<< HEAD
         case Phone.PHONE_TYPE_CDMA:
             return new CdmaCellLocation();
         case Phone.PHONE_TYPE_GSM:
+=======
+        case PhoneConstants.PHONE_TYPE_CDMA:
+            return new CdmaCellLocation();
+        case PhoneConstants.PHONE_TYPE_GSM:
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
             return new GsmCellLocation();
         default:
             return null;

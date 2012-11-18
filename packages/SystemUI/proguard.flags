@@ -13,3 +13,8 @@
   public void setGlowAlpha(float);
   public void setGlowScale(float);
 }
+<<<<<<< HEAD
+=======
+
+-keep class com.android.systemui.statusbar.tv.TvStatusBar
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a

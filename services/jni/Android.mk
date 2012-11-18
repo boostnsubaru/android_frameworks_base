@@ -8,7 +8,11 @@ LOCAL_SRC_FILES:= \
     com_android_server_input_InputManagerService.cpp \
     com_android_server_input_InputWindowHandle.cpp \
     com_android_server_LightsService.cpp \
+<<<<<<< HEAD
     com_android_server_PowerManagerService.cpp \
+=======
+    com_android_server_power_PowerManagerService.cpp \
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     com_android_server_SerialService.cpp \
     com_android_server_SystemServer.cpp \
     com_android_server_UsbDeviceManager.cpp \

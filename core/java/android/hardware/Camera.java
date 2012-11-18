@@ -18,14 +18,30 @@ package android.hardware;
 
 import android.annotation.SdkConstant;
 import android.annotation.SdkConstant.SdkConstantType;
+<<<<<<< HEAD
+=======
+import android.content.Context;
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 import android.graphics.ImageFormat;
 import android.graphics.Point;
 import android.graphics.Rect;
 import android.graphics.SurfaceTexture;
+<<<<<<< HEAD
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
 import android.util.Log;
+=======
+import android.media.IAudioService;
+import android.os.Handler;
+import android.os.IBinder;
+import android.os.Looper;
+import android.os.Message;
+import android.os.RemoteException;
+import android.os.ServiceManager;
+import android.util.Log;
+import android.text.TextUtils;
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 import android.view.Surface;
 import android.view.SurfaceHolder;
 
@@ -34,7 +50,10 @@ import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+<<<<<<< HEAD
 import java.util.StringTokenizer;
+=======
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 import java.util.concurrent.locks.ReentrantLock;
 
 /**
@@ -137,7 +156,10 @@ public class Camera {
     private static final int CAMERA_MSG_RAW_IMAGE        = 0x080;
     private static final int CAMERA_MSG_COMPRESSED_IMAGE = 0x100;
     private static final int CAMERA_MSG_RAW_IMAGE_NOTIFY = 0x200;
+<<<<<<< HEAD
     private static final int CAMERA_MSG_META_DATA        = 0x8000;
+=======
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     private static final int CAMERA_MSG_PREVIEW_METADATA = 0x400;
     private static final int CAMERA_MSG_FOCUS_MOVE       = 0x800;
 
@@ -150,8 +172,11 @@ public class Camera {
     private PictureCallback mPostviewCallback;
     private AutoFocusCallback mAutoFocusCallback;
     private AutoFocusMoveCallback mAutoFocusMoveCallback;
+<<<<<<< HEAD
     private CameraDataCallback mCameraDataCallback;
     private CameraMetaDataCallback mCameraMetaDataCallback;
+=======
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     private OnZoomChangeListener mZoomListener;
     private FaceDetectionListener mFaceListener;
     private ErrorCallback mErrorCallback;
@@ -195,7 +220,25 @@ public class Camera {
      * Returns the information about a particular camera.
      * If {@link #getNumberOfCameras()} returns N, the valid id is 0 to N-1.
      */
+<<<<<<< HEAD
     public native static void getCameraInfo(int cameraId, CameraInfo cameraInfo);
+=======
+    public static void getCameraInfo(int cameraId, CameraInfo cameraInfo) {
+        _getCameraInfo(cameraId, cameraInfo);
+        IBinder b = ServiceManager.getService(Context.AUDIO_SERVICE);
+        IAudioService audioService = IAudioService.Stub.asInterface(b);
+        try {
+            if (audioService.isCameraSoundForced()) {
+                // Only set this when sound is forced; otherwise let native code
+                // decide.
+                cameraInfo.canDisableShutterSound = false;
+            }
+        } catch (RemoteException e) {
+            Log.e(TAG, "Audio service is unavailable for queries");
+        }
+    }
+    private native static void _getCameraInfo(int cameraId, CameraInfo cameraInfo);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 
     /**
      * Information about a camera
@@ -212,6 +255,7 @@ public class Camera {
         public static final int CAMERA_FACING_FRONT = 1;
 
         /**
+<<<<<<< HEAD
          * The facing of the camera is the same as that of the screen.
          * @hide
          */
@@ -224,6 +268,8 @@ public class Camera {
         public static final int CAMERA_SUPPORT_MODE_NONZSL = 3;
 
         /**
+=======
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
          * The direction that the camera faces. It should be
          * CAMERA_FACING_BACK or CAMERA_FACING_FRONT.
          */
@@ -248,6 +294,24 @@ public class Camera {
          * @see Parameters#setJpegThumbnailSize(int, int)
          */
         public int orientation;
+<<<<<<< HEAD
+=======
+
+        /**
+         * <p>Whether the shutter sound can be disabled.</p>
+         *
+         * <p>On some devices, the camera shutter sound cannot be turned off
+         * through {@link #enableShutterSound enableShutterSound}. This field
+         * can be used to determine whether a call to disable the shutter sound
+         * will succeed.</p>
+         *
+         * <p>If this field is set to true, then a call of
+         * {@code enableShutterSound(false)} will be successful. If set to
+         * false, then that call will fail, and the shutter sound will be played
+         * when {@link Camera#takePicture takePicture} is called.</p>
+         */
+        public boolean canDisableShutterSound;
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     };
 
     /**
@@ -308,8 +372,11 @@ public class Camera {
         mPreviewCallback = null;
         mPostviewCallback = null;
         mZoomListener = null;
+<<<<<<< HEAD
         mCameraDataCallback = null;
         mCameraMetaDataCallback = null;
+=======
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 
         Looper looper;
         if ((looper = Looper.myLooper()) != null) {
@@ -770,11 +837,14 @@ public class Camera {
                 }
                 return;
 
+<<<<<<< HEAD
             case CAMERA_MSG_META_DATA:
                 if (mCameraMetaDataCallback != null) {
                     mCameraMetaDataCallback.onCameraMetaData((int[])msg.obj, mCamera);
                 }
                 return;
+=======
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
             case CAMERA_MSG_POSTVIEW_FRAME:
                 if (mPostviewCallback != null) {
                     mPostviewCallback.onPictureTaken((byte[])msg.obj, mCamera);
@@ -824,6 +894,7 @@ public class Camera {
         }
     }
 
+<<<<<<< HEAD
     private static int byteToInt(byte[] b, int offset) {
         int value = 0;
         for (int i = 0; i < 4; i++) {
@@ -832,6 +903,8 @@ public class Camera {
         }
         return value;
     }
+=======
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     private static void postEventFromNative(Object camera_ref,
                                             int what, int arg1, int arg2, Object obj)
     {
@@ -993,6 +1066,7 @@ public class Camera {
     private native void enableFocusMoveCallback(int enable);
 
     /**
+<<<<<<< HEAD
      * @hide
      */
 
@@ -1002,6 +1076,8 @@ public class Camera {
     }
     private native final void native_encodeData();
     /**
+=======
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
      * Callback interface used to signal the moment of actual image capture.
      *
      * @see #takePicture(ShutterCallback, PictureCallback, PictureCallback, PictureCallback)
@@ -1017,6 +1093,7 @@ public class Camera {
          */
         void onShutter();
     }
+<<<<<<< HEAD
     /**
      * @hide
      * Handles the callback for when Camera Data is available.
@@ -1095,6 +1172,8 @@ public class Camera {
         native_sendMetaData();
     }
     private native final void native_sendMetaData();
+=======
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 
     /**
      * Callback interface used to supply image data from a photo capture.
@@ -1263,6 +1342,49 @@ public class Camera {
     public native final void setDisplayOrientation(int degrees);
 
     /**
+<<<<<<< HEAD
+=======
+     * <p>Enable or disable the default shutter sound when taking a picture.</p>
+     *
+     * <p>By default, the camera plays the system-defined camera shutter sound
+     * when {@link #takePicture} is called. Using this method, the shutter sound
+     * can be disabled. It is strongly recommended that an alternative shutter
+     * sound is played in the {@link ShutterCallback} when the system shutter
+     * sound is disabled.</p>
+     *
+     * <p>Note that devices may not always allow disabling the camera shutter
+     * sound. If the shutter sound state cannot be set to the desired value,
+     * this method will return false. {@link CameraInfo#canDisableShutterSound}
+     * can be used to determine whether the device will allow the shutter sound
+     * to be disabled.</p>
+     *
+     * @param enabled whether the camera should play the system shutter sound
+     *                when {@link #takePicture takePicture} is called.
+     * @return {@code true} if the shutter sound state was successfully
+     *         changed. {@code false} if the shutter sound state could not be
+     *         changed. {@code true} is also returned if shutter sound playback
+     *         is already set to the requested state.
+     * @see #takePicture
+     * @see CameraInfo#canDisableShutterSound
+     * @see ShutterCallback
+     */
+    public final boolean enableShutterSound(boolean enabled) {
+        if (!enabled) {
+            IBinder b = ServiceManager.getService(Context.AUDIO_SERVICE);
+            IAudioService audioService = IAudioService.Stub.asInterface(b);
+            try {
+                if (audioService.isCameraSoundForced()) return false;
+            } catch (RemoteException e) {
+                Log.e(TAG, "Audio service is unavailable for queries");
+            }
+        }
+        return _enableShutterSound(enabled);
+    }
+
+    private native final boolean _enableShutterSound(boolean enabled);
+
+    /**
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
      * Callback interface for zoom changes during a smooth zoom operation.
      *
      * @see #setZoomChangeListener(OnZoomChangeListener)
@@ -1425,8 +1547,19 @@ public class Camera {
         public Rect rect;
 
         /**
+<<<<<<< HEAD
          * The confidence level for the detection of the face. The range is 1 to 100. 100 is the
          * highest confidence.
+=======
+         * <p>The confidence level for the detection of the face. The range is 1 to
+         * 100. 100 is the highest confidence.</p>
+         *
+         * <p>Depending on the device, even very low-confidence faces may be
+         * listed, so applications should filter out faces with low confidence,
+         * depending on the use case. For a typical point-and-shoot camera
+         * application that wishes to display rectangles around detected faces,
+         * filtering out faces with confidence less than 50 is recommended.</p>
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
          *
          * @see #startFaceDetection()
          */
@@ -1679,6 +1812,7 @@ public class Camera {
          */
         public int weight;
     }
+<<<<<<< HEAD
      /**
      * @hide
      * Handles the Touch Co-ordinate.
@@ -1716,6 +1850,8 @@ public class Camera {
         /** y co-ordinate for the touch event */
         public int yCoordinate;
     };
+=======
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 
     /**
      * Camera service settings.
@@ -1737,6 +1873,7 @@ public class Camera {
     public class Parameters {
         // Parameter keys to communicate with the camera driver.
         private static final String KEY_PREVIEW_SIZE = "preview-size";
+<<<<<<< HEAD
 	private static final String KEY_HFR_SIZE = "hfr-size";
         private static final String KEY_PREVIEW_FORMAT = "preview-format";
         private static final String KEY_PREVIEW_FRAME_RATE = "preview-frame-rate";
@@ -1744,6 +1881,11 @@ public class Camera {
         private static final String KEY_PREVIEW_FRAME_RATE_MODE = "preview-frame-rate-mode";
         private static final String KEY_PREVIEW_FRAME_RATE_AUTO_MODE = "frame-rate-auto";
         private static final String KEY_PREVIEW_FRAME_RATE_FIXED_MODE = "frame-rate-fixed";
+=======
+        private static final String KEY_PREVIEW_FORMAT = "preview-format";
+        private static final String KEY_PREVIEW_FRAME_RATE = "preview-frame-rate";
+        private static final String KEY_PREVIEW_FPS_RANGE = "preview-fps-range";
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         private static final String KEY_PICTURE_SIZE = "picture-size";
         private static final String KEY_PICTURE_FORMAT = "picture-format";
         private static final String KEY_JPEG_THUMBNAIL_SIZE = "jpeg-thumbnail-size";
@@ -1755,6 +1897,7 @@ public class Camera {
         private static final String KEY_GPS_LATITUDE = "gps-latitude";
         private static final String KEY_GPS_LONGITUDE = "gps-longitude";
         private static final String KEY_GPS_ALTITUDE = "gps-altitude";
+<<<<<<< HEAD
         private static final String KEY_GPS_LATITUDE_REF = "gps-latitude-ref";
         private static final String KEY_GPS_LONGITUDE_REF = "gps-longitude-ref";
         private static final String KEY_GPS_ALTITUDE_REF = "gps-altitude-ref";
@@ -1776,6 +1919,16 @@ public class Camera {
         private static final String KEY_LENSSHADE = "lensshade";
         private static final String KEY_HISTOGRAM = "histogram";
         private static final String KEY_SKIN_TONE_ENHANCEMENT = "skinToneEnhancement";
+=======
+        private static final String KEY_GPS_TIMESTAMP = "gps-timestamp";
+        private static final String KEY_GPS_PROCESSING_METHOD = "gps-processing-method";
+        private static final String KEY_WHITE_BALANCE = "whitebalance";
+        private static final String KEY_EFFECT = "effect";
+        private static final String KEY_ANTIBANDING = "antibanding";
+        private static final String KEY_SCENE_MODE = "scene-mode";
+        private static final String KEY_FLASH_MODE = "flash-mode";
+        private static final String KEY_FOCUS_MODE = "focus-mode";
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         private static final String KEY_FOCUS_AREAS = "focus-areas";
         private static final String KEY_MAX_NUM_FOCUS_AREAS = "max-num-focus-areas";
         private static final String KEY_FOCAL_LENGTH = "focal-length";
@@ -1791,7 +1944,10 @@ public class Camera {
         private static final String KEY_AUTO_WHITEBALANCE_LOCK_SUPPORTED = "auto-whitebalance-lock-supported";
         private static final String KEY_METERING_AREAS = "metering-areas";
         private static final String KEY_MAX_NUM_METERING_AREAS = "max-num-metering-areas";
+<<<<<<< HEAD
         private static final String KEY_AUTO_EXPOSURE = "auto-exposure";
+=======
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         private static final String KEY_ZOOM = "zoom";
         private static final String KEY_MAX_ZOOM = "max-zoom";
         private static final String KEY_ZOOM_RATIOS = "zoom-ratios";
@@ -1805,6 +1961,7 @@ public class Camera {
         private static final String KEY_MAX_NUM_DETECTED_FACES_SW = "max-num-detected-faces-sw";
         private static final String KEY_RECORDING_HINT = "recording-hint";
         private static final String KEY_VIDEO_SNAPSHOT_SUPPORTED = "video-snapshot-supported";
+<<<<<<< HEAD
         private static final String KEY_FULL_VIDEO_SNAP_SUPPORTED = "full-video-snap-supported";
         private static final String KEY_VIDEO_STABILIZATION = "video-stabilization";
         private static final String KEY_VIDEO_STABILIZATION_SUPPORTED = "video-stabilization-supported";
@@ -1823,6 +1980,10 @@ public class Camera {
         private static final String KEY_ZSL = "zsl";
         private static final String KEY_CAMERA_MODE = "camera-mode";
         private static final String KEY_VIDEO_HIGH_FRAME_RATE = "video-hfr";
+=======
+        private static final String KEY_VIDEO_STABILIZATION = "video-stabilization";
+        private static final String KEY_VIDEO_STABILIZATION_SUPPORTED = "video-stabilization-supported";
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 
         // Parameter key suffix for supported values.
         private static final String SUPPORTED_VALUES_SUFFIX = "-values";
@@ -1851,6 +2012,7 @@ public class Camera {
         public static final String EFFECT_BLACKBOARD = "blackboard";
         public static final String EFFECT_AQUA = "aqua";
 
+<<<<<<< HEAD
         // Values for touch af/aec settings.
         /** @hide */
         public static final String TOUCH_AF_AEC_OFF = "touch-off";
@@ -1864,11 +2026,14 @@ public class Camera {
         public static final String AUTO_EXPOSURE_CENTER_WEIGHTED = "center-weighted";
         /** @hide */
         public static final String AUTO_EXPOSURE_SPOT_METERING = "spot-metering";
+=======
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         // Values for antibanding settings.
         public static final String ANTIBANDING_AUTO = "auto";
         public static final String ANTIBANDING_50HZ = "50hz";
         public static final String ANTIBANDING_60HZ = "60hz";
         public static final String ANTIBANDING_OFF = "off";
+<<<<<<< HEAD
         //Values for ISO settings
 
         /** @hide */
@@ -1935,6 +2100,8 @@ public class Camera {
 
         /** @hide */
         public static final String KEY_AE_BRACKET_HDR = "ae-bracket-hdr";
+=======
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 
         // Values for flash mode settings.
         /**
@@ -1967,12 +2134,15 @@ public class Camera {
 
         /**
          * Scene mode is off.
+<<<<<<< HEAD
          * @hide
          */
         public static final String SCENE_MODE_ASD = "asd";
 
         /**
          * Scene mode is auto ASD.
+=======
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
          */
         public static final String SCENE_MODE_AUTO = "auto";
 
@@ -2047,6 +2217,7 @@ public class Camera {
          * Capture the naturally warm color of scenes lit by candles.
          */
         public static final String SCENE_MODE_CANDLELIGHT = "candlelight";
+<<<<<<< HEAD
         /** @hide */
         public static final String SCENE_MODE_BACKLIGHT = "backlight";
         /** @hide */
@@ -2057,6 +2228,8 @@ public class Camera {
         public static final String SCENE_DETECT_OFF = "off";
         /** @hide */
         public static final String SCENE_DETECT_ON = "on";
+=======
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 
         /**
          * Applications are looking for a barcode. Camera driver will be
@@ -2065,6 +2238,17 @@ public class Camera {
         public static final String SCENE_MODE_BARCODE = "barcode";
 
         /**
+<<<<<<< HEAD
+=======
+         * Capture a scene using high dynamic range imaging techniques. The
+         * camera will return an image that has an extended dynamic range
+         * compared to a regular capture. Capturing such an image may take
+         * longer than a regular capture.
+         */
+        public static final String SCENE_MODE_HDR = "hdr";
+
+        /**
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
          * Auto-focus mode. Applications should call {@link
          * #autoFocus(AutoFocusCallback)} to start the focus in this mode.
          */
@@ -2092,6 +2276,7 @@ public class Camera {
         public static final String FOCUS_MODE_FIXED = "fixed";
 
         /**
+<<<<<<< HEAD
          * Normal focus mode. Applications should call
          * {@link #autoFocus(AutoFocusCallback)} to start the focus in this
          * mode.
@@ -2100,6 +2285,8 @@ public class Camera {
         public static final String FOCUS_MODE_NORMAL = "normal";
 
         /**
+=======
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
          * Extended depth of field (EDOF). Focusing is done digitally and
          * continuously. Applications should not call {@link
          * #autoFocus(AutoFocusCallback)} in this mode.
@@ -2187,12 +2374,16 @@ public class Camera {
         // Formats for setPreviewFormat and setPictureFormat.
         private static final String PIXEL_FORMAT_YUV422SP = "yuv422sp";
         private static final String PIXEL_FORMAT_YUV420SP = "yuv420sp";
+<<<<<<< HEAD
         private static final String PIXEL_FORMAT_YUV420SP_ADRENO = "yuv420sp-adreno";
+=======
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         private static final String PIXEL_FORMAT_YUV422I = "yuv422i-yuyv";
         private static final String PIXEL_FORMAT_YUV420P = "yuv420p";
         private static final String PIXEL_FORMAT_RGB565 = "rgb565";
         private static final String PIXEL_FORMAT_JPEG = "jpeg";
         private static final String PIXEL_FORMAT_BAYER_RGGB = "bayer-rggb";
+<<<<<<< HEAD
         private static final String PIXEL_FORMAT_RAW = "raw";
         private static final String PIXEL_FORMAT_YV12 = "yv12";
         private static final String PIXEL_FORMAT_NV12 = "nv12";
@@ -2228,11 +2419,17 @@ public class Camera {
         public static final String FACE_DETECTION_OFF = "off";
         /** @hide */
         public static final String FACE_DETECTION_ON = "on";
+=======
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 
         private HashMap<String, String> mMap;
 
         private Parameters() {
+<<<<<<< HEAD
             mMap = new HashMap<String, String>();
+=======
+            mMap = new HashMap<String, String>(64);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         }
 
         /**
@@ -2256,7 +2453,11 @@ public class Camera {
          *         semi-colon delimited key-value pairs
          */
         public String flatten() {
+<<<<<<< HEAD
             StringBuilder flattened = new StringBuilder();
+=======
+            StringBuilder flattened = new StringBuilder(128);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
             for (String k : mMap.keySet()) {
                 flattened.append(k);
                 flattened.append("=");
@@ -2279,9 +2480,15 @@ public class Camera {
         public void unflatten(String flattened) {
             mMap.clear();
 
+<<<<<<< HEAD
             StringTokenizer tokenizer = new StringTokenizer(flattened, ";");
             while (tokenizer.hasMoreElements()) {
                 String kv = tokenizer.nextToken();
+=======
+            TextUtils.StringSplitter splitter = new TextUtils.SimpleStringSplitter(';');
+            splitter.setString(flattened);
+            for (String kv : splitter) {
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
                 int pos = kv.indexOf('=');
                 if (pos == -1) {
                     continue;
@@ -2420,6 +2627,7 @@ public class Camera {
             return splitSize(str);
         }
 
+<<<<<<< HEAD
 	/**
          * @hide
          * Gets the supported preview sizes in high frame rate recording mode.
@@ -2432,6 +2640,8 @@ public class Camera {
             return splitSize(str);
         }
 
+=======
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         /**
          * <p>Gets the supported video frame sizes that can be used by
          * MediaRecorder.</p>
@@ -2918,6 +3128,7 @@ public class Camera {
         }
 
         /**
+<<<<<<< HEAD
          * @hide
          * Sets GPS latitude reference coordinate. This will be stored in JPEG EXIF
          * header.
@@ -2928,6 +3139,8 @@ public class Camera {
         }
 
         /**
+=======
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
          * Sets GPS latitude coordinate. This will be stored in JPEG EXIF
          * header.
          *
@@ -2938,6 +3151,7 @@ public class Camera {
         }
 
         /**
+<<<<<<< HEAD
          * @hide
          * Sets GPS longitude reference coordinate. This will be stored in JPEG EXIF
          * header.
@@ -2948,6 +3162,8 @@ public class Camera {
         }
 
         /**
+=======
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
          * Sets GPS longitude coordinate. This will be stored in JPEG EXIF
          * header.
          *
@@ -2958,6 +3174,7 @@ public class Camera {
         }
 
         /**
+<<<<<<< HEAD
          * @hide
          * Sets GPS altitude reference. This will be stored in JPEG EXIF header.
          * @param altRef reference GPS altitude in meters.
@@ -2967,6 +3184,8 @@ public class Camera {
         }
 
         /**
+=======
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
          * Sets GPS altitude. This will be stored in JPEG EXIF header.
          *
          * @param altitude GPS altitude in meters.
@@ -2996,6 +3215,7 @@ public class Camera {
         }
 
         /**
+<<<<<<< HEAD
          * @hide
          * Sets system timestamp. This will be stored in JPEG EXIF header.
          *
@@ -3018,15 +3238,22 @@ public class Camera {
         }
 
         /**
+=======
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
          * Removes GPS latitude, longitude, altitude, and timestamp from the
          * parameters.
          */
         public void removeGpsData() {
+<<<<<<< HEAD
             remove(KEY_GPS_LATITUDE_REF);
             remove(KEY_GPS_LATITUDE);
             remove(KEY_GPS_LONGITUDE_REF);
             remove(KEY_GPS_LONGITUDE);
             remove(KEY_GPS_ALTITUDE_REF);
+=======
+            remove(KEY_GPS_LATITUDE);
+            remove(KEY_GPS_LONGITUDE);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
             remove(KEY_GPS_ALTITUDE);
             remove(KEY_GPS_TIMESTAMP);
             remove(KEY_GPS_PROCESSING_METHOD);
@@ -3120,6 +3347,7 @@ public class Camera {
             return split(str);
         }
 
+<<<<<<< HEAD
         /**
          * @hide
          * Gets the current Touch AF/AEC setting.
@@ -3153,10 +3381,47 @@ public class Camera {
          */
         public List<String> getSupportedTouchAfAec() {
             String str = get(KEY_TOUCH_AF_AEC + SUPPORTED_VALUES_SUFFIX);
+=======
+
+        /**
+         * Gets the current antibanding setting.
+         *
+         * @return current antibanding. null if antibanding setting is not
+         *         supported.
+         * @see #ANTIBANDING_AUTO
+         * @see #ANTIBANDING_50HZ
+         * @see #ANTIBANDING_60HZ
+         * @see #ANTIBANDING_OFF
+         */
+        public String getAntibanding() {
+            return get(KEY_ANTIBANDING);
+        }
+
+        /**
+         * Sets the antibanding.
+         *
+         * @param antibanding new antibanding value.
+         * @see #getAntibanding()
+         */
+        public void setAntibanding(String antibanding) {
+            set(KEY_ANTIBANDING, antibanding);
+        }
+
+        /**
+         * Gets the supported antibanding values.
+         *
+         * @return a list of supported antibanding values. null if antibanding
+         *         setting is not supported.
+         * @see #getAntibanding()
+         */
+        public List<String> getSupportedAntibanding() {
+            String str = get(KEY_ANTIBANDING + SUPPORTED_VALUES_SUFFIX);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
             return split(str);
         }
 
         /**
+<<<<<<< HEAD
          * @hide
          * Sets the touch co-ordinate for Touch AEC.
          *
@@ -3570,6 +3835,100 @@ public class Camera {
 
         /**
          * Gets the current focus mode setting.
+=======
+         * Gets the current scene mode setting.
+         *
+         * @return one of SCENE_MODE_XXX string constant. null if scene mode
+         *         setting is not supported.
+         * @see #SCENE_MODE_AUTO
+         * @see #SCENE_MODE_ACTION
+         * @see #SCENE_MODE_PORTRAIT
+         * @see #SCENE_MODE_LANDSCAPE
+         * @see #SCENE_MODE_NIGHT
+         * @see #SCENE_MODE_NIGHT_PORTRAIT
+         * @see #SCENE_MODE_THEATRE
+         * @see #SCENE_MODE_BEACH
+         * @see #SCENE_MODE_SNOW
+         * @see #SCENE_MODE_SUNSET
+         * @see #SCENE_MODE_STEADYPHOTO
+         * @see #SCENE_MODE_FIREWORKS
+         * @see #SCENE_MODE_SPORTS
+         * @see #SCENE_MODE_PARTY
+         * @see #SCENE_MODE_CANDLELIGHT
+         * @see #SCENE_MODE_BARCODE
+         */
+        public String getSceneMode() {
+            return get(KEY_SCENE_MODE);
+        }
+
+        /**
+         * Sets the scene mode. Changing scene mode may override other
+         * parameters (such as flash mode, focus mode, white balance). For
+         * example, suppose originally flash mode is on and supported flash
+         * modes are on/off. In night scene mode, both flash mode and supported
+         * flash mode may be changed to off. After setting scene mode,
+         * applications should call getParameters to know if some parameters are
+         * changed.
+         *
+         * @param value scene mode.
+         * @see #getSceneMode()
+         */
+        public void setSceneMode(String value) {
+            set(KEY_SCENE_MODE, value);
+        }
+
+        /**
+         * Gets the supported scene modes.
+         *
+         * @return a list of supported scene modes. null if scene mode setting
+         *         is not supported.
+         * @see #getSceneMode()
+         */
+        public List<String> getSupportedSceneModes() {
+            String str = get(KEY_SCENE_MODE + SUPPORTED_VALUES_SUFFIX);
+            return split(str);
+        }
+
+        /**
+         * Gets the current flash mode setting.
+         *
+         * @return current flash mode. null if flash mode setting is not
+         *         supported.
+         * @see #FLASH_MODE_OFF
+         * @see #FLASH_MODE_AUTO
+         * @see #FLASH_MODE_ON
+         * @see #FLASH_MODE_RED_EYE
+         * @see #FLASH_MODE_TORCH
+         */
+        public String getFlashMode() {
+            return get(KEY_FLASH_MODE);
+        }
+
+        /**
+         * Sets the flash mode.
+         *
+         * @param value flash mode.
+         * @see #getFlashMode()
+         */
+        public void setFlashMode(String value) {
+            set(KEY_FLASH_MODE, value);
+        }
+
+        /**
+         * Gets the supported flash modes.
+         *
+         * @return a list of supported flash modes. null if flash mode setting
+         *         is not supported.
+         * @see #getFlashMode()
+         */
+        public List<String> getSupportedFlashModes() {
+            String str = get(KEY_FLASH_MODE + SUPPORTED_VALUES_SUFFIX);
+            return split(str);
+        }
+
+        /**
+         * Gets the current focus mode setting.
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
          *
          * @return current focus mode. This method will always return a non-null
          *         value. Applications should call {@link
@@ -3913,6 +4272,7 @@ public class Camera {
         }
 
         /**
+<<<<<<< HEAD
          * @hide
          * Gets the current ISO setting.
          *
@@ -4153,6 +4513,9 @@ public class Camera {
 
         /**
          * Gets the distances from the camera to where an object appears to be
+=======
+         * <p>Gets the distances from the camera to where an object appears to be
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
          * in focus. The object is sharpest at the optimal focus distance. The
          * depth of field is the far focus distance minus near focus distance.</p>
          *
@@ -4245,6 +4608,7 @@ public class Camera {
         public List<Area> getFocusAreas() {
             return splitArea(get(KEY_FOCUS_AREAS));
         }
+<<<<<<< HEAD
         /**
          * @hide
          * Gets the current DENOISE  setting.
@@ -4267,6 +4631,8 @@ public class Camera {
          public String getContinuousAf() {
             return get(KEY_CONTINUOUS_AF);
         }
+=======
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 
         /**
          * Sets focus areas. See {@link #getFocusAreas()} for documentation.
@@ -4277,6 +4643,7 @@ public class Camera {
         public void setFocusAreas(List<Area> focusAreas) {
             set(KEY_FOCUS_AREAS, focusAreas);
         }
+<<<<<<< HEAD
         /**
          * @hide
          * Sets the current Denoise  mode.
@@ -4296,6 +4663,8 @@ public class Camera {
          public void setContinuousAf(String value) {
             set(KEY_CONTINUOUS_AF, value);
         }
+=======
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 
         /**
          * Gets the maximum number of metering areas supported. This is the
@@ -4354,6 +4723,7 @@ public class Camera {
         }
 
         /**
+<<<<<<< HEAD
          * @hide
          * Gets the supported Continuous AF modes.
          *
@@ -4380,12 +4750,15 @@ public class Camera {
 
 
         /**
+=======
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
          * Sets metering areas. See {@link #getMeteringAreas()} for
          * documentation.
          *
          * @param meteringAreas the metering areas
          * @see #getMeteringAreas()
          */
+<<<<<<< HEAD
          public void setMeteringAreas(List<Area> meteringAreas) {
             set(KEY_METERING_AREAS, meteringAreas);
         }
@@ -4399,6 +4772,11 @@ public class Camera {
          public String getSelectableZoneAf() {
             return get(KEY_SELECTABLE_ZONE_AF);
         }
+=======
+        public void setMeteringAreas(List<Area> meteringAreas) {
+            set(KEY_METERING_AREAS, meteringAreas);
+        }
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 
         /**
          * Gets the maximum number of detected faces supported. This is the
@@ -4409,6 +4787,7 @@ public class Camera {
          * @return the maximum number of detected face supported by the camera.
          * @see #startFaceDetection()
          */
+<<<<<<< HEAD
          public int getMaxNumDetectedFaces() {
             return getInt(KEY_MAX_NUM_DETECTED_FACES_HW, 0);
         }
@@ -4421,6 +4800,11 @@ public class Camera {
          public void setSelectableZoneAf(String value) {
             set(KEY_SELECTABLE_ZONE_AF, value);
         }
+=======
+        public int getMaxNumDetectedFaces() {
+            return getInt(KEY_MAX_NUM_DETECTED_FACES_HW, 0);
+        }
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 
         /**
          * Sets recording mode hint. This tells the camera that the intent of
@@ -4445,6 +4829,7 @@ public class Camera {
         }
 
         /**
+<<<<<<< HEAD
          * @hide
          * Gets the supported selectable zone af setting.
          *
@@ -4476,6 +4861,31 @@ public class Camera {
          *
          * Field-of-view of the recorded video may be different from that of the
          * captured pictures.
+=======
+         * <p>Returns true if video snapshot is supported. That is, applications
+         * can call {@link #takePicture(Camera.ShutterCallback,
+         * Camera.PictureCallback, Camera.PictureCallback,
+         * Camera.PictureCallback)} during recording. Applications do not need
+         * to call {@link #startPreview()} after taking a picture. The preview
+         * will be still active. Other than that, taking a picture during
+         * recording is identical to taking a picture normally. All settings and
+         * methods related to takePicture work identically. Ex:
+         * {@link #getPictureSize()}, {@link #getSupportedPictureSizes()},
+         * {@link #setJpegQuality(int)}, {@link #setRotation(int)}, and etc. The
+         * picture will have an EXIF header. {@link #FLASH_MODE_AUTO} and
+         * {@link #FLASH_MODE_ON} also still work, but the video will record the
+         * flash.</p>
+         *
+         * <p>Applications can set shutter callback as null to avoid the shutter
+         * sound. It is also recommended to set raw picture and post view
+         * callbacks to null to avoid the interrupt of preview display.</p>
+         *
+         * <p>Field-of-view of the recorded video may be different from that of the
+         * captured pictures. The maximum size of a video snapshot may be
+         * smaller than that for regular still captures. If the current picture
+         * size is set higher than can be supported by video snapshot, the
+         * picture will be captured at the maximum supported size instead.</p>
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
          *
          * @return true if video snapshot is supported.
          */
@@ -4484,6 +4894,7 @@ public class Camera {
             return TRUE.equals(str);
         }
 
+<<<<<<< HEAD
         /** 
          * @hide
          * @return true if full size video snapshot is supported. 
@@ -4505,6 +4916,8 @@ public class Camera {
             return get(KEY_FACE_DETECTION);
         }
 
+=======
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         /**
          * <p>Enables and disables video stabilization. Use
          * {@link #isVideoStabilizationSupported} to determine if calling this
@@ -4530,6 +4943,7 @@ public class Camera {
         }
 
         /**
+<<<<<<< HEAD
          * Sets the auto scene detect. Other settings like Touch AF/AEC might be
          * changed after setting face detection.
          *
@@ -4541,6 +4955,8 @@ public class Camera {
         }
 
         /**
+=======
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
          * Get the current state of video stabilization. See
          * {@link #setVideoStabilization} for details of video stabilization.
          *
@@ -4566,6 +4982,7 @@ public class Camera {
             return TRUE.equals(str);
         }
 
+<<<<<<< HEAD
         /**
          * @hide
          * Gets the supported face detection modes.
@@ -4579,16 +4996,26 @@ public class Camera {
             return split(str);
         }
 
+=======
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         // Splits a comma delimited string to an ArrayList of String.
         // Return null if the passing string is null or the size is 0.
         private ArrayList<String> split(String str) {
             if (str == null) return null;
 
+<<<<<<< HEAD
             // Use StringTokenizer because it is faster than split.
             StringTokenizer tokenizer = new StringTokenizer(str, ",");
             ArrayList<String> substrings = new ArrayList<String>();
             while (tokenizer.hasMoreElements()) {
                 substrings.add(tokenizer.nextToken());
+=======
+            TextUtils.StringSplitter splitter = new TextUtils.SimpleStringSplitter(',');
+            splitter.setString(str);
+            ArrayList<String> substrings = new ArrayList<String>();
+            for (String s : splitter) {
+                substrings.add(s);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
             }
             return substrings;
         }
@@ -4598,11 +5025,19 @@ public class Camera {
         private ArrayList<Integer> splitInt(String str) {
             if (str == null) return null;
 
+<<<<<<< HEAD
             StringTokenizer tokenizer = new StringTokenizer(str, ",");
             ArrayList<Integer> substrings = new ArrayList<Integer>();
             while (tokenizer.hasMoreElements()) {
                 String token = tokenizer.nextToken();
                 substrings.add(Integer.parseInt(token));
+=======
+            TextUtils.StringSplitter splitter = new TextUtils.SimpleStringSplitter(',');
+            splitter.setString(str);
+            ArrayList<Integer> substrings = new ArrayList<Integer>();
+            for (String s : splitter) {
+                substrings.add(Integer.parseInt(s));
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
             }
             if (substrings.size() == 0) return null;
             return substrings;
@@ -4611,11 +5046,19 @@ public class Camera {
         private void splitInt(String str, int[] output) {
             if (str == null) return;
 
+<<<<<<< HEAD
             StringTokenizer tokenizer = new StringTokenizer(str, ",");
             int index = 0;
             while (tokenizer.hasMoreElements()) {
                 String token = tokenizer.nextToken();
                 output[index++] = Integer.parseInt(token);
+=======
+            TextUtils.StringSplitter splitter = new TextUtils.SimpleStringSplitter(',');
+            splitter.setString(str);
+            int index = 0;
+            for (String s : splitter) {
+                output[index++] = Integer.parseInt(s);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
             }
         }
 
@@ -4623,11 +5066,19 @@ public class Camera {
         private void splitFloat(String str, float[] output) {
             if (str == null) return;
 
+<<<<<<< HEAD
             StringTokenizer tokenizer = new StringTokenizer(str, ",");
             int index = 0;
             while (tokenizer.hasMoreElements()) {
                 String token = tokenizer.nextToken();
                 output[index++] = Float.parseFloat(token);
+=======
+            TextUtils.StringSplitter splitter = new TextUtils.SimpleStringSplitter(',');
+            splitter.setString(str);
+            int index = 0;
+            for (String s : splitter) {
+                output[index++] = Float.parseFloat(s);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
             }
         }
 
@@ -4654,10 +5105,18 @@ public class Camera {
         private ArrayList<Size> splitSize(String str) {
             if (str == null) return null;
 
+<<<<<<< HEAD
             StringTokenizer tokenizer = new StringTokenizer(str, ",");
             ArrayList<Size> sizeList = new ArrayList<Size>();
             while (tokenizer.hasMoreElements()) {
                 Size size = strToSize(tokenizer.nextToken());
+=======
+            TextUtils.StringSplitter splitter = new TextUtils.SimpleStringSplitter(',');
+            splitter.setString(str);
+            ArrayList<Size> sizeList = new ArrayList<Size>();
+            for (String s : splitter) {
+                Size size = strToSize(s);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
                 if (size != null) sizeList.add(size);
             }
             if (sizeList.size() == 0) return null;
@@ -4741,6 +5200,7 @@ public class Camera {
             return result;
         }
 
+<<<<<<< HEAD
 	// Splits a comma delimited string to an ArrayList of Coordinate.
         // Return null if the passing string is null or the Coordinate is 0.
         private ArrayList<Coordinate> splitCoordinate(String str) {
@@ -4772,6 +5232,8 @@ public class Camera {
             return null;
         }
 
+=======
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         private boolean same(String s1, String s2) {
             if (s1 == null && s2 == null) return true;
             if (s1 != null && s1.equals(s2)) return true;

@@ -28,9 +28,18 @@ import android.content.res.Resources;
 import android.os.Bundle;
 import android.os.RemoteException;
 import android.util.Log;
+<<<<<<< HEAD
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+=======
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
+import android.widget.TextView;
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 
 import java.text.Collator;
 import java.util.Arrays;
@@ -86,7 +95,11 @@ public class LocalePicker extends ListFragment {
     }
 
     public static ArrayAdapter<LocaleInfo> constructAdapter(Context context,
+<<<<<<< HEAD
             int layoutId, int fieldId) {
+=======
+            final int layoutId, final int fieldId) {
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         final Resources resources = context.getResources();
         final String[] locales = Resources.getSystem().getAssets().getLocales();
         final String[] specialLocaleCodes = resources.getStringArray(R.array.special_locale_codes);
@@ -154,7 +167,33 @@ public class LocalePicker extends ListFragment {
             localeInfos[i] = preprocess[i];
         }
         Arrays.sort(localeInfos);
+<<<<<<< HEAD
         return new ArrayAdapter<LocaleInfo>(context, layoutId, fieldId, localeInfos);
+=======
+
+        final LayoutInflater inflater =
+                (LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        return new ArrayAdapter<LocaleInfo>(context, layoutId, fieldId, localeInfos) {
+            @Override
+            public View getView(int position, View convertView, ViewGroup parent) {
+                View view;
+                TextView text;
+                if (convertView == null) {
+                    view = inflater.inflate(layoutId, parent, false);
+                    text = (TextView) view.findViewById(fieldId);
+                    view.setTag(text);
+                } else {
+                    view = convertView;
+                    text = (TextView) view.getTag();
+                }
+                LocaleInfo item = getItem(position);
+                text.setText(item.toString());
+                text.setTextLocale(item.getLocale());
+
+                return view;
+            }
+        };
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     }
 
     private static String toTitleCase(String s) {
@@ -218,10 +257,16 @@ public class LocalePicker extends ListFragment {
             IActivityManager am = ActivityManagerNative.getDefault();
             Configuration config = am.getConfiguration();
 
+<<<<<<< HEAD
             config.locale = locale;
 
             // indicate this isn't some passing default - the user wants this remembered
             config.userSetLocale = true;
+=======
+            // Will set userSetLocale to indicate this isn't some passing default - the user
+            // wants this remembered
+            config.setLocale(locale);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 
             am.updateConfiguration(config);
             // Trigger the dirty bit for the Settings Provider.
@@ -230,4 +275,8 @@ public class LocalePicker extends ListFragment {
             // Intentionally left blank
         }
     }
+<<<<<<< HEAD
 }
+=======
+}
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a

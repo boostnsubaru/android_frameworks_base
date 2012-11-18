@@ -42,6 +42,15 @@ public interface WebViewFactoryProvider {
          * {@link android.webkit.WebView#disablePlatformNotifications()}
          */
         void setPlatformNotificationsEnabled(boolean enable);
+<<<<<<< HEAD
+=======
+
+        /**
+         * Implements the API method:
+         * {@link android.webkit.WebSettings#getDefaultUserAgent(Context) }
+         */
+        String getDefaultUserAgent(Context context);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     }
 
     Statics getStatics();

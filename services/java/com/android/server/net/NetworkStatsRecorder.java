@@ -42,6 +42,10 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.lang.ref.WeakReference;
+<<<<<<< HEAD
+=======
+import java.util.Arrays;
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 import java.util.HashSet;
 import java.util.Map;
 
@@ -233,6 +237,7 @@ public class NetworkStatsRecorder {
      * Remove the given UID from all {@link FileRotator} history, migrating it
      * to {@link TrafficStats#UID_REMOVED}.
      */
+<<<<<<< HEAD
     public void removeUidLocked(int uid) {
         try {
             // process all existing data to migrate uid
@@ -245,11 +250,33 @@ public class NetworkStatsRecorder {
         // clear UID from current stats snapshot
         if (mLastSnapshot != null) {
             mLastSnapshot = mLastSnapshot.withoutUid(uid);
+=======
+    public void removeUidsLocked(int[] uids) {
+        try {
+            // Rewrite all persisted data to migrate UID stats
+            mRotator.rewriteAll(new RemoveUidRewriter(mBucketDuration, uids));
+        } catch (IOException e) {
+            Log.wtf(TAG, "problem removing UIDs " + Arrays.toString(uids), e);
+            recoverFromWtf();
+        }
+
+        // Remove any pending stats
+        mPending.removeUids(uids);
+        mSinceBoot.removeUids(uids);
+
+        // Clear UID from current stats snapshot
+        if (mLastSnapshot != null) {
+            mLastSnapshot = mLastSnapshot.withoutUids(uids);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         }
 
         final NetworkStatsCollection complete = mComplete != null ? mComplete.get() : null;
         if (complete != null) {
+<<<<<<< HEAD
             complete.removeUid(uid);
+=======
+            complete.removeUids(uids);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         }
     }
 
@@ -293,11 +320,19 @@ public class NetworkStatsRecorder {
      */
     public static class RemoveUidRewriter implements FileRotator.Rewriter {
         private final NetworkStatsCollection mTemp;
+<<<<<<< HEAD
         private final int mUid;
 
         public RemoveUidRewriter(long bucketDuration, int uid) {
             mTemp = new NetworkStatsCollection(bucketDuration);
             mUid = uid;
+=======
+        private final int[] mUids;
+
+        public RemoveUidRewriter(long bucketDuration, int[] uids) {
+            mTemp = new NetworkStatsCollection(bucketDuration);
+            mUids = uids;
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         }
 
         @Override
@@ -309,7 +344,11 @@ public class NetworkStatsRecorder {
         public void read(InputStream in) throws IOException {
             mTemp.read(in);
             mTemp.clearDirty();
+<<<<<<< HEAD
             mTemp.removeUid(mUid);
+=======
+            mTemp.removeUids(mUids);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         }
 
         @Override

@@ -36,6 +36,10 @@ import android.os.Environment;
 import android.os.Message;
 import android.os.Handler;
 import android.os.HandlerThread;
+<<<<<<< HEAD
+=======
+import android.os.UserHandle;
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 import android.text.TextUtils;
 import android.util.Log;
 
@@ -601,7 +605,11 @@ class WifiConfigStore {
         intent.putExtra(WifiManager.EXTRA_MULTIPLE_NETWORKS_CHANGED, false);
         intent.putExtra(WifiManager.EXTRA_WIFI_CONFIGURATION, network);
         intent.putExtra(WifiManager.EXTRA_CHANGE_REASON, reason);
+<<<<<<< HEAD
         mContext.sendBroadcast(intent);
+=======
+        mContext.sendBroadcastAsUser(intent, UserHandle.ALL);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     }
 
     /**
@@ -611,7 +619,11 @@ class WifiConfigStore {
         Intent intent = new Intent(WifiManager.CONFIGURED_NETWORKS_CHANGED_ACTION);
         intent.addFlags(Intent.FLAG_RECEIVER_REGISTERED_ONLY_BEFORE_BOOT);
         intent.putExtra(WifiManager.EXTRA_MULTIPLE_NETWORKS_CHANGED, true);
+<<<<<<< HEAD
         mContext.sendBroadcast(intent);
+=======
+        mContext.sendBroadcastAsUser(intent, UserHandle.ALL);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     }
 
     void loadConfiguredNetworks() {
@@ -1317,7 +1329,17 @@ class WifiConfigStore {
 
         value = mWifiNative.getNetworkVariable(netId, WifiConfiguration.ssidVarName);
         if (!TextUtils.isEmpty(value)) {
+<<<<<<< HEAD
             config.SSID = value;
+=======
+            if (value.charAt(0) != '"') {
+                config.SSID = "\"" + WifiSsid.createFromHex(value).toString() + "\"";
+                //TODO: convert a hex string that is not UTF-8 decodable to a P-formatted
+                //supplicant string
+            } else {
+                config.SSID = value;
+            }
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         } else {
             config.SSID = null;
         }

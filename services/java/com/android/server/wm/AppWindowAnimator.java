@@ -4,16 +4,25 @@ package com.android.server.wm;
 
 import android.graphics.Matrix;
 import android.util.Slog;
+<<<<<<< HEAD
+=======
+import android.view.Display;
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 import android.view.Surface;
 import android.view.WindowManagerPolicy;
 import android.view.animation.Animation;
 import android.view.animation.Transformation;
 
 import java.io.PrintWriter;
+<<<<<<< HEAD
 
 /**
  *
  */
+=======
+import java.util.ArrayList;
+
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 public class AppWindowAnimator {
     static final String TAG = "AppWindowAnimator";
 
@@ -48,12 +57,24 @@ public class AppWindowAnimator {
     Animation thumbnailAnimation;
     final Transformation thumbnailTransformation = new Transformation();
 
+<<<<<<< HEAD
     static final Animation sDummyAnimation = new DummyAnimation();
 
     public AppWindowAnimator(final WindowManagerService service, final AppWindowToken atoken) {
         mService = service;
         mAppToken = atoken;
         mAnimator = service.mAnimator;
+=======
+    /** WindowStateAnimator from mAppAnimator.allAppWindows as of last performLayout */
+    ArrayList<WindowStateAnimator> mAllAppWinAnimators = new ArrayList<WindowStateAnimator>();
+
+    static final Animation sDummyAnimation = new DummyAnimation();
+
+    public AppWindowAnimator(final AppWindowToken atoken) {
+        mAppToken = atoken;
+        mService = atoken.service;
+        mAnimator = atoken.mAnimator;
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     }
 
     public void setAnimation(Animation anim, boolean initialized) {
@@ -123,7 +144,11 @@ public class AppWindowAnimator {
             if (w == mService.mInputMethodTarget && !mService.mInputMethodTargetWaitingAnim) {
                 mService.setInputMethodAnimLayerAdjustment(adj);
             }
+<<<<<<< HEAD
             if (w == mService.mWallpaperTarget && mService.mLowerWallpaperTarget == null) {
+=======
+            if (w == mAnimator.mWallpaperTarget && mAnimator.mLowerWallpaperTarget == null) {
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
                 mService.setWallpaperAnimLayerAdjustmentLocked(adj);
             }
         }
@@ -133,11 +158,21 @@ public class AppWindowAnimator {
         thumbnailTransformation.clear();
         thumbnailAnimation.getTransformation(currentTime, thumbnailTransformation);
         thumbnailTransformation.getMatrix().preTranslate(thumbnailX, thumbnailY);
+<<<<<<< HEAD
         final boolean screenAnimation = mAnimator.mScreenRotationAnimation != null
                 && mAnimator.mScreenRotationAnimation.isAnimating();
         if (screenAnimation) {
             thumbnailTransformation.postCompose(
                     mAnimator.mScreenRotationAnimation.getEnterTransformation());
+=======
+
+        ScreenRotationAnimation screenRotationAnimation =
+                mAnimator.getScreenRotationAnimationLocked(Display.DEFAULT_DISPLAY);
+        final boolean screenAnimation = screenRotationAnimation != null
+                && screenRotationAnimation.isAnimating();
+        if (screenAnimation) {
+            thumbnailTransformation.postCompose(screenRotationAnimation.getEnterTransformation());
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         }
         // cache often used attributes locally
         final float tmpFloats[] = mService.mTmpFloats;
@@ -168,7 +203,11 @@ public class AppWindowAnimator {
         }
         transformation.clear();
         final boolean more = animation.getTransformation(currentTime, transformation);
+<<<<<<< HEAD
         if (WindowManagerService.DEBUG_ANIM) Slog.v(
+=======
+        if (false && WindowManagerService.DEBUG_ANIM) Slog.v(
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
             TAG, "Stepped animation in " + mAppToken + ": more=" + more + ", xform=" + transformation);
         if (!more) {
             animation = null;
@@ -233,10 +272,15 @@ public class AppWindowAnimator {
             return false;
         }
 
+<<<<<<< HEAD
         mAnimator.mPendingLayoutChanges |= WindowManagerPolicy.FINISH_LAYOUT_REDO_ANIM;
         if (WindowManagerService.DEBUG_LAYOUT_REPEATS) {
             mService.debugLayoutRepeats("AppWindowToken", mAnimator.mPendingLayoutChanges);
         }
+=======
+        mAnimator.setAppLayoutChanges(this, WindowManagerPolicy.FINISH_LAYOUT_REDO_ANIM,
+                "AppWindowToken");
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 
         clearAnimation();
         animating = false;
@@ -255,9 +299,15 @@ public class AppWindowAnimator {
 
         transformation.clear();
 
+<<<<<<< HEAD
         final int N = mAppToken.windows.size();
         for (int i=0; i<N; i++) {
             mAppToken.windows.get(i).mWinAnimator.finishExit();
+=======
+        final int N = mAllAppWinAnimators.size();
+        for (int i=0; i<N; i++) {
+            mAllAppWinAnimators.get(i).finishExit();
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         }
         mAppToken.updateReportedVisibilityLocked();
 
@@ -266,9 +316,15 @@ public class AppWindowAnimator {
 
     boolean showAllWindowsLocked() {
         boolean isAnimating = false;
+<<<<<<< HEAD
         final int NW = mAppToken.allAppWindows.size();
         for (int i=0; i<NW; i++) {
             WindowStateAnimator winAnimator = mAppToken.allAppWindows.get(i).mWinAnimator;
+=======
+        final int NW = mAllAppWinAnimators.size();
+        for (int i=0; i<NW; i++) {
+            WindowStateAnimator winAnimator = mAllAppWinAnimators.get(i);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
             if (WindowManagerService.DEBUG_VISIBILITY) Slog.v(TAG,
                     "performing show on: " + winAnimator);
             winAnimator.performShowLocked();
@@ -277,6 +333,7 @@ public class AppWindowAnimator {
         return isAnimating;
     }
 
+<<<<<<< HEAD
     void dump(PrintWriter pw, String prefix) {
         if (freezingScreen) {
             pw.print(prefix); pw.print(" freezingScreen="); pw.println(freezingScreen);
@@ -284,15 +341,30 @@ public class AppWindowAnimator {
         if (animating || animation != null) {
             pw.print(prefix); pw.print("animating="); pw.print(animating);
                     pw.print(" animation="); pw.println(animation);
+=======
+    void dump(PrintWriter pw, String prefix, boolean dumpAll) {
+        pw.print(prefix); pw.print("mAppToken="); pw.println(mAppToken);
+        pw.print(prefix); pw.print("mAnimator="); pw.println(mAnimator);
+        pw.print(prefix); pw.print("freezingScreen="); pw.print(freezingScreen);
+                pw.print(" allDrawn="); pw.print(allDrawn);
+                pw.print(" animLayerAdjustment="); pw.println(animLayerAdjustment);
+        if (animating || animation != null) {
+            pw.print(prefix); pw.print("animating="); pw.print(animating);
+                    pw.print(" animInitialized="); pw.println(animInitialized);
+            pw.print(prefix); pw.print("animation="); pw.println(animation);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         }
         if (hasTransformation) {
             pw.print(prefix); pw.print("XForm: ");
                     transformation.printShortString(pw);
                     pw.println();
         }
+<<<<<<< HEAD
         if (animLayerAdjustment != 0) {
             pw.print(prefix); pw.print("animLayerAdjustment="); pw.println(animLayerAdjustment);
         }
+=======
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         if (thumbnail != null) {
             pw.print(prefix); pw.print("thumbnail="); pw.print(thumbnail);
                     pw.print(" x="); pw.print(thumbnailX);
@@ -302,6 +374,14 @@ public class AppWindowAnimator {
             pw.print(prefix); pw.print("thumbnailTransformation=");
                     pw.println(thumbnailTransformation.toShortString());
         }
+<<<<<<< HEAD
+=======
+        for (int i=0; i<mAllAppWinAnimators.size(); i++) {
+            WindowStateAnimator wanim = mAllAppWinAnimators.get(i);
+            pw.print(prefix); pw.print("App Win Anim #"); pw.print(i);
+                    pw.print(": "); pw.println(wanim);
+        }
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     }
 
     // This is an animation that does nothing: it just immediately finishes

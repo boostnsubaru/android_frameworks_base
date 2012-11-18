@@ -92,10 +92,19 @@ public class DhcpStateMachine extends StateMachine {
     /* Notification from DHCP state machine post DHCP discovery/renewal. Indicates
      * success/failure */
     public static final int CMD_POST_DHCP_ACTION            = BASE + 5;
+<<<<<<< HEAD
 
     /* Command from controller to indicate DHCP discovery/renewal can continue
      * after pre DHCP action is complete */
     public static final int CMD_PRE_DHCP_ACTION_COMPLETE    = BASE + 6;
+=======
+    /* Notification from DHCP state machine before quitting */
+    public static final int CMD_ON_QUIT                     = BASE + 6;
+
+    /* Command from controller to indicate DHCP discovery/renewal can continue
+     * after pre DHCP action is complete */
+    public static final int CMD_PRE_DHCP_ACTION_COMPLETE    = BASE + 7;
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 
     /* Message.arg1 arguments to CMD_POST_DHCP notification */
     public static final int DHCP_SUCCESS = 1;
@@ -163,8 +172,30 @@ public class DhcpStateMachine extends StateMachine {
         mRegisteredForPreDhcpNotification = true;
     }
 
+<<<<<<< HEAD
     class DefaultState extends State {
         @Override
+=======
+    /**
+     * Quit the DhcpStateMachine.
+     *
+     * @hide
+     */
+    public void doQuit() {
+        quit();
+    }
+
+    protected void onQuitting() {
+        mController.sendMessage(CMD_ON_QUIT);
+    }
+
+    class DefaultState extends State {
+        @Override
+        public void exit() {
+            mContext.unregisterReceiver(mBroadcastReceiver);
+        }
+        @Override
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         public boolean processMessage(Message message) {
             if (DBG) Log.d(TAG, getName() + message.toString() + "\n");
             switch (message.what) {
@@ -172,10 +203,13 @@ public class DhcpStateMachine extends StateMachine {
                     Log.e(TAG, "Error! Failed to handle a DHCP renewal on " + mInterfaceName);
                     mDhcpRenewWakeLock.release();
                     break;
+<<<<<<< HEAD
                 case SM_QUIT_CMD:
                     mContext.unregisterReceiver(mBroadcastReceiver);
                     //let parent kill the state machine
                     return NOT_HANDLED;
+=======
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
                 default:
                     Log.e(TAG, "Error! unhandled message  " + message);
                     break;

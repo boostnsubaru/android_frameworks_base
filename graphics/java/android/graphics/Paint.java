@@ -371,12 +371,38 @@ public class Paint {
     public void reset() {
         native_reset(mNativePaint);
         setFlags(DEFAULT_PAINT_FLAGS);
+<<<<<<< HEAD
+=======
+
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         // TODO: Turning off hinting has undesirable side effects, we need to
         //       revisit hinting once we add support for subpixel positioning
         // setHinting(DisplayMetrics.DENSITY_DEVICE >= DisplayMetrics.DENSITY_TV
         //        ? HINTING_OFF : HINTING_ON);
+<<<<<<< HEAD
         mHasCompatScaling = false;
         mCompatScaling = mInvCompatScaling = 1;
+=======
+
+        mColorFilter = null;
+        mMaskFilter = null;
+        mPathEffect = null;
+        mRasterizer = null;
+        mShader = null;
+        mTypeface = null;
+        mXfermode = null;
+
+        mHasCompatScaling = false;
+        mCompatScaling = 1;
+        mInvCompatScaling = 1;
+
+        hasShadow = false;
+        shadowDx = 0;
+        shadowDy = 0;
+        shadowRadius = 0;
+        shadowColor = 0;
+
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         mBidiFlags = BIDI_DEFAULT_LTR;
         setTextLocale(Locale.getDefault());
     }
@@ -1055,7 +1081,10 @@ public class Paint {
      * Get the text Locale.
      *
      * @return the paint's Locale used for drawing text, never null.
+<<<<<<< HEAD
      * @hide
+=======
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
      */
     public Locale getTextLocale() {
         return mLocale;
@@ -1086,7 +1115,10 @@ public class Paint {
      * job in certain ambiguous cases
      *
      * @param locale the paint's locale value for drawing text, must not be null.
+<<<<<<< HEAD
      * @hide
+=======
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
      */
     public void setTextLocale(Locale locale) {
         if (locale == null) {

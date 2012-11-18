@@ -16,8 +16,11 @@
 
 package android.content.pm;
 
+<<<<<<< HEAD
 import android.os.Parcelable;
 
+=======
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 /**
  * Listener for changes to the set of registered services managed by a RegisteredServicesCache.
  * @hide
@@ -28,5 +31,9 @@ public interface RegisteredServicesCacheListener<V> {
      * @param type the type of registered service
      * @param removed true if the service was removed
      */
+<<<<<<< HEAD
     void onServiceChanged(V type, boolean removed);
+=======
+    void onServiceChanged(V type, int userId, boolean removed);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 }

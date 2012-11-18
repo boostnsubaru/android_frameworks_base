@@ -17,6 +17,10 @@
 package android.inputmethodservice;
 
 import com.android.internal.os.HandlerCaller;
+<<<<<<< HEAD
+=======
+import com.android.internal.os.SomeArgs;
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 import com.android.internal.view.IInputContext;
 import com.android.internal.view.IInputMethod;
 import com.android.internal.view.IInputMethodCallback;
@@ -124,7 +128,11 @@ class IInputMethodWrapper extends IInputMethod.Stub
                 if (target == null) {
                     return;
                 }
+<<<<<<< HEAD
                 HandlerCaller.SomeArgs args = (HandlerCaller.SomeArgs)msg.obj;
+=======
+                SomeArgs args = (SomeArgs)msg.obj;
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
                 try {
                     target.dump((FileDescriptor)args.arg1,
                             (PrintWriter)args.arg2, (String[])args.arg3);
@@ -134,6 +142,10 @@ class IInputMethodWrapper extends IInputMethod.Stub
                 synchronized (args.arg4) {
                     ((CountDownLatch)args.arg4).countDown();
                 }
+<<<<<<< HEAD
+=======
+                args.recycle();
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
                 return;
             }
             
@@ -149,23 +161,39 @@ class IInputMethodWrapper extends IInputMethod.Stub
                 inputMethod.unbindInput();
                 return;
             case DO_START_INPUT: {
+<<<<<<< HEAD
                 HandlerCaller.SomeArgs args = (HandlerCaller.SomeArgs)msg.obj;
+=======
+                SomeArgs args = (SomeArgs)msg.obj;
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
                 IInputContext inputContext = (IInputContext)args.arg1;
                 InputConnection ic = inputContext != null
                         ? new InputConnectionWrapper(inputContext) : null;
                 EditorInfo info = (EditorInfo)args.arg2;
                 info.makeCompatible(mTargetSdkVersion);
                 inputMethod.startInput(ic, info);
+<<<<<<< HEAD
                 return;
             }
             case DO_RESTART_INPUT: {
                 HandlerCaller.SomeArgs args = (HandlerCaller.SomeArgs)msg.obj;
+=======
+                args.recycle();
+                return;
+            }
+            case DO_RESTART_INPUT: {
+                SomeArgs args = (SomeArgs)msg.obj;
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
                 IInputContext inputContext = (IInputContext)args.arg1;
                 InputConnection ic = inputContext != null
                         ? new InputConnectionWrapper(inputContext) : null;
                 EditorInfo info = (EditorInfo)args.arg2;
                 info.makeCompatible(mTargetSdkVersion);
                 inputMethod.restartInput(ic, info);
+<<<<<<< HEAD
+=======
+                args.recycle();
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
                 return;
             }
             case DO_CREATE_SESSION: {

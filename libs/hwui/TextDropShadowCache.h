@@ -35,8 +35,14 @@ struct ShadowText {
     ShadowText(): radius(0), len(0), textSize(0.0f), typeface(NULL) {
     }
 
+<<<<<<< HEAD
     ShadowText(SkPaint* paint, uint32_t radius, uint32_t len, const char* srcText):
             radius(radius), len(len) {
+=======
+    ShadowText(SkPaint* paint, uint32_t radius, uint32_t len, const char* srcText,
+            const float* positions):
+            radius(radius), len(len), positions(positions) {
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         // TODO: Propagate this through the API, we should not cast here
         text = (const char16_t*) srcText;
 
@@ -66,11 +72,25 @@ struct ShadowText {
     uint32_t italicStyle;
     uint32_t scaleX;
     const char16_t* text;
+<<<<<<< HEAD
     String16 str;
+=======
+    const float* positions;
+    String16 str;
+    Vector<float> positionsCopy;
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 
     void copyTextLocally() {
         str.setTo((const char16_t*) text, len >> 1);
         text = str.string();
+<<<<<<< HEAD
+=======
+        if (positions != NULL) {
+            positionsCopy.clear();
+            positionsCopy.appendArray(positions, len);
+            positions = positionsCopy.array();
+        }
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     }
 
     bool operator<(const ShadowText& rhs) const {
@@ -81,7 +101,16 @@ struct ShadowText {
                         LTE_INT(flags) {
                             LTE_INT(italicStyle) {
                                 LTE_INT(scaleX) {
+<<<<<<< HEAD
                                     return memcmp(text, rhs.text, len) < 0;
+=======
+                                    int cmp = memcmp(text, rhs.text, len);
+                                    if (cmp < 0) return true;
+                                    if (cmp == 0 && rhs.positions != NULL) {
+                                        if (positions == NULL) return true;
+                                        return memcmp(positions, rhs.positions, len << 2) < 0;
+                                    }
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
                                 }
                             }
                         }
@@ -117,7 +146,11 @@ public:
     void operator()(ShadowText& text, ShadowTexture*& texture);
 
     ShadowTexture* get(SkPaint* paint, const char* text, uint32_t len,
+<<<<<<< HEAD
             int numGlyphs, uint32_t radius);
+=======
+            int numGlyphs, uint32_t radius, const float* positions);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 
     /**
      * Clears the cache. This causes all textures to be deleted.

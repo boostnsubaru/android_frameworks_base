@@ -74,6 +74,16 @@ import android.widget.ListView;
  * As a convenience, this fragment implements a click listener for any
  * preference in the current hierarchy, see
  * {@link #onPreferenceTreeClick(PreferenceScreen, Preference)}.
+<<<<<<< HEAD
+=======
+ * 
+ * <div class="special reference">
+ * <h3>Developer Guides</h3>
+ * <p>For information about using {@code PreferenceFragment},
+ * read the <a href="{@docRoot}guide/topics/ui/settings.html">Settings</a>
+ * guide.</p>
+ * </div>
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
  *
  * <a name="SampleCode"></a>
  * <h3>Sample Code</h3>

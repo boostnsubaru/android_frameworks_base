@@ -113,6 +113,15 @@ public class ColoredRectsActivity extends Activity {
                 canvas.rotate(45);
                 canvas.drawRect(0, 0, 20, 10, p);
                 canvas.restore();
+<<<<<<< HEAD
+=======
+                canvas.save();
+                canvas.translate(mOffset + 280, yOffset);
+                canvas.scale(0.5f, 8);
+                canvas.rotate(0.5f);
+                canvas.drawRect(0, 0, 80, 5, p);
+                canvas.restore();
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
                 canvas.restore();
 
                 yOffset += 100;

@@ -406,6 +406,7 @@ notification style.</li>
 </ul>
 </li>
 
+<<<<<<< HEAD
 <li>WebView
 <ul>
 <li>New {@link
@@ -417,6 +418,8 @@ overscroll background. </li>
 </li>
 </ul>
 
+=======
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 <h3 id="extralargescreens">Extra Large Screens</h3>
 
 <p>The platform now supports extra large screen sizes, such as those that might
@@ -707,4 +710,8 @@ declaring the attribute prevents the application from being installed on earlier
 versions of the platform.</p>
 
 <p>For more information, read <a href="{@docRoot}guide/topics/manifest/uses-sdk-element.html#ApiLevels">What is API
+<<<<<<< HEAD
 Level?</a></p>
+=======
+Level?</a></p>
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a

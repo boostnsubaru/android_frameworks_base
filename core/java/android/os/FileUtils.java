@@ -16,6 +16,10 @@
 
 package android.os;
 
+<<<<<<< HEAD
+=======
+import java.io.BufferedInputStream;
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
@@ -28,9 +32,12 @@ import java.util.regex.Pattern;
 import java.util.zip.CRC32;
 import java.util.zip.CheckedInputStream;
 
+<<<<<<< HEAD
 import libcore.io.Os;
 import libcore.io.StructStat;
 
+=======
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 /**
  * Tools for managing files.  Not for public consumption.
  * @hide
@@ -50,6 +57,7 @@ public class FileUtils {
     public static final int S_IROTH = 00004;
     public static final int S_IWOTH = 00002;
     public static final int S_IXOTH = 00001;
+<<<<<<< HEAD
     
     
     /**
@@ -90,12 +98,15 @@ public class FileUtils {
     }
 
     private static native boolean getFileStatusNative(String path, FileStatus status);
+=======
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 
     /** Regular expression for safe filenames: no spaces or metacharacters */
     private static final Pattern SAFE_FILENAME_PATTERN = Pattern.compile("[\\w%+,./=_-]+");
 
     public static native int setPermissions(String file, int mode, int uid, int gid);
 
+<<<<<<< HEAD
     /**
      * @deprecated use {@link Os#stat(String)} instead.
      */
@@ -104,6 +115,8 @@ public class FileUtils {
 
     public static native int setUMask(int mask);
 
+=======
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     /** returns the FAT file system volume ID for the volume mounted 
      * at the given mount point, or -1 for failure
      * @param mountPoint point for FAT volume
@@ -142,7 +155,11 @@ public class FileUtils {
         }
         return result;
     }
+<<<<<<< HEAD
     
+=======
+
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     /**
      * Copy data from a source stream to destFile.
      * Return true if succeed, return false if failed.
@@ -194,12 +211,23 @@ public class FileUtils {
      */
     public static String readTextFile(File file, int max, String ellipsis) throws IOException {
         InputStream input = new FileInputStream(file);
+<<<<<<< HEAD
+=======
+        // wrapping a BufferedInputStream around it because when reading /proc with unbuffered
+        // input stream, bytes read not equal to buffer size is not necessarily the correct
+        // indication for EOF; but it is true for BufferedInputStream due to its implementation.
+        BufferedInputStream bis = new BufferedInputStream(input);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         try {
             long size = file.length();
             if (max > 0 || (size > 0 && max == 0)) {  // "head" mode: read the first N bytes
                 if (size > 0 && (max == 0 || size < max)) max = (int) size;
                 byte[] data = new byte[max + 1];
+<<<<<<< HEAD
                 int length = input.read(data);
+=======
+                int length = bis.read(data);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
                 if (length <= 0) return "";
                 if (length <= max) return new String(data, 0, length);
                 if (ellipsis == null) return new String(data, 0, max);
@@ -212,7 +240,11 @@ public class FileUtils {
                     if (last != null) rolled = true;
                     byte[] tmp = last; last = data; data = tmp;
                     if (data == null) data = new byte[-max];
+<<<<<<< HEAD
                     len = input.read(data);
+=======
+                    len = bis.read(data);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
                 } while (len == data.length);
 
                 if (last == null && len <= 0) return "";
@@ -229,12 +261,20 @@ public class FileUtils {
                 int len;
                 byte[] data = new byte[1024];
                 do {
+<<<<<<< HEAD
                     len = input.read(data);
+=======
+                    len = bis.read(data);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
                     if (len > 0) contents.write(data, 0, len);
                 } while (len == data.length);
                 return contents.toString();
             }
         } finally {
+<<<<<<< HEAD
+=======
+            bis.close();
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
             input.close();
         }
     }

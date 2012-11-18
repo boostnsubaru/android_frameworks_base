@@ -32,6 +32,10 @@ import android.os.Bundle;
 import android.os.IBinder;
 import android.os.RemoteException;
 import android.os.ServiceManager;
+<<<<<<< HEAD
+=======
+import android.os.UserHandle;
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -67,7 +71,11 @@ public class UsbPermissionActivity extends AlertActivity
         mDevice = (UsbDevice)intent.getParcelableExtra(UsbManager.EXTRA_DEVICE);
         mAccessory = (UsbAccessory)intent.getParcelableExtra(UsbManager.EXTRA_ACCESSORY);
         mPendingIntent = (PendingIntent)intent.getParcelableExtra(Intent.EXTRA_INTENT);
+<<<<<<< HEAD
         mUid = intent.getIntExtra("uid", 0);
+=======
+        mUid = intent.getIntExtra(Intent.EXTRA_UID, -1);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         mPackageName = intent.getStringExtra("package");
 
         PackageManager packageManager = getPackageManager();
@@ -128,7 +136,12 @@ public class UsbPermissionActivity extends AlertActivity
                 if (mPermissionGranted) {
                     service.grantDevicePermission(mDevice, mUid);
                     if (mAlwaysUse.isChecked()) {
+<<<<<<< HEAD
                         service.setDevicePackage(mDevice, mPackageName);
+=======
+                        final int userId = UserHandle.getUserId(mUid);
+                        service.setDevicePackage(mDevice, mPackageName, userId);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
                     }
                 }
             }
@@ -137,7 +150,12 @@ public class UsbPermissionActivity extends AlertActivity
                 if (mPermissionGranted) {
                     service.grantAccessoryPermission(mAccessory, mUid);
                     if (mAlwaysUse.isChecked()) {
+<<<<<<< HEAD
                         service.setAccessoryPackage(mAccessory, mPackageName);
+=======
+                        final int userId = UserHandle.getUserId(mUid);
+                        service.setAccessoryPackage(mAccessory, mPackageName, userId);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
                     }
                 }
             }

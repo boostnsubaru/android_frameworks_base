@@ -83,7 +83,11 @@ public class UT_array_init extends UnitTest {
 
     public void run() {
         RenderScript pRS = RenderScript.create(mCtx);
+<<<<<<< HEAD
         ScriptC_array_init s = new ScriptC_array_init(pRS, mRes, R.raw.array_init);
+=======
+        ScriptC_array_init s = new ScriptC_array_init(pRS);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         pRS.setMessageHandler(mRsMessage);
         checkInit(s);
         s.invoke_array_init_test();

@@ -21,6 +21,10 @@ import com.android.resources.Density;
 import org.xmlpull.v1.XmlPullParserException;
 
 import android.content.Context;
+<<<<<<< HEAD
+=======
+import android.widget.LinearLayout;
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 import android.widget.TextView;
 
 public class TitleBar extends CustomBar {
@@ -29,7 +33,11 @@ public class TitleBar extends CustomBar {
 
     public TitleBar(Context context, Density density, String label)
             throws XmlPullParserException {
+<<<<<<< HEAD
         super(context, density, "/bars/title_bar.xml", "title_bar.xml");
+=======
+        super(context, density, LinearLayout.HORIZONTAL, "/bars/title_bar.xml", "title_bar.xml");
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 
         // Cannot access the inside items through id because no R.id values have been
         // created for them.

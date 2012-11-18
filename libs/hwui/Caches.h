@@ -38,6 +38,11 @@
 #include "TextDropShadowCache.h"
 #include "FboCache.h"
 #include "ResourceCache.h"
+<<<<<<< HEAD
+=======
+#include "Stencil.h"
+#include "Dither.h"
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 
 namespace android {
 namespace uirenderer {
@@ -66,6 +71,10 @@ static const GLsizei gVertexStride = sizeof(Vertex);
 static const GLsizei gAlphaVertexStride = sizeof(AlphaVertex);
 static const GLsizei gAAVertexStride = sizeof(AAVertex);
 static const GLsizei gMeshTextureOffset = 2 * sizeof(float);
+<<<<<<< HEAD
+=======
+static const GLsizei gVertexAlphaOffset = 2 * sizeof(float);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 static const GLsizei gVertexAAWidthOffset = 2 * sizeof(float);
 static const GLsizei gVertexAALengthOffset = 3 * sizeof(float);
 static const GLsizei gMeshCount = 4;
@@ -170,14 +179,22 @@ public:
      * Binds an attrib to the specified float vertex pointer.
      * Assumes a stride of gMeshStride and a size of 2.
      */
+<<<<<<< HEAD
     void bindPositionVertexPointer(bool force, GLuint slot, GLvoid* vertices,
             GLsizei stride = gMeshStride);
+=======
+    void bindPositionVertexPointer(bool force, GLvoid* vertices, GLsizei stride = gMeshStride);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 
     /**
      * Binds an attrib to the specified float vertex pointer.
      * Assumes a stride of gMeshStride and a size of 2.
      */
+<<<<<<< HEAD
     void bindTexCoordsVertexPointer(bool force, GLuint slot, GLvoid* vertices);
+=======
+    void bindTexCoordsVertexPointer(bool force, GLvoid* vertices);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 
     /**
      * Resets the vertex pointers.
@@ -197,13 +214,27 @@ public:
     /**
      * Sets the scissor for the current surface.
      */
+<<<<<<< HEAD
     void setScissor(GLint x, GLint y, GLint width, GLint height);
+=======
+    bool setScissor(GLint x, GLint y, GLint width, GLint height);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 
     /**
      * Resets the scissor state.
      */
     void resetScissor();
 
+<<<<<<< HEAD
+=======
+    bool enableScissor();
+    bool disableScissor();
+    void setScissorEnabled(bool enabled);
+
+    void startTiling(GLuint x, GLuint y, GLuint width, GLuint height, bool opaque);
+    void endTiling();
+
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     /**
      * Returns the mesh used to draw regions. Calling this method will
      * bind a VBO of type GL_ELEMENT_ARRAY_BUFFER that contains the
@@ -217,10 +248,21 @@ public:
     void dumpMemoryUsage();
     void dumpMemoryUsage(String8& log);
 
+<<<<<<< HEAD
+=======
+    bool hasRegisteredFunctors();
+    void registerFunctors(uint32_t functorCount);
+    void unregisterFunctors(uint32_t functorCount);
+
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     bool blend;
     GLenum lastSrcMode;
     GLenum lastDstMode;
     Program* currentProgram;
+<<<<<<< HEAD
+=======
+    bool scissorEnabled;
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 
     // VBO to draw with
     GLuint meshBuffer;
@@ -230,6 +272,11 @@ public:
 
     // Misc
     GLint maxTextureSize;
+<<<<<<< HEAD
+=======
+    bool debugLayersUpdates;
+    bool debugOverdraw;
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 
     TextureCache textureCache;
     LayerCache layerCache;
@@ -244,9 +291,21 @@ public:
     PatchCache patchCache;
     TextDropShadowCache dropShadowCache;
     FboCache fboCache;
+<<<<<<< HEAD
     GammaFontRenderer fontRenderer;
     ResourceCache resourceCache;
 
+=======
+    ResourceCache resourceCache;
+
+    GammaFontRenderer* fontRenderer;
+
+    Dither dither;
+#if STENCIL_BUFFER_SIZE
+    Stencil stencil;
+#endif
+
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     // Debug methods
     PFNGLINSERTEVENTMARKEREXTPROC eventMark;
     PFNGLPUSHGROUPMARKEREXTPROC startMark;
@@ -256,8 +315,15 @@ public:
     PFNGLGETOBJECTLABELEXTPROC getLabel;
 
 private:
+<<<<<<< HEAD
     void initExtensions();
     void initConstraints();
+=======
+    void initFont();
+    void initExtensions();
+    void initConstraints();
+    void initProperties();
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 
     static void eventMarkNull(GLsizei length, const GLchar* marker) { }
     static void startMarkNull(GLsizei length, const GLchar* marker) { }
@@ -274,6 +340,10 @@ private:
     GLuint mCurrentBuffer;
     GLuint mCurrentIndicesBuffer;
     void* mCurrentPositionPointer;
+<<<<<<< HEAD
+=======
+    GLsizei mCurrentPositionStride;
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     void* mCurrentTexCoordsPointer;
 
     bool mTexCoordsArrayEnabled;
@@ -295,6 +365,11 @@ private:
 
     DebugLevel mDebugLevel;
     bool mInitialized;
+<<<<<<< HEAD
+=======
+
+    uint32_t mFunctorsCount;
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 }; // class Caches
 
 }; // namespace uirenderer

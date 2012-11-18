@@ -24,6 +24,10 @@ import android.net.Uri;
 import android.os.Handler;
 import android.os.HandlerThread;
 import android.os.Looper;
+<<<<<<< HEAD
+=======
+import android.os.UserHandle;
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 
 import java.util.HashSet;
 
@@ -49,6 +53,10 @@ public abstract class PackageMonitor extends android.content.BroadcastReceiver {
         sPackageFilt.addAction(Intent.ACTION_UID_REMOVED);
         sPackageFilt.addDataScheme("package");
         sNonDataFilt.addAction(Intent.ACTION_UID_REMOVED);
+<<<<<<< HEAD
+=======
+        sNonDataFilt.addAction(Intent.ACTION_USER_STOPPED);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         sExternalFilt.addAction(Intent.ACTION_EXTERNAL_APPLICATIONS_AVAILABLE);
         sExternalFilt.addAction(Intent.ACTION_EXTERNAL_APPLICATIONS_UNAVAILABLE);
     }
@@ -61,11 +69,25 @@ public abstract class PackageMonitor extends android.content.BroadcastReceiver {
     String[] mAppearingPackages;
     String[] mModifiedPackages;
     int mChangeType;
+<<<<<<< HEAD
     boolean mSomePackagesChanged;
     
     String[] mTempArray = new String[1];
     
     public void register(Context context, Looper thread, boolean externalStorage) {
+=======
+    int mChangeUserId = UserHandle.USER_NULL;
+    boolean mSomePackagesChanged;
+
+    String[] mTempArray = new String[1];
+
+    public void register(Context context, Looper thread, boolean externalStorage) {
+        register(context, thread, null, externalStorage);
+    }
+
+    public void register(Context context, Looper thread, UserHandle user,
+            boolean externalStorage) {
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         if (mRegisteredContext != null) {
             throw new IllegalStateException("Already registered");
         }
@@ -83,10 +105,26 @@ public abstract class PackageMonitor extends android.content.BroadcastReceiver {
         } else {
             mRegisteredHandler = new Handler(thread);
         }
+<<<<<<< HEAD
         context.registerReceiver(this, sPackageFilt, null, mRegisteredHandler);
         context.registerReceiver(this, sNonDataFilt, null, mRegisteredHandler);
         if (externalStorage) {
             context.registerReceiver(this, sExternalFilt, null, mRegisteredHandler);
+=======
+        if (user != null) {
+            context.registerReceiverAsUser(this, user, sPackageFilt, null, mRegisteredHandler);
+            context.registerReceiverAsUser(this, user, sNonDataFilt, null, mRegisteredHandler);
+            if (externalStorage) {
+                context.registerReceiverAsUser(this, user, sExternalFilt, null,
+                        mRegisteredHandler);
+            }
+        } else {
+            context.registerReceiver(this, sPackageFilt, null, mRegisteredHandler);
+            context.registerReceiver(this, sNonDataFilt, null, mRegisteredHandler);
+            if (externalStorage) {
+                context.registerReceiver(this, sExternalFilt, null, mRegisteredHandler);
+            }
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         }
     }
 
@@ -111,6 +149,7 @@ public abstract class PackageMonitor extends android.content.BroadcastReceiver {
     
     public void onBeginPackageChanges() {
     }
+<<<<<<< HEAD
     
     public void onPackageAdded(String packageName, int uid) {
     }
@@ -121,6 +160,31 @@ public abstract class PackageMonitor extends android.content.BroadcastReceiver {
     public void onPackageUpdateStarted(String packageName, int uid) {
     }
     
+=======
+
+    /**
+     * Called when a package is really added (and not replaced).
+     */
+    public void onPackageAdded(String packageName, int uid) {
+    }
+
+    /**
+     * Called when a package is really removed (and not replaced).
+     */
+    public void onPackageRemoved(String packageName, int uid) {
+    }
+
+    /**
+     * Called when a package is really removed (and not replaced) for
+     * all users on the device.
+     */
+    public void onPackageRemovedAllUsers(String packageName, int uid) {
+    }
+
+    public void onPackageUpdateStarted(String packageName, int uid) {
+    }
+
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     public void onPackageUpdateFinished(String packageName, int uid) {
     }
     
@@ -130,6 +194,12 @@ public abstract class PackageMonitor extends android.content.BroadcastReceiver {
     public boolean onHandleForceStop(Intent intent, String[] packages, int uid, boolean doit) {
         return false;
     }
+<<<<<<< HEAD
+=======
+
+    public void onHandleUserStop(Intent intent, int userHandle) {
+    }
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     
     public void onUidRemoved(int uid) {
     }
@@ -144,10 +214,23 @@ public abstract class PackageMonitor extends android.content.BroadcastReceiver {
     public static final int PACKAGE_UPDATING = 1;
     public static final int PACKAGE_TEMPORARY_CHANGE = 2;
     public static final int PACKAGE_PERMANENT_CHANGE = 3;
+<<<<<<< HEAD
     
     public void onPackageDisappeared(String packageName, int reason) {
     }
     
+=======
+
+    /**
+     * Called when a package disappears for any reason.
+     */
+    public void onPackageDisappeared(String packageName, int reason) {
+    }
+
+    /**
+     * Called when a package appears for any reason.
+     */
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     public void onPackageAppeared(String packageName, int reason) {
     }
     
@@ -204,7 +287,15 @@ public abstract class PackageMonitor extends android.content.BroadcastReceiver {
     
     public void onFinishPackageChanges() {
     }
+<<<<<<< HEAD
     
+=======
+
+    public int getChangingUserId() {
+        return mChangeUserId;
+    }
+
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     String getPackageName(Intent intent) {
         Uri uri = intent.getData();
         String pkg = uri != null ? uri.getSchemeSpecificPart() : null;
@@ -213,6 +304,15 @@ public abstract class PackageMonitor extends android.content.BroadcastReceiver {
     
     @Override
     public void onReceive(Context context, Intent intent) {
+<<<<<<< HEAD
+=======
+        mChangeUserId = intent.getIntExtra(Intent.EXTRA_USER_HANDLE,
+                UserHandle.USER_NULL);
+        if (mChangeUserId == UserHandle.USER_NULL) {
+            throw new IllegalArgumentException(
+                    "Intent broadcast does not contain user handle: " + intent);
+        }
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         onBeginPackageChanges();
         
         mDisappearingPackages = mAppearingPackages = null;
@@ -265,6 +365,12 @@ public abstract class PackageMonitor extends android.content.BroadcastReceiver {
                     // it when it is re-added.
                     mSomePackagesChanged = true;
                     onPackageRemoved(pkg, uid);
+<<<<<<< HEAD
+=======
+                    if (intent.getBooleanExtra(Intent.EXTRA_REMOVED_FOR_ALL_USERS, false)) {
+                        onPackageRemovedAllUsers(pkg, uid);
+                    }
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
                 }
                 onPackageDisappeared(pkg, mChangeType);
             }
@@ -295,6 +401,13 @@ public abstract class PackageMonitor extends android.content.BroadcastReceiver {
                     intent.getIntExtra(Intent.EXTRA_UID, 0), true);
         } else if (Intent.ACTION_UID_REMOVED.equals(action)) {
             onUidRemoved(intent.getIntExtra(Intent.EXTRA_UID, 0));
+<<<<<<< HEAD
+=======
+        } else if (Intent.ACTION_USER_STOPPED.equals(action)) {
+            if (intent.hasExtra(Intent.EXTRA_USER_HANDLE)) {
+                onHandleUserStop(intent, intent.getIntExtra(Intent.EXTRA_USER_HANDLE, 0));
+            }
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         } else if (Intent.ACTION_EXTERNAL_APPLICATIONS_AVAILABLE.equals(action)) {
             String[] pkgList = intent.getStringArrayExtra(Intent.EXTRA_CHANGED_PACKAGE_LIST);
             mAppearingPackages = pkgList;
@@ -324,5 +437,9 @@ public abstract class PackageMonitor extends android.content.BroadcastReceiver {
         }
         
         onFinishPackageChanges();
+<<<<<<< HEAD
+=======
+        mChangeUserId = UserHandle.USER_NULL;
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     }
 }

@@ -250,4 +250,17 @@ develop a widget that they can choose to place on their home screen.</p>
     <h4>Dialogs and toasts are for feedback not notification</h4>
     <p>Your app should not create a dialog or toast if it is not currently on screen. Dialogs and Toasts should only be displayed as the immediate response to the user taking an action inside of your app. For further guidance on the use of dialogs and toasts, refer to <a href="{@docRoot}design/patterns/confirming-acknowledging.html">Confirming &amp; Acknowledging</a>.</p>
   </div>
+<<<<<<< HEAD
 </div>
+=======
+</div>
+
+
+
+<div class="note develop">
+<p><strong>Developer Guide</strong></p>
+  <p>For information about how to build notifications, see the
+  <a href="{@docRoot}guide/topics/ui/notifiers/notifications.html">Notifications</a>
+  API guide.</p>
+</div>
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a

@@ -20,7 +20,11 @@
     android:orientation="horizontal"
     android:layout_marginTop="8dip"
     android:layout_marginBottom="8dip"
+<<<<<<< HEAD
     android:gravity="left|center_vertical">
+=======
+    android:gravity="start|center_vertical">
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 
     <ImageView
         android:id="@+id/stream_icon"
@@ -37,6 +41,10 @@
         android:layout_height="wrap_content"
         android:layout_weight="1"
         android:padding="16dip"
+<<<<<<< HEAD
         android:layout_marginRight="16dip" />
+=======
+        android:layout_marginEnd="16dip" />
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 
 </LinearLayout>

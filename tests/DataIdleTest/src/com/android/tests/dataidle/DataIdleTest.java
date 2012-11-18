@@ -69,7 +69,11 @@ public class DataIdleTest extends InstrumentationTestCase {
     /**
      * Helper method that fetches all the network stats available and reports it
      * to instrumentation out.
+<<<<<<< HEAD
      * @param template {link {@link NetworkTemplate} to match.
+=======
+     * @param template {@link NetworkTemplate} to match.
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
      */
     private void fetchStats(NetworkTemplate template) {
         INetworkStatsSession session = null;

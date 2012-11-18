@@ -17,9 +17,12 @@
 
 package android.provider;
 
+<<<<<<< HEAD
 import com.android.internal.telephony.CallerInfo;
 import com.android.internal.telephony.Connection;
 
+=======
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 import android.content.ContentResolver;
 import android.content.ContentValues;
 import android.content.Context;
@@ -30,6 +33,12 @@ import android.provider.ContactsContract.CommonDataKinds.Phone;
 import android.provider.ContactsContract.DataUsageFeedback;
 import android.text.TextUtils;
 
+<<<<<<< HEAD
+=======
+import com.android.internal.telephony.CallerInfo;
+import com.android.internal.telephony.PhoneConstants;
+
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 /**
  * The CallLog provider contains information about placed and received calls.
  */
@@ -59,6 +68,23 @@ public class CallLog {
                 Uri.parse("content://call_log/calls/filter");
 
         /**
+<<<<<<< HEAD
+=======
+         * Query parameter used to limit the number of call logs returned.
+         * <p>
+         * TYPE: integer
+         */
+        public static final String LIMIT_PARAM_KEY = "limit";
+
+        /**
+         * Query parameter used to specify the starting record to return.
+         * <p>
+         * TYPE: integer
+         */
+        public static final String OFFSET_PARAM_KEY = "offset";
+
+        /**
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
          * An optional URI parameter which instructs the provider to allow the operation to be
          * applied to voicemail records as well.
          * <p>
@@ -267,6 +293,7 @@ public class CallLog {
 
             // If this is a private number then set the number to Private, otherwise check
             // if the number field is empty and set the number to Unavailable
+<<<<<<< HEAD
             if (presentation == Connection.PRESENTATION_RESTRICTED) {
                 number = CallerInfo.PRIVATE_NUMBER;
                 if (ci != null) ci.name = "";
@@ -275,6 +302,16 @@ public class CallLog {
                 if (ci != null) ci.name = "";
             } else if (TextUtils.isEmpty(number)
                     || presentation == Connection.PRESENTATION_UNKNOWN) {
+=======
+            if (presentation == PhoneConstants.PRESENTATION_RESTRICTED) {
+                number = CallerInfo.PRIVATE_NUMBER;
+                if (ci != null) ci.name = "";
+            } else if (presentation == PhoneConstants.PRESENTATION_PAYPHONE) {
+                number = CallerInfo.PAYPHONE_NUMBER;
+                if (ci != null) ci.name = "";
+            } else if (TextUtils.isEmpty(number)
+                    || presentation == PhoneConstants.PRESENTATION_UNKNOWN) {
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
                 number = CallerInfo.UNKNOWN_NUMBER;
                 if (ci != null) ci.name = "";
             }

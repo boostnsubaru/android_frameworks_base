@@ -18,9 +18,14 @@ package com.android.server.am;
 
 import android.content.ComponentName;
 import android.os.Binder;
+<<<<<<< HEAD
 import android.os.Process;
 import android.os.RemoteException;
 import android.os.UserId;
+=======
+import android.os.RemoteException;
+import android.os.UserHandle;
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 import android.util.Slog;
 import android.util.SparseArray;
 
@@ -31,8 +36,11 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
+<<<<<<< HEAD
 import java.util.Map.Entry;
 import java.util.Set;
+=======
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 
 /**
  * Keeps track of content providers by authority (name) and class. It separates the mapping by
@@ -44,9 +52,17 @@ public class ProviderMap {
 
     private static final boolean DBG = false;
 
+<<<<<<< HEAD
     private final HashMap<String, ContentProviderRecord> mGlobalByName
             = new HashMap<String, ContentProviderRecord>();
     private final HashMap<ComponentName, ContentProviderRecord> mGlobalByClass
+=======
+    private final ActivityManagerService mAm;
+
+    private final HashMap<String, ContentProviderRecord> mSingletonByName
+            = new HashMap<String, ContentProviderRecord>();
+    private final HashMap<ComponentName, ContentProviderRecord> mSingletonByClass
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
             = new HashMap<ComponentName, ContentProviderRecord>();
 
     private final SparseArray<HashMap<String, ContentProviderRecord>> mProvidersByNamePerUser
@@ -54,6 +70,13 @@ public class ProviderMap {
     private final SparseArray<HashMap<ComponentName, ContentProviderRecord>> mProvidersByClassPerUser
             = new SparseArray<HashMap<ComponentName, ContentProviderRecord>>();
 
+<<<<<<< HEAD
+=======
+    ProviderMap(ActivityManagerService am) {
+        mAm = am;
+    }
+
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     ContentProviderRecord getProviderByName(String name) {
         return getProviderByName(name, -1);
     }
@@ -63,7 +86,11 @@ public class ProviderMap {
             Slog.i(TAG, "getProviderByName: " + name + " , callingUid = " + Binder.getCallingUid());
         }
         // Try to find it in the global list
+<<<<<<< HEAD
         ContentProviderRecord record = mGlobalByName.get(name);
+=======
+        ContentProviderRecord record = mSingletonByName.get(name);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         if (record != null) {
             return record;
         }
@@ -81,7 +108,11 @@ public class ProviderMap {
             Slog.i(TAG, "getProviderByClass: " + name + ", callingUid = " + Binder.getCallingUid());
         }
         // Try to find it in the global list
+<<<<<<< HEAD
         ContentProviderRecord record = mGlobalByClass.get(name);
+=======
+        ContentProviderRecord record = mSingletonByClass.get(name);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         if (record != null) {
             return record;
         }
@@ -95,10 +126,17 @@ public class ProviderMap {
             Slog.i(TAG, "putProviderByName: " + name + " , callingUid = " + Binder.getCallingUid()
                 + ", record uid = " + record.appInfo.uid);
         }
+<<<<<<< HEAD
         if (record.appInfo.uid < Process.FIRST_APPLICATION_UID) {
             mGlobalByName.put(name, record);
         } else {
             final int userId = UserId.getUserId(record.appInfo.uid);
+=======
+        if (record.singleton) {
+            mSingletonByName.put(name, record);
+        } else {
+            final int userId = UserHandle.getUserId(record.appInfo.uid);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
             getProvidersByName(userId).put(name, record);
         }
     }
@@ -108,14 +146,22 @@ public class ProviderMap {
             Slog.i(TAG, "putProviderByClass: " + name + " , callingUid = " + Binder.getCallingUid()
                 + ", record uid = " + record.appInfo.uid);
         }
+<<<<<<< HEAD
         if (record.appInfo.uid < Process.FIRST_APPLICATION_UID) {
             mGlobalByClass.put(name, record);
         } else {
             final int userId = UserId.getUserId(record.appInfo.uid);
+=======
+        if (record.singleton) {
+            mSingletonByClass.put(name, record);
+        } else {
+            final int userId = UserHandle.getUserId(record.appInfo.uid);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
             getProvidersByClass(userId).put(name, record);
         }
     }
 
+<<<<<<< HEAD
     void removeProviderByName(String name, int optionalUserId) {
         if (mGlobalByName.containsKey(name)) {
             if (DBG)
@@ -148,6 +194,48 @@ public class ProviderMap {
     private HashMap<String, ContentProviderRecord> getProvidersByName(int optionalUserId) {
         final int userId = optionalUserId >= 0
                 ? optionalUserId : Binder.getOrigCallingUser();
+=======
+    void removeProviderByName(String name, int userId) {
+        if (mSingletonByName.containsKey(name)) {
+            if (DBG)
+                Slog.i(TAG, "Removing from globalByName name=" + name);
+            mSingletonByName.remove(name);
+        } else {
+            if (userId < 0) throw new IllegalArgumentException("Bad user " + userId);
+            if (DBG)
+                Slog.i(TAG,
+                        "Removing from providersByName name=" + name + " user=" + userId);
+            HashMap<String, ContentProviderRecord> map = getProvidersByName(userId);
+            // map returned by getProvidersByName wouldn't be null
+            map.remove(name);
+            if (map.size() == 0) {
+                mProvidersByNamePerUser.remove(userId);
+            }
+        }
+    }
+
+    void removeProviderByClass(ComponentName name, int userId) {
+        if (mSingletonByClass.containsKey(name)) {
+            if (DBG)
+                Slog.i(TAG, "Removing from globalByClass name=" + name);
+            mSingletonByClass.remove(name);
+        } else {
+            if (userId < 0) throw new IllegalArgumentException("Bad user " + userId);
+            if (DBG)
+                Slog.i(TAG,
+                        "Removing from providersByClass name=" + name + " user=" + userId);
+            HashMap<ComponentName, ContentProviderRecord> map = getProvidersByClass(userId);
+            // map returned by getProvidersByClass wouldn't be null
+            map.remove(name);
+            if (map.size() == 0) {
+                mProvidersByClassPerUser.remove(userId);
+            }
+        }
+    }
+
+    private HashMap<String, ContentProviderRecord> getProvidersByName(int userId) {
+        if (userId < 0) throw new IllegalArgumentException("Bad user " + userId);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         final HashMap<String, ContentProviderRecord> map = mProvidersByNamePerUser.get(userId);
         if (map == null) {
             HashMap<String, ContentProviderRecord> newMap = new HashMap<String, ContentProviderRecord>();
@@ -158,12 +246,22 @@ public class ProviderMap {
         }
     }
 
+<<<<<<< HEAD
     HashMap<ComponentName, ContentProviderRecord> getProvidersByClass(int optionalUserId) {
         final int userId = optionalUserId >= 0
                 ? optionalUserId : Binder.getOrigCallingUser();
         final HashMap<ComponentName, ContentProviderRecord> map = mProvidersByClassPerUser.get(userId);
         if (map == null) {
             HashMap<ComponentName, ContentProviderRecord> newMap = new HashMap<ComponentName, ContentProviderRecord>();
+=======
+    HashMap<ComponentName, ContentProviderRecord> getProvidersByClass(int userId) {
+        if (userId < 0) throw new IllegalArgumentException("Bad user " + userId);
+        final HashMap<ComponentName, ContentProviderRecord> map
+                = mProvidersByClassPerUser.get(userId);
+        if (map == null) {
+            HashMap<ComponentName, ContentProviderRecord> newMap
+                    = new HashMap<ComponentName, ContentProviderRecord>();
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
             mProvidersByClassPerUser.put(userId, newMap);
             return newMap;
         } else {
@@ -171,6 +269,56 @@ public class ProviderMap {
         }
     }
 
+<<<<<<< HEAD
+=======
+    private boolean collectForceStopProvidersLocked(String name, int appId,
+            boolean doit, boolean evenPersistent, int userId,
+            HashMap<ComponentName, ContentProviderRecord> providers,
+            ArrayList<ContentProviderRecord> result) {
+        boolean didSomething = false;
+        for (ContentProviderRecord provider : providers.values()) {
+            if ((name == null || provider.info.packageName.equals(name))
+                    && (provider.proc == null || evenPersistent || !provider.proc.persistent)) {
+                if (!doit) {
+                    return true;
+                }
+                didSomething = true;
+                result.add(provider);
+            }
+        }
+        return didSomething;
+    }
+
+    boolean collectForceStopProviders(String name, int appId,
+            boolean doit, boolean evenPersistent, int userId,
+            ArrayList<ContentProviderRecord> result) {
+        boolean didSomething = collectForceStopProvidersLocked(name, appId, doit,
+                evenPersistent, userId, mSingletonByClass, result);
+        if (!doit && didSomething) {
+            return true;
+        }
+        if (userId == UserHandle.USER_ALL) {
+            for (int i=0; i<mProvidersByClassPerUser.size(); i++) {
+                if (collectForceStopProvidersLocked(name, appId, doit, evenPersistent,
+                        userId, mProvidersByClassPerUser.valueAt(i), result)) {
+                    if (!doit) {
+                        return true;
+                    }
+                    didSomething = true;
+                }
+            }
+        } else {
+            HashMap<ComponentName, ContentProviderRecord> items
+                    = getProvidersByClass(userId);
+            if (items != null) {
+                didSomething |= collectForceStopProvidersLocked(name, appId, doit,
+                        evenPersistent, userId, items, result);
+            }
+        }
+        return didSomething;
+    }
+
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     private void dumpProvidersByClassLocked(PrintWriter pw, boolean dumpAll,
             HashMap<ComponentName, ContentProviderRecord> map) {
         Iterator<Map.Entry<ComponentName, ContentProviderRecord>> it = map.entrySet().iterator();
@@ -197,6 +345,7 @@ public class ProviderMap {
     }
 
     void dumpProvidersLocked(PrintWriter pw, boolean dumpAll) {
+<<<<<<< HEAD
         boolean needSep = false;
         if (mGlobalByClass.size() > 0) {
             if (needSep)
@@ -228,6 +377,31 @@ public class ProviderMap {
                 if (i > 0) {
                     pw.println("  User " + mProvidersByNamePerUser.keyAt(i) + ":");
                 }
+=======
+        if (mSingletonByClass.size() > 0) {
+            pw.println("  Published single-user content providers (by class):");
+            dumpProvidersByClassLocked(pw, dumpAll, mSingletonByClass);
+        }
+
+        pw.println("");
+        for (int i = 0; i < mProvidersByClassPerUser.size(); i++) {
+            HashMap<ComponentName, ContentProviderRecord> map = mProvidersByClassPerUser.valueAt(i);
+            pw.println("");
+            pw.println("  Published user " + mProvidersByClassPerUser.keyAt(i)
+                    + " content providers (by class):");
+            dumpProvidersByClassLocked(pw, dumpAll, map);
+        }
+
+        if (dumpAll) {
+            pw.println("");
+            pw.println("  Single-user authority to provider mappings:");
+            dumpProvidersByNameLocked(pw, mSingletonByName);
+
+            for (int i = 0; i < mProvidersByNamePerUser.size(); i++) {
+                pw.println("");
+                pw.println("  User " + mProvidersByNamePerUser.keyAt(i)
+                        + " authority to provider mappings:");
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
                 dumpProvidersByNameLocked(pw, mProvidersByNamePerUser.valueAt(i));
             }
         }
@@ -235,6 +409,7 @@ public class ProviderMap {
 
     protected boolean dumpProvider(FileDescriptor fd, PrintWriter pw, String name, String[] args,
             int opti, boolean dumpAll) {
+<<<<<<< HEAD
         ArrayList<ContentProviderRecord> providers = new ArrayList<ContentProviderRecord>();
 
         if ("all".equals(name)) {
@@ -259,6 +434,35 @@ public class ProviderMap {
 
             synchronized (this) {
                 for (ContentProviderRecord r1 : getProvidersByClass(-1).values()) {
+=======
+        ArrayList<ContentProviderRecord> allProviders = new ArrayList<ContentProviderRecord>();
+        ArrayList<ContentProviderRecord> providers = new ArrayList<ContentProviderRecord>();
+
+        synchronized (mAm) {
+            allProviders.addAll(mSingletonByClass.values());
+            for (int i=0; i<mProvidersByClassPerUser.size(); i++) {
+                allProviders.addAll(mProvidersByClassPerUser.valueAt(i).values());
+            }
+
+            if ("all".equals(name)) {
+                providers.addAll(allProviders);
+            } else {
+                ComponentName componentName = name != null
+                        ? ComponentName.unflattenFromString(name) : null;
+                int objectId = 0;
+                if (componentName == null) {
+                    // Not a '/' separated full component name; maybe an object ID?
+                    try {
+                        objectId = Integer.parseInt(name, 16);
+                        name = null;
+                        componentName = null;
+                    } catch (RuntimeException e) {
+                    }
+                }
+
+                for (int i=0; i<allProviders.size(); i++) {
+                    ContentProviderRecord r1 = allProviders.get(i);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
                     if (componentName != null) {
                         if (r1.name.equals(componentName)) {
                             providers.add(r1);
@@ -296,7 +500,11 @@ public class ProviderMap {
     private void dumpProvider(String prefix, FileDescriptor fd, PrintWriter pw,
             final ContentProviderRecord r, String[] args, boolean dumpAll) {
         String innerPrefix = prefix + "  ";
+<<<<<<< HEAD
         synchronized (this) {
+=======
+        synchronized (mAm) {
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
             pw.print(prefix); pw.print("PROVIDER ");
                     pw.print(r);
                     pw.print(" pid=");
@@ -328,6 +536,9 @@ public class ProviderMap {
             }
         }
     }
+<<<<<<< HEAD
 
 
+=======
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 }

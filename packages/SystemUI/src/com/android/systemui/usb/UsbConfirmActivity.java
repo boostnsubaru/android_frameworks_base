@@ -16,12 +16,16 @@
 
 package com.android.systemui.usb;
 
+<<<<<<< HEAD
 import android.app.Activity;
+=======
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 import android.app.AlertDialog;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+<<<<<<< HEAD
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
@@ -33,6 +37,18 @@ import android.os.Bundle;
 import android.os.IBinder;
 import android.os.RemoteException;
 import android.os.ServiceManager;
+=======
+import android.content.pm.PackageManager;
+import android.content.pm.ResolveInfo;
+import android.hardware.usb.IUsbManager;
+import android.hardware.usb.UsbAccessory;
+import android.hardware.usb.UsbDevice;
+import android.hardware.usb.UsbManager;
+import android.os.Bundle;
+import android.os.IBinder;
+import android.os.ServiceManager;
+import android.os.UserHandle;
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -42,7 +58,10 @@ import android.widget.TextView;
 
 import com.android.internal.app.AlertActivity;
 import com.android.internal.app.AlertController;
+<<<<<<< HEAD
 
+=======
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 import com.android.systemui.R;
 
 public class UsbConfirmActivity extends AlertActivity
@@ -62,10 +81,17 @@ public class UsbConfirmActivity extends AlertActivity
     public void onCreate(Bundle icicle) {
         super.onCreate(icicle);
 
+<<<<<<< HEAD
        Intent intent = getIntent();
         mDevice = (UsbDevice)intent.getParcelableExtra(UsbManager.EXTRA_DEVICE);
         mAccessory = (UsbAccessory)intent.getParcelableExtra(UsbManager.EXTRA_ACCESSORY);
         mResolveInfo = (ResolveInfo)intent.getParcelableExtra("rinfo");
+=======
+        Intent intent = getIntent();
+        mDevice = (UsbDevice) intent.getParcelableExtra(UsbManager.EXTRA_DEVICE);
+        mAccessory = (UsbAccessory)intent.getParcelableExtra(UsbManager.EXTRA_ACCESSORY);
+        mResolveInfo = (ResolveInfo) intent.getParcelableExtra("rinfo");
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 
         PackageManager packageManager = getPackageManager();
         String appName = mResolveInfo.loadLabel(packageManager).toString();
@@ -117,7 +143,12 @@ public class UsbConfirmActivity extends AlertActivity
             try {
                 IBinder b = ServiceManager.getService(USB_SERVICE);
                 IUsbManager service = IUsbManager.Stub.asInterface(b);
+<<<<<<< HEAD
                 int uid = mResolveInfo.activityInfo.applicationInfo.uid;
+=======
+                final int uid = mResolveInfo.activityInfo.applicationInfo.uid;
+                final int userId = UserHandle.myUserId();
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
                 boolean alwaysUse = mAlwaysUse.isChecked();
                 Intent intent = null;
 
@@ -129,9 +160,16 @@ public class UsbConfirmActivity extends AlertActivity
                     service.grantDevicePermission(mDevice, uid);
                     // set or clear default setting
                     if (alwaysUse) {
+<<<<<<< HEAD
                         service.setDevicePackage(mDevice, mResolveInfo.activityInfo.packageName);
                     } else {
                         service.setDevicePackage(mDevice, null);
+=======
+                        service.setDevicePackage(
+                                mDevice, mResolveInfo.activityInfo.packageName, userId);
+                    } else {
+                        service.setDevicePackage(mDevice, null, userId);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
                     }
                 } else if (mAccessory != null) {
                     intent = new Intent(UsbManager.ACTION_USB_ACCESSORY_ATTACHED);
@@ -141,10 +179,17 @@ public class UsbConfirmActivity extends AlertActivity
                     service.grantAccessoryPermission(mAccessory, uid);
                     // set or clear default setting
                     if (alwaysUse) {
+<<<<<<< HEAD
                         service.setAccessoryPackage(mAccessory,
                                 mResolveInfo.activityInfo.packageName);
                     } else {
                         service.setAccessoryPackage(mAccessory, null);
+=======
+                        service.setAccessoryPackage(
+                                mAccessory, mResolveInfo.activityInfo.packageName, userId);
+                    } else {
+                        service.setAccessoryPackage(mAccessory, null, userId);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
                     }
                 }
 
@@ -152,7 +197,11 @@ public class UsbConfirmActivity extends AlertActivity
                 intent.setComponent(
                     new ComponentName(mResolveInfo.activityInfo.packageName,
                             mResolveInfo.activityInfo.name));
+<<<<<<< HEAD
                 startActivity(intent);
+=======
+                startActivityAsUser(intent, new UserHandle(userId));
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
             } catch (Exception e) {
                 Log.e(TAG, "Unable to start activity", e);
             }

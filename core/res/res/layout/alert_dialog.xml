@@ -26,8 +26,13 @@
     android:orientation="vertical"
     android:paddingTop="9dip"
     android:paddingBottom="3dip"
+<<<<<<< HEAD
     android:paddingLeft="3dip"
     android:paddingRight="1dip">
+=======
+    android:paddingStart="3dip"
+    android:paddingEnd="1dip">
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 
     <LinearLayout android:id="@+id/topPanel"
         android:layout_width="match_parent"
@@ -41,14 +46,23 @@
             android:gravity="center_vertical"
             android:layout_marginTop="6dip"
             android:layout_marginBottom="9dip"
+<<<<<<< HEAD
             android:layout_marginLeft="10dip"
             android:layout_marginRight="10dip">
+=======
+            android:layout_marginStart="10dip"
+            android:layout_marginEnd="10dip">
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
             <ImageView android:id="@+id/icon"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="top"
                 android:paddingTop="6dip"
+<<<<<<< HEAD
                 android:paddingRight="10dip"
+=======
+                android:paddingEnd="10dip"
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
                 android:src="@drawable/ic_dialog_info" />
             <com.android.internal.widget.DialogTitle android:id="@+id/alertTitle"
                 style="?android:attr/textAppearanceLarge"
@@ -77,8 +91,13 @@
             android:layout_height="wrap_content"
             android:paddingTop="2dip"
             android:paddingBottom="12dip"
+<<<<<<< HEAD
             android:paddingLeft="14dip"
             android:paddingRight="10dip"
+=======
+            android:paddingStart="14dip"
+            android:paddingEnd="10dip"
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
             android:overScrollMode="ifContentScrolls">
             <TextView android:id="@+id/message"
                 style="?android:attr/textAppearanceMedium"
@@ -110,8 +129,13 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:paddingTop="4dip"
+<<<<<<< HEAD
             android:paddingLeft="2dip"
             android:paddingRight="2dip"
+=======
+            android:paddingStart="2dip"
+            android:paddingEnd="2dip"
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
             android:measureWithLargestChild="true">
             <LinearLayout android:id="@+id/leftSpacer"
                 android:layout_weight="0.25"
@@ -121,7 +145,11 @@
                 android:visibility="gone" />
             <Button android:id="@+id/button1"
                 android:layout_width="0dip"
+<<<<<<< HEAD
                 android:layout_gravity="left"
+=======
+                android:layout_gravity="start"
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
                 android:layout_weight="1"
                 style="?android:attr/buttonBarButtonStyle"
                 android:maxLines="2"
@@ -135,7 +163,11 @@
                 android:layout_height="wrap_content" />
             <Button android:id="@+id/button2"
                 android:layout_width="0dip"
+<<<<<<< HEAD
                 android:layout_gravity="right"
+=======
+                android:layout_gravity="end"
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
                 android:layout_weight="1"
                 style="?android:attr/buttonBarButtonStyle"
                 android:maxLines="2"

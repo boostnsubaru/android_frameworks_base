@@ -32,6 +32,10 @@ LOCAL_ADDITIONAL_DEPENDENCIES := $(addprefix $(rs_generated_include_dir)/,rsgApi
 LOCAL_MODULE:= librs_jni
 LOCAL_ADDITIONAL_DEPENDENCIES += $(rs_generated_source)
 LOCAL_MODULE_TAGS := optional
+<<<<<<< HEAD
 LOCAL_REQUIRED_MODULES := libRS
+=======
+LOCAL_REQUIRED_MODULES := libRS libRSDriver
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 
 include $(BUILD_SHARED_LIBRARY)

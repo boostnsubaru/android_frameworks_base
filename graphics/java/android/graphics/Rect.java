@@ -69,10 +69,21 @@ public final class Rect implements Parcelable {
      *          rectangle.
      */
     public Rect(Rect r) {
+<<<<<<< HEAD
         left = r.left;
         top = r.top;
         right = r.right;
         bottom = r.bottom;
+=======
+        if (r == null) {
+            left = top = right = bottom = 0;
+        } else {
+            left = r.left;
+            top = r.top;
+            right = r.right;
+            bottom = r.bottom;
+        }
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     }
 
     @Override

@@ -189,7 +189,11 @@ public class TextureView extends View {
         if (opaque != mOpaque) {
             mOpaque = opaque;
             if (mLayer != null) {
+<<<<<<< HEAD
                 updateLayer();
+=======
+                updateLayerAndInvalidate();
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
             }
         }
     }
@@ -224,6 +228,12 @@ public class TextureView extends View {
     private void destroySurface() {
         if (mLayer != null) {
             mSurface.detachFromGLContext();
+<<<<<<< HEAD
+=======
+            // SurfaceTexture owns the texture name and detachFromGLContext
+            // should have deleted it
+            mLayer.clearStorage();
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 
             boolean shouldRelease = true;
             if (mListener != null) {
@@ -290,6 +300,12 @@ public class TextureView extends View {
      */
     @Override
     public final void draw(Canvas canvas) {
+<<<<<<< HEAD
+=======
+        // NOTE: Maintain this carefully (see View.java)
+        mPrivateFlags = (mPrivateFlags & ~PFLAG_DIRTY_MASK) | PFLAG_DRAWN;
+
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         applyUpdate();
         applyTransformMatrix();
     }
@@ -309,6 +325,10 @@ public class TextureView extends View {
         super.onSizeChanged(w, h, oldw, oldh);
         if (mSurface != null) {
             nSetDefaultBufferSize(mSurface, getWidth(), getHeight());
+<<<<<<< HEAD
+=======
+            updateLayer();
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
             if (mListener != null) {
                 mListener.onSurfaceTextureSizeChanged(mSurface, getWidth(), getHeight());
             }
@@ -333,6 +353,13 @@ public class TextureView extends View {
 
     @Override
     HardwareLayer getHardwareLayer() {
+<<<<<<< HEAD
+=======
+        // NOTE: Maintain these two lines very carefully (see View.java)
+        mPrivateFlags |= PFLAG_DRAWN | PFLAG_DRAWING_CACHE_VALID;
+        mPrivateFlags &= ~PFLAG_DIRTY_MASK;
+
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         if (mLayer == null) {
             if (mAttachInfo == null || mAttachInfo.mHardwareRenderer == null) {
                 return null;
@@ -351,9 +378,13 @@ public class TextureView extends View {
                 public void onFrameAvailable(SurfaceTexture surfaceTexture) {
                     // Per SurfaceTexture's documentation, the callback may be invoked
                     // from an arbitrary thread
+<<<<<<< HEAD
                     synchronized (mLock) {
                         mUpdateLayer = true;
                     }
+=======
+                    updateLayer();
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 
                     if (Looper.myLooper() == Looper.getMainLooper()) {
                         invalidate();
@@ -367,6 +398,10 @@ public class TextureView extends View {
             if (mListener != null && !mUpdateSurface) {
                 mListener.onSurfaceTextureAvailable(mSurface, getWidth(), getHeight());
             }
+<<<<<<< HEAD
+=======
+            mLayer.setLayerPaint(mLayerPaint);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         }
 
         if (mUpdateSurface) {
@@ -377,9 +412,13 @@ public class TextureView extends View {
 
             // Since we are updating the layer, force an update to ensure its
             // parameters are correct (width, height, transform, etc.)
+<<<<<<< HEAD
             synchronized (mLock) {
                 mUpdateLayer = true;
             }
+=======
+            updateLayer();
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
             mMatrixChanged = true;
 
             mAttachInfo.mHardwareRenderer.setSurfaceTexture(mLayer, mSurface);
@@ -402,7 +441,11 @@ public class TextureView extends View {
             // updates listener
             if (visibility == VISIBLE) {
                 mSurface.setOnFrameAvailableListener(mUpdateListener);
+<<<<<<< HEAD
                 updateLayer();
+=======
+                updateLayerAndInvalidate();
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
             } else {
                 mSurface.setOnFrameAvailableListener(null);
             }
@@ -410,7 +453,19 @@ public class TextureView extends View {
     }
 
     private void updateLayer() {
+<<<<<<< HEAD
         mUpdateLayer = true;
+=======
+        synchronized (mLock) {
+            mUpdateLayer = true;
+        }
+    }
+
+    private void updateLayerAndInvalidate() {
+        synchronized (mLock) {
+            mUpdateLayer = true;
+        }
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         invalidate();
     }
 
@@ -534,7 +589,12 @@ public class TextureView extends View {
      */
     public Bitmap getBitmap(int width, int height) {
         if (isAvailable() && width > 0 && height > 0) {
+<<<<<<< HEAD
             return getBitmap(Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888));
+=======
+            return getBitmap(Bitmap.createBitmap(getResources().getDisplayMetrics(),
+                    width, height, Bitmap.Config.ARGB_8888));
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         }
         return null;
     }
@@ -765,6 +825,10 @@ public class TextureView extends View {
          * Invoked when the specified {@link SurfaceTexture} is about to be destroyed.
          * If returns true, no rendering should happen inside the surface texture after this method
          * is invoked. If returns false, the client needs to call {@link SurfaceTexture#release()}.
+<<<<<<< HEAD
+=======
+         * Most applications should return true.
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
          * 
          * @param surface The surface about to be destroyed
          */

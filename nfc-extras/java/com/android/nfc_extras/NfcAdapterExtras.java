@@ -234,4 +234,24 @@ public final class NfcAdapterExtras {
             attemptDeadServiceRecovery(e);
         }
     }
+<<<<<<< HEAD
+=======
+
+    /**
+     * Returns the name of this adapter's driver.
+     *
+     * <p>Different NFC adapters may use different drivers.  This value is
+     * informational and should not be parsed.
+     *
+     * @return the driver name, or empty string if unknown
+     */
+    public String getDriverName() {
+        try {
+            return sService.getDriverName(mPackageName);
+        } catch (RemoteException e) {
+            attemptDeadServiceRecovery(e);
+            return "";
+        }
+    }
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 }

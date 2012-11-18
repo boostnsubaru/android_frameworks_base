@@ -18,6 +18,10 @@ package android.content.pm;
 
 import android.os.Parcel;
 import android.os.Parcelable;
+<<<<<<< HEAD
+=======
+import android.os.UserHandle;
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 
 /**
  * implementation of PackageStats associated with a
@@ -27,6 +31,12 @@ public class PackageStats implements Parcelable {
     /** Name of the package to which this stats applies. */
     public String packageName;
 
+<<<<<<< HEAD
+=======
+    /** @hide */
+    public int userHandle;
+
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     /** Size of the code (e.g., APK) */
     public long codeSize;
 
@@ -78,6 +88,7 @@ public class PackageStats implements Parcelable {
     public String toString() {
         final StringBuilder sb = new StringBuilder("PackageStats{");
         sb.append(Integer.toHexString(System.identityHashCode(this)));
+<<<<<<< HEAD
         sb.append(" packageName=");
         sb.append(packageName);
         sb.append(",codeSize=");
@@ -96,15 +107,66 @@ public class PackageStats implements Parcelable {
         sb.append(externalMediaSize);
         sb.append(",externalObbSize=");
         sb.append(externalObbSize);
+=======
+        sb.append(" ");
+        sb.append(packageName);
+        if (codeSize != 0) {
+            sb.append(" code=");
+            sb.append(codeSize);
+        }
+        if (dataSize != 0) {
+            sb.append(" data=");
+            sb.append(dataSize);
+        }
+        if (cacheSize != 0) {
+            sb.append(" cache=");
+            sb.append(cacheSize);
+        }
+        if (externalCodeSize != 0) {
+            sb.append(" extCode=");
+            sb.append(externalCodeSize);
+        }
+        if (externalDataSize != 0) {
+            sb.append(" extData=");
+            sb.append(externalDataSize);
+        }
+        if (externalCacheSize != 0) {
+            sb.append(" extCache=");
+            sb.append(externalCacheSize);
+        }
+        if (externalMediaSize != 0) {
+            sb.append(" media=");
+            sb.append(externalMediaSize);
+        }
+        if (externalObbSize != 0) {
+            sb.append(" obb=");
+            sb.append(externalObbSize);
+        }
+        sb.append("}");
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         return sb.toString();
     }
 
     public PackageStats(String pkgName) {
         packageName = pkgName;
+<<<<<<< HEAD
+=======
+        userHandle = UserHandle.myUserId();
+    }
+
+    /** @hide */
+    public PackageStats(String pkgName, int userHandle) {
+        this.packageName = pkgName;
+        this.userHandle = userHandle;
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     }
 
     public PackageStats(Parcel source) {
         packageName = source.readString();
+<<<<<<< HEAD
+=======
+        userHandle = source.readInt();
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         codeSize = source.readLong();
         dataSize = source.readLong();
         cacheSize = source.readLong();
@@ -117,6 +179,10 @@ public class PackageStats implements Parcelable {
 
     public PackageStats(PackageStats pStats) {
         packageName = pStats.packageName;
+<<<<<<< HEAD
+=======
+        userHandle = pStats.userHandle;
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         codeSize = pStats.codeSize;
         dataSize = pStats.dataSize;
         cacheSize = pStats.cacheSize;
@@ -133,6 +199,10 @@ public class PackageStats implements Parcelable {
 
     public void writeToParcel(Parcel dest, int parcelableFlags){
         dest.writeString(packageName);
+<<<<<<< HEAD
+=======
+        dest.writeInt(userHandle);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         dest.writeLong(codeSize);
         dest.writeLong(dataSize);
         dest.writeLong(cacheSize);

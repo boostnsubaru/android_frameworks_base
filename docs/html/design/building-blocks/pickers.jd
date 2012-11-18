@@ -29,3 +29,13 @@ app helps ensure that a user's specification of a data or time input is valid an
 correctly. The format of a time and date picker adjusts automatically to the locale.</p>
 
 <img src="{@docRoot}design/media/picker_datetime.png">
+<<<<<<< HEAD
+=======
+
+
+<div class="note develop">
+<p><strong>Developer Guide</strong></p>
+  <p>For information about how to create date and time pickers,
+  see the <a href="{@docRoot}guide/topics/ui/controls/pickers.html">Pickers</a> API guide.</p>
+</div>
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a

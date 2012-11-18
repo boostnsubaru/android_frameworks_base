@@ -19,6 +19,18 @@ package com.android.internal.util;
 import java.io.File;
 import java.io.IOException;
 
+<<<<<<< HEAD
+=======
+/**
+ * @Deprecated Use {@link com.android.internal.os.AtomicFile} instead.  It would
+ * be nice to update all existing uses of this to switch to AtomicFile, but since
+ * their on-file semantics are slightly different that would run the risk of losing
+ * data if at the point of the platform upgrade to the new code it would need to
+ * roll back to the backup file.  This can be solved...  but is it worth it and
+ * all of the testing needed to make sure it is correct?
+ */
+@Deprecated
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 public class JournaledFile {
     File mReal;
     File mTemp;

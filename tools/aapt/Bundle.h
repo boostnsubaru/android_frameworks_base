@@ -1,6 +1,9 @@
 //
 // Copyright 2006 The Android Open Source Project
+<<<<<<< HEAD
 // This code has been modified.  Portions copyright (C) 2010, T-Mobile USA, Inc.
+=======
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 //
 // State bundle.  Used to pass around stuff like command-line args.
 //
@@ -49,12 +52,20 @@ public:
     Bundle(void)
         : mCmd(kCommandUnknown), mVerbose(false), mAndroidList(false),
           mForce(false), mGrayscaleTolerance(0), mMakePackageDirs(false),
+<<<<<<< HEAD
           mUpdate(false), mExtending(false), mExtendedPackageId(0),
           mRequireLocalization(false), mPseudolocalize(false),
           mWantUTF16(false), mValues(false),
           mCompressionMethod(0), mOutputAPKFile(NULL),
           mManifestPackageNameOverride(NULL), mInstrumentationPackageNameOverride(NULL),
           mIsOverlayPackage(false),
+=======
+          mUpdate(false), mExtending(false),
+          mRequireLocalization(false), mPseudolocalize(false),
+          mWantUTF16(false), mValues(false),
+          mCompressionMethod(0), mJunkPath(false), mOutputAPKFile(NULL),
+          mManifestPackageNameOverride(NULL), mInstrumentationPackageNameOverride(NULL),
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
           mAutoAddOverlay(false), mGenDependencies(false),
           mAssetSourceDir(NULL), 
           mCrunchedOutputDir(NULL), mProguardFile(NULL),
@@ -63,7 +74,12 @@ public:
           mMinSdkVersion(NULL), mTargetSdkVersion(NULL), mMaxSdkVersion(NULL),
           mVersionCode(NULL), mVersionName(NULL), mCustomPackage(NULL), mExtraPackages(NULL),
           mMaxResVersion(NULL), mDebugMode(false), mNonConstantId(false), mProduct(NULL),
+<<<<<<< HEAD
           mUseCrunchCache(false), mArgc(0), mArgv(NULL)
+=======
+          mUseCrunchCache(false), mErrorOnFailedInsert(false), mOutputTextSymbols(NULL),
+          mArgc(0), mArgv(NULL)
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         {}
     ~Bundle(void) {}
 
@@ -91,8 +107,11 @@ public:
     void setUpdate(bool val) { mUpdate = val; }
     bool getExtending(void) const { return mExtending; }
     void setExtending(bool val) { mExtending = val; }
+<<<<<<< HEAD
     int getExtendedPackageId(void) const { return mExtendedPackageId; }
     void setExtendedPackageId(int val) { mExtendedPackageId = val; }
+=======
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     bool getRequireLocalization(void) const { return mRequireLocalization; }
     void setRequireLocalization(bool val) { mRequireLocalization = val; }
     bool getPseudolocalize(void) const { return mPseudolocalize; }
@@ -110,12 +129,20 @@ public:
     void setManifestPackageNameOverride(const char * val) { mManifestPackageNameOverride = val; }
     const char* getInstrumentationPackageNameOverride() const { return mInstrumentationPackageNameOverride; }
     void setInstrumentationPackageNameOverride(const char * val) { mInstrumentationPackageNameOverride = val; }
+<<<<<<< HEAD
     bool getIsOverlayPackage() const { return mIsOverlayPackage; }
     void setIsOverlayPackage(bool val) { mIsOverlayPackage = val; }
+=======
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     bool getAutoAddOverlay() { return mAutoAddOverlay; }
     void setAutoAddOverlay(bool val) { mAutoAddOverlay = val; }
     bool getGenDependencies() { return mGenDependencies; }
     void setGenDependencies(bool val) { mGenDependencies = val; }
+<<<<<<< HEAD
+=======
+    bool getErrorOnFailedInsert() { return mErrorOnFailedInsert; }
+    void setErrorOnFailedInsert(bool val) { mErrorOnFailedInsert = val; }
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 
     bool getUTF16StringsOption() {
         return mWantUTF16 || !isMinSdkAtLeast(SDK_FROYO);
@@ -177,6 +204,11 @@ public:
     void setProduct(const char * val) { mProduct = val; }
     void setUseCrunchCache(bool val) { mUseCrunchCache = val; }
     bool getUseCrunchCache() const { return mUseCrunchCache; }
+<<<<<<< HEAD
+=======
+    const char* getOutputTextSymbols() const { return mOutputTextSymbols; }
+    void setOutputTextSymbols(const char* val) { mOutputTextSymbols = val; }
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 
     /*
      * Set and get the file specification.
@@ -244,7 +276,10 @@ private:
     bool        mMakePackageDirs;
     bool        mUpdate;
     bool        mExtending;
+<<<<<<< HEAD
     int         mExtendedPackageId;
+=======
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     bool        mRequireLocalization;
     bool        mPseudolocalize;
     bool        mWantUTF16;
@@ -254,7 +289,10 @@ private:
     const char* mOutputAPKFile;
     const char* mManifestPackageNameOverride;
     const char* mInstrumentationPackageNameOverride;
+<<<<<<< HEAD
     bool        mIsOverlayPackage;
+=======
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     bool        mAutoAddOverlay;
     bool        mGenDependencies;
     const char* mAssetSourceDir;
@@ -284,6 +322,11 @@ private:
     bool        mNonConstantId;
     const char* mProduct;
     bool        mUseCrunchCache;
+<<<<<<< HEAD
+=======
+    bool        mErrorOnFailedInsert;
+    const char* mOutputTextSymbols;
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 
     /* file specification */
     int         mArgc;

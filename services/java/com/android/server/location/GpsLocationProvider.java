@@ -29,15 +29,24 @@ import android.location.IGpsStatusProvider;
 import android.location.ILocationManager;
 import android.location.INetInitiatedListener;
 import android.location.Location;
+<<<<<<< HEAD
+=======
+import android.location.LocationListener;
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 import android.location.LocationManager;
 import android.location.LocationProvider;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
+<<<<<<< HEAD
+=======
+import android.os.AsyncTask;
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 import android.os.Binder;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.IBinder;
+<<<<<<< HEAD
 import android.os.Looper;
 import android.os.Message;
 import android.os.PowerManager;
@@ -45,6 +54,14 @@ import android.os.Process;
 import android.os.RemoteException;
 import android.os.ServiceManager;
 import android.os.SystemClock;
+=======
+import android.os.Message;
+import android.os.PowerManager;
+import android.os.RemoteException;
+import android.os.ServiceManager;
+import android.os.SystemClock;
+import android.os.UserHandle;
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 import android.os.WorkSource;
 import android.provider.Settings;
 import android.provider.Telephony.Carriers;
@@ -54,6 +71,7 @@ import android.telephony.TelephonyManager;
 import android.telephony.gsm.GsmCellLocation;
 import android.util.Log;
 import android.util.NtpTrustedTime;
+<<<<<<< HEAD
 import android.util.SparseIntArray;
 
 import com.android.internal.app.IBatteryStats;
@@ -64,12 +82,30 @@ import com.android.internal.telephony.Phone;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+=======
+import com.android.internal.app.IBatteryStats;
+import com.android.internal.location.GpsNetInitiatedHandler;
+import com.android.internal.location.ProviderProperties;
+import com.android.internal.location.ProviderRequest;
+import com.android.internal.location.GpsNetInitiatedHandler.GpsNiNotification;
+import com.android.internal.telephony.Phone;
+import com.android.internal.telephony.PhoneConstants;
+
+import java.io.File;
+import java.io.FileDescriptor;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.PrintWriter;
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 import java.io.StringReader;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Map.Entry;
 import java.util.Properties;
+<<<<<<< HEAD
 import java.util.concurrent.CountDownLatch;
+=======
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 
 /**
  * A GPS implementation of LocationProvider used by LocationManager.
@@ -80,8 +116,17 @@ public class GpsLocationProvider implements LocationProviderInterface {
 
     private static final String TAG = "GpsLocationProvider";
 
+<<<<<<< HEAD
     private static final boolean DEBUG = false;
     private static final boolean VERBOSE = false;
+=======
+    private static final boolean DEBUG = Log.isLoggable(TAG, Log.DEBUG);
+    private static final boolean VERBOSE = Log.isLoggable(TAG, Log.VERBOSE);
+
+    private static final ProviderProperties PROPERTIES = new ProviderProperties(
+            true, true, false, false, true, true, true,
+            Criteria.POWER_HIGH, Criteria.ACCURACY_FINE);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 
     // these need to match GpsPositionMode enum in gps.h
     private static final int GPS_POSITION_MODE_STANDALONE = 0;
@@ -149,14 +194,23 @@ public class GpsLocationProvider implements LocationProviderInterface {
     // Handler messages
     private static final int CHECK_LOCATION = 1;
     private static final int ENABLE = 2;
+<<<<<<< HEAD
     private static final int ENABLE_TRACKING = 3;
+=======
+    private static final int SET_REQUEST = 3;
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     private static final int UPDATE_NETWORK_STATE = 4;
     private static final int INJECT_NTP_TIME = 5;
     private static final int DOWNLOAD_XTRA_DATA = 6;
     private static final int UPDATE_LOCATION = 7;
     private static final int ADD_LISTENER = 8;
     private static final int REMOVE_LISTENER = 9;
+<<<<<<< HEAD
     private static final int REQUEST_SINGLE_SHOT = 10;
+=======
+    private static final int INJECT_NTP_TIME_FINISHED = 10;
+    private static final int DOWNLOAD_XTRA_DATA_FINISHED = 11;
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 
     // Request setid
     private static final int AGPS_RIL_REQUEST_SETID_IMSI = 1;
@@ -178,6 +232,21 @@ public class GpsLocationProvider implements LocationProviderInterface {
 
     private static final String PROPERTIES_FILE = "/etc/gps.conf";
 
+<<<<<<< HEAD
+=======
+    /** simpler wrapper for ProviderRequest + Worksource */
+    private static class GpsRequest {
+        public ProviderRequest request;
+        public WorkSource source;
+        public GpsRequest(ProviderRequest request, WorkSource source) {
+            this.request = request;
+            this.source = source;
+        }
+    }
+
+    private Object mLock = new Object();
+
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     private int mLocationFlags = LOCATION_INVALID;
 
     // current status
@@ -197,6 +266,7 @@ public class GpsLocationProvider implements LocationProviderInterface {
     // Typical hot TTTF is ~5 seconds, so 10 seconds seems sane.
     private static final int GPS_POLLING_THRESHOLD_INTERVAL = 10 * 1000;
 
+<<<<<<< HEAD
     // true if we are enabled
     private volatile boolean mEnabled;
     
@@ -207,6 +277,30 @@ public class GpsLocationProvider implements LocationProviderInterface {
     // initialized to true so we do NTP and XTRA when the network comes up after booting
     private boolean mInjectNtpTimePending = true;
     private boolean mDownloadXtraDataPending = true;
+=======
+    // how often to request NTP time, in milliseconds
+    // current setting 24 hours
+    private static final long NTP_INTERVAL = 24*60*60*1000;
+    // how long to wait if we have a network error in NTP or XTRA downloading
+    // current setting - 5 minutes
+    private static final long RETRY_INTERVAL = 5*60*1000;
+
+    // true if we are enabled, protected by this
+    private boolean mEnabled;
+
+    // true if we have network connectivity
+    private boolean mNetworkAvailable;
+
+    // states for injecting ntp and downloading xtra data
+    private static final int STATE_PENDING_NETWORK = 0;
+    private static final int STATE_DOWNLOADING = 1;
+    private static final int STATE_IDLE = 2;
+
+    // flags to trigger NTP or XTRA data download when network becomes available
+    // initialized to true so we do NTP and XTRA when the network comes up after booting
+    private int mInjectNtpTimePending = STATE_PENDING_NETWORK;
+    private int mDownloadXtraDataPending = STATE_PENDING_NETWORK;
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 
     // set to true if the GPS engine does not do on-demand NTP time requests
     private boolean mPeriodicTimeInjection;
@@ -216,16 +310,23 @@ public class GpsLocationProvider implements LocationProviderInterface {
 
     // true if GPS engine is on
     private boolean mEngineOn;
+<<<<<<< HEAD
     
+=======
+
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     // requested frequency of fixes, in milliseconds
     private int mFixInterval = 1000;
 
     // true if we started navigation
     private boolean mStarted;
 
+<<<<<<< HEAD
     // true if single shot request is in progress
     private boolean mSingleShot;
 
+=======
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     // capabilities of the GPS engine
     private int mEngineCapabilities;
 
@@ -235,7 +336,11 @@ public class GpsLocationProvider implements LocationProviderInterface {
     // for calculating time to first fix
     private long mFixRequestTime = 0;
     // time to first fix for most recent session
+<<<<<<< HEAD
     private int mTTFF = 0;
+=======
+    private int mTimeToFirstFix = 0;
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     // time we received our last fix
     private long mLastFixTime;
 
@@ -250,33 +355,49 @@ public class GpsLocationProvider implements LocationProviderInterface {
 
     private final Context mContext;
     private final NtpTrustedTime mNtpTime;
+<<<<<<< HEAD
     private final ILocationManager mLocationManager;
+=======
+    private final ILocationManager mILocationManager;
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     private Location mLocation = new Location(LocationManager.GPS_PROVIDER);
     private Bundle mLocationExtras = new Bundle();
     private ArrayList<Listener> mListeners = new ArrayList<Listener>();
 
+<<<<<<< HEAD
     // GpsLocationProvider's handler thread
     private final Thread mThread;
     // Handler for processing events in mThread.
     private Handler mHandler;
     // Used to signal when our main thread has initialized everything
     private final CountDownLatch mInitializedLatch = new CountDownLatch(1);
+=======
+    // Handler for processing events
+    private Handler mHandler;
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 
     private String mAGpsApn;
     private int mAGpsDataConnectionState;
     private int mAGpsDataConnectionIpAddr;
     private final ConnectivityManager mConnMgr;
+<<<<<<< HEAD
     private final GpsNetInitiatedHandler mNIHandler; 
+=======
+    private final GpsNetInitiatedHandler mNIHandler;
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 
     // Wakelocks
     private final static String WAKELOCK_KEY = "GpsLocationProvider";
     private final PowerManager.WakeLock mWakeLock;
+<<<<<<< HEAD
     // bitfield of pending messages to our Handler
     // used only for messages that cannot have multiple instances queued
     private int mPendingMessageBits;
     // separate counter for ADD_LISTENER and REMOVE_LISTENER messages,
     // which might have multiple instances queued
     private int mPendingListenerMessages;
+=======
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 
     // Alarms
     private final static String ALARM_WAKEUP = "com.android.internal.location.ALARM_WAKEUP";
@@ -286,6 +407,7 @@ public class GpsLocationProvider implements LocationProviderInterface {
     private final PendingIntent mTimeoutIntent;
 
     private final IBatteryStats mBatteryStats;
+<<<<<<< HEAD
     private final SparseIntArray mClientUids = new SparseIntArray();
 
     // how often to request NTP time, in milliseconds
@@ -296,12 +418,24 @@ public class GpsLocationProvider implements LocationProviderInterface {
     private static final long RETRY_INTERVAL = 5*60*1000;
 
     private final IGpsStatusProvider mGpsStatusProvider = new IGpsStatusProvider.Stub() {
+=======
+
+    // only modified on handler thread
+    private int[] mClientUids = new int[0];
+
+    private final IGpsStatusProvider mGpsStatusProvider = new IGpsStatusProvider.Stub() {
+        @Override
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         public void addGpsStatusListener(IGpsStatusListener listener) throws RemoteException {
             if (listener == null) {
                 throw new NullPointerException("listener is null in addGpsStatusListener");
             }
 
+<<<<<<< HEAD
             synchronized(mListeners) {
+=======
+            synchronized (mListeners) {
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
                 IBinder binder = listener.asBinder();
                 int size = mListeners.size();
                 for (int i = 0; i < size; i++) {
@@ -318,12 +452,20 @@ public class GpsLocationProvider implements LocationProviderInterface {
             }
         }
 
+<<<<<<< HEAD
+=======
+        @Override
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         public void removeGpsStatusListener(IGpsStatusListener listener) {
             if (listener == null) {
                 throw new NullPointerException("listener is null in addGpsStatusListener");
             }
 
+<<<<<<< HEAD
             synchronized(mListeners) {
+=======
+            synchronized (mListeners) {
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
                 IBinder binder = listener.asBinder();
                 Listener l = null;
                 int size = mListeners.size();
@@ -352,7 +494,11 @@ public class GpsLocationProvider implements LocationProviderInterface {
 
             if (action.equals(ALARM_WAKEUP)) {
                 if (DEBUG) Log.d(TAG, "ALARM_WAKEUP");
+<<<<<<< HEAD
                 startNavigating(false);
+=======
+                startNavigating();
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
             } else if (action.equals(ALARM_TIMEOUT)) {
                 if (DEBUG) Log.d(TAG, "ALARM_TIMEOUT");
                 hibernate();
@@ -360,6 +506,25 @@ public class GpsLocationProvider implements LocationProviderInterface {
                 checkSmsSuplInit(intent);
             } else if (action.equals(Intents.WAP_PUSH_RECEIVED_ACTION)) {
                 checkWapSuplInit(intent);
+<<<<<<< HEAD
+=======
+             } else if (action.equals(ConnectivityManager.CONNECTIVITY_ACTION)) {
+                 int networkState;
+                 if (intent.getBooleanExtra(ConnectivityManager.EXTRA_NO_CONNECTIVITY, false)) {
+                     networkState = LocationProvider.TEMPORARILY_UNAVAILABLE;
+                 } else {
+                     networkState = LocationProvider.AVAILABLE;
+                 }
+
+                 // retrieve NetworkInfo result for this UID
+                 NetworkInfo info =
+                         intent.getParcelableExtra(ConnectivityManager.EXTRA_NETWORK_INFO);
+                 ConnectivityManager connManager = (ConnectivityManager)
+                         mContext.getSystemService(Context.CONNECTIVITY_SERVICE);
+                 info = connManager.getNetworkInfo(info.getType());
+
+                 updateNetworkState(networkState, info);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
              }
         }
     };
@@ -381,10 +546,17 @@ public class GpsLocationProvider implements LocationProviderInterface {
         return native_is_supported();
     }
 
+<<<<<<< HEAD
     public GpsLocationProvider(Context context, ILocationManager locationManager) {
         mContext = context;
         mNtpTime = NtpTrustedTime.getInstance(context);
         mLocationManager = locationManager;
+=======
+    public GpsLocationProvider(Context context, ILocationManager ilocationManager) {
+        mContext = context;
+        mNtpTime = NtpTrustedTime.getInstance(context);
+        mILocationManager = ilocationManager;
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         mNIHandler = new GpsNetInitiatedHandler(context);
 
         mLocation.setExtras(mLocationExtras);
@@ -392,12 +564,17 @@ public class GpsLocationProvider implements LocationProviderInterface {
         // Create a wake lock
         PowerManager powerManager = (PowerManager) mContext.getSystemService(Context.POWER_SERVICE);
         mWakeLock = powerManager.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, WAKELOCK_KEY);
+<<<<<<< HEAD
         mWakeLock.setReferenceCounted(false);
+=======
+        mWakeLock.setReferenceCounted(true);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 
         mAlarmManager = (AlarmManager)mContext.getSystemService(Context.ALARM_SERVICE);
         mWakeupIntent = PendingIntent.getBroadcast(mContext, 0, new Intent(ALARM_WAKEUP), 0);
         mTimeoutIntent = PendingIntent.getBroadcast(mContext, 0, new Intent(ALARM_TIMEOUT), 0);
 
+<<<<<<< HEAD
         IntentFilter intentFilter = new IntentFilter();
         intentFilter.addAction(Intents.DATA_SMS_RECEIVED_ACTION);
         intentFilter.addDataScheme("sms");
@@ -413,6 +590,8 @@ public class GpsLocationProvider implements LocationProviderInterface {
         }
         context.registerReceiver(mBroadcastReciever, intentFilter);
 
+=======
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         mConnMgr = (ConnectivityManager)context.getSystemService(Context.CONNECTIVITY_SERVICE);
 
         // Battery statistics service to be notified when GPS turns on or off
@@ -448,6 +627,7 @@ public class GpsLocationProvider implements LocationProviderInterface {
             Log.w(TAG, "Could not open GPS configuration file " + PROPERTIES_FILE);
         }
 
+<<<<<<< HEAD
         // wait until we are fully initialized before returning
         mThread = new GpsLocationProviderThread();
         mThread.start();
@@ -467,21 +647,70 @@ public class GpsLocationProvider implements LocationProviderInterface {
         intentFilter.addAction(ALARM_WAKEUP);
         intentFilter.addAction(ALARM_TIMEOUT);
         mContext.registerReceiver(mBroadcastReciever, intentFilter);
+=======
+        // construct handler, listen for events
+        mHandler = new ProviderHandler();
+        listenForBroadcasts();
+
+        // also listen for PASSIVE_PROVIDER updates
+        mHandler.post(new Runnable() {
+            @Override
+            public void run() {
+                LocationManager locManager =
+                        (LocationManager) mContext.getSystemService(Context.LOCATION_SERVICE);
+                locManager.requestLocationUpdates(LocationManager.PASSIVE_PROVIDER,
+                        0, 0, new NetworkLocationListener(), mHandler.getLooper());                
+            }
+        });
+    }
+
+    private void listenForBroadcasts() {
+        IntentFilter intentFilter = new IntentFilter();
+        intentFilter.addAction(Intents.DATA_SMS_RECEIVED_ACTION);
+        intentFilter.addDataScheme("sms");
+        intentFilter.addDataAuthority("localhost","7275");
+        mContext.registerReceiver(mBroadcastReciever, intentFilter, null, mHandler);
+
+        intentFilter = new IntentFilter();
+        intentFilter.addAction(Intents.WAP_PUSH_RECEIVED_ACTION);
+        try {
+            intentFilter.addDataType("application/vnd.omaloc-supl-init");
+        } catch (IntentFilter.MalformedMimeTypeException e) {
+            Log.w(TAG, "Malformed SUPL init mime type");
+        }
+        mContext.registerReceiver(mBroadcastReciever, intentFilter, null, mHandler);
+
+        intentFilter = new IntentFilter();
+        intentFilter.addAction(ALARM_WAKEUP);
+        intentFilter.addAction(ALARM_TIMEOUT);
+        intentFilter.addAction(ConnectivityManager.CONNECTIVITY_ACTION);
+        mContext.registerReceiver(mBroadcastReciever, intentFilter, null, mHandler);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     }
 
     /**
      * Returns the name of this provider.
      */
+<<<<<<< HEAD
+=======
+    @Override
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     public String getName() {
         return LocationManager.GPS_PROVIDER;
     }
 
+<<<<<<< HEAD
     /**
      * Returns true if the provider requires access to a
      * data network (e.g., the Internet), false otherwise.
      */
     public boolean requiresNetwork() {
         return true;
+=======
+    @Override
+    public ProviderProperties getProperties() {
+        return PROPERTIES;
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     }
 
     public void updateNetworkState(int state, NetworkInfo info) {
@@ -497,8 +726,13 @@ public class GpsLocationProvider implements LocationProviderInterface {
         }
 
         if (info != null) {
+<<<<<<< HEAD
             boolean dataEnabled = Settings.Secure.getInt(mContext.getContentResolver(),
                                                          Settings.Secure.MOBILE_DATA, 1) == 1;
+=======
+            boolean dataEnabled = Settings.Global.getInt(mContext.getContentResolver(),
+                                                         Settings.Global.MOBILE_DATA, 1) == 1;
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
             boolean networkAvailable = info.isAvailable() && dataEnabled;
             String defaultApn = getSelectedApn();
             if (defaultApn == null) {
@@ -515,7 +749,11 @@ public class GpsLocationProvider implements LocationProviderInterface {
             String apnName = info.getExtraInfo();
             if (mNetworkAvailable) {
                 if (apnName == null) {
+<<<<<<< HEAD
                     /* Assign a dummy value in the case of C2K as otherwise we will have a runtime 
+=======
+                    /* Assign a dummy value in the case of C2K as otherwise we will have a runtime
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
                     exception in the following call to native_agps_data_conn_open*/
                     apnName = "dummy-apn";
                 }
@@ -540,16 +778,24 @@ public class GpsLocationProvider implements LocationProviderInterface {
         }
 
         if (mNetworkAvailable) {
+<<<<<<< HEAD
             if (mInjectNtpTimePending) {
                 sendMessage(INJECT_NTP_TIME, 0, null);
             }
             if (mDownloadXtraDataPending) {
+=======
+            if (mInjectNtpTimePending == STATE_PENDING_NETWORK) {
+                sendMessage(INJECT_NTP_TIME, 0, null);
+            }
+            if (mDownloadXtraDataPending == STATE_PENDING_NETWORK) {
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
                 sendMessage(DOWNLOAD_XTRA_DATA, 0, null);
             }
         }
     }
 
     private void handleInjectNtpTime() {
+<<<<<<< HEAD
         if (!mNetworkAvailable) {
             // try again when network is up
             mInjectNtpTimePending = true;
@@ -622,6 +868,103 @@ public class GpsLocationProvider implements LocationProviderInterface {
      */
     public void updateLocation(Location location) {
         sendMessage(UPDATE_LOCATION, 0, location);
+=======
+        if (mInjectNtpTimePending == STATE_DOWNLOADING) {
+            // already downloading data
+            return;
+        }
+        if (!mNetworkAvailable) {
+            // try again when network is up
+            mInjectNtpTimePending = STATE_PENDING_NETWORK;
+            return;
+        }
+        mInjectNtpTimePending = STATE_DOWNLOADING;
+
+        // hold wake lock while task runs
+        mWakeLock.acquire();
+        AsyncTask.THREAD_POOL_EXECUTOR.execute(new Runnable() {
+            @Override
+            public void run() {
+                long delay;
+
+                // force refresh NTP cache when outdated
+                if (mNtpTime.getCacheAge() >= NTP_INTERVAL) {
+                    mNtpTime.forceRefresh();
+                }
+
+                // only update when NTP time is fresh
+                if (mNtpTime.getCacheAge() < NTP_INTERVAL) {
+                    long time = mNtpTime.getCachedNtpTime();
+                    long timeReference = mNtpTime.getCachedNtpTimeReference();
+                    long certainty = mNtpTime.getCacheCertainty();
+                    long now = System.currentTimeMillis();
+
+                    Log.d(TAG, "NTP server returned: "
+                            + time + " (" + new Date(time)
+                            + ") reference: " + timeReference
+                            + " certainty: " + certainty
+                            + " system time offset: " + (time - now));
+
+                    native_inject_time(time, timeReference, (int) certainty);
+                    delay = NTP_INTERVAL;
+                } else {
+                    if (DEBUG) Log.d(TAG, "requestTime failed");
+                    delay = RETRY_INTERVAL;
+                }
+
+                sendMessage(INJECT_NTP_TIME_FINISHED, 0, null);
+
+                if (mPeriodicTimeInjection) {
+                    // send delayed message for next NTP injection
+                    // since this is delayed and not urgent we do not hold a wake lock here
+                    mHandler.sendEmptyMessageDelayed(INJECT_NTP_TIME, delay);
+                }
+
+                // release wake lock held by task
+                mWakeLock.release();
+            }
+        });
+    }
+
+    private void handleDownloadXtraData() {
+        if (mDownloadXtraDataPending == STATE_DOWNLOADING) {
+            // already downloading data
+            return;
+        }
+        if (!mNetworkAvailable) {
+            // try again when network is up
+            mDownloadXtraDataPending = STATE_PENDING_NETWORK;
+            return;
+        }
+        mDownloadXtraDataPending = STATE_DOWNLOADING;
+
+        // hold wake lock while task runs
+        mWakeLock.acquire();
+        AsyncTask.THREAD_POOL_EXECUTOR.execute(new Runnable() {
+            @Override
+            public void run() {
+                GpsXtraDownloader xtraDownloader = new GpsXtraDownloader(mContext, mProperties);
+                byte[] data = xtraDownloader.downloadXtraData();
+                if (data != null) {
+                    if (DEBUG) {
+                        Log.d(TAG, "calling native_inject_xtra_data");
+                    }
+                    native_inject_xtra_data(data, data.length);
+                }
+
+                sendMessage(DOWNLOAD_XTRA_DATA_FINISHED, 0, null);
+
+                if (data == null) {
+                    // try again later
+                    // since this is delayed and not urgent we do not hold a wake lock here
+                    mHandler.sendEmptyMessageDelayed(DOWNLOAD_XTRA_DATA, RETRY_INTERVAL);
+                }
+
+                // release wake lock held by task
+                mWakeLock.release();
+            }
+        });
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     }
 
     private void handleUpdateLocation(Location location) {
@@ -632,6 +975,7 @@ public class GpsLocationProvider implements LocationProviderInterface {
     }
 
     /**
+<<<<<<< HEAD
      * Returns true if the provider requires access to a
      * satellite-based positioning system (e.g., GPS), false
      * otherwise.
@@ -717,22 +1061,42 @@ public class GpsLocationProvider implements LocationProviderInterface {
     }
 
     /**
+=======
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
      * Enables this provider.  When enabled, calls to getStatus()
      * must be handled.  Hardware may be started up
      * when the provider is enabled.
      */
+<<<<<<< HEAD
     public void enable() {
         synchronized (mHandler) {
             sendMessage(ENABLE, 1, null);
         }
+=======
+    @Override
+    public void enable() {
+        sendMessage(ENABLE, 1, null);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     }
 
     private void handleEnable() {
         if (DEBUG) Log.d(TAG, "handleEnable");
+<<<<<<< HEAD
         if (mEnabled) return;
         mEnabled = native_init();
 
         if (mEnabled) {
+=======
+
+        synchronized (mLock) {
+            if (mEnabled) return;
+            mEnabled = true;
+        }
+
+        boolean enabled = native_init();
+
+        if (enabled) {
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
             mSupportsXtra = native_supports_xtra();
             if (mSuplServerHost != null) {
                 native_set_agps_server(AGPS_TYPE_SUPL, mSuplServerHost, mSuplServerPort);
@@ -741,6 +1105,12 @@ public class GpsLocationProvider implements LocationProviderInterface {
                 native_set_agps_server(AGPS_TYPE_C2K, mC2KServerHost, mC2KServerPort);
             }
         } else {
+<<<<<<< HEAD
+=======
+            synchronized (mLock) {
+                mEnabled = false;
+            }
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
             Log.w(TAG, "Failed to enable location provider");
         }
     }
@@ -750,27 +1120,56 @@ public class GpsLocationProvider implements LocationProviderInterface {
      * need not be handled.  Hardware may be shut
      * down while the provider is disabled.
      */
+<<<<<<< HEAD
     public void disable() {
         synchronized (mHandler) {
             sendMessage(ENABLE, 0, null);
         }
+=======
+    @Override
+    public void disable() {
+        sendMessage(ENABLE, 0, null);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     }
 
     private void handleDisable() {
         if (DEBUG) Log.d(TAG, "handleDisable");
+<<<<<<< HEAD
         if (!mEnabled) return;
 
         mEnabled = false;
         stopNavigating();
+=======
+
+        synchronized (mLock) {
+            if (!mEnabled) return;
+            mEnabled = false;
+        }
+
+        stopNavigating();
+        mAlarmManager.cancel(mWakeupIntent);
+        mAlarmManager.cancel(mTimeoutIntent);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 
         // do this before releasing wakelock
         native_cleanup();
     }
 
+<<<<<<< HEAD
     public boolean isEnabled() {
         return mEnabled;
     }
 
+=======
+    @Override
+    public boolean isEnabled() {
+        synchronized (mLock) {
+            return mEnabled;
+        }
+    }
+
+    @Override
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     public int getStatus(Bundle extras) {
         if (extras != null) {
             extras.putInt("satellites", mSvCount);
@@ -787,10 +1186,15 @@ public class GpsLocationProvider implements LocationProviderInterface {
         }
     }
 
+<<<<<<< HEAD
+=======
+    @Override
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     public long getStatusUpdateTime() {
         return mStatusUpdateTime;
     }
 
+<<<<<<< HEAD
     public void enableLocationTracking(boolean enable) {
         // FIXME - should set a flag here to avoid race conditions with single shot request
         synchronized (mHandler) {
@@ -838,10 +1242,47 @@ public class GpsLocationProvider implements LocationProviderInterface {
             mFixInterval = (int)minTime;
 
             if (mStarted && hasCapability(GPS_CAPABILITY_SCHEDULING)) {
+=======
+    @Override
+    public void setRequest(ProviderRequest request, WorkSource source) {
+        sendMessage(SET_REQUEST, 0, new GpsRequest(request, source));
+    }
+
+    @Override
+    public void switchUser(int userId) {
+        // nothing to do here
+    }
+
+    private void handleSetRequest(ProviderRequest request, WorkSource source) {
+        if (DEBUG) Log.d(TAG, "setRequest " + request);
+
+
+
+        if (request.reportLocation) {
+            // update client uids
+            int[] uids = new int[source.size()];
+            for (int i=0; i < source.size(); i++) {
+                uids[i] = source.get(i);
+            }
+            updateClientUids(uids);
+
+            mFixInterval = (int) request.interval;
+
+            // check for overflow
+            if (mFixInterval != request.interval) {
+                Log.w(TAG, "interval overflow: " + request.interval);
+                mFixInterval = Integer.MAX_VALUE;
+            }
+
+            // apply request to GPS engine
+            if (mStarted && hasCapability(GPS_CAPABILITY_SCHEDULING)) {
+                // change period
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
                 if (!native_set_position_mode(mPositionMode, GPS_POSITION_RECURRENCE_PERIODIC,
                         mFixInterval, 0, 0)) {
                     Log.e(TAG, "set_position_mode failed in setMinTime()");
                 }
+<<<<<<< HEAD
             }
         }
     }
@@ -859,10 +1300,24 @@ public class GpsLocationProvider implements LocationProviderInterface {
 
         s.append(native_get_internal_state());
         return s.toString();
+=======
+            } else if (!mStarted) {
+                // start GPS
+                startNavigating();
+            }
+        } else {
+            updateClientUids(new int[0]);
+
+            stopNavigating();
+            mAlarmManager.cancel(mWakeupIntent);
+            mAlarmManager.cancel(mTimeoutIntent);
+        }
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     }
 
     private final class Listener implements IBinder.DeathRecipient {
         final IGpsStatusListener mListener;
+<<<<<<< HEAD
         
         int mSensors = 0;
         
@@ -874,6 +1329,18 @@ public class GpsLocationProvider implements LocationProviderInterface {
             if (DEBUG) Log.d(TAG, "GPS status listener died");
 
             synchronized(mListeners) {
+=======
+
+        Listener(IGpsStatusListener listener) {
+            mListener = listener;
+        }
+
+        @Override
+        public void binderDied() {
+            if (DEBUG) Log.d(TAG, "GPS status listener died");
+
+            synchronized (mListeners) {
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
                 mListeners.remove(this);
             }
             if (mListener != null) {
@@ -882,6 +1349,7 @@ public class GpsLocationProvider implements LocationProviderInterface {
         }
     }
 
+<<<<<<< HEAD
     public void addListener(int uid) {
         synchronized (mWakeLock) {
             mPendingListenerMessages++;
@@ -940,6 +1408,52 @@ public class GpsLocationProvider implements LocationProviderInterface {
 
     public boolean sendExtraCommand(String command, Bundle extras) {
         
+=======
+    private void updateClientUids(int[] uids) {
+        // Find uid's that were not previously tracked
+        for (int uid1 : uids) {
+            boolean newUid = true;
+            for (int uid2 : mClientUids) {
+                if (uid1 == uid2) {
+                    newUid = false;
+                    break;
+                }
+            }
+            if (newUid) {
+                try {
+                    mBatteryStats.noteStartGps(uid1);
+                } catch (RemoteException e) {
+                    Log.w(TAG, "RemoteException", e);
+                }
+            }
+        }
+
+        // Find uid'd that were tracked but have now disappeared
+        for (int uid1 : mClientUids) {
+            boolean oldUid = true;
+            for (int uid2 : uids) {
+                if (uid1 == uid2) {
+                    oldUid = false;
+                    break;
+                }
+            }
+            if (oldUid) {
+                try {
+                    mBatteryStats.noteStopGps(uid1);
+                } catch (RemoteException e) {
+                    Log.w(TAG, "RemoteException", e);
+                }
+            }
+        }
+
+        // save current uids
+        mClientUids = uids;
+    }
+
+    @Override
+    public boolean sendExtraCommand(String command, Bundle extras) {
+
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         long identity = Binder.clearCallingIdentity();
         boolean result = false;
 
@@ -956,7 +1470,11 @@ public class GpsLocationProvider implements LocationProviderInterface {
         } else {
             Log.w(TAG, "sendExtraCommand: unknown command " + command);
         }
+<<<<<<< HEAD
         
+=======
+
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         Binder.restoreCallingIdentity(identity);
         return result;
     }
@@ -991,6 +1509,7 @@ public class GpsLocationProvider implements LocationProviderInterface {
         return false;
     }
 
+<<<<<<< HEAD
     private void startNavigating(boolean singleShot) {
         if (!mStarted) {
             if (DEBUG) Log.d(TAG, "startNavigating");
@@ -1003,6 +1522,19 @@ public class GpsLocationProvider implements LocationProviderInterface {
                 if (singleShot && hasCapability(GPS_CAPABILITY_MSA)) {
                     mPositionMode = GPS_POSITION_MODE_MS_ASSISTED;
                 } else if (hasCapability(GPS_CAPABILITY_MSB)) {
+=======
+    private void startNavigating() {
+        if (!mStarted) {
+            if (DEBUG) Log.d(TAG, "startNavigating");
+            mTimeToFirstFix = 0;
+            mLastFixTime = 0;
+            mStarted = true;
+            mPositionMode = GPS_POSITION_MODE_STANDALONE;
+
+             if (Settings.Global.getInt(mContext.getContentResolver(),
+                    Settings.Global.ASSISTED_GPS_ENABLED, 1) != 0) {
+                if (hasCapability(GPS_CAPABILITY_MSB)) {
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
                     mPositionMode = GPS_POSITION_MODE_MS_BASED;
                 }
             }
@@ -1038,9 +1570,14 @@ public class GpsLocationProvider implements LocationProviderInterface {
         if (DEBUG) Log.d(TAG, "stopNavigating");
         if (mStarted) {
             mStarted = false;
+<<<<<<< HEAD
             mSingleShot = false;
             native_stop();
             mTTFF = 0;
+=======
+            native_stop();
+            mTimeToFirstFix = 0;
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
             mLastFixTime = 0;
             mLocationFlags = LOCATION_INVALID;
 
@@ -1055,8 +1592,12 @@ public class GpsLocationProvider implements LocationProviderInterface {
         mAlarmManager.cancel(mTimeoutIntent);
         mAlarmManager.cancel(mWakeupIntent);
         long now = SystemClock.elapsedRealtime();
+<<<<<<< HEAD
         mAlarmManager.set(AlarmManager.ELAPSED_REALTIME_WAKEUP,
                 SystemClock.elapsedRealtime() + mFixInterval, mWakeupIntent);
+=======
+        mAlarmManager.set(AlarmManager.ELAPSED_REALTIME_WAKEUP, now + mFixInterval, mWakeupIntent);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     }
 
     private boolean hasCapability(int capability) {
@@ -1077,6 +1618,12 @@ public class GpsLocationProvider implements LocationProviderInterface {
                 mLocation.setLatitude(latitude);
                 mLocation.setLongitude(longitude);
                 mLocation.setTime(timestamp);
+<<<<<<< HEAD
+=======
+                // It would be nice to push the elapsed real-time timestamp
+                // further down the stack, but this is still useful
+                mLocation.setElapsedRealtimeNanos(SystemClock.elapsedRealtimeNanos());
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
             }
             if ((flags & LOCATION_HAS_ALTITUDE) == LOCATION_HAS_ALTITUDE) {
                 mLocation.setAltitude(altitude);
@@ -1101,7 +1648,11 @@ public class GpsLocationProvider implements LocationProviderInterface {
             mLocation.setExtras(mLocationExtras);
 
             try {
+<<<<<<< HEAD
                 mLocationManager.reportLocation(mLocation, false);
+=======
+                mILocationManager.reportLocation(mLocation, false);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
             } catch (RemoteException e) {
                 Log.e(TAG, "RemoteException calling reportLocation");
             }
@@ -1109,17 +1660,30 @@ public class GpsLocationProvider implements LocationProviderInterface {
 
         mLastFixTime = System.currentTimeMillis();
         // report time to first fix
+<<<<<<< HEAD
         if (mTTFF == 0 && (flags & LOCATION_HAS_LAT_LONG) == LOCATION_HAS_LAT_LONG) {
             mTTFF = (int)(mLastFixTime - mFixRequestTime);
             if (DEBUG) Log.d(TAG, "TTFF: " + mTTFF);
 
             // notify status listeners
             synchronized(mListeners) {
+=======
+        if (mTimeToFirstFix == 0 && (flags & LOCATION_HAS_LAT_LONG) == LOCATION_HAS_LAT_LONG) {
+            mTimeToFirstFix = (int)(mLastFixTime - mFixRequestTime);
+            if (DEBUG) Log.d(TAG, "TTFF: " + mTimeToFirstFix);
+
+            // notify status listeners
+            synchronized (mListeners) {
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
                 int size = mListeners.size();
                 for (int i = 0; i < size; i++) {
                     Listener listener = mListeners.get(i);
                     try {
+<<<<<<< HEAD
                         listener.mListener.onFirstFix(mTTFF); 
+=======
+                        listener.mListener.onFirstFix(mTimeToFirstFix);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
                     } catch (RemoteException e) {
                         Log.w(TAG, "RemoteException in stopNavigating");
                         mListeners.remove(listener);
@@ -1130,9 +1694,12 @@ public class GpsLocationProvider implements LocationProviderInterface {
             }
         }
 
+<<<<<<< HEAD
         if (mSingleShot) {
             stopNavigating();
         }
+=======
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         if (mStarted && mStatus != LocationProvider.AVAILABLE) {
             // we want to time out if we do not receive a fix
             // within the time out and we are requesting infrequent fixes
@@ -1143,7 +1710,11 @@ public class GpsLocationProvider implements LocationProviderInterface {
             // send an intent to notify that the GPS is receiving fixes.
             Intent intent = new Intent(LocationManager.GPS_FIX_CHANGE_ACTION);
             intent.putExtra(LocationManager.EXTRA_GPS_ENABLED, true);
+<<<<<<< HEAD
             mContext.sendBroadcast(intent);
+=======
+            mContext.sendBroadcastAsUser(intent, UserHandle.ALL);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
             updateStatus(LocationProvider.AVAILABLE, mSvCount);
         }
 
@@ -1160,7 +1731,11 @@ public class GpsLocationProvider implements LocationProviderInterface {
     private void reportStatus(int status) {
         if (DEBUG) Log.v(TAG, "reportStatus status: " + status);
 
+<<<<<<< HEAD
         synchronized(mListeners) {
+=======
+        synchronized (mListeners) {
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
             boolean wasNavigating = mNavigating;
 
             switch (status) {
@@ -1198,6 +1773,7 @@ public class GpsLocationProvider implements LocationProviderInterface {
                     }
                 }
 
+<<<<<<< HEAD
                 try {
                     // update battery stats
                     for (int i=mClientUids.size() - 1; i >= 0; i--) {
@@ -1216,6 +1792,12 @@ public class GpsLocationProvider implements LocationProviderInterface {
                 Intent intent = new Intent(LocationManager.GPS_ENABLED_CHANGE_ACTION);
                 intent.putExtra(LocationManager.EXTRA_GPS_ENABLED, mNavigating);
                 mContext.sendBroadcast(intent);
+=======
+                // send an intent to notify that the GPS has been enabled or disabled.
+                Intent intent = new Intent(LocationManager.GPS_ENABLED_CHANGE_ACTION);
+                intent.putExtra(LocationManager.EXTRA_GPS_ENABLED, mNavigating);
+                mContext.sendBroadcastAsUser(intent, UserHandle.ALL);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
             }
         }
     }
@@ -1226,15 +1808,26 @@ public class GpsLocationProvider implements LocationProviderInterface {
     private void reportSvStatus() {
 
         int svCount = native_read_sv_status(mSvs, mSnrs, mSvElevations, mSvAzimuths, mSvMasks);
+<<<<<<< HEAD
         
         synchronized(mListeners) {
+=======
+
+        synchronized (mListeners) {
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
             int size = mListeners.size();
             for (int i = 0; i < size; i++) {
                 Listener listener = mListeners.get(i);
                 try {
+<<<<<<< HEAD
                     listener.mListener.onSvStatusChanged(svCount, mSvs, mSnrs, 
                             mSvElevations, mSvAzimuths, mSvMasks[EPHEMERIS_MASK], 
                             mSvMasks[ALMANAC_MASK], mSvMasks[USED_FOR_FIX_MASK]); 
+=======
+                    listener.mListener.onSvStatusChanged(svCount, mSvs, mSnrs,
+                            mSvElevations, mSvAzimuths, mSvMasks[EPHEMERIS_MASK],
+                            mSvMasks[ALMANAC_MASK], mSvMasks[USED_FOR_FIX_MASK]);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
                 } catch (RemoteException e) {
                     Log.w(TAG, "RemoteException in reportSvInfo");
                     mListeners.remove(listener);
@@ -1250,7 +1843,11 @@ public class GpsLocationProvider implements LocationProviderInterface {
                     " almanacMask: " + Integer.toHexString(mSvMasks[ALMANAC_MASK]));
             for (int i = 0; i < svCount; i++) {
                 Log.v(TAG, "sv: " + mSvs[i] +
+<<<<<<< HEAD
                         " snr: " + (float)mSnrs[i]/10 +
+=======
+                        " snr: " + mSnrs[i]/10 +
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
                         " elev: " + mSvElevations[i] +
                         " azimuth: " + mSvAzimuths[i] +
                         ((mSvMasks[EPHEMERIS_MASK] & (1 << (mSvs[i] - 1))) == 0 ? "  " : " E") +
@@ -1267,7 +1864,11 @@ public class GpsLocationProvider implements LocationProviderInterface {
             // send an intent to notify that the GPS is no longer receiving fixes.
             Intent intent = new Intent(LocationManager.GPS_FIX_CHANGE_ACTION);
             intent.putExtra(LocationManager.EXTRA_GPS_ENABLED, false);
+<<<<<<< HEAD
             mContext.sendBroadcast(intent);
+=======
+            mContext.sendBroadcastAsUser(intent, UserHandle.ALL);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
             updateStatus(LocationProvider.TEMPORARILY_UNAVAILABLE, mSvCount);
         }
     }
@@ -1285,8 +1886,13 @@ public class GpsLocationProvider implements LocationProviderInterface {
                 int result = mConnMgr.startUsingNetworkFeature(
                         ConnectivityManager.TYPE_MOBILE, Phone.FEATURE_ENABLE_SUPL);
                 mAGpsDataConnectionIpAddr = ipaddr;
+<<<<<<< HEAD
                 if (result == Phone.APN_ALREADY_ACTIVE) {
                     if (DEBUG) Log.d(TAG, "Phone.APN_ALREADY_ACTIVE");
+=======
+                if (result == PhoneConstants.APN_ALREADY_ACTIVE) {
+                    if (DEBUG) Log.d(TAG, "PhoneConstants.APN_ALREADY_ACTIVE");
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
                     if (mAGpsApn != null) {
                         Log.d(TAG, "mAGpsDataConnectionIpAddr " + mAGpsDataConnectionIpAddr);
                         if (mAGpsDataConnectionIpAddr != 0xffffffff) {
@@ -1300,12 +1906,21 @@ public class GpsLocationProvider implements LocationProviderInterface {
                         native_agps_data_conn_open(mAGpsApn);
                         mAGpsDataConnectionState = AGPS_DATA_CONNECTION_OPEN;
                     } else {
+<<<<<<< HEAD
                         Log.e(TAG, "mAGpsApn not set when receiving Phone.APN_ALREADY_ACTIVE");
                         mAGpsDataConnectionState = AGPS_DATA_CONNECTION_CLOSED;
                         native_agps_data_conn_failed();
                     }
                 } else if (result == Phone.APN_REQUEST_STARTED) {
                     if (DEBUG) Log.d(TAG, "Phone.APN_REQUEST_STARTED");
+=======
+                        Log.e(TAG, "mAGpsApn not set when receiving PhoneConstants.APN_ALREADY_ACTIVE");
+                        mAGpsDataConnectionState = AGPS_DATA_CONNECTION_CLOSED;
+                        native_agps_data_conn_failed();
+                    }
+                } else if (result == PhoneConstants.APN_REQUEST_STARTED) {
+                    if (DEBUG) Log.d(TAG, "PhoneConstants.APN_REQUEST_STARTED");
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
                     // Nothing to do here
                 } else {
                     if (DEBUG) Log.d(TAG, "startUsingNetworkFeature failed");
@@ -1338,7 +1953,11 @@ public class GpsLocationProvider implements LocationProviderInterface {
      * called from native code to report NMEA data received
      */
     private void reportNmea(long timestamp) {
+<<<<<<< HEAD
         synchronized(mListeners) {
+=======
+        synchronized (mListeners) {
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
             int size = mListeners.size();
             if (size > 0) {
                 // don't bother creating the String if we have no listeners
@@ -1385,19 +2004,30 @@ public class GpsLocationProvider implements LocationProviderInterface {
     //=============================================================
     private final INetInitiatedListener mNetInitiatedListener = new INetInitiatedListener.Stub() {
         // Sends a response for an NI reqeust to HAL.
+<<<<<<< HEAD
+=======
+        @Override
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         public boolean sendNiResponse(int notificationId, int userResponse)
         {
             // TODO Add Permission check
 
+<<<<<<< HEAD
             StringBuilder extrasBuf = new StringBuilder();
 
+=======
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
             if (DEBUG) Log.d(TAG, "sendNiResponse, notifId: " + notificationId +
                     ", response: " + userResponse);
             native_send_ni_response(notificationId, userResponse);
             return true;
         }
     };
+<<<<<<< HEAD
         
+=======
+
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     public INetInitiatedListener getNetInitiatedListener() {
         return mNetInitiatedListener;
     }
@@ -1529,8 +2159,12 @@ public class GpsLocationProvider implements LocationProviderInterface {
                 if (networkType == TelephonyManager.NETWORK_TYPE_UMTS
                     || networkType == TelephonyManager.NETWORK_TYPE_HSDPA
                     || networkType == TelephonyManager.NETWORK_TYPE_HSUPA
+<<<<<<< HEAD
                     || networkType == TelephonyManager.NETWORK_TYPE_HSPA
                     || networkType == TelephonyManager.NETWORK_TYPE_HSPAP) {
+=======
+                    || networkType == TelephonyManager.NETWORK_TYPE_HSPA) {
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
                     type = AGPS_REF_LOCATION_TYPE_UMTS_CELLID;
                 } else {
                     type = AGPS_REF_LOCATION_TYPE_GSM_CELLID;
@@ -1547,6 +2181,7 @@ public class GpsLocationProvider implements LocationProviderInterface {
     }
 
     private void sendMessage(int message, int arg, Object obj) {
+<<<<<<< HEAD
         // hold a wake lock while messages are pending
         synchronized (mWakeLock) {
             mPendingMessageBits |= (1 << message);
@@ -1560,6 +2195,20 @@ public class GpsLocationProvider implements LocationProviderInterface {
     }
 
     private final class ProviderHandler extends Handler {
+=======
+        // hold a wake lock until this message is delivered
+        // note that this assumes the message will not be removed from the queue before
+        // it is handled (otherwise the wake lock would be leaked).
+        mWakeLock.acquire();
+        mHandler.obtainMessage(message, arg, 1, obj).sendToTarget();
+    }
+
+    private final class ProviderHandler extends Handler {
+        public ProviderHandler() {
+            super(true /*async*/);
+        }
+
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         @Override
         public void handleMessage(Message msg) {
             int message = msg.what;
@@ -1571,11 +2220,17 @@ public class GpsLocationProvider implements LocationProviderInterface {
                         handleDisable();
                     }
                     break;
+<<<<<<< HEAD
                 case ENABLE_TRACKING:
                     handleEnableLocationTracking(msg.arg1 == 1);
                     break;
                 case REQUEST_SINGLE_SHOT:
                     handleRequestSingleShot();
+=======
+                case SET_REQUEST:
+                    GpsRequest gpsRequest = (GpsRequest) msg.obj;
+                    handleSetRequest(gpsRequest.request, gpsRequest.source);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
                     break;
                 case UPDATE_NETWORK_STATE:
                     handleUpdateNetworkState(msg.arg1, (NetworkInfo)msg.obj);
@@ -1588,6 +2243,7 @@ public class GpsLocationProvider implements LocationProviderInterface {
                         handleDownloadXtraData();
                     }
                     break;
+<<<<<<< HEAD
                 case UPDATE_LOCATION:
                     handleUpdateLocation((Location)msg.obj);
                     break;
@@ -1607,10 +2263,26 @@ public class GpsLocationProvider implements LocationProviderInterface {
                 if (mPendingMessageBits == 0 && mPendingListenerMessages == 0) {
                     mWakeLock.release();
                 }
+=======
+                case INJECT_NTP_TIME_FINISHED:
+                    mInjectNtpTimePending = STATE_IDLE;
+                    break;
+                case DOWNLOAD_XTRA_DATA_FINISHED:
+                    mDownloadXtraDataPending = STATE_IDLE;
+                    break;
+                case UPDATE_LOCATION:
+                    handleUpdateLocation((Location)msg.obj);
+                    break;
+            }
+            if (msg.arg2 == 1) {
+                // wakelock was taken for this message, release it
+                mWakeLock.release();
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
             }
         }
     };
 
+<<<<<<< HEAD
     private final class GpsLocationProviderThread extends Thread {
 
         public GpsLocationProviderThread() {
@@ -1626,6 +2298,22 @@ public class GpsLocationProvider implements LocationProviderInterface {
             mInitializedLatch.countDown();
             Looper.loop();
         }
+=======
+    private final class NetworkLocationListener implements LocationListener {
+        @Override
+        public void onLocationChanged(Location location) {
+            // this callback happens on mHandler looper
+            if (LocationManager.NETWORK_PROVIDER.equals(location.getProvider())) {
+                handleUpdateLocation(location);
+            }
+        }
+        @Override
+        public void onStatusChanged(String provider, int status, Bundle extras) { }
+        @Override
+        public void onProviderEnabled(String provider) { }
+        @Override
+        public void onProviderDisabled(String provider) { }
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     }
 
     private String getSelectedApn() {
@@ -1647,6 +2335,25 @@ public class GpsLocationProvider implements LocationProviderInterface {
         return apn;
     }
 
+<<<<<<< HEAD
+=======
+    @Override
+    public void dump(FileDescriptor fd, PrintWriter pw, String[] args) {
+        StringBuilder s = new StringBuilder();
+        s.append("  mFixInterval=").append(mFixInterval).append("\n");
+        s.append("  mEngineCapabilities=0x").append(Integer.toHexString(mEngineCapabilities)).append(" (");
+        if (hasCapability(GPS_CAPABILITY_SCHEDULING)) s.append("SCHED ");
+        if (hasCapability(GPS_CAPABILITY_MSB)) s.append("MSB ");
+        if (hasCapability(GPS_CAPABILITY_MSA)) s.append("MSA ");
+        if (hasCapability(GPS_CAPABILITY_SINGLE_SHOT)) s.append("SINGLE_SHOT ");
+        if (hasCapability(GPS_CAPABILITY_ON_DEMAND_TIME)) s.append("ON_DEMAND_TIME ");
+        s.append(")\n");
+
+        s.append(native_get_internal_state());
+        pw.append(s);
+    }
+
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     // for GPS SV statistics
     private static final int MAX_SVS = 32;
     private static final int EPHEMERIS_MASK = 0;

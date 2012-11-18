@@ -295,6 +295,7 @@ public interface ViewParent {
      * @hide
      */
     public void childAccessibilityStateChanged(View child);
+<<<<<<< HEAD
 
     /**
      * A descendant requests this view to find a candidate to take accessibility
@@ -307,4 +308,6 @@ public interface ViewParent {
      * @hide
      */
     public View findViewToTakeAccessibilityFocusFromHover(View child, View descendant);
+=======
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 }

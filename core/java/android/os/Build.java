@@ -370,7 +370,11 @@ public class Build {
         public static final int ICE_CREAM_SANDWICH_MR1 = 15;
 
         /**
+<<<<<<< HEAD
          * Android 4.1.
+=======
+         * June 2012: Android 4.1.
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
          *
          * <p>Applications targeting this or a later release will get these
          * new changes in behavior:</p>
@@ -411,6 +415,29 @@ public class Build {
          * </ul>
          */
         public static final int JELLY_BEAN = 16;
+<<<<<<< HEAD
+=======
+
+        /**
+         * Android 4.2: Moar jelly beans!
+         *
+         * <p>Applications targeting this or a later release will get these
+         * new changes in behavior:</p>
+         * <ul>
+         * <li>Content Providers: The default value of {@code android:exported} is now
+         * {@code false}. See
+         * <a href="{@docRoot}guide/topics/manifest/provider-element.html#exported">
+         * the android:exported section</a> in the provider documentation for more details.</li>
+         * <li>{@link android.view.View#getLayoutDirection() View.getLayoutDirection()}
+         * can return different values than {@link android.view.View#LAYOUT_DIRECTION_LTR}
+         * based on the locale etc.
+         * <li> {@link android.webkit.WebView#addJavascriptInterface(Object, String)
+         * WebView.addJavascriptInterface} requires explicit annotations on methods
+         * for them to be accessible from Javascript.
+         * </ul>
+         */
+        public static final int JELLY_BEAN_MR1 = 17;
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     }
     
     /** The type of build, like "user" or "eng". */

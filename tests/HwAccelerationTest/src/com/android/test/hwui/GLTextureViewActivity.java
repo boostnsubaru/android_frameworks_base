@@ -22,7 +22,10 @@ import android.app.Activity;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+<<<<<<< HEAD
 import android.graphics.Matrix;
+=======
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 import android.graphics.SurfaceTexture;
 import android.opengl.GLUtils;
 import android.os.Bundle;
@@ -278,7 +281,11 @@ public class GLTextureViewActivity extends Activity implements TextureView.Surfa
             return texture;
         }
         
+<<<<<<< HEAD
         private int buildProgram(String vertex, String fragment) {
+=======
+        private static int buildProgram(String vertex, String fragment) {
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
             int vertexShader = buildShader(vertex, GL_VERTEX_SHADER);
             if (vertexShader == 0) return 0;
 
@@ -309,7 +316,11 @@ public class GLTextureViewActivity extends Activity implements TextureView.Surfa
             return program;
         }
         
+<<<<<<< HEAD
         private int buildShader(String source, int type) {
+=======
+        private static int buildShader(String source, int type) {
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
             int shader = glCreateShader(type);
 
             glShaderSource(shader, source);
@@ -337,7 +348,11 @@ public class GLTextureViewActivity extends Activity implements TextureView.Surfa
             }
         }
 
+<<<<<<< HEAD
         private void checkGlError() {
+=======
+        private static void checkGlError() {
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
             int error = glGetError();
             if (error != GL_NO_ERROR) {
                 Log.w(LOG_TAG, "GL error = 0x" + Integer.toHexString(error));
@@ -420,7 +435,11 @@ public class GLTextureViewActivity extends Activity implements TextureView.Surfa
             return null;
         }
         
+<<<<<<< HEAD
         private int[] getConfig() {
+=======
+        private static int[] getConfig() {
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
             return new int[] {
                     EGL10.EGL_RENDERABLE_TYPE, EGL_OPENGL_ES2_BIT,
                     EGL10.EGL_RED_SIZE, 8,

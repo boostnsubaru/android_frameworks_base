@@ -33,6 +33,7 @@
 
 namespace android {
 
+<<<<<<< HEAD
 static jfieldID gFileStatusDevFieldID;
 static jfieldID gFileStatusInoFieldID;
 static jfieldID gFileStatusModeFieldID;
@@ -46,6 +47,8 @@ static jfieldID gFileStatusAtimeFieldID;
 static jfieldID gFileStatusMtimeFieldID;
 static jfieldID gFileStatusCtimeFieldID;
 
+=======
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 jint android_os_FileUtils_setPermissions(JNIEnv* env, jobject clazz,
                                          jstring file, jint mode,
                                          jint uid, jint gid)
@@ -68,6 +71,7 @@ jint android_os_FileUtils_setPermissions(JNIEnv* env, jobject clazz,
     return chmod(file8.string(), mode) == 0 ? 0 : errno;
 }
 
+<<<<<<< HEAD
 jint android_os_FileUtils_getPermissions(JNIEnv* env, jobject clazz,
                                          jstring file, jintArray outArray)
 {
@@ -106,6 +110,8 @@ jint android_os_FileUtils_setUMask(JNIEnv* env, jobject clazz, jint mask)
     return umask(mask);
 }
 
+=======
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 jint android_os_FileUtils_getFatVolumeId(JNIEnv* env, jobject clazz, jstring path)
 {
     if (path == NULL) {
@@ -127,6 +133,7 @@ jint android_os_FileUtils_getFatVolumeId(JNIEnv* env, jobject clazz, jstring pat
     return result;
 }
 
+<<<<<<< HEAD
 jboolean android_os_FileUtils_getFileStatus(JNIEnv* env, jobject clazz, jstring path, jobject fileStatus) {
     const char* pathStr = env->GetStringUTFChars(path, NULL);
     jboolean ret = false;
@@ -162,12 +169,18 @@ static const JNINativeMethod methods[] = {
     {"setUMask",        "(I)I",                    (void*)android_os_FileUtils_setUMask},
     {"getFatVolumeId",  "(Ljava/lang/String;)I", (void*)android_os_FileUtils_getFatVolumeId},
     {"getFileStatusNative", "(Ljava/lang/String;Landroid/os/FileUtils$FileStatus;)Z", (void*)android_os_FileUtils_getFileStatus},
+=======
+static const JNINativeMethod methods[] = {
+    {"setPermissions",  "(Ljava/lang/String;III)I", (void*)android_os_FileUtils_setPermissions},
+    {"getFatVolumeId",  "(Ljava/lang/String;)I", (void*)android_os_FileUtils_getFatVolumeId},
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 };
 
 static const char* const kFileUtilsPathName = "android/os/FileUtils";
 
 int register_android_os_FileUtils(JNIEnv* env)
 {
+<<<<<<< HEAD
     jclass fileStatusClass = env->FindClass("android/os/FileUtils$FileStatus");
     LOG_FATAL_IF(fileStatusClass == NULL, "Unable to find class android.os.FileUtils$FileStatus");
 
@@ -184,6 +197,8 @@ int register_android_os_FileUtils(JNIEnv* env)
     gFileStatusMtimeFieldID = env->GetFieldID(fileStatusClass, "mtime", "J");
     gFileStatusCtimeFieldID = env->GetFieldID(fileStatusClass, "ctime", "J");
 
+=======
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     return AndroidRuntime::registerNativeMethods(
         env, kFileUtilsPathName,
         methods, NELEM(methods));

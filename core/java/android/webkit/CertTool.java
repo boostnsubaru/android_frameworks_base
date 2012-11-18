@@ -16,6 +16,10 @@
 
 package android.webkit;
 
+<<<<<<< HEAD
+=======
+import com.android.org.bouncycastle.asn1.ASN1Encoding;
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 import com.android.org.bouncycastle.asn1.pkcs.PKCSObjectIdentifiers;
 import com.android.org.bouncycastle.asn1.x509.AlgorithmIdentifier;
 import com.android.org.bouncycastle.jce.netscape.NetscapeCertRequest;
@@ -57,7 +61,11 @@ final class CertTool {
             NetscapeCertRequest request = new NetscapeCertRequest(challenge,
                     MD5_WITH_RSA, pair.getPublic());
             request.sign(pair.getPrivate());
+<<<<<<< HEAD
             byte[] signed = request.toASN1Object().getDEREncoded();
+=======
+            byte[] signed = request.toASN1Primitive().getEncoded(ASN1Encoding.DER);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 
             Credentials.getInstance().install(context, pair);
             return new String(Base64.encode(signed));

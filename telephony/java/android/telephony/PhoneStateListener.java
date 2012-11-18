@@ -26,7 +26,12 @@ import android.telephony.CellInfo;
 import android.util.Log;
 
 import com.android.internal.telephony.IPhoneStateListener;
+<<<<<<< HEAD
 import com.android.internal.telephony.Phone;
+=======
+
+import java.util.List;
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 
 /**
  * A listener class for monitoring changes in specific telephony states
@@ -161,7 +166,10 @@ public class PhoneStateListener {
      * Listen for changes to observed cell info.
      *
      * @see #onCellInfoChanged
+<<<<<<< HEAD
      * @hide pending API review
+=======
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
      */
     public static final int LISTEN_CELL_INFO = 0x00000400;
 
@@ -285,6 +293,7 @@ public class PhoneStateListener {
     }
 
     /**
+<<<<<<< HEAD
      * Callback invoked when a observed cell info gets changed.
      *
      * A notification should be sent when:
@@ -296,6 +305,13 @@ public class PhoneStateListener {
      */
     public void onCellInfoChanged(CellInfo cellInfo) {
         // default implementation empty
+=======
+     * Callback invoked when a observed cell info has changed,
+     * or new cells have been added or removed.
+     * @param cellInfo is the list of currently visible cells.
+     */
+    public void onCellInfoChanged(List<CellInfo> cellInfo) {
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     }
 
     /**
@@ -347,8 +363,13 @@ public class PhoneStateListener {
             Message.obtain(mHandler, LISTEN_OTASP_CHANGED, otaspMode, 0).sendToTarget();
         }
 
+<<<<<<< HEAD
         public void onCellInfoChanged(CellInfo cellInfo) {
             Message.obtain(mHandler, LISTEN_CELL_INFO, 0, 0).sendToTarget();
+=======
+        public void onCellInfoChanged(List<CellInfo> cellInfo) {
+            Message.obtain(mHandler, LISTEN_CELL_INFO, 0, 0, cellInfo).sendToTarget();
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         }
     };
 
@@ -388,7 +409,11 @@ public class PhoneStateListener {
                     PhoneStateListener.this.onOtaspChanged(msg.arg1);
                     break;
                 case LISTEN_CELL_INFO:
+<<<<<<< HEAD
                     PhoneStateListener.this.onCellInfoChanged((CellInfo)msg.obj);
+=======
+                    PhoneStateListener.this.onCellInfoChanged((List<CellInfo>)msg.obj);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
             }
         }
     };

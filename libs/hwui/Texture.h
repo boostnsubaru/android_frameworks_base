@@ -36,8 +36,17 @@ struct Texture {
         minFilter = GL_NEAREST;
         magFilter = GL_NEAREST;
 
+<<<<<<< HEAD
         firstFilter = true;
         firstWrap = true;
+=======
+        mipMap = false;
+
+        firstFilter = true;
+        firstWrap = true;
+
+        id = 0;
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     }
 
     void setWrap(GLenum wrap, bool bindTexture = false, bool force = false,
@@ -81,6 +90,11 @@ struct Texture {
                 glBindTexture(renderTarget, id);
             }
 
+<<<<<<< HEAD
+=======
+            if (mipMap && min == GL_LINEAR) min = GL_LINEAR_MIPMAP_LINEAR;
+
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
             glTexParameteri(renderTarget, GL_TEXTURE_MIN_FILTER, min);
             glTexParameteri(renderTarget, GL_TEXTURE_MAG_FILTER, mag);
         }
@@ -114,7 +128,16 @@ struct Texture {
      * Optional, size of the original bitmap.
      */
     uint32_t bitmapSize;
+<<<<<<< HEAD
 
+=======
+    /**
+     * Indicates whether this texture will use trilinear filtering.
+     */
+    bool mipMap;
+
+private:
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     /**
      * Last wrap modes set on this texture. Defaults to GL_CLAMP_TO_EDGE.
      */
@@ -127,7 +150,10 @@ struct Texture {
     GLenum minFilter;
     GLenum magFilter;
 
+<<<<<<< HEAD
 private:
+=======
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     bool firstFilter;
     bool firstWrap;
 }; // struct Texture

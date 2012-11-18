@@ -19,6 +19,10 @@ package com.android.layoutlib.bridge.impl;
 import static com.android.ide.common.rendering.api.Result.Status.ERROR_UNKNOWN;
 
 import com.android.ide.common.rendering.api.DrawableParams;
+<<<<<<< HEAD
+=======
+import com.android.ide.common.rendering.api.HardwareConfig;
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 import com.android.ide.common.rendering.api.ResourceValue;
 import com.android.ide.common.rendering.api.Result;
 import com.android.ide.common.rendering.api.Result.Status;
@@ -59,6 +63,10 @@ public class RenderDrawable extends RenderAction<DrawableParams> {
         try {
             // get the drawable resource value
             DrawableParams params = getParams();
+<<<<<<< HEAD
+=======
+            HardwareConfig hardwareConfig = params.getHardwareConfig();
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
             ResourceValue drawableResource = params.getDrawable();
 
             // resolve it
@@ -75,15 +83,24 @@ public class RenderDrawable extends RenderAction<DrawableParams> {
 
             // get the actual Drawable object to draw
             Drawable d = ResourceHelper.getDrawable(drawableResource, context);
+<<<<<<< HEAD
             content.setBackgroundDrawable(d);
+=======
+            content.setBackground(d);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 
             // set the AttachInfo on the root view.
             AttachInfo_Accessor.setAttachInfo(content);
 
 
             // measure
+<<<<<<< HEAD
             int w = params.getScreenWidth();
             int h = params.getScreenHeight();
+=======
+            int w = hardwareConfig.getScreenWidth();
+            int h = hardwareConfig.getScreenHeight();
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
             int w_spec = MeasureSpec.makeMeasureSpec(w, MeasureSpec.EXACTLY);
             int h_spec = MeasureSpec.makeMeasureSpec(h, MeasureSpec.EXACTLY);
             content.measure(w_spec, h_spec);
@@ -99,11 +116,19 @@ public class RenderDrawable extends RenderAction<DrawableParams> {
 
             // create an Android bitmap around the BufferedImage
             Bitmap bitmap = Bitmap_Delegate.createBitmap(image,
+<<<<<<< HEAD
                     true /*isMutable*/, params.getDensity());
 
             // create a Canvas around the Android bitmap
             Canvas canvas = new Canvas(bitmap);
             canvas.setDensity(params.getDensity().getDpiValue());
+=======
+                    true /*isMutable*/, hardwareConfig.getDensity());
+
+            // create a Canvas around the Android bitmap
+            Canvas canvas = new Canvas(bitmap);
+            canvas.setDensity(hardwareConfig.getDensity().getDpiValue());
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 
             // and draw
             content.draw(canvas);

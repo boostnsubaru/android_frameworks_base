@@ -26,6 +26,10 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.net.wifi.WifiManager;
 import android.os.FileUtils;
+<<<<<<< HEAD
+=======
+import android.os.Handler;
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 import android.os.ParcelFileDescriptor;
 import android.os.Process;
 import android.provider.Settings;
@@ -46,7 +50,10 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+<<<<<<< HEAD
 import java.io.Reader;
+=======
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 import java.io.Writer;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -64,6 +71,7 @@ public class SettingsBackupAgent extends BackupAgentHelper {
 
     private static final String KEY_SYSTEM = "system";
     private static final String KEY_SECURE = "secure";
+<<<<<<< HEAD
     private static final String KEY_LOCALE = "locale";
 
     //Version 2 adds STATE_WIFI_CONFIG
@@ -74,15 +82,44 @@ public class SettingsBackupAgent extends BackupAgentHelper {
     // number any time the set of state items is altered.
     private static final int STATE_VERSION = 2;
 
+=======
+    private static final String KEY_GLOBAL = "global";
+    private static final String KEY_LOCALE = "locale";
+
+    // Versioning of the state file.  Increment this version
+    // number any time the set of state items is altered.
+    private static final int STATE_VERSION = 3;
+
+    // Slots in the checksum array.  Never insert new items in the middle
+    // of this array; new slots must be appended.
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     private static final int STATE_SYSTEM          = 0;
     private static final int STATE_SECURE          = 1;
     private static final int STATE_LOCALE          = 2;
     private static final int STATE_WIFI_SUPPLICANT = 3;
     private static final int STATE_WIFI_CONFIG     = 4;
+<<<<<<< HEAD
     private static final int STATE_SIZE            = 5; // The number of state items
 
     // Versioning of the 'full backup' format
     private static final int FULL_BACKUP_VERSION = 1;
+=======
+    private static final int STATE_GLOBAL          = 5;
+
+    private static final int STATE_SIZE            = 6; // The current number of state items
+
+    // Number of entries in the checksum array at various version numbers
+    private static final int STATE_SIZES[] = {
+        0,
+        4,              // version 1
+        5,              // version 2 added STATE_WIFI_CONFIG
+        STATE_SIZE      // version 3 added STATE_GLOBAL
+    };
+
+    // Versioning of the 'full backup' format
+    private static final int FULL_BACKUP_VERSION = 2;
+    private static final int FULL_BACKUP_ADDED_GLOBAL = 2;  // added the "global" entry
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 
     private static final int INTEGER_BYTE_COUNT = Integer.SIZE / Byte.SIZE;
 
@@ -112,10 +149,22 @@ public class SettingsBackupAgent extends BackupAgentHelper {
     // stored in the full-backup tarfile as well, so should not be changed.
     private static final String STAGE_FILE = "flattened-data";
 
+<<<<<<< HEAD
+=======
+    // Delay in milliseconds between the restore operation and when we will bounce
+    // wifi in order to rewrite the supplicant config etc.
+    private static final long WIFI_BOUNCE_DELAY_MILLIS = 60 * 1000; // one minute
+
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     private SettingsHelper mSettingsHelper;
     private WifiManager mWfm;
     private static String mWifiConfigFile;
 
+<<<<<<< HEAD
+=======
+    WifiRestoreRunnable mWifiRestore = null;
+
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     // Class for capturing a network definition from the wifi supplicant config file
     static class Network {
         String ssid = "";  // equals() and hashCode() need these to be non-null
@@ -257,6 +306,10 @@ public class SettingsBackupAgent extends BackupAgentHelper {
 
         byte[] systemSettingsData = getSystemSettings();
         byte[] secureSettingsData = getSecureSettings();
+<<<<<<< HEAD
+=======
+        byte[] globalSettingsData = getGlobalSettings();
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         byte[] locale = mSettingsHelper.getLocaleData();
         byte[] wifiSupplicantData = getWifiSupplicant(FILE_WIFI_SUPPLICANT);
         byte[] wifiConfigData = getFileData(mWifiConfigFile);
@@ -267,6 +320,11 @@ public class SettingsBackupAgent extends BackupAgentHelper {
             writeIfChanged(stateChecksums[STATE_SYSTEM], KEY_SYSTEM, systemSettingsData, data);
         stateChecksums[STATE_SECURE] =
             writeIfChanged(stateChecksums[STATE_SECURE], KEY_SECURE, secureSettingsData, data);
+<<<<<<< HEAD
+=======
+        stateChecksums[STATE_GLOBAL] =
+            writeIfChanged(stateChecksums[STATE_GLOBAL], KEY_GLOBAL, globalSettingsData, data);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         stateChecksums[STATE_LOCALE] =
             writeIfChanged(stateChecksums[STATE_LOCALE], KEY_LOCALE, locale, data);
         stateChecksums[STATE_WIFI_SUPPLICANT] =
@@ -279,14 +337,85 @@ public class SettingsBackupAgent extends BackupAgentHelper {
         writeNewChecksums(stateChecksums, newState);
     }
 
+<<<<<<< HEAD
+=======
+    class WifiRestoreRunnable implements Runnable {
+        private byte[] restoredSupplicantData;
+        private byte[] restoredWifiConfigFile;
+
+        void incorporateWifiSupplicant(BackupDataInput data) {
+            restoredSupplicantData = new byte[data.getDataSize()];
+            if (restoredSupplicantData.length <= 0) return;
+            try {
+                data.readEntityData(restoredSupplicantData, 0, data.getDataSize());
+            } catch (IOException e) {
+                Log.w(TAG, "Unable to read supplicant data");
+                restoredSupplicantData = null;
+            }
+        }
+
+        void incorporateWifiConfigFile(BackupDataInput data) {
+            restoredWifiConfigFile = new byte[data.getDataSize()];
+            if (restoredWifiConfigFile.length <= 0) return;
+            try {
+                data.readEntityData(restoredWifiConfigFile, 0, data.getDataSize());
+            } catch (IOException e) {
+                Log.w(TAG, "Unable to read config file");
+                restoredWifiConfigFile = null;
+            }
+        }
+
+        @Override
+        public void run() {
+            if (restoredSupplicantData != null || restoredWifiConfigFile != null) {
+                if (DEBUG_BACKUP) {
+                    Log.v(TAG, "Starting deferred restore of wifi data");
+                }
+                final int retainedWifiState = enableWifi(false);
+                if (restoredSupplicantData != null) {
+                    restoreWifiSupplicant(FILE_WIFI_SUPPLICANT,
+                            restoredSupplicantData, restoredSupplicantData.length);
+                    FileUtils.setPermissions(FILE_WIFI_SUPPLICANT,
+                            FileUtils.S_IRUSR | FileUtils.S_IWUSR |
+                            FileUtils.S_IRGRP | FileUtils.S_IWGRP,
+                            Process.myUid(), Process.WIFI_UID);
+                }
+                if (restoredWifiConfigFile != null) {
+                    restoreFileData(mWifiConfigFile,
+                            restoredWifiConfigFile, restoredWifiConfigFile.length);
+                }
+                // restore the previous WIFI state.
+                enableWifi(retainedWifiState == WifiManager.WIFI_STATE_ENABLED ||
+                        retainedWifiState == WifiManager.WIFI_STATE_ENABLING);
+            }
+        }
+    }
+
+    // Instantiate the wifi-config restore runnable, scheduling it for execution
+    // a minute hence
+    void initWifiRestoreIfNecessary() {
+        if (mWifiRestore == null) {
+            mWifiRestore = new WifiRestoreRunnable();
+        }
+    }
+
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     @Override
     public void onRestore(BackupDataInput data, int appVersionCode,
             ParcelFileDescriptor newState) throws IOException {
 
+<<<<<<< HEAD
+=======
+        HashSet<String> movedToGlobal = new HashSet<String>();
+        Settings.System.getMovedKeys(movedToGlobal);
+        Settings.Secure.getMovedKeys(movedToGlobal);
+
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         while (data.readNextHeader()) {
             final String key = data.getKey();
             final int size = data.getDataSize();
             if (KEY_SYSTEM.equals(key)) {
+<<<<<<< HEAD
                 restoreSettings(data, Settings.System.CONTENT_URI);
                 mSettingsHelper.applyAudioSettings();
             } else if (KEY_SECURE.equals(key)) {
@@ -301,22 +430,51 @@ public class SettingsBackupAgent extends BackupAgentHelper {
                 // retain the previous WIFI state.
                 enableWifi(retainedWifiState == WifiManager.WIFI_STATE_ENABLED ||
                         retainedWifiState == WifiManager.WIFI_STATE_ENABLING);
+=======
+                restoreSettings(data, Settings.System.CONTENT_URI, movedToGlobal);
+                mSettingsHelper.applyAudioSettings();
+            } else if (KEY_SECURE.equals(key)) {
+                restoreSettings(data, Settings.Secure.CONTENT_URI, movedToGlobal);
+            } else if (KEY_GLOBAL.equals(key)) {
+                restoreSettings(data, Settings.Global.CONTENT_URI, null);
+            } else if (KEY_WIFI_SUPPLICANT.equals(key)) {
+                initWifiRestoreIfNecessary();
+                mWifiRestore.incorporateWifiSupplicant(data);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
             } else if (KEY_LOCALE.equals(key)) {
                 byte[] localeData = new byte[size];
                 data.readEntityData(localeData, 0, size);
                 mSettingsHelper.setLocaleData(localeData, size);
             } else if (KEY_WIFI_CONFIG.equals(key)) {
+<<<<<<< HEAD
                 restoreFileData(mWifiConfigFile, data);
+=======
+                initWifiRestoreIfNecessary();
+                mWifiRestore.incorporateWifiConfigFile(data);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
              } else {
                 data.skipEntityData();
             }
         }
+<<<<<<< HEAD
+=======
+
+        // If we have wifi data to restore, post a runnable to perform the
+        // bounce-and-update operation a little ways in the future.
+        if (mWifiRestore != null) {
+            new Handler(getMainLooper()).postDelayed(mWifiRestore, WIFI_BOUNCE_DELAY_MILLIS);
+        }
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     }
 
     @Override
     public void onFullBackup(FullBackupDataOutput data)  throws IOException {
         byte[] systemSettingsData = getSystemSettings();
         byte[] secureSettingsData = getSecureSettings();
+<<<<<<< HEAD
+=======
+        byte[] globalSettingsData = getGlobalSettings();
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         byte[] locale = mSettingsHelper.getLocaleData();
         byte[] wifiSupplicantData = getWifiSupplicant(FILE_WIFI_SUPPLICANT);
         byte[] wifiConfigData = getFileData(mWifiConfigFile);
@@ -339,6 +497,12 @@ public class SettingsBackupAgent extends BackupAgentHelper {
             if (DEBUG_BACKUP) Log.d(TAG, secureSettingsData.length + " bytes of secure settings data");
             out.writeInt(secureSettingsData.length);
             out.write(secureSettingsData);
+<<<<<<< HEAD
+=======
+            if (DEBUG_BACKUP) Log.d(TAG, globalSettingsData.length + " bytes of global settings data");
+            out.writeInt(globalSettingsData.length);
+            out.write(globalSettingsData);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
             if (DEBUG_BACKUP) Log.d(TAG, locale.length + " bytes of locale data");
             out.writeInt(locale.length);
             out.write(locale);
@@ -371,20 +535,47 @@ public class SettingsBackupAgent extends BackupAgentHelper {
 
         int version = in.readInt();
         if (DEBUG_BACKUP) Log.d(TAG, "Flattened data version " + version);
+<<<<<<< HEAD
         if (version == FULL_BACKUP_VERSION) {
+=======
+        if (version <= FULL_BACKUP_VERSION) {
+            // Generate the moved-to-global lookup table
+            HashSet<String> movedToGlobal = new HashSet<String>();
+            Settings.System.getMovedKeys(movedToGlobal);
+            Settings.Secure.getMovedKeys(movedToGlobal);
+
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
             // system settings data first
             int nBytes = in.readInt();
             if (DEBUG_BACKUP) Log.d(TAG, nBytes + " bytes of settings data");
             byte[] buffer = new byte[nBytes];
             in.readFully(buffer, 0, nBytes);
+<<<<<<< HEAD
             restoreSettings(buffer, nBytes, Settings.System.CONTENT_URI);
+=======
+            restoreSettings(buffer, nBytes, Settings.System.CONTENT_URI, movedToGlobal);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 
             // secure settings
             nBytes = in.readInt();
             if (DEBUG_BACKUP) Log.d(TAG, nBytes + " bytes of secure settings data");
             if (nBytes > buffer.length) buffer = new byte[nBytes];
             in.readFully(buffer, 0, nBytes);
+<<<<<<< HEAD
             restoreSettings(buffer, nBytes, Settings.Secure.CONTENT_URI);
+=======
+            restoreSettings(buffer, nBytes, Settings.Secure.CONTENT_URI, movedToGlobal);
+
+            // Global only if sufficiently new
+            if (version >= FULL_BACKUP_ADDED_GLOBAL) {
+                nBytes = in.readInt();
+                if (DEBUG_BACKUP) Log.d(TAG, nBytes + " bytes of global settings data");
+                if (nBytes > buffer.length) buffer = new byte[nBytes];
+                in.readFully(buffer, 0, nBytes);
+                movedToGlobal.clear();  // no redirection; this *is* the global namespace
+                restoreSettings(buffer, nBytes, Settings.Global.CONTENT_URI, movedToGlobal);
+            }
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 
             // locale
             nBytes = in.readInt();
@@ -430,6 +621,7 @@ public class SettingsBackupAgent extends BackupAgentHelper {
 
         try {
             int stateVersion = dataInput.readInt();
+<<<<<<< HEAD
             if (stateVersion == STATE_VERSION_1) {
                 for (int i = 0; i < STATE_VERSION_1_SIZE; i++) {
                     stateChecksums[i] = dataInput.readLong();
@@ -438,6 +630,10 @@ public class SettingsBackupAgent extends BackupAgentHelper {
                 for (int i = 0; i < STATE_SIZE; i++) {
                     stateChecksums[i] = dataInput.readLong();
                 }
+=======
+            for (int i = 0; i < STATE_SIZES[stateVersion]; i++) {
+                stateChecksums[i] = dataInput.readLong();
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
             }
         } catch (EOFException eof) {
             // With the default 0 checksum we'll wind up forcing a backup of
@@ -496,7 +692,22 @@ public class SettingsBackupAgent extends BackupAgentHelper {
         }
     }
 
+<<<<<<< HEAD
     private void restoreSettings(BackupDataInput data, Uri contentUri) {
+=======
+    private byte[] getGlobalSettings() {
+        Cursor cursor = getContentResolver().query(Settings.Global.CONTENT_URI, PROJECTION, null,
+                null, null);
+        try {
+            return extractRelevantValues(cursor, Settings.Global.SETTINGS_TO_BACKUP);
+        } finally {
+            cursor.close();
+        }
+    }
+
+    private void restoreSettings(BackupDataInput data, Uri contentUri,
+            HashSet<String> movedToGlobal) {
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         byte[] settings = new byte[data.getDataSize()];
         try {
             data.readEntityData(settings, 0, settings.length);
@@ -504,20 +715,37 @@ public class SettingsBackupAgent extends BackupAgentHelper {
             Log.e(TAG, "Couldn't read entity data");
             return;
         }
+<<<<<<< HEAD
         restoreSettings(settings, settings.length, contentUri);
     }
 
     private void restoreSettings(byte[] settings, int bytes, Uri contentUri) {
+=======
+        restoreSettings(settings, settings.length, contentUri, movedToGlobal);
+    }
+
+    private void restoreSettings(byte[] settings, int bytes, Uri contentUri,
+            HashSet<String> movedToGlobal) {
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         if (DEBUG) {
             Log.i(TAG, "restoreSettings: " + contentUri);
         }
 
+<<<<<<< HEAD
         // Figure out the white list.
+=======
+        // Figure out the white list and redirects to the global table.
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         String[] whitelist = null;
         if (contentUri.equals(Settings.Secure.CONTENT_URI)) {
             whitelist = Settings.Secure.SETTINGS_TO_BACKUP;
         } else if (contentUri.equals(Settings.System.CONTENT_URI)) {
             whitelist = Settings.System.SETTINGS_TO_BACKUP;
+<<<<<<< HEAD
+=======
+        } else if (contentUri.equals(Settings.Global.CONTENT_URI)) {
+            whitelist = Settings.Global.SETTINGS_TO_BACKUP;
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         } else {
             throw new IllegalArgumentException("Unknown URI: " + contentUri);
         }
@@ -556,15 +784,31 @@ public class SettingsBackupAgent extends BackupAgentHelper {
                 continue;
             }
 
+<<<<<<< HEAD
+=======
+            final Uri destination = (movedToGlobal != null && movedToGlobal.contains(key))
+                    ? Settings.Global.CONTENT_URI
+                    : contentUri;
+
+            // The helper doesn't care what namespace the keys are in
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
             if (settingsHelper.restoreValue(key, value)) {
                 contentValues.clear();
                 contentValues.put(Settings.NameValueTable.NAME, key);
                 contentValues.put(Settings.NameValueTable.VALUE, value);
+<<<<<<< HEAD
                 getContentResolver().insert(contentUri, contentValues);
             }
 
             if (DEBUG) {
                 Log.d(TAG, "Restored setting: " + key + "=" + value);
+=======
+                getContentResolver().insert(destination, contentValues);
+            }
+
+            if (DEBUG) {
+                Log.d(TAG, "Restored setting: " + destination + " : "+ key + "=" + value);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
             }
         }
     }
@@ -675,6 +919,7 @@ public class SettingsBackupAgent extends BackupAgentHelper {
 
     }
 
+<<<<<<< HEAD
     private void restoreFileData(String filename, BackupDataInput data) {
         byte[] bytes = new byte[data.getDataSize()];
         if (bytes.length <= 0) return;
@@ -686,6 +931,8 @@ public class SettingsBackupAgent extends BackupAgentHelper {
         }
     }
 
+=======
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     private void restoreFileData(String filename, byte[] bytes, int size) {
         try {
             File file = new File(filename);
@@ -738,6 +985,7 @@ public class SettingsBackupAgent extends BackupAgentHelper {
         }
     }
 
+<<<<<<< HEAD
     private void restoreWifiSupplicant(String filename, BackupDataInput data) {
         byte[] bytes = new byte[data.getDataSize()];
         if (bytes.length <= 0) return;
@@ -749,6 +997,8 @@ public class SettingsBackupAgent extends BackupAgentHelper {
         }
     }
 
+=======
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     private void restoreWifiSupplicant(String filename, byte[] bytes, int size) {
         try {
             WifiNetworkSettings supplicantImage = new WifiNetworkSettings();

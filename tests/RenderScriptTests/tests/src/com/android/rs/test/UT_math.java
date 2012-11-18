@@ -30,7 +30,11 @@ public class UT_math extends UnitTest {
 
     public void run() {
         RenderScript pRS = RenderScript.create(mCtx);
+<<<<<<< HEAD
         ScriptC_math s = new ScriptC_math(pRS, mRes, R.raw.math);
+=======
+        ScriptC_math s = new ScriptC_math(pRS);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         pRS.setMessageHandler(mRsMessage);
         s.invoke_math_test(0, 0);
         pRS.finish();

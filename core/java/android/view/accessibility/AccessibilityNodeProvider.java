@@ -132,6 +132,7 @@ public abstract class AccessibilityNodeProvider {
             int virtualViewId) {
         return null;
     }
+<<<<<<< HEAD
 
     /**
      * Finds the accessibility focused {@link AccessibilityNodeInfo}. The search is
@@ -188,4 +189,6 @@ public abstract class AccessibilityNodeProvider {
     public AccessibilityNodeInfo accessibilityFocusSearch(int direction, int virtualViewId) {
         return null;
     }
+=======
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 }

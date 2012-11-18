@@ -78,7 +78,11 @@ public class ImageProcessingTest extends ActivityInstrumentationTestCase2<ImageP
             BufferedWriter rsWriter = new BufferedWriter(new FileWriter(resultFile));
             Log.v(TAG, "Saved results in: " + resultFile.getAbsolutePath());
             for (int i = 0; i < ITERATION; i++ ) {
+<<<<<<< HEAD
                 t = mAct.getBenchmark();
+=======
+                t = (long)mAct.getBenchmark();
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
                 sum += t;
                 rsWriter.write("Renderscript frame time core: " + t + " ms\n");
                 Log.v(TAG, "RenderScript framew time core: " + t + " ms");

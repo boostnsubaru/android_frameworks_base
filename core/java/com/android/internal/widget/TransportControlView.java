@@ -23,7 +23,10 @@ import com.android.internal.widget.LockScreenWidgetInterface;
 
 import android.app.PendingIntent;
 import android.app.PendingIntent.CanceledException;
+<<<<<<< HEAD
 import android.content.ComponentName;
+=======
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -38,7 +41,10 @@ import android.os.Parcel;
 import android.os.Parcelable;
 import android.os.RemoteException;
 import android.os.SystemClock;
+<<<<<<< HEAD
 import android.provider.Settings;
+=======
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 import android.text.Spannable;
 import android.text.TextUtils;
 import android.text.style.ForegroundColorSpan;
@@ -67,11 +73,16 @@ public class TransportControlView extends FrameLayout implements OnClickListener
     protected static final boolean DEBUG = false;
     protected static final String TAG = "TransportControlView";
 
+<<<<<<< HEAD
     private View mLayout;
     private ImageView mAlbumArt;
     private TextView mTrackTitle;
     private TextView mTrackAlbum;
     private TextView mTrackArtist;
+=======
+    private ImageView mAlbumArt;
+    private TextView mTrackTitle;
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     private ImageView mBtnPrev;
     private ImageView mBtnPlay;
     private ImageView mBtnNext;
@@ -197,7 +208,11 @@ public class TransportControlView extends FrameLayout implements OnClickListener
 
     public TransportControlView(Context context, AttributeSet attrs) {
         super(context, attrs);
+<<<<<<< HEAD
         Log.v(TAG, "Create TCV " + this);
+=======
+        if (DEBUG) Log.v(TAG, "Create TCV " + this);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         mAudioManager = new AudioManager(mContext);
         mCurrentPlayState = RemoteControlClient.PLAYSTATE_NONE; // until we get a callback
         mIRCD = new IRemoteControlDisplayWeak(mHandler);
@@ -210,6 +225,7 @@ public class TransportControlView extends FrameLayout implements OnClickListener
     @Override
     public void onFinishInflate() {
         super.onFinishInflate();
+<<<<<<< HEAD
         if (Settings.System.getInt(mContext.getContentResolver(), Settings.System.LOCKSCREEN_STOCK_MUSIC_LAYOUT, 0) == 0) {
             mLayout = (View) findViewById(R.id.layout_stock);
             mLayout.setVisibility(View.GONE);
@@ -237,6 +253,14 @@ public class TransportControlView extends FrameLayout implements OnClickListener
             mBtnNext = (ImageView) findViewById(R.id.btn_next_stock);
         }
 
+=======
+        mTrackTitle = (TextView) findViewById(R.id.title);
+        mTrackTitle.setSelected(true); // enable marquee
+        mAlbumArt = (ImageView) findViewById(R.id.albumart);
+        mBtnPrev = (ImageView) findViewById(R.id.btn_prev);
+        mBtnPlay = (ImageView) findViewById(R.id.btn_play);
+        mBtnNext = (ImageView) findViewById(R.id.btn_next);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         final View buttons[] = { mBtnPrev, mBtnPlay, mBtnNext };
         for (View view : buttons) {
             view.setOnClickListener(this);
@@ -305,6 +329,7 @@ public class TransportControlView extends FrameLayout implements OnClickListener
      * Populates the given metadata into the view
      */
     private void populateMetadata() {
+<<<<<<< HEAD
         if (Settings.System.getInt(mContext.getContentResolver(), Settings.System.LOCKSCREEN_STOCK_MUSIC_LAYOUT, 0) == 0) {
             mTrackTitle.setText(mMetadata.trackTitle);
             mTrackAlbum.setText(mMetadata.albumTitle);
@@ -341,6 +366,38 @@ public class TransportControlView extends FrameLayout implements OnClickListener
                         Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
             }
         }
+=======
+        StringBuilder sb = new StringBuilder();
+        int trackTitleLength = 0;
+        if (!TextUtils.isEmpty(mMetadata.trackTitle)) {
+            sb.append(mMetadata.trackTitle);
+            trackTitleLength = mMetadata.trackTitle.length();
+        }
+        if (!TextUtils.isEmpty(mMetadata.artist)) {
+            if (sb.length() != 0) {
+                sb.append(" - ");
+            }
+            sb.append(mMetadata.artist);
+        }
+        if (!TextUtils.isEmpty(mMetadata.albumTitle)) {
+            if (sb.length() != 0) {
+                sb.append(" - ");
+            }
+            sb.append(mMetadata.albumTitle);
+        }
+        mTrackTitle.setText(sb.toString(), TextView.BufferType.SPANNABLE);
+        Spannable str = (Spannable) mTrackTitle.getText();
+        if (trackTitleLength != 0) {
+            str.setSpan(new ForegroundColorSpan(0xffffffff), 0, trackTitleLength,
+                    Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+            trackTitleLength++;
+        }
+        if (sb.length() > trackTitleLength) {
+            str.setSpan(new ForegroundColorSpan(0x7fffffff), trackTitleLength, sb.length(),
+                    Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+        }
+
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         mAlbumArt.setImageBitmap(mMetadata.bitmap);
         final int flags = mTransportControlFlags;
         setVisibilityBasedOnFlag(mBtnPrev, flags, RemoteControlClient.FLAG_KEY_MEDIA_PREVIOUS);

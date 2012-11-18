@@ -57,7 +57,11 @@ Snapshot::Snapshot(const sp<Snapshot>& s, int saveFlags):
         clipRect = &mClipRectRoot;
 #if STENCIL_BUFFER_SIZE
         if (s->clipRegion) {
+<<<<<<< HEAD
             mClipRegionRoot.merge(*s->clipRegion);
+=======
+            mClipRegionRoot.op(*s->clipRegion, SkRegion::kUnion_Op);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
             clipRegion = &mClipRegionRoot;
         }
 #endif
@@ -84,8 +88,12 @@ void Snapshot::ensureClipRegion() {
 #if STENCIL_BUFFER_SIZE
     if (!clipRegion) {
         clipRegion = &mClipRegionRoot;
+<<<<<<< HEAD
         android::Rect tmp(clipRect->left, clipRect->top, clipRect->right, clipRect->bottom);
         clipRegion->set(tmp);
+=======
+        clipRegion->setRect(clipRect->left, clipRect->top, clipRect->right, clipRect->bottom);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     }
 #endif
 }
@@ -93,11 +101,19 @@ void Snapshot::ensureClipRegion() {
 void Snapshot::copyClipRectFromRegion() {
 #if STENCIL_BUFFER_SIZE
     if (!clipRegion->isEmpty()) {
+<<<<<<< HEAD
         android::Rect bounds(clipRegion->bounds());
         clipRect->set(bounds.left, bounds.top, bounds.right, bounds.bottom);
 
         if (clipRegion->isRect()) {
             clipRegion->clear();
+=======
+        const SkIRect& bounds = clipRegion->getBounds();
+        clipRect->set(bounds.fLeft, bounds.fTop, bounds.fRight, bounds.fBottom);
+
+        if (clipRegion->isRect()) {
+            clipRegion->setEmpty();
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
             clipRegion = NULL;
         }
     } else {
@@ -107,6 +123,7 @@ void Snapshot::copyClipRectFromRegion() {
 #endif
 }
 
+<<<<<<< HEAD
 bool Snapshot::clipRegionOr(float left, float top, float right, float bottom) {
 #if STENCIL_BUFFER_SIZE
     android::Rect tmp(left, top, right, bottom);
@@ -144,6 +161,13 @@ bool Snapshot::clipRegionNand(float left, float top, float right, float bottom) 
 #if STENCIL_BUFFER_SIZE
     android::Rect tmp(left, top, right, bottom);
     clipRegion->subtractSelf(tmp);
+=======
+bool Snapshot::clipRegionOp(float left, float top, float right, float bottom, SkRegion::Op op) {
+#if STENCIL_BUFFER_SIZE
+    SkIRect tmp;
+    tmp.set(left, top, right, bottom);
+    clipRegion->op(tmp, op);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     copyClipRectFromRegion();
     return true;
 #else
@@ -161,6 +185,7 @@ bool Snapshot::clipTransformed(const Rect& r, SkRegion::Op op) {
     bool clipped = false;
 
     switch (op) {
+<<<<<<< HEAD
         case SkRegion::kDifference_Op: {
             ensureClipRegion();
             clipped = clipRegionNand(r.left, r.top, r.right, r.bottom);
@@ -169,6 +194,11 @@ bool Snapshot::clipTransformed(const Rect& r, SkRegion::Op op) {
         case SkRegion::kIntersect_Op: {
             if (CC_UNLIKELY(clipRegion)) {
                 clipped = clipRegionOr(r.left, r.top, r.right, r.bottom);
+=======
+        case SkRegion::kIntersect_Op: {
+            if (CC_UNLIKELY(clipRegion)) {
+                clipped = clipRegionOp(r.left, r.top, r.right, r.bottom, SkRegion::kIntersect_Op);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
             } else {
                 clipped = clipRect->intersect(r);
                 if (!clipped) {
@@ -180,12 +210,17 @@ bool Snapshot::clipTransformed(const Rect& r, SkRegion::Op op) {
         }
         case SkRegion::kUnion_Op: {
             if (CC_UNLIKELY(clipRegion)) {
+<<<<<<< HEAD
                 clipped = clipRegionAnd(r.left, r.top, r.right, r.bottom);
+=======
+                clipped = clipRegionOp(r.left, r.top, r.right, r.bottom, SkRegion::kUnion_Op);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
             } else {
                 clipped = clipRect->unionWith(r);
             }
             break;
         }
+<<<<<<< HEAD
         case SkRegion::kXOR_Op: {
             ensureClipRegion();
             clipped = clipRegionXor(r.left, r.top, r.right, r.bottom);
@@ -195,11 +230,21 @@ bool Snapshot::clipTransformed(const Rect& r, SkRegion::Op op) {
             // TODO!!!!!!!
             break;
         }
+=======
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         case SkRegion::kReplace_Op: {
             setClip(r.left, r.top, r.right, r.bottom);
             clipped = true;
             break;
         }
+<<<<<<< HEAD
+=======
+        default: {
+            ensureClipRegion();
+            clipped = clipRegionOp(r.left, r.top, r.right, r.bottom, op);
+            break;
+        }
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     }
 
     if (clipped) {
@@ -213,13 +258,24 @@ void Snapshot::setClip(float left, float top, float right, float bottom) {
     clipRect->set(left, top, right, bottom);
 #if STENCIL_BUFFER_SIZE
     if (clipRegion) {
+<<<<<<< HEAD
         clipRegion->clear();
+=======
+        clipRegion->setEmpty();
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         clipRegion = NULL;
     }
 #endif
     flags |= Snapshot::kFlagClipSet;
 }
 
+<<<<<<< HEAD
+=======
+bool Snapshot::hasPerspectiveTransform() const {
+    return transform->isPerspective();
+}
+
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 const Rect& Snapshot::getLocalClip() {
     mat4 inverse;
     inverse.loadInverse(*transform);

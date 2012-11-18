@@ -37,6 +37,14 @@ public class WifiP2pConfig implements Parcelable {
      */
     public WpsInfo wps;
 
+<<<<<<< HEAD
+=======
+    /** @hide */
+    public static final int MAX_GROUP_OWNER_INTENT   =   15;
+    /** @hide */
+    public static final int MIN_GROUP_OWNER_INTENT   =   0;
+
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     /**
      * This is an integer value between 0 and 15 where 0 indicates the least
      * inclination to be a group owner and 15 indicates the highest inclination
@@ -46,6 +54,7 @@ public class WifiP2pConfig implements Parcelable {
      */
     public int groupOwnerIntent = -1;
 
+<<<<<<< HEAD
     /**
      * Indicates whether the configuration is saved
      * @hide
@@ -58,6 +67,10 @@ public class WifiP2pConfig implements Parcelable {
 
     /** @hide */
     public Persist persist = Persist.SYSTEM_DEFAULT;
+=======
+    /** @hide */
+    public int netId = WifiP2pGroup.PERSISTENT_NET_ID;
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 
     public WifiP2pConfig() {
         //set defaults
@@ -110,7 +123,11 @@ public class WifiP2pConfig implements Parcelable {
         sbuf.append("\n address: ").append(deviceAddress);
         sbuf.append("\n wps: ").append(wps);
         sbuf.append("\n groupOwnerIntent: ").append(groupOwnerIntent);
+<<<<<<< HEAD
         sbuf.append("\n persist: ").append(persist.toString());
+=======
+        sbuf.append("\n persist: ").append(netId);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         return sbuf.toString();
     }
 
@@ -125,7 +142,11 @@ public class WifiP2pConfig implements Parcelable {
             deviceAddress = source.deviceAddress;
             wps = new WpsInfo(source.wps);
             groupOwnerIntent = source.groupOwnerIntent;
+<<<<<<< HEAD
             persist = source.persist;
+=======
+            netId = source.netId;
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         }
     }
 
@@ -134,7 +155,11 @@ public class WifiP2pConfig implements Parcelable {
         dest.writeString(deviceAddress);
         dest.writeParcelable(wps, flags);
         dest.writeInt(groupOwnerIntent);
+<<<<<<< HEAD
         dest.writeString(persist.name());
+=======
+        dest.writeInt(netId);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     }
 
     /** Implement the Parcelable interface */
@@ -145,7 +170,11 @@ public class WifiP2pConfig implements Parcelable {
                 config.deviceAddress = in.readString();
                 config.wps = (WpsInfo) in.readParcelable(null);
                 config.groupOwnerIntent = in.readInt();
+<<<<<<< HEAD
                 config.persist = Persist.valueOf(in.readString());
+=======
+                config.netId = in.readInt();
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
                 return config;
             }
 

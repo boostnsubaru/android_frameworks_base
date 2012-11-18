@@ -16,10 +16,16 @@
 
 package com.android.internal.policy.impl;
 
+<<<<<<< HEAD
+=======
+import com.android.internal.app.AlertController;
+import com.android.internal.app.AlertController.AlertParams;
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 import com.android.internal.telephony.TelephonyIntents;
 import com.android.internal.telephony.TelephonyProperties;
 import com.android.internal.R;
 
+<<<<<<< HEAD
 import android.app.Activity;
 import android.app.ActivityManager;
 import android.content.ActivityNotFoundException;
@@ -27,11 +33,18 @@ import android.app.ActivityManagerNative;
 import android.app.AlertDialog;
 import android.content.BroadcastReceiver;
 import android.content.ComponentName;
+=======
+import android.app.ActivityManagerNative;
+import android.app.AlertDialog;
+import android.app.Dialog;
+import android.content.BroadcastReceiver;
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.pm.UserInfo;
+<<<<<<< HEAD
 import android.content.ServiceConnection;
 import android.database.ContentObserver;
 import android.media.AudioManager;
@@ -60,10 +73,43 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.view.IWindowManager;
+=======
+import android.database.ContentObserver;
+import android.graphics.drawable.Drawable;
+import android.media.AudioManager;
+import android.net.ConnectivityManager;
+import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
+import android.os.RemoteException;
+import android.os.ServiceManager;
+import android.os.SystemClock;
+import android.os.SystemProperties;
+import android.os.UserHandle;
+import android.os.UserManager;
+import android.os.Vibrator;
+import android.provider.Settings;
+import android.service.dreams.DreamService;
+import android.service.dreams.IDreamManager;
+import android.telephony.PhoneStateListener;
+import android.telephony.ServiceState;
+import android.telephony.TelephonyManager;
+import android.util.Log;
+import android.util.TypedValue;
+import android.view.InputDevice;
+import android.view.KeyEvent;
+import android.view.LayoutInflater;
+import android.view.MotionEvent;
+import android.view.View;
+import android.view.ViewConfiguration;
+import android.view.ViewGroup;
+import android.view.WindowManager;
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 import android.view.WindowManagerPolicy.WindowManagerFuncs;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
+<<<<<<< HEAD
 import android.widget.TextView;
 
 import com.google.android.collect.Lists;
@@ -91,6 +137,14 @@ import android.content.ComponentName;
 import android.os.IBinder;
 import android.os.Messenger;
 import android.os.RemoteException;
+=======
+import android.widget.ImageView.ScaleType;
+import android.widget.ListView;
+import android.widget.TextView;
+
+import java.util.ArrayList;
+import java.util.List;
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 
 /**
  * Helper to show the global actions dialog.  Each item is an {@link Action} that
@@ -105,12 +159,20 @@ class GlobalActions implements DialogInterface.OnDismissListener, DialogInterfac
 
     private final Context mContext;
     private final WindowManagerFuncs mWindowManagerFuncs;
+<<<<<<< HEAD
 
     private Context mUiContext;
     private final AudioManager mAudioManager;
 
     private ArrayList<Action> mItems;
     private AlertDialog mDialog;
+=======
+    private final AudioManager mAudioManager;
+    private final IDreamManager mDreamManager;
+
+    private ArrayList<Action> mItems;
+    private GlobalActionsDialog mDialog;
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 
     private Action mSilentModeAction;
     private ToggleAction mAirplaneModeOn;
@@ -124,6 +186,7 @@ class GlobalActions implements DialogInterface.OnDismissListener, DialogInterfac
     private boolean mHasTelephony;
     private boolean mHasVibrator;
 
+<<<<<<< HEAD
     private boolean mEnableScreenshotToggle = false;
     private boolean mEnableAirplaneToggle = true;
 
@@ -133,6 +196,8 @@ class GlobalActions implements DialogInterface.OnDismissListener, DialogInterfac
 
     private static final String POWER_MENU_SCREENSHOT_ENABLED = "power_menu_screenshot_enabled";
 
+=======
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     /**
      * @param context everything needs a context :(
      */
@@ -140,6 +205,11 @@ class GlobalActions implements DialogInterface.OnDismissListener, DialogInterfac
         mContext = context;
         mWindowManagerFuncs = windowManagerFuncs;
         mAudioManager = (AudioManager) mContext.getSystemService(Context.AUDIO_SERVICE);
+<<<<<<< HEAD
+=======
+        mDreamManager = IDreamManager.Stub.asInterface(
+                ServiceManager.getService(DreamService.DREAM_SERVICE));
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 
         // receive broadcasts
         IntentFilter filter = new IntentFilter();
@@ -148,8 +218,11 @@ class GlobalActions implements DialogInterface.OnDismissListener, DialogInterfac
         filter.addAction(TelephonyIntents.ACTION_EMERGENCY_CALLBACK_MODE_CHANGED);
         context.registerReceiver(mBroadcastReceiver, filter);
 
+<<<<<<< HEAD
         ThemeUtils.registerThemeChangeReceiver(context, mThemeChangeReceiver);
 
+=======
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         // get notified of phone state changes
         TelephonyManager telephonyManager =
                 (TelephonyManager) context.getSystemService(Context.TELEPHONY_SERVICE);
@@ -158,7 +231,11 @@ class GlobalActions implements DialogInterface.OnDismissListener, DialogInterfac
                 context.getSystemService(Context.CONNECTIVITY_SERVICE);
         mHasTelephony = cm.isNetworkSupported(ConnectivityManager.TYPE_MOBILE);
         mContext.getContentResolver().registerContentObserver(
+<<<<<<< HEAD
                 Settings.System.getUriFor(Settings.System.AIRPLANE_MODE_ON), true,
+=======
+                Settings.Global.getUriFor(Settings.Global.AIRPLANE_MODE_ON), true,
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
                 mAirplaneModeObserver);
         Vibrator vibrator = (Vibrator) mContext.getSystemService(Context.VIBRATOR_SERVICE);
         mHasVibrator = vibrator != null && vibrator.hasVibrator();
@@ -172,8 +249,12 @@ class GlobalActions implements DialogInterface.OnDismissListener, DialogInterfac
         mKeyguardShowing = keyguardShowing;
         mDeviceProvisioned = isDeviceProvisioned;
         if (mDialog != null) {
+<<<<<<< HEAD
             mDialog.hide();
             mDialog.cancel();
+=======
+            mDialog.dismiss();
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
             mDialog = null;
             // Show delayed, so that the dismiss of the previous dialog completes
             mHandler.sendEmptyMessage(MESSAGE_SHOW);
@@ -182,14 +263,38 @@ class GlobalActions implements DialogInterface.OnDismissListener, DialogInterfac
         }
     }
 
+<<<<<<< HEAD
     private void handleShow() {
         mDialog = createDialog();
         prepareDialog();
 
+=======
+    private void awakenIfNecessary() {
+        if (mDreamManager != null) {
+            try {
+                if (mDreamManager.isDreaming()) {
+                    mDreamManager.awaken();
+                }
+            } catch (RemoteException e) {
+                // we tried
+            }
+        }
+    }
+
+    private void handleShow() {
+        awakenIfNecessary();
+        mDialog = createDialog();
+        prepareDialog();
+
+        WindowManager.LayoutParams attrs = mDialog.getWindow().getAttributes();
+        attrs.setTitle("GlobalActions");
+        mDialog.getWindow().setAttributes(attrs);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         mDialog.show();
         mDialog.getWindow().getDecorView().setSystemUiVisibility(View.STATUS_BAR_DISABLE_EXPAND);
     }
 
+<<<<<<< HEAD
     private Context getUiContext() {
         if (mUiContext == null) {
             mUiContext = ThemeUtils.createUiContext(mContext);
@@ -197,17 +302,24 @@ class GlobalActions implements DialogInterface.OnDismissListener, DialogInterfac
         return mUiContext != null ? mUiContext : mContext;
     }
 
+=======
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     /**
      * Create the global actions dialog.
      * @return A new dialog.
      */
+<<<<<<< HEAD
     private AlertDialog createDialog() {
+=======
+    private GlobalActionsDialog createDialog() {
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         // Simple toggle style if there's no vibrator, otherwise use a tri-state
         if (!mHasVibrator) {
             mSilentModeAction = new SilentModeToggleAction();
         } else {
             mSilentModeAction = new SilentModeTriStateAction(mContext, mAudioManager, mHandler);
         }
+<<<<<<< HEAD
 
         mEnableScreenshotToggle = Settings.System.getInt(mContext.getContentResolver(),
                 Settings.System.POWER_DIALOG_SHOW_SCREENSHOT, 0) == 1;
@@ -215,6 +327,8 @@ class GlobalActions implements DialogInterface.OnDismissListener, DialogInterfac
         mEnableAirplaneToggle = Settings.System.getInt(mContext.getContentResolver(),
                 Settings.System.POWER_DIALOG_SHOW_AIRPLANE_TOGGLE, 1) == 1;
 
+=======
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         mAirplaneModeOn = new ToggleAction(
                 R.drawable.ic_lock_airplane_mode,
                 R.drawable.ic_lock_airplane_mode_off,
@@ -268,11 +382,19 @@ class GlobalActions implements DialogInterface.OnDismissListener, DialogInterfac
 
                 public void onPress() {
                     // shutdown by making sure radio and power are handled accordingly.
+<<<<<<< HEAD
                     mWindowManagerFuncs.shutdown();
                 }
 
                 public boolean onLongPress() {
                     mWindowManagerFuncs.rebootSafeMode();
+=======
+                    mWindowManagerFuncs.shutdown(true);
+                }
+
+                public boolean onLongPress() {
+                    mWindowManagerFuncs.rebootSafeMode(true);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
                     return true;
                 }
 
@@ -285,6 +407,7 @@ class GlobalActions implements DialogInterface.OnDismissListener, DialogInterfac
                 }
             });
 
+<<<<<<< HEAD
         // next: reboot
         mItems.add(
                 new SinglePressAction(
@@ -358,6 +481,100 @@ class GlobalActions implements DialogInterface.OnDismissListener, DialogInterfac
         }
 
         List<UserInfo> users = mContext.getPackageManager().getUsers();
+=======
+        // next: airplane mode
+        mItems.add(mAirplaneModeOn);
+
+        // next: bug report, if enabled
+        if (Settings.Secure.getInt(mContext.getContentResolver(),
+                Settings.Secure.BUGREPORT_IN_POWER_MENU, 0) != 0) {
+            mItems.add(
+                new SinglePressAction(com.android.internal.R.drawable.stat_sys_adb,
+                        R.string.global_action_bug_report) {
+
+                    public void onPress() {
+                        AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
+                        builder.setTitle(com.android.internal.R.string.bugreport_title);
+                        builder.setMessage(com.android.internal.R.string.bugreport_message);
+                        builder.setNegativeButton(com.android.internal.R.string.cancel, null);
+                        builder.setPositiveButton(com.android.internal.R.string.report,
+                                new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        // Add a little delay before executing, to give the
+                                        // dialog a chance to go away before it takes a
+                                        // screenshot.
+                                        mHandler.postDelayed(new Runnable() {
+                                            @Override public void run() {
+                                                try {
+                                                    ActivityManagerNative.getDefault()
+                                                            .requestBugReport();
+                                                } catch (RemoteException e) {
+                                                }
+                                            }
+                                        }, 500);
+                                    }
+                                });
+                        AlertDialog dialog = builder.create();
+                        dialog.getWindow().setType(WindowManager.LayoutParams.TYPE_KEYGUARD_DIALOG);
+                        dialog.show();
+                    }
+
+                    public boolean onLongPress() {
+                        return false;
+                    }
+
+                    public boolean showDuringKeyguard() {
+                        return true;
+                    }
+
+                    public boolean showBeforeProvisioning() {
+                        return false;
+                    }
+                });
+        }
+
+        // last: silent mode
+        if (SHOW_SILENT_TOGGLE) {
+            mItems.add(mSilentModeAction);
+        }
+
+        // one more thing: optionally add a list of users to switch to
+        if (SystemProperties.getBoolean("fw.power_user_switcher", false)) {
+            addUsersToMenu(mItems);
+        }
+
+        mAdapter = new MyAdapter();
+
+        AlertParams params = new AlertParams(mContext);
+        params.mAdapter = mAdapter;
+        params.mOnClickListener = this;
+        params.mForceInverseBackground = true;
+
+        GlobalActionsDialog dialog = new GlobalActionsDialog(mContext, params);
+        dialog.setCanceledOnTouchOutside(false); // Handled by the custom class.
+
+        dialog.getListView().setItemsCanFocus(true);
+        dialog.getListView().setLongClickable(true);
+        dialog.getListView().setOnItemLongClickListener(
+                new AdapterView.OnItemLongClickListener() {
+                    @Override
+                    public boolean onItemLongClick(AdapterView<?> parent, View view, int position,
+                            long id) {
+                        return mAdapter.getItem(position).onLongPress();
+                    }
+        });
+        dialog.getWindow().setType(WindowManager.LayoutParams.TYPE_KEYGUARD_DIALOG);
+
+        dialog.setOnDismissListener(this);
+
+        return dialog;
+    }
+
+    private void addUsersToMenu(ArrayList<Action> items) {
+        List<UserInfo> users = ((UserManager) mContext.getSystemService(Context.USER_SERVICE))
+                .getUsers();
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         if (users.size() > 1) {
             UserInfo currentUser;
             try {
@@ -368,14 +585,24 @@ class GlobalActions implements DialogInterface.OnDismissListener, DialogInterfac
             for (final UserInfo user : users) {
                 boolean isCurrentUser = currentUser == null
                         ? user.id == 0 : (currentUser.id == user.id);
+<<<<<<< HEAD
                 SinglePressAction switchToUser = new SinglePressAction(
                         com.android.internal.R.drawable.ic_menu_cc,
+=======
+                Drawable icon = user.iconPath != null ? Drawable.createFromPath(user.iconPath)
+                        : null;
+                SinglePressAction switchToUser = new SinglePressAction(
+                        com.android.internal.R.drawable.ic_menu_cc, icon,
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
                         (user.name != null ? user.name : "Primary")
                         + (isCurrentUser ? " \u2714" : "")) {
                     public void onPress() {
                         try {
                             ActivityManagerNative.getDefault().switchUser(user.id);
+<<<<<<< HEAD
                             getWindowManager().lockNow();
+=======
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
                         } catch (RemoteException re) {
                             Log.e(TAG, "Couldn't switch user " + re);
                         }
@@ -389,6 +616,7 @@ class GlobalActions implements DialogInterface.OnDismissListener, DialogInterfac
                         return false;
                     }
                 };
+<<<<<<< HEAD
                 mItems.add(switchToUser);
             }
         }
@@ -500,15 +728,26 @@ class GlobalActions implements DialogInterface.OnDismissListener, DialogInterfac
        }
    }
 
+=======
+                items.add(switchToUser);
+            }
+        }
+    }
+
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     private void prepareDialog() {
         refreshSilentMode();
         mAirplaneModeOn.updateState(mAirplaneState);
         mAdapter.notifyDataSetChanged();
+<<<<<<< HEAD
         if (mKeyguardShowing) {
             mDialog.getWindow().setType(WindowManager.LayoutParams.TYPE_KEYGUARD_DIALOG);
         } else {
             mDialog.getWindow().setType(WindowManager.LayoutParams.TYPE_SYSTEM_DIALOG);
         }
+=======
+        mDialog.getWindow().setType(WindowManager.LayoutParams.TYPE_KEYGUARD_DIALOG);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         if (SHOW_SILENT_TOGGLE) {
             IntentFilter filter = new IntentFilter(AudioManager.RINGER_MODE_CHANGED_ACTION);
             mContext.registerReceiver(mRingerModeReceiver, filter);
@@ -605,8 +844,12 @@ class GlobalActions implements DialogInterface.OnDismissListener, DialogInterfac
 
         public View getView(int position, View convertView, ViewGroup parent) {
             Action action = getItem(position);
+<<<<<<< HEAD
             final Context context = getUiContext();
             return action.create(context, convertView, parent, LayoutInflater.from(context));
+=======
+            return action.create(mContext, convertView, parent, LayoutInflater.from(mContext));
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         }
     }
 
@@ -647,6 +890,10 @@ class GlobalActions implements DialogInterface.OnDismissListener, DialogInterfac
      */
     private static abstract class SinglePressAction implements Action {
         private final int mIconResId;
+<<<<<<< HEAD
+=======
+        private final Drawable mIcon;
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         private final int mMessageResId;
         private final CharSequence mMessage;
 
@@ -654,13 +901,30 @@ class GlobalActions implements DialogInterface.OnDismissListener, DialogInterfac
             mIconResId = iconResId;
             mMessageResId = messageResId;
             mMessage = null;
+<<<<<<< HEAD
+=======
+            mIcon = null;
+        }
+
+        protected SinglePressAction(int iconResId, Drawable icon, CharSequence message) {
+            mIconResId = iconResId;
+            mMessageResId = 0;
+            mMessage = message;
+            mIcon = icon;
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         }
 
         protected SinglePressAction(int iconResId, CharSequence message) {
             mIconResId = iconResId;
             mMessageResId = 0;
             mMessage = message;
+<<<<<<< HEAD
         }
+=======
+            mIcon = null;
+        }
+
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         public boolean isEnabled() {
             return true;
         }
@@ -679,8 +943,17 @@ class GlobalActions implements DialogInterface.OnDismissListener, DialogInterfac
             TextView messageView = (TextView) v.findViewById(R.id.message);
 
             v.findViewById(R.id.status).setVisibility(View.GONE);
+<<<<<<< HEAD
 
             icon.setImageDrawable(context.getResources().getDrawable(mIconResId));
+=======
+            if (mIcon != null) {
+                icon.setImageDrawable(mIcon);
+                icon.setScaleType(ScaleType.CENTER_CROP);
+            } else if (mIconResId != 0) {
+                icon.setImageDrawable(context.getResources().getDrawable(mIconResId));
+            }
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
             if (mMessage != null) {
                 messageView.setText(mMessage);
             } else {
@@ -937,12 +1210,15 @@ class GlobalActions implements DialogInterface.OnDismissListener, DialogInterfac
         }
     };
 
+<<<<<<< HEAD
     private BroadcastReceiver mThemeChangeReceiver = new BroadcastReceiver() {
         public void onReceive(Context context, Intent intent) {
             mUiContext = null;
         }
     };
 
+=======
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     PhoneStateListener mPhoneStateListener = new PhoneStateListener() {
         @Override
         public void onServiceStateChanged(ServiceState serviceState) {
@@ -998,9 +1274,15 @@ class GlobalActions implements DialogInterface.OnDismissListener, DialogInterfac
         // Let the service state callbacks handle the state.
         if (mHasTelephony) return;
 
+<<<<<<< HEAD
         boolean airplaneModeOn = Settings.System.getInt(
                 mContext.getContentResolver(),
                 Settings.System.AIRPLANE_MODE_ON,
+=======
+        boolean airplaneModeOn = Settings.Global.getInt(
+                mContext.getContentResolver(),
+                Settings.Global.AIRPLANE_MODE_ON,
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
                 0) == 1;
         mAirplaneState = airplaneModeOn ? ToggleAction.State.On : ToggleAction.State.Off;
         mAirplaneModeOn.updateState(mAirplaneState);
@@ -1010,19 +1292,30 @@ class GlobalActions implements DialogInterface.OnDismissListener, DialogInterfac
      * Change the airplane mode system setting
      */
     private void changeAirplaneModeSystemSetting(boolean on) {
+<<<<<<< HEAD
         Settings.System.putInt(
                 mContext.getContentResolver(),
                 Settings.System.AIRPLANE_MODE_ON,
+=======
+        Settings.Global.putInt(
+                mContext.getContentResolver(),
+                Settings.Global.AIRPLANE_MODE_ON,
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
                 on ? 1 : 0);
         Intent intent = new Intent(Intent.ACTION_AIRPLANE_MODE_CHANGED);
         intent.addFlags(Intent.FLAG_RECEIVER_REPLACE_PENDING);
         intent.putExtra("state", on);
+<<<<<<< HEAD
         mContext.sendBroadcast(intent);
+=======
+        mContext.sendBroadcastAsUser(intent, UserHandle.ALL);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         if (!mHasTelephony) {
             mAirplaneState = on ? ToggleAction.State.On : ToggleAction.State.Off;
         }
     }
 
+<<<<<<< HEAD
     private IWindowManager getWindowManager() {
         if (mIWindowManager == null) {
             IBinder b = ServiceManager.getService(Context.WINDOW_SERVICE);
@@ -1069,5 +1362,122 @@ class GlobalActions implements DialogInterface.OnDismissListener, DialogInterfac
         }
 
         return d;
+=======
+    private static final class GlobalActionsDialog extends Dialog implements DialogInterface {
+        private final Context mContext;
+        private final int mWindowTouchSlop;
+        private final AlertController mAlert;
+
+        private EnableAccessibilityController mEnableAccessibilityController;
+
+        private boolean mIntercepted;
+        private boolean mCancelOnUp;
+
+        public GlobalActionsDialog(Context context, AlertParams params) {
+            super(context, getDialogTheme(context));
+            mContext = context;
+            mAlert = new AlertController(mContext, this, getWindow());
+            mWindowTouchSlop = ViewConfiguration.get(context).getScaledWindowTouchSlop();
+            params.apply(mAlert);
+        }
+
+        private static int getDialogTheme(Context context) {
+            TypedValue outValue = new TypedValue();
+            context.getTheme().resolveAttribute(com.android.internal.R.attr.alertDialogTheme,
+                    outValue, true);
+            return outValue.resourceId;
+        }
+
+        @Override
+        protected void onStart() {
+            // If global accessibility gesture can be performed, we will take care
+            // of dismissing the dialog on touch outside. This is because the dialog
+            // is dismissed on the first down while the global gesture is a long press
+            // with two fingers anywhere on the screen.
+            if (EnableAccessibilityController.canEnableAccessibilityViaGesture(mContext)) {
+                mEnableAccessibilityController = new EnableAccessibilityController(mContext);
+                super.setCanceledOnTouchOutside(false);
+            } else {
+                mEnableAccessibilityController = null;
+                super.setCanceledOnTouchOutside(true);
+            }
+            super.onStart();
+        }
+
+        @Override
+        protected void onStop() {
+            if (mEnableAccessibilityController != null) {
+                mEnableAccessibilityController.onDestroy();
+            }
+            super.onStop();
+        }
+
+        @Override
+        public boolean dispatchTouchEvent(MotionEvent event) {
+            if (mEnableAccessibilityController != null) {
+                final int action = event.getActionMasked();
+                if (action == MotionEvent.ACTION_DOWN) {
+                    View decor = getWindow().getDecorView();
+                    final int eventX = (int) event.getX();
+                    final int eventY = (int) event.getY();
+                    if (eventX < -mWindowTouchSlop
+                            || eventY < -mWindowTouchSlop
+                            || eventX >= decor.getWidth() + mWindowTouchSlop
+                            || eventY >= decor.getHeight() + mWindowTouchSlop) {
+                        mCancelOnUp = true;
+                    }
+                }
+                try {
+                    if (!mIntercepted) {
+                        mIntercepted = mEnableAccessibilityController.onInterceptTouchEvent(event);
+                        if (mIntercepted) {
+                            final long now = SystemClock.uptimeMillis();
+                            event = MotionEvent.obtain(now, now,
+                                    MotionEvent.ACTION_CANCEL, 0.0f, 0.0f, 0);
+                            event.setSource(InputDevice.SOURCE_TOUCHSCREEN);
+                            mCancelOnUp = true;
+                        }
+                    } else {
+                        return mEnableAccessibilityController.onTouchEvent(event);
+                    }
+                } finally {
+                    if (action == MotionEvent.ACTION_UP) {
+                        if (mCancelOnUp) {
+                            cancel();
+                        }
+                        mCancelOnUp = false;
+                        mIntercepted = false;
+                    }
+                }
+            }
+            return super.dispatchTouchEvent(event);
+        }
+
+        public ListView getListView() {
+            return mAlert.getListView();
+        }
+
+        @Override
+        protected void onCreate(Bundle savedInstanceState) {
+            super.onCreate(savedInstanceState);
+            mAlert.installContent();
+        }
+
+        @Override
+        public boolean onKeyDown(int keyCode, KeyEvent event) {
+            if (mAlert.onKeyDown(keyCode, event)) {
+                return true;
+            }
+            return super.onKeyDown(keyCode, event);
+        }
+
+        @Override
+        public boolean onKeyUp(int keyCode, KeyEvent event) {
+            if (mAlert.onKeyUp(keyCode, event)) {
+                return true;
+            }
+            return super.onKeyUp(keyCode, event);
+        }
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     }
 }

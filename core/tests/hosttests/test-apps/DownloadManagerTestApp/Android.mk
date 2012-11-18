@@ -25,4 +25,12 @@ LOCAL_SDK_VERSION := current
 
 LOCAL_PACKAGE_NAME := DownloadManagerTestApp
 
+<<<<<<< HEAD
+=======
+ifneq ($(TARGET_BUILD_VARIANT),user)
+# Need to run as system app to get access to Settings. This test won't work for user builds.
+LOCAL_CERTIFICATE := platform
+endif
+
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 include $(BUILD_PACKAGE)

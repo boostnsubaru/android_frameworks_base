@@ -27,10 +27,13 @@ import android.util.FloatMath;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
+<<<<<<< HEAD
 import android.view.View.MeasureSpec;
 import android.view.View.OnClickListener;
 import android.view.View.OnLongClickListener;
 import android.view.View.OnTouchListener;
+=======
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 import android.view.ViewConfiguration;
 import android.view.ViewTreeObserver;
 import android.view.ViewTreeObserver.OnGlobalLayoutListener;
@@ -80,6 +83,20 @@ public class RecentsHorizontalScrollView extends HorizontalScrollView
         }
     }
 
+<<<<<<< HEAD
+=======
+    public View findViewForTask(int persistentTaskId) {
+        for (int i = 0; i < mLinearLayout.getChildCount(); i++) {
+            View v = mLinearLayout.getChildAt(i);
+            RecentsPanelView.ViewHolder holder = (RecentsPanelView.ViewHolder) v.getTag();
+            if (holder.taskDescription.persistentTaskId == persistentTaskId) {
+                return v;
+            }
+        }
+        return null;
+    }
+
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     private void update() {
         for (int i = 0; i < mLinearLayout.getChildCount(); i++) {
             View v = mLinearLayout.getChildAt(i);
@@ -149,19 +166,31 @@ public class RecentsHorizontalScrollView extends HorizontalScrollView
         }
         setLayoutTransition(transitioner);
 
+<<<<<<< HEAD
         // Scroll to end after layout.
         final ViewTreeObserver observer = getViewTreeObserver();
+=======
+        // Scroll to end after initial layout.
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 
         final OnGlobalLayoutListener updateScroll = new OnGlobalLayoutListener() {
                 public void onGlobalLayout() {
                     mLastScrollPosition = scrollPositionOfMostRecent();
                     scrollTo(mLastScrollPosition, 0);
+<<<<<<< HEAD
+=======
+                    final ViewTreeObserver observer = getViewTreeObserver();
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
                     if (observer.isAlive()) {
                         observer.removeOnGlobalLayoutListener(this);
                     }
                 }
             };
+<<<<<<< HEAD
         observer.addOnGlobalLayoutListener(updateScroll);
+=======
+        getViewTreeObserver().addOnGlobalLayoutListener(updateScroll);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     }
 
     @Override

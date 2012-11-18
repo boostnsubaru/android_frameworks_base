@@ -37,7 +37,11 @@
                 android:layout_width="match_parent"
                 android:layout_height="64dip"
                 android:layout_alignParentTop="true"
+<<<<<<< HEAD
                 android:layout_marginLeft="4dip"
+=======
+                android:layout_marginStart="4dip"
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
                 android:textAppearance="?android:attr/textAppearanceMedium"
                 android:gravity="center_vertical"
                 android:drawableLeft="@drawable/ic_lock_idle_lock"
@@ -58,7 +62,11 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/spacerTop"
                 android:layout_marginTop="8dip"
+<<<<<<< HEAD
                 android:layout_marginLeft="9dip"
+=======
+                android:layout_marginStart="9dip"
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
                 android:textAppearance="?android:attr/textAppearanceSmall"
                 android:text="@android:string/lockscreen_glogin_instructions"
                 />
@@ -69,8 +77,13 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@id/instructions"
                 android:layout_marginTop="8dip"
+<<<<<<< HEAD
                 android:layout_marginLeft="7dip"
                 android:layout_marginRight="7dip"
+=======
+                android:layout_marginStart="7dip"
+                android:layout_marginEnd="7dip"
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
                 android:hint="@android:string/lockscreen_glogin_username_hint"
                 android:inputType="textEmailAddress"
                 />
@@ -81,8 +94,13 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@id/login"
                 android:layout_marginTop="15dip"
+<<<<<<< HEAD
                 android:layout_marginLeft="7dip"
                 android:layout_marginRight="7dip"
+=======
+                android:layout_marginStart="7dip"
+                android:layout_marginEnd="7dip"
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
                 android:inputType="textPassword"
                 android:hint="@android:string/lockscreen_glogin_password_hint"
                 android:nextFocusRight="@+id/ok"
@@ -96,8 +114,13 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@id/password"
                 android:layout_marginTop="7dip"
+<<<<<<< HEAD
                 android:layout_marginRight="7dip"
                 android:layout_alignParentRight="true"
+=======
+                android:layout_marginEnd="7dip"
+                android:layout_alignParentEnd="true"
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
                 android:text="@android:string/lockscreen_glogin_submit_button"
                 />
         

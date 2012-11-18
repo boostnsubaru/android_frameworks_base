@@ -13,7 +13,11 @@
         android:layout_gravity="center_vertical"
         android:layout_weight="1"
         android:orientation="vertical"
+<<<<<<< HEAD
         android:paddingLeft="16dp"
+=======
+        android:paddingStart="16dp"
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         >
         <TextView android:id="@+id/title"
             android:textAppearance="@style/TextAppearance.StatusBar.EventContent.Title"

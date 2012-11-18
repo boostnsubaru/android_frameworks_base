@@ -16,11 +16,16 @@
 
 package android.view;
 
+<<<<<<< HEAD
 import com.android.layoutlib.bridge.android.BridgeWindowManager;
 import com.android.layoutlib.bridge.impl.RenderAction;
 import com.android.tools.layoutlib.annotations.LayoutlibDelegate;
 
 import android.os.RemoteException;
+=======
+import com.android.tools.layoutlib.annotations.LayoutlibDelegate;
+
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 
 /**
  * Delegate used to provide new implementation of a select few methods of {@link Display}
@@ -31,6 +36,7 @@ import android.os.RemoteException;
  */
 public class Display_Delegate {
 
+<<<<<<< HEAD
     // ---- Overridden methods ----
 
     @LayoutlibDelegate
@@ -84,4 +90,11 @@ public class Display_Delegate {
         theDisplay.mDpiX = wm.getMetrics().xdpi;
         theDisplay.mDpiY = wm.getMetrics().ydpi;
     }
+=======
+    @LayoutlibDelegate
+    static void updateDisplayInfoLocked(Display theDisplay) {
+        // do nothing
+    }
+
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 }

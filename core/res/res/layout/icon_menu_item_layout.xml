@@ -19,8 +19,13 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:paddingBottom="1dip"
+<<<<<<< HEAD
     android:paddingLeft="3dip"
     android:paddingRight="3dip"
+=======
+    android:paddingStart="3dip"
+    android:paddingEnd="3dip"
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     android:singleLine="true"
     android:ellipsize="marquee"
     android:fadingEdge="horizontal" />

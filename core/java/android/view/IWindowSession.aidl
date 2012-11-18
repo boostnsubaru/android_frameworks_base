@@ -37,8 +37,18 @@ interface IWindowSession {
     int add(IWindow window, int seq, in WindowManager.LayoutParams attrs,
             in int viewVisibility, out Rect outContentInsets,
             out InputChannel outInputChannel);
+<<<<<<< HEAD
     int addWithoutInputChannel(IWindow window, int seq, in WindowManager.LayoutParams attrs,
             in int viewVisibility, out Rect outContentInsets);
+=======
+    int addToDisplay(IWindow window, int seq, in WindowManager.LayoutParams attrs,
+            in int viewVisibility, in int layerStackId, out Rect outContentInsets,
+            out InputChannel outInputChannel);
+    int addWithoutInputChannel(IWindow window, int seq, in WindowManager.LayoutParams attrs,
+            in int viewVisibility, out Rect outContentInsets);
+    int addToDisplayWithoutInputChannel(IWindow window, int seq, in WindowManager.LayoutParams attrs,
+            in int viewVisibility, in int layerStackId, out Rect outContentInsets);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     void remove(IWindow window);
     
     /**
@@ -54,8 +64,13 @@ interface IWindowSession {
      * @param requestedWidth The width the window wants to be.
      * @param requestedHeight The height the window wants to be.
      * @param viewVisibility Window root view's visibility.
+<<<<<<< HEAD
      * @param flags Request flags: {@link WindowManagerImpl#RELAYOUT_INSETS_PENDING},
      * {@link WindowManagerImpl#RELAYOUT_DEFER_SURFACE_DESTROY}.
+=======
+     * @param flags Request flags: {@link WindowManagerGlobal#RELAYOUT_INSETS_PENDING},
+     * {@link WindowManagerGlobal#RELAYOUT_DEFER_SURFACE_DESTROY}.
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
      * @param outFrame Rect in which is placed the new position/size on
      * screen.
      * @param outContentInsets Rect in which is placed the offsets from
@@ -74,8 +89,13 @@ interface IWindowSession {
      * was last displayed.
      * @param outSurface Object in which is placed the new display surface.
      * 
+<<<<<<< HEAD
      * @return int Result flags: {@link WindowManagerImpl#RELAYOUT_SHOW_FOCUS},
      * {@link WindowManagerImpl#RELAYOUT_FIRST_TIME}.
+=======
+     * @return int Result flags: {@link WindowManagerGlobal#RELAYOUT_SHOW_FOCUS},
+     * {@link WindowManagerGlobal#RELAYOUT_FIRST_TIME}.
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
      */
     int relayout(IWindow window, int seq, in WindowManager.LayoutParams attrs,
             int requestedWidth, int requestedHeight, int viewVisibility,
@@ -172,4 +192,15 @@ interface IWindowSession {
             int z, in Bundle extras, boolean sync);
     
     void wallpaperCommandComplete(IBinder window, in Bundle result);
+<<<<<<< HEAD
+=======
+
+    void setUniverseTransform(IBinder window, float alpha, float offx, float offy,
+            float dsdx, float dtdx, float dsdy, float dtdy);
+
+    /**
+     * Notifies that a rectangle on the screen has been requested.
+     */
+    void onRectangleOnScreenRequested(IBinder token, in Rect rectangle, boolean immediate);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 }

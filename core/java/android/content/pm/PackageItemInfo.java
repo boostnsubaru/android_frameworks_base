@@ -218,7 +218,11 @@ public class PackageItemInfo {
         }
         return null;
     }
+<<<<<<< HEAD
     
+=======
+
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     protected void dumpFront(Printer pw, String prefix) {
         if (name != null) {
             pw.println(prefix + "name=" + name);

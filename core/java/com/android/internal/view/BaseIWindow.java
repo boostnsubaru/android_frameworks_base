@@ -28,12 +28,22 @@ import android.view.IWindowSession;
 public class BaseIWindow extends IWindow.Stub {
     private IWindowSession mSession;
     public int mSeq;
+<<<<<<< HEAD
     
     public void setSession(IWindowSession session) {
         mSession = session;
     }
     
     public void resized(int w, int h, Rect contentInsets,
+=======
+
+    public void setSession(IWindowSession session) {
+        mSession = session;
+    }
+
+    @Override
+    public void resized(Rect frame, Rect contentInsets,
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
             Rect visibleInsets, boolean reportDraw, Configuration newConfig) {
         if (reportDraw) {
             try {
@@ -43,6 +53,7 @@ public class BaseIWindow extends IWindow.Stub {
         }
     }
 
+<<<<<<< HEAD
     public void dispatchAppVisibility(boolean visible) {
     }
 
@@ -61,6 +72,37 @@ public class BaseIWindow extends IWindow.Stub {
     public void closeSystemDialogs(String reason) {
     }
     
+=======
+    @Override
+    public void moved(int newX, int newY) {
+    }
+
+    @Override
+    public void dispatchAppVisibility(boolean visible) {
+    }
+
+    @Override
+    public void dispatchGetNewSurface() {
+    }
+
+    @Override
+    public void dispatchScreenState(boolean on) {
+    }
+
+    @Override
+    public void windowFocusChanged(boolean hasFocus, boolean touchEnabled) {
+    }
+
+    @Override
+    public void executeCommand(String command, String parameters, ParcelFileDescriptor out) {
+    }
+
+    @Override
+    public void closeSystemDialogs(String reason) {
+    }
+
+    @Override
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     public void dispatchWallpaperOffsets(float x, float y, float xStep, float yStep, boolean sync) {
         if (sync) {
             try {
@@ -70,14 +112,26 @@ public class BaseIWindow extends IWindow.Stub {
         }
     }
 
+<<<<<<< HEAD
     public void dispatchDragEvent(DragEvent event) {
     }
 
+=======
+    @Override
+    public void dispatchDragEvent(DragEvent event) {
+    }
+
+    @Override
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     public void dispatchSystemUiVisibilityChanged(int seq, int globalUi,
             int localValue, int localChanges) {
         mSeq = seq;
     }
 
+<<<<<<< HEAD
+=======
+    @Override
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     public void dispatchWallpaperCommand(String action, int x, int y,
             int z, Bundle extras, boolean sync) {
         if (sync) {
@@ -88,6 +142,10 @@ public class BaseIWindow extends IWindow.Stub {
         }
     }
 
+<<<<<<< HEAD
+=======
+    @Override
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     public void doneAnimating() {
     }
 }

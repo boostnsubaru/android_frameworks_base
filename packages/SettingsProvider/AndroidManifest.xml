@@ -14,6 +14,10 @@
 
         <provider android:name="SettingsProvider" android:authorities="settings"
                   android:multiprocess="false"
+<<<<<<< HEAD
+=======
+                  android:exported="true"
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
                   android:writePermission="android.permission.WRITE_SETTINGS"
                   android:initOrder="100" />
     </application>

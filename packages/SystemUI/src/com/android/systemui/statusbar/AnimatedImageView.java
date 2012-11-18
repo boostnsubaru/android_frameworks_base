@@ -70,7 +70,10 @@ public class AnimatedImageView extends ImageView {
     public void onAttachedToWindow() {
         super.onAttachedToWindow();
         mAttached = true;
+<<<<<<< HEAD
         updateAnim();
+=======
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     }
 
     @Override

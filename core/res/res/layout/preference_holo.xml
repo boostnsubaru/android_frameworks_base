@@ -22,8 +22,13 @@
     android:layout_height="wrap_content"
     android:minHeight="?android:attr/listPreferredItemHeight"
     android:gravity="center_vertical"
+<<<<<<< HEAD
     android:paddingLeft="@dimen/preference_item_padding_side"
     android:paddingRight="?android:attr/scrollbarSize">
+=======
+    android:paddingStart="@dimen/preference_item_padding_side"
+    android:paddingEnd="?android:attr/scrollbarSize">
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 
     <LinearLayout
         android:layout_width="wrap_content"
@@ -33,18 +38,32 @@
         android:orientation="horizontal">
         <ImageView
             android:id="@+android:id/icon"
+<<<<<<< HEAD
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:minWidth="48dp"
             android:paddingRight="@dimen/preference_item_padding_inner" />
+=======
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:layout_gravity="center"
+            android:minWidth="48dp"
+            android:scaleType="centerInside"
+            android:layout_marginEnd="@dimen/preference_item_padding_inner"
+             />
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     </LinearLayout>
 
     <RelativeLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_weight="1"
+<<<<<<< HEAD
         android:paddingRight="@dimen/preference_item_padding_inner"
+=======
+        android:paddingEnd="@dimen/preference_item_padding_inner"
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         android:paddingTop="6dip"
         android:paddingBottom="6dip">
 
@@ -55,12 +74,20 @@
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:ellipsize="marquee"
             android:fadingEdge="horizontal" />
+<<<<<<< HEAD
             
+=======
+
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         <TextView android:id="@+android:id/summary"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@android:id/title"
+<<<<<<< HEAD
             android:layout_alignLeft="@android:id/title"
+=======
+            android:layout_alignStart="@android:id/title"
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
             android:textAppearance="?android:attr/textAppearanceSmall"
             android:textColor="?android:attr/textColorSecondary"
             android:maxLines="10" />

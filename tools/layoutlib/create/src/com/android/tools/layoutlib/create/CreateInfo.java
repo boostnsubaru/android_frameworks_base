@@ -110,11 +110,20 @@ public final class CreateInfo implements ICreateInfo {
         "android.os.Handler#sendMessageAtTime",
         "android.os.HandlerThread#run",
         "android.os.Build#getString",
+<<<<<<< HEAD
         "android.view.Display#getWindowManager",
+=======
+        "android.view.Choreographer#getRefreshRate",
+        "android.view.Display#updateDisplayInfoLocked",
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         "android.view.LayoutInflater#rInflate",
         "android.view.LayoutInflater#parseInclude",
         "android.view.View#isInEditMode",
         "android.view.ViewRootImpl#isInTouchMode",
+<<<<<<< HEAD
+=======
+        "android.view.WindowManagerGlobal#getWindowManagerService",
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         "android.view.inputmethod.InputMethodManager#getInstance",
         "com.android.internal.util.XmlUtils#convertValueToInt",
         "com.android.internal.textservice.ITextServicesManager$Stub#asInterface",

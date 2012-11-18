@@ -37,6 +37,10 @@ public abstract class TwoStatePreference extends Preference {
     private CharSequence mSummaryOn;
     private CharSequence mSummaryOff;
     boolean mChecked;
+<<<<<<< HEAD
+=======
+    private boolean mCheckedSet;
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     private boolean mSendClickAccessibilityEvent;
     private boolean mDisableDependentsState;
 
@@ -74,11 +78,24 @@ public abstract class TwoStatePreference extends Preference {
      * @param checked The checked state.
      */
     public void setChecked(boolean checked) {
+<<<<<<< HEAD
         if (mChecked != checked) {
             mChecked = checked;
             persistBoolean(checked);
             notifyDependencyChange(shouldDisableDependents());
             notifyChanged();
+=======
+        // Always persist/notify the first time; don't assume the field's default of false.
+        final boolean changed = mChecked != checked;
+        if (changed || !mCheckedSet) {
+            mChecked = checked;
+            mCheckedSet = true;
+            persistBoolean(checked);
+            if (changed) {
+                notifyDependencyChange(shouldDisableDependents());
+                notifyChanged();
+            }
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         }
     }
 

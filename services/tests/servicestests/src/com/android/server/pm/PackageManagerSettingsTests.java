@@ -138,7 +138,11 @@ public class PackageManagerSettingsTests extends AndroidTestCase {
 
         // Write the package files and make sure they're parsed properly the first time
         writeOldFiles();
+<<<<<<< HEAD
         Settings settings = new Settings(getContext().getFilesDir());
+=======
+        Settings settings = new Settings(getContext(), getContext().getFilesDir());
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         assertEquals(true, settings.readLPw(null));
         assertNotNull(settings.peekPackageLPr(PACKAGE_NAME_3));
         assertNotNull(settings.peekPackageLPr(PACKAGE_NAME_1));
@@ -156,11 +160,19 @@ public class PackageManagerSettingsTests extends AndroidTestCase {
     public void testNewPackageRestrictionsFile() {
         // Write the package files and make sure they're parsed properly the first time
         writeOldFiles();
+<<<<<<< HEAD
         Settings settings = new Settings(getContext().getFilesDir());
         assertEquals(true, settings.readLPw(null));
 
         // Create Settings again to make it read from the new files
         settings = new Settings(getContext().getFilesDir());
+=======
+        Settings settings = new Settings(getContext(), getContext().getFilesDir());
+        assertEquals(true, settings.readLPw(null));
+
+        // Create Settings again to make it read from the new files
+        settings = new Settings(getContext(), getContext().getFilesDir());
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         assertEquals(true, settings.readLPw(null));
 
         PackageSetting ps = settings.peekPackageLPr(PACKAGE_NAME_2);
@@ -171,7 +183,11 @@ public class PackageManagerSettingsTests extends AndroidTestCase {
     public void testEnableDisable() {
         // Write the package files and make sure they're parsed properly the first time
         writeOldFiles();
+<<<<<<< HEAD
         Settings settings = new Settings(getContext().getFilesDir());
+=======
+        Settings settings = new Settings(getContext(), getContext().getFilesDir());
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         assertEquals(true, settings.readLPw(null));
 
         // Enable/Disable a package

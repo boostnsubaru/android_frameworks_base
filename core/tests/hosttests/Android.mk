@@ -16,6 +16,7 @@ LOCAL_PATH := $(call my-dir)
 
 include $(CLEAR_VARS)
 
+<<<<<<< HEAD
 #LOCAL_TEST_TYPE := hostSideOnly
 
 # Only compile source java files in this apk.
@@ -30,3 +31,7 @@ include $(BUILD_HOST_JAVA_LIBRARY)
 # Build the test APKs using their own makefiles
 include $(call all-makefiles-under,$(LOCAL_PATH))
 
+=======
+# Build the test APKs using their own makefiles
+include $(call all-makefiles-under,$(LOCAL_PATH))
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a

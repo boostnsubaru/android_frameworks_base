@@ -71,9 +71,15 @@ public abstract class BatteryStats implements Parcelable {
     public static final int FULL_WIFI_LOCK = 5;
     
     /**
+<<<<<<< HEAD
      * A constant indicating a scan wifi lock timer
      */
     public static final int SCAN_WIFI_LOCK = 6;
+=======
+     * A constant indicating a wifi scan
+     */
+    public static final int WIFI_SCAN = 6;
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 
      /**
       * A constant indicating a wifi multicast timer
@@ -136,7 +142,11 @@ public abstract class BatteryStats implements Parcelable {
     private static final String BATTERY_DATA = "bt";
     private static final String BATTERY_DISCHARGE_DATA = "dc";
     private static final String BATTERY_LEVEL_DATA = "lv";
+<<<<<<< HEAD
     private static final String WIFI_LOCK_DATA = "wfl";
+=======
+    private static final String WIFI_DATA = "wfl";
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     private static final String MISC_DATA = "m";
     private static final String SCREEN_BRIGHTNESS_DATA = "br";
     private static final String SIGNAL_STRENGTH_TIME_DATA = "sgt";
@@ -260,8 +270,13 @@ public abstract class BatteryStats implements Parcelable {
         public abstract void noteWifiStoppedLocked();
         public abstract void noteFullWifiLockAcquiredLocked();
         public abstract void noteFullWifiLockReleasedLocked();
+<<<<<<< HEAD
         public abstract void noteScanWifiLockAcquiredLocked();
         public abstract void noteScanWifiLockReleasedLocked();
+=======
+        public abstract void noteWifiScanStartedLocked();
+        public abstract void noteWifiScanStoppedLocked();
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         public abstract void noteWifiMulticastEnabledLocked();
         public abstract void noteWifiMulticastDisabledLocked();
         public abstract void noteAudioTurnedOnLocked();
@@ -270,13 +285,18 @@ public abstract class BatteryStats implements Parcelable {
         public abstract void noteVideoTurnedOffLocked();
         public abstract long getWifiRunningTime(long batteryRealtime, int which);
         public abstract long getFullWifiLockTime(long batteryRealtime, int which);
+<<<<<<< HEAD
         public abstract long getScanWifiLockTime(long batteryRealtime, int which);
+=======
+        public abstract long getWifiScanTime(long batteryRealtime, int which);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         public abstract long getWifiMulticastTime(long batteryRealtime,
                                                   int which);
         public abstract long getAudioTurnedOnTime(long batteryRealtime, int which);
         public abstract long getVideoTurnedOnTime(long batteryRealtime, int which);
 
         /**
+<<<<<<< HEAD
          * Note that these must match the constants in android.os.LocalPowerManager.
          */
         static final String[] USER_ACTIVITY_TYPES = {
@@ -284,6 +304,17 @@ public abstract class BatteryStats implements Parcelable {
         };
         
         public static final int NUM_USER_ACTIVITY_TYPES = 7;
+=======
+         * Note that these must match the constants in android.os.PowerManager.
+         * Also, if the user activity types change, the BatteryStatsImpl.VERSION must
+         * also be bumped.
+         */
+        static final String[] USER_ACTIVITY_TYPES = {
+            "other", "button", "touch"
+        };
+        
+        public static final int NUM_USER_ACTIVITY_TYPES = 3;
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         
         public abstract void noteUserActivityLocked(int type);
         public abstract boolean hasUserActivity();
@@ -453,7 +484,11 @@ public abstract class BatteryStats implements Parcelable {
         public static final int STATE_PHONE_SCANNING_FLAG = 1<<27;
         public static final int STATE_WIFI_RUNNING_FLAG = 1<<26;
         public static final int STATE_WIFI_FULL_LOCK_FLAG = 1<<25;
+<<<<<<< HEAD
         public static final int STATE_WIFI_SCAN_LOCK_FLAG = 1<<24;
+=======
+        public static final int STATE_WIFI_SCAN_FLAG = 1<<24;
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         public static final int STATE_WIFI_MULTICAST_ON_FLAG = 1<<23;
         // These are on the lower bits used for the command; if they change
         // we need to write another int of data.
@@ -859,7 +894,11 @@ public abstract class BatteryStats implements Parcelable {
         new BitDescription(HistoryItem.STATE_WIFI_ON_FLAG, "wifi"),
         new BitDescription(HistoryItem.STATE_WIFI_RUNNING_FLAG, "wifi_running"),
         new BitDescription(HistoryItem.STATE_WIFI_FULL_LOCK_FLAG, "wifi_full_lock"),
+<<<<<<< HEAD
         new BitDescription(HistoryItem.STATE_WIFI_SCAN_LOCK_FLAG, "wifi_scan_lock"),
+=======
+        new BitDescription(HistoryItem.STATE_WIFI_SCAN_FLAG, "wifi_scan"),
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         new BitDescription(HistoryItem.STATE_WIFI_MULTICAST_ON_FLAG, "wifi_multicast"),
         new BitDescription(HistoryItem.STATE_BLUETOOTH_ON_FLAG, "bluetooth"),
         new BitDescription(HistoryItem.STATE_AUDIO_ON_FLAG, "audio"),
@@ -1326,15 +1365,26 @@ public abstract class BatteryStats implements Parcelable {
             long rx = u.getTcpBytesReceived(which);
             long tx = u.getTcpBytesSent(which);
             long fullWifiLockOnTime = u.getFullWifiLockTime(batteryRealtime, which);
+<<<<<<< HEAD
             long scanWifiLockOnTime = u.getScanWifiLockTime(batteryRealtime, which);
+=======
+            long wifiScanTime = u.getWifiScanTime(batteryRealtime, which);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
             long uidWifiRunningTime = u.getWifiRunningTime(batteryRealtime, which);
             
             if (rx > 0 || tx > 0) dumpLine(pw, uid, category, NETWORK_DATA, rx, tx);
             
+<<<<<<< HEAD
             if (fullWifiLockOnTime != 0 || scanWifiLockOnTime != 0
                     || uidWifiRunningTime != 0) {
                 dumpLine(pw, uid, category, WIFI_LOCK_DATA, 
                         fullWifiLockOnTime, scanWifiLockOnTime, uidWifiRunningTime);
+=======
+            if (fullWifiLockOnTime != 0 || wifiScanTime != 0
+                    || uidWifiRunningTime != 0) {
+                dumpLine(pw, uid, category, WIFI_DATA,
+                        fullWifiLockOnTime, wifiScanTime, uidWifiRunningTime);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
             }
 
             if (u.hasUserActivity()) {
@@ -1692,7 +1742,11 @@ public abstract class BatteryStats implements Parcelable {
             long tcpReceived = u.getTcpBytesReceived(which);
             long tcpSent = u.getTcpBytesSent(which);
             long fullWifiLockOnTime = u.getFullWifiLockTime(batteryRealtime, which);
+<<<<<<< HEAD
             long scanWifiLockOnTime = u.getScanWifiLockTime(batteryRealtime, which);
+=======
+            long wifiScanTime = u.getWifiScanTime(batteryRealtime, which);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
             long uidWifiRunningTime = u.getWifiRunningTime(batteryRealtime, which);
             
             if (tcpReceived != 0 || tcpSent != 0) {
@@ -1703,7 +1757,11 @@ public abstract class BatteryStats implements Parcelable {
             
             if (u.hasUserActivity()) {
                 boolean hasData = false;
+<<<<<<< HEAD
                 for (int i=0; i<NUM_SCREEN_BRIGHTNESS_BINS; i++) {
+=======
+                for (int i=0; i<Uid.NUM_USER_ACTIVITY_TYPES; i++) {
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
                     int val = u.getUserActivityCount(i, which);
                     if (val != 0) {
                         if (!hasData) {
@@ -1723,7 +1781,11 @@ public abstract class BatteryStats implements Parcelable {
                 }
             }
             
+<<<<<<< HEAD
             if (fullWifiLockOnTime != 0 || scanWifiLockOnTime != 0
+=======
+            if (fullWifiLockOnTime != 0 || wifiScanTime != 0
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
                     || uidWifiRunningTime != 0) {
                 sb.setLength(0);
                 sb.append(prefix); sb.append("    Wifi Running: ");
@@ -1731,12 +1793,21 @@ public abstract class BatteryStats implements Parcelable {
                         sb.append("("); sb.append(formatRatioLocked(uidWifiRunningTime,
                                 whichBatteryRealtime)); sb.append(")\n");
                 sb.append(prefix); sb.append("    Full Wifi Lock: "); 
+<<<<<<< HEAD
                         formatTimeMs(sb, fullWifiLockOnTime / 1000); 
                         sb.append("("); sb.append(formatRatioLocked(fullWifiLockOnTime, 
                                 whichBatteryRealtime)); sb.append(")\n");
                 sb.append(prefix); sb.append("    Scan Wifi Lock: "); 
                         formatTimeMs(sb, scanWifiLockOnTime / 1000);
                         sb.append("("); sb.append(formatRatioLocked(scanWifiLockOnTime, 
+=======
+                        formatTimeMs(sb, fullWifiLockOnTime / 1000);
+                        sb.append("("); sb.append(formatRatioLocked(fullWifiLockOnTime,
+                                whichBatteryRealtime)); sb.append(")\n");
+                sb.append(prefix); sb.append("    Wifi Scan: ");
+                        formatTimeMs(sb, wifiScanTime / 1000);
+                        sb.append("("); sb.append(formatRatioLocked(wifiScanTime,
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
                                 whichBatteryRealtime)); sb.append(")");
                 pw.println(sb.toString());
             }
@@ -2069,6 +2140,12 @@ public abstract class BatteryStats implements Parcelable {
                         case BatteryManager.BATTERY_PLUGGED_USB:
                             pw.print("usb");
                             break;
+<<<<<<< HEAD
+=======
+                        case BatteryManager.BATTERY_PLUGGED_WIRELESS:
+                            pw.print("wireless");
+                            break;
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
                         default:
                             pw.print(oldPlug);
                             break;

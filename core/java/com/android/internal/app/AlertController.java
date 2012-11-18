@@ -347,6 +347,21 @@ public class AlertController {
         }
     }
 
+<<<<<<< HEAD
+=======
+    /**
+     * @param attrId the attributeId of the theme-specific drawable
+     * to resolve the resourceId for.
+     *
+     * @return resId the resourceId of the theme-specific drawable
+     */
+    public int getIconAttributeResId(int attrId) {
+        TypedValue out = new TypedValue();
+        mContext.getTheme().resolveAttribute(attrId, out, true);
+        return out.resourceId;
+    }
+
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     public void setInverseBackgroundForced(boolean forceInverseBackground) {
         mForceInverseBackground = forceInverseBackground;
     }
@@ -740,6 +755,10 @@ public class AlertController {
         
         public int mIconId = 0;
         public Drawable mIcon;
+<<<<<<< HEAD
+=======
+        public int mIconAttrId = 0;
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         public CharSequence mTitle;
         public View mCustomTitleView;
         public CharSequence mMessage;
@@ -751,6 +770,10 @@ public class AlertController {
         public DialogInterface.OnClickListener mNeutralButtonListener;
         public boolean mCancelable;
         public DialogInterface.OnCancelListener mOnCancelListener;
+<<<<<<< HEAD
+=======
+        public DialogInterface.OnDismissListener mOnDismissListener;
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         public DialogInterface.OnKeyListener mOnKeyListener;
         public CharSequence[] mItems;
         public ListAdapter mAdapter;
@@ -806,6 +829,12 @@ public class AlertController {
                 if (mIconId >= 0) {
                     dialog.setIcon(mIconId);
                 }
+<<<<<<< HEAD
+=======
+                if (mIconAttrId > 0) {
+                    dialog.setIcon(dialog.getIconAttributeResId(mIconAttrId));
+                }
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
             }
             if (mMessage != null) {
                 dialog.setMessage(mMessage);

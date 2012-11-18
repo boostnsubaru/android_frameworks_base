@@ -102,7 +102,11 @@ public class DatePicker extends FrameLayout {
         inflater.inflate(R.layout.date_picker, this, true);
 
         mDayPicker = (NumberPicker) findViewById(R.id.day);
+<<<<<<< HEAD
         mDayPicker.setFormatter(NumberPicker.TWO_DIGIT_FORMATTER);
+=======
+        mDayPicker.setFormatter(NumberPicker.getTwoDigitFormatter());
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         mDayPicker.setOnLongPressUpdateInterval(100);
         mDayPicker.setOnValueChangedListener(new NumberPicker.OnValueChangeListener() {
             public void onValueChange(NumberPicker picker, int oldVal, int newVal) {
@@ -111,7 +115,11 @@ public class DatePicker extends FrameLayout {
             }
         });
         mMonthPicker = (NumberPicker) findViewById(R.id.month);
+<<<<<<< HEAD
         mMonthPicker.setFormatter(NumberPicker.TWO_DIGIT_FORMATTER);
+=======
+        mMonthPicker.setFormatter(NumberPicker.getTwoDigitFormatter());
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         DateFormatSymbols dfs = new DateFormatSymbols();
         String[] months = dfs.getShortMonths();
 

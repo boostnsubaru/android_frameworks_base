@@ -164,7 +164,11 @@ SkStream* CreateJavaInputStreamAdaptor(JNIEnv* env, jobject stream,
         RETURN_NULL_IF_NULL(gInputStream_resetMethodID);
         RETURN_NULL_IF_NULL(gInputStream_markMethodID);
         RETURN_NULL_IF_NULL(gInputStream_availableMethodID);
+<<<<<<< HEAD
         RETURN_NULL_IF_NULL(gInputStream_availableMethodID);
+=======
+        RETURN_NULL_IF_NULL(gInputStream_readMethodID);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         RETURN_NULL_IF_NULL(gInputStream_skipMethodID);
 
         gInited = true;

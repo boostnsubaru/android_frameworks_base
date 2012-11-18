@@ -25,7 +25,13 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
 import android.graphics.drawable.Drawable;
+<<<<<<< HEAD
 import android.os.Vibrator;
+=======
+import android.os.UserHandle;
+import android.os.Vibrator;
+import android.provider.Settings;
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.MotionEvent;
@@ -667,11 +673,24 @@ public class RotarySelector extends View {
      * Triggers haptic feedback.
      */
     private synchronized void vibrate(long duration) {
+<<<<<<< HEAD
         if (mVibrator == null) {
             mVibrator = (android.os.Vibrator)
                     getContext().getSystemService(Context.VIBRATOR_SERVICE);
         }
         mVibrator.vibrate(duration);
+=======
+        final boolean hapticEnabled = Settings.System.getIntForUser(
+                mContext.getContentResolver(), Settings.System.HAPTIC_FEEDBACK_ENABLED, 1,
+                UserHandle.USER_CURRENT) != 0;
+        if (hapticEnabled) {
+            if (mVibrator == null) {
+                mVibrator = (android.os.Vibrator) getContext()
+                        .getSystemService(Context.VIBRATOR_SERVICE);
+            }
+            mVibrator.vibrate(duration);
+        }
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     }
 
     /**

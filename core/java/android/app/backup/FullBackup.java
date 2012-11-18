@@ -64,7 +64,13 @@ public class FullBackup {
 
     /**
      * Copy data from a socket to the given File location on permanent storage.  The
+<<<<<<< HEAD
      * modification time and access mode of the resulting file will be set if desired.
+=======
+     * modification time and access mode of the resulting file will be set if desired,
+     * although group/all rwx modes will be stripped: the restored file will not be
+     * accessible from outside the target application even if the original file was.
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
      * If the {@code type} parameter indicates that the result should be a directory,
      * the socket parameter may be {@code null}; even if it is valid, no data will be
      * read from it in this case.
@@ -79,8 +85,14 @@ public class FullBackup {
      * @param type Must be either {@link BackupAgent#TYPE_FILE} for ordinary file data
      *    or {@link BackupAgent#TYPE_DIRECTORY} for a directory.
      * @param mode Unix-style file mode (as used by the chmod(2) syscall) to be set on
+<<<<<<< HEAD
      *    the output file or directory.  If this parameter is negative then neither
      *    the mode nor the mtime parameters will be used.
+=======
+     *    the output file or directory.  group/all rwx modes are stripped even if set
+     *    in this parameter.  If this parameter is negative then neither
+     *    the mode nor the mtime values will be applied to the restored file.
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
      * @param mtime A timestamp in the standard Unix epoch that will be imposed as the
      *    last modification time of the output file.  if the {@code mode} parameter is
      *    negative then this parameter will be ignored.
@@ -105,8 +117,11 @@ public class FullBackup {
                     if (!parent.exists()) {
                         // in practice this will only be for the default semantic directories,
                         // and using the default mode for those is appropriate.
+<<<<<<< HEAD
                         // TODO: support the edge case of apps that have adjusted the
                         //       permissions on these core directories
+=======
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
                         parent.mkdirs();
                     }
                     out = new FileOutputStream(outFile);

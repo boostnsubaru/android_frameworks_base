@@ -120,7 +120,14 @@ static void setLight_native(JNIEnv *env, jobject clazz, int ptr,
     state.flashOffMS = offMS;
     state.brightnessMode = brightnessMode;
 
+<<<<<<< HEAD
     devices->lights[light]->set_light(devices->lights[light], &state);
+=======
+    {
+        ALOGD_IF_SLOW(50, "Excessive delay setting light");
+        devices->lights[light]->set_light(devices->lights[light], &state);
+    }
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 }
 
 static JNINativeMethod method_table[] = {

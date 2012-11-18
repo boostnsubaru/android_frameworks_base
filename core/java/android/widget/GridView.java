@@ -37,8 +37,13 @@ import android.widget.RemoteViews.RemoteView;
  * A view that shows items in two-dimensional scrolling grid. The items in the
  * grid come from the {@link ListAdapter} associated with this view.
  *
+<<<<<<< HEAD
  * <p>See the <a href="{@docRoot}resources/tutorials/views/hello-gridview.html">Grid
  * View tutorial</a>.</p>
+=======
+ * <p>See the <a href="{@docRoot}guide/topics/ui/layout/gridview.html">Grid
+ * View</a> guide.</p>
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
  * 
  * @attr ref android.R.styleable#GridView_horizontalSpacing
  * @attr ref android.R.styleable#GridView_verticalSpacing
@@ -94,7 +99,11 @@ public class GridView extends AbsListView {
     private View mReferenceView = null;
     private View mReferenceViewInSelectedRow = null;
 
+<<<<<<< HEAD
     private int mGravity = Gravity.LEFT;
+=======
+    private int mGravity = Gravity.START;
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 
     private final Rect mTempRect = new Rect();
 
@@ -300,9 +309,24 @@ public class GridView extends AbsListView {
         final int columnWidth = mColumnWidth;
         final int horizontalSpacing = mHorizontalSpacing;
 
+<<<<<<< HEAD
         int last;
         int nextLeft = mListPadding.left +
                 ((mStretchMode == STRETCH_SPACING_UNIFORM) ? horizontalSpacing : 0);
+=======
+        final boolean isLayoutRtl = isLayoutRtl();
+
+        int last;
+        int nextLeft;
+
+        if (isLayoutRtl) {
+            nextLeft = getWidth() - mListPadding.right - columnWidth -
+                    ((mStretchMode == STRETCH_SPACING_UNIFORM) ? horizontalSpacing : 0);
+        } else {
+            nextLeft = mListPadding.left +
+                    ((mStretchMode == STRETCH_SPACING_UNIFORM) ? horizontalSpacing : 0);
+        }
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 
         if (!mStackFromBottom) {
             last = Math.min(startPos + mNumColumns, mItemCount);
@@ -311,7 +335,12 @@ public class GridView extends AbsListView {
             startPos = Math.max(0, startPos - mNumColumns + 1);
 
             if (last - startPos < mNumColumns) {
+<<<<<<< HEAD
                 nextLeft += (mNumColumns - (last - startPos)) * (columnWidth + horizontalSpacing);
+=======
+                final int deltaLeft = (mNumColumns - (last - startPos)) * (columnWidth + horizontalSpacing);
+                nextLeft += (isLayoutRtl ? -1 : +1) * deltaLeft;
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
             }
         }
 
@@ -330,7 +359,11 @@ public class GridView extends AbsListView {
             final int where = flow ? -1 : pos - startPos;
             child = makeAndAddView(pos, y, flow, nextLeft, selected, where);
 
+<<<<<<< HEAD
             nextLeft += columnWidth;
+=======
+            nextLeft += (isLayoutRtl ? -1 : +1) * columnWidth;
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
             if (pos < last - 1) {
                 nextLeft += horizontalSpacing;
             }
@@ -1415,7 +1448,11 @@ public class GridView extends AbsListView {
         int childLeft;
         final int childTop = flow ? y : y - h;
 
+<<<<<<< HEAD
         final int layoutDirection = getResolvedLayoutDirection();
+=======
+        final int layoutDirection = getLayoutDirection();
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         final int absoluteGravity = Gravity.getAbsoluteGravity(mGravity, layoutDirection);
         switch (absoluteGravity & Gravity.HORIZONTAL_GRAVITY_MASK) {
             case Gravity.LEFT:
@@ -2207,8 +2244,18 @@ public class GridView extends AbsListView {
             int height = view.getHeight();
             if (height > 0) {
                 final int numColumns = mNumColumns;
+<<<<<<< HEAD
                 final int whichRow = mFirstPosition / numColumns;
                 final int rowCount = (mItemCount + numColumns - 1) / numColumns;
+=======
+                final int rowCount = (mItemCount + numColumns - 1) / numColumns;
+                // In case of stackFromBottom the calculation of whichRow needs
+                // to take into account that counting from the top the first row
+                // might not be entirely filled.
+                final int oddItemsOnFirstRow = isStackFromBottom() ? ((rowCount * numColumns) -
+                        mItemCount) : 0;
+                final int whichRow = (mFirstPosition + oddItemsOnFirstRow) / numColumns;
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
                 return Math.max(whichRow * 100 - (top * 100) / height +
                         (int) ((float) mScrollY / getHeight() * rowCount * 100), 0);
             }

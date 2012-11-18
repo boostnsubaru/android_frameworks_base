@@ -1,6 +1,9 @@
 /*
  * Copyright (C) 2008 The Android Open Source Project
+<<<<<<< HEAD
  * This code has been modified.  Portions copyright (C) 2010, T-Mobile USA, Inc.
+=======
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -26,7 +29,10 @@
 #include <utils/String16.h>
 #include <utils/String8.h>
 #include <utils/TextOutput.h>
+<<<<<<< HEAD
 #include <utils/misc.h>
+=======
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 
 #include <stdlib.h>
 #include <string.h>
@@ -45,7 +51,10 @@
 #define TABLE_SUPER_NOISY(x) //x
 #define LOAD_TABLE_NOISY(x) //x
 #define TABLE_THEME(x) //x
+<<<<<<< HEAD
 #define REDIRECT_NOISY(x) //x
+=======
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 
 namespace android {
 
@@ -1473,6 +1482,12 @@ int ResTable_config::compareLogical(const ResTable_config& o) const {
     if (country[1] != o.country[1]) {
         return country[1] < o.country[1] ? -1 : 1;
     }
+<<<<<<< HEAD
+=======
+    if ((screenLayout & MASK_LAYOUTDIR) != (o.screenLayout & MASK_LAYOUTDIR)) {
+        return (screenLayout & MASK_LAYOUTDIR) < (o.screenLayout & MASK_LAYOUTDIR) ? -1 : 1;
+    }
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     if (smallestScreenWidthDp != o.smallestScreenWidthDp) {
         return smallestScreenWidthDp < o.smallestScreenWidthDp ? -1 : 1;
     }
@@ -1561,6 +1576,16 @@ bool ResTable_config::isMoreSpecificThan(const ResTable_config& o) const {
         }
     }
 
+<<<<<<< HEAD
+=======
+    if (screenLayout || o.screenLayout) {
+        if (((screenLayout^o.screenLayout) & MASK_LAYOUTDIR) != 0) {
+            if (!(screenLayout & MASK_LAYOUTDIR)) return false;
+            if (!(o.screenLayout & MASK_LAYOUTDIR)) return true;
+        }
+    }
+
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     if (smallestScreenWidthDp || o.smallestScreenWidthDp) {
         if (smallestScreenWidthDp != o.smallestScreenWidthDp) {
             if (!smallestScreenWidthDp) return false;
@@ -1686,6 +1711,18 @@ bool ResTable_config::isBetterThan(const ResTable_config& o,
             }
         }
 
+<<<<<<< HEAD
+=======
+        if (screenLayout || o.screenLayout) {
+            if (((screenLayout^o.screenLayout) & MASK_LAYOUTDIR) != 0
+                    && (requested->screenLayout & MASK_LAYOUTDIR)) {
+                int myLayoutDir = screenLayout & MASK_LAYOUTDIR;
+                int oLayoutDir = o.screenLayout & MASK_LAYOUTDIR;
+                return (myLayoutDir > oLayoutDir);
+            }
+        }
+
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         if (smallestScreenWidthDp || o.smallestScreenWidthDp) {
             // The configuration closest to the actual size is best.
             // We assume that larger configs have already been filtered
@@ -1909,6 +1946,15 @@ bool ResTable_config::match(const ResTable_config& settings) const {
         }
     }
     if (screenConfig != 0) {
+<<<<<<< HEAD
+=======
+        const int layoutDir = screenLayout&MASK_LAYOUTDIR;
+        const int setLayoutDir = settings.screenLayout&MASK_LAYOUTDIR;
+        if (layoutDir != 0 && layoutDir != setLayoutDir) {
+            return false;
+        }
+
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         const int screenSize = screenLayout&MASK_SCREENSIZE;
         const int setScreenSize = settings.screenLayout&MASK_SCREENSIZE;
         // Any screen sizes for larger screens than the setting do not
@@ -2035,6 +2081,24 @@ String8 ResTable_config::toString() const {
         if (res.size() > 0) res.append("-");
         res.append(country, 2);
     }
+<<<<<<< HEAD
+=======
+    if ((screenLayout&MASK_LAYOUTDIR) != 0) {
+        if (res.size() > 0) res.append("-");
+        switch (screenLayout&ResTable_config::MASK_LAYOUTDIR) {
+            case ResTable_config::LAYOUTDIR_LTR:
+                res.append("ldltr");
+                break;
+            case ResTable_config::LAYOUTDIR_RTL:
+                res.append("ldrtl");
+                break;
+            default:
+                res.appendFormat("layoutDir=%d",
+                        dtohs(screenLayout&ResTable_config::MASK_LAYOUTDIR));
+                break;
+        }
+    }
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     if (smallestScreenWidthDp != 0) {
         if (res.size() > 0) res.append("-");
         res.appendFormat("sw%ddp", dtohs(smallestScreenWidthDp));
@@ -2450,6 +2514,7 @@ status_t ResTable::Theme::applyStyle(uint32_t resID, bool force)
     const bag_entry* bag;
     uint32_t bagTypeSpecFlags = 0;
     mTable.lock();
+<<<<<<< HEAD
     uint32_t redirect = mTable.lookupRedirectionMap(resID);
     if (redirect != 0 || resID == 0x01030005) {
         REDIRECT_NOISY(ALOGW("applyStyle: PERFORMED REDIRECT OF ident=0x%08x FOR redirect=0x%08x\n", resID, redirect));
@@ -2457,6 +2522,8 @@ status_t ResTable::Theme::applyStyle(uint32_t resID, bool force)
     if (redirect != 0) {
         resID = redirect;
     }
+=======
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     const ssize_t N = mTable.getBagLocked(resID, &bag, &bagTypeSpecFlags);
     TABLE_NOISY(ALOGV("Applying style 0x%08x to theme %p, count=%d", resID, this, N));
     if (N < 0) {
@@ -2904,8 +2971,11 @@ void ResTable::uninit()
 
     mPackageGroups.clear();
     mHeaders.clear();
+<<<<<<< HEAD
 
     clearRedirections();
+=======
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 }
 
 bool ResTable::getResourceName(uint32_t resID, resource_name* outName) const
@@ -3163,6 +3233,7 @@ ssize_t ResTable::resolveReference(Res_value* value, ssize_t blockIndex,
     return blockIndex;
 }
 
+<<<<<<< HEAD
 uint32_t ResTable::lookupRedirectionMap(uint32_t resID) const
 {
     if (mError != NO_ERROR) {
@@ -3181,6 +3252,8 @@ uint32_t ResTable::lookupRedirectionMap(uint32_t resID) const
     return 0;
 }
 
+=======
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 const char16_t* ResTable::valueToString(
     const Res_value* value, size_t stringBlock,
     char16_t tmpBuffer[TMP_BUFFER_SIZE], size_t* outLen)
@@ -3386,6 +3459,7 @@ ssize_t ResTable::getBagLocked(uint32_t resID, const bag_entry** outBag,
         if (parent) {
             const bag_entry* parentBag;
             uint32_t parentTypeSpecFlags = 0;
+<<<<<<< HEAD
             uint32_t parentRedirect = lookupRedirectionMap(parent);
             uint32_t parentActual = parent;
             if (parentRedirect != 0 || parent == 0x01030005) {
@@ -3399,6 +3473,9 @@ ssize_t ResTable::getBagLocked(uint32_t resID, const bag_entry** outBag,
                 }
             }
             const ssize_t NP = getBagLocked(parentActual, &parentBag, &parentTypeSpecFlags);
+=======
+            const ssize_t NP = getBagLocked(parent, &parentBag, &parentTypeSpecFlags);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
             const size_t NT = ((NP >= 0) ? NP : 0) + N;
             set = (bag_set*)malloc(sizeof(bag_set)+sizeof(bag_entry)*NT);
             if (set == NULL) {
@@ -5201,7 +5278,12 @@ status_t ResTable::createIdmap(const ResTable& overlay, uint32_t originalCrc, ui
     const uint32_t pkg_id = pkg->package->id << 24;
 
     for (size_t typeIndex = 0; typeIndex < typeCount; ++typeIndex) {
+<<<<<<< HEAD
         ssize_t offset = -1;
+=======
+        ssize_t first = -1;
+        ssize_t last = -1;
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         const Type* typeConfigs = pkg->getType(typeIndex);
         ssize_t mapIndex = map.add();
         if (mapIndex < 0) {
@@ -5209,12 +5291,21 @@ status_t ResTable::createIdmap(const ResTable& overlay, uint32_t originalCrc, ui
         }
         Vector<uint32_t>& vector = map.editItemAt(mapIndex);
         for (size_t entryIndex = 0; entryIndex < typeConfigs->entryCount; ++entryIndex) {
+<<<<<<< HEAD
             uint32_t resID = (0xff000000 & ((pkg->package->id)<<24))
+=======
+            uint32_t resID = pkg_id
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
                 | (0x00ff0000 & ((typeIndex+1)<<16))
                 | (0x0000ffff & (entryIndex));
             resource_name resName;
             if (!this->getResourceName(resID, &resName)) {
                 ALOGW("idmap: resource 0x%08x has spec but lacks values, skipping\n", resID);
+<<<<<<< HEAD
+=======
+                // add dummy value, or trimming leading/trailing zeroes later will fail
+                vector.push(0);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
                 continue;
             }
 
@@ -5227,6 +5318,7 @@ status_t ResTable::createIdmap(const ResTable& overlay, uint32_t originalCrc, ui
                                                               overlayPackage.string(),
                                                               overlayPackage.size());
             if (overlayResID != 0) {
+<<<<<<< HEAD
                 // overlay package has package ID == 0, use original package's ID instead
                 overlayResID |= pkg_id;
             }
@@ -5234,6 +5326,15 @@ status_t ResTable::createIdmap(const ResTable& overlay, uint32_t originalCrc, ui
             if (overlayResID != 0 && offset == -1) {
                 offset = Res_GETENTRY(resID);
             }
+=======
+                overlayResID = pkg_id | (0x00ffffff & overlayResID);
+                last = Res_GETENTRY(resID);
+                if (first == -1) {
+                    first = Res_GETENTRY(resID);
+                }
+            }
+            vector.push(overlayResID);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 #if 0
             if (overlayResID != 0) {
                 ALOGD("%s/%s 0x%08x -> 0x%08x\n",
@@ -5244,6 +5345,7 @@ status_t ResTable::createIdmap(const ResTable& overlay, uint32_t originalCrc, ui
 #endif
         }
 
+<<<<<<< HEAD
         if (offset != -1) {
             // shave off leading and trailing entries which lack overlay values
             vector.removeItemsAt(0, offset);
@@ -5251,6 +5353,18 @@ status_t ResTable::createIdmap(const ResTable& overlay, uint32_t originalCrc, ui
             while (vector.top() == 0) {
                 vector.pop();
             }
+=======
+        if (first != -1) {
+            // shave off trailing entries which lack overlay values
+            const size_t last_past_one = last + 1;
+            if (last_past_one < vector.size()) {
+                vector.removeItemsAt(last_past_one, vector.size() - last_past_one);
+            }
+            // shave off leading entries which lack overlay values
+            vector.removeItemsAt(0, first);
+            // store offset to first overlaid resource ID of this type
+            vector.insertAt((uint32_t)first, 0, 1);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
             // reserve space for number and offset of entries, and the actual entries
             *outSize += (2 + vector.size()) * sizeof(uint32_t);
         } else {
@@ -5288,6 +5402,13 @@ status_t ResTable::createIdmap(const ResTable& overlay, uint32_t originalCrc, ui
         if (N == 0) {
             continue;
         }
+<<<<<<< HEAD
+=======
+        if (N == 1) { // vector expected to hold (offset) + (N > 0 entries)
+            ALOGW("idmap: type %d supposedly has entries, but no entries found\n", i);
+            return UNKNOWN_ERROR;
+        }
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         *data++ = htodl(N - 1); // do not count the offset (which is vector's first element)
         for (size_t j = 0; j < N; ++j) {
             const uint32_t& overlayResID = vector.itemAt(j);
@@ -5310,6 +5431,7 @@ bool ResTable::getIdmapInfo(const void* idmap, size_t sizeBytes,
     return true;
 }
 
+<<<<<<< HEAD
 void ResTable::removeAssetsByCookie(const String8 &packageName, void* cookie)
 {
     mError = NO_ERROR;
@@ -5382,6 +5504,8 @@ void ResTable::clearRedirections()
     /* This memory is being managed by strong references at the Java layer. */
     mRedirectionMap.clear();
 }
+=======
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 
 #ifndef HAVE_ANDROID_OS
 #define CHAR16_TO_CSTR(c16, len) (String8(String16(c16,len)).string())

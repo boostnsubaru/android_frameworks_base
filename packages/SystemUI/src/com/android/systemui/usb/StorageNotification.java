@@ -25,6 +25,10 @@ import android.content.res.Resources;
 import android.os.Environment;
 import android.os.Handler;
 import android.os.HandlerThread;
+<<<<<<< HEAD
+=======
+import android.os.UserHandle;
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 import android.os.storage.StorageEventListener;
 import android.os.storage.StorageManager;
 import android.provider.Settings;
@@ -126,9 +130,14 @@ public class StorageNotification extends StorageEventListener {
     }
 
     private void onStorageStateChangedAsync(String path, String oldState, String newState) {
+<<<<<<< HEAD
 	boolean isPrimary = Environment.getExternalStorageDirectory().getPath().equals(path);
         Slog.i(TAG, String.format(
                "Media {%s} state changed from {%s} -> {%s} (primary = %b)", path, oldState, newState, isPrimary));
+=======
+        Slog.i(TAG, String.format(
+                "Media {%s} state changed from {%s} -> {%s}", path, oldState, newState));
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         if (newState.equals(Environment.MEDIA_SHARED)) {
             /*
              * Storage is now shared. Modify the UMS notification
@@ -228,25 +237,42 @@ public class StorageNotification extends StorageEventListener {
         } else if (newState.equals(Environment.MEDIA_REMOVED)) {
             /*
              * Storage has been removed. Show nomedia media notification,
+<<<<<<< HEAD
              * and disable UMS notification if the removed storage is the primary storage.
+=======
+             * and disable UMS notification regardless of connection state.
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
              */
             setMediaStorageNotification(
                     com.android.internal.R.string.ext_media_nomedia_notification_title,
                     com.android.internal.R.string.ext_media_nomedia_notification_message,
                     com.android.internal.R.drawable.stat_notify_sdcard_usb,
+<<<<<<< HEAD
                     true, !isPrimary, null);
             updateUsbMassStorageNotification(isPrimary ? false : mUmsAvailable);
         } else if (newState.equals(Environment.MEDIA_BAD_REMOVAL)) {
             /*
              * Storage has been removed unsafely. Show bad removal media notification,
              * and disable UMS notification if the removed storage is the primary storage.
+=======
+                    true, false, null);
+            updateUsbMassStorageNotification(false);
+        } else if (newState.equals(Environment.MEDIA_BAD_REMOVAL)) {
+            /*
+             * Storage has been removed unsafely. Show bad removal media notification,
+             * and disable UMS notification regardless of connection state.
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
              */
             setMediaStorageNotification(
                     com.android.internal.R.string.ext_media_badremoval_notification_title,
                     com.android.internal.R.string.ext_media_badremoval_notification_message,
                     com.android.internal.R.drawable.stat_sys_warning,
                     true, true, null);
+<<<<<<< HEAD
             updateUsbMassStorageNotification(isPrimary ? false : mUmsAvailable);
+=======
+            updateUsbMassStorageNotification(false);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         } else {
             Slog.w(TAG, String.format("Ignoring unknown state {%s}", newState));
         }
@@ -312,6 +338,7 @@ public class StorageNotification extends StorageEventListener {
             mUsbStorageNotification.tickerText = title;
             if (pi == null) {
                 Intent intent = new Intent();
+<<<<<<< HEAD
                 pi = PendingIntent.getBroadcast(mContext, 0, intent, 0);
             }
 
@@ -319,6 +346,16 @@ public class StorageNotification extends StorageEventListener {
             final boolean adbOn = 1 == Settings.Secure.getInt(
                 mContext.getContentResolver(),
                 Settings.Secure.ADB_ENABLED,
+=======
+                pi = PendingIntent.getBroadcastAsUser(mContext, 0, intent, 0,
+                        UserHandle.CURRENT);
+            }
+
+            mUsbStorageNotification.setLatestEventInfo(mContext, title, message, pi);
+            final boolean adbOn = 1 == Settings.Global.getInt(
+                mContext.getContentResolver(),
+                Settings.Global.ADB_ENABLED,
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
                 0);
 
             if (POP_UMS_ACTIVITY_ON_CONNECT && !adbOn) {
@@ -337,9 +374,16 @@ public class StorageNotification extends StorageEventListener {
     
         final int notificationId = mUsbStorageNotification.icon;
         if (visible) {
+<<<<<<< HEAD
             notificationManager.notify(notificationId, mUsbStorageNotification);
         } else {
             notificationManager.cancel(notificationId);
+=======
+            notificationManager.notifyAsUser(null, notificationId, mUsbStorageNotification,
+                    UserHandle.ALL);
+        } else {
+            notificationManager.cancelAsUser(null, notificationId, UserHandle.ALL);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         }
     }
 
@@ -399,7 +443,12 @@ public class StorageNotification extends StorageEventListener {
             mMediaStorageNotification.tickerText = title;
             if (pi == null) {
                 Intent intent = new Intent();
+<<<<<<< HEAD
                 pi = PendingIntent.getBroadcast(mContext, 0, intent, 0);
+=======
+                pi = PendingIntent.getBroadcastAsUser(mContext, 0, intent, 0,
+                        UserHandle.CURRENT);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
             }
 
             mMediaStorageNotification.icon = icon;
@@ -408,9 +457,16 @@ public class StorageNotification extends StorageEventListener {
     
         final int notificationId = mMediaStorageNotification.icon;
         if (visible) {
+<<<<<<< HEAD
             notificationManager.notify(notificationId, mMediaStorageNotification);
         } else {
             notificationManager.cancel(notificationId);
+=======
+            notificationManager.notifyAsUser(null, notificationId,
+                    mMediaStorageNotification, UserHandle.ALL);
+        } else {
+            notificationManager.cancelAsUser(null, notificationId, UserHandle.ALL);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         }
     }
 }

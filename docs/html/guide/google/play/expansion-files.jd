@@ -421,7 +421,11 @@ policy, which captures the expansion file names, sizes, and URLs from the licens
 
 <p>To use APK expansion files with your application and provide the best user experience with
 minimal effort on your behalf, we recommend you use the Downloader Library that's included in the
+<<<<<<< HEAD
 Google Market Apk Expansion package. This library downloads your expansion files in a
+=======
+Google Play APK Expansion Library package. This library downloads your expansion files in a
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 background service, shows a user notification with the download status, handles network
 connectivity loss, resumes the download when possible, and more.</p>
 
@@ -450,8 +454,13 @@ application.</p>
 <p>First, open the <a href="{@docRoot}sdk/exploring.html">Android SDK Manager</a>, expand
 <em>Extras</em> and download:</p>
 <ul>
+<<<<<<< HEAD
   <li><em>Google Market Licensing package</em></li>
   <li><em>Google Market Apk Expansion package</em></li>
+=======
+  <li><em>Google Play Licensing Library package</em></li>
+  <li><em>Google Play APK Expansion Library package</em></li>
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 </ul>
 
 <p>If you're using Eclipse, create a project for each library and add it to your app:</p>

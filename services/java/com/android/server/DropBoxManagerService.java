@@ -31,6 +31,10 @@ import android.os.Handler;
 import android.os.Message;
 import android.os.StatFs;
 import android.os.SystemClock;
+<<<<<<< HEAD
+=======
+import android.os.UserHandle;
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 import android.provider.Settings;
 import android.text.format.Time;
 import android.util.Slog;
@@ -145,7 +149,11 @@ public final class DropBoxManagerService extends IDropBoxManagerService.Stub {
         context.registerReceiver(mReceiver, filter);
 
         mContentResolver.registerContentObserver(
+<<<<<<< HEAD
             Settings.Secure.CONTENT_URI, true,
+=======
+            Settings.Global.CONTENT_URI, true,
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
             new ContentObserver(new Handler()) {
                 @Override
                 public void onChange(boolean selfChange) {
@@ -157,7 +165,12 @@ public final class DropBoxManagerService extends IDropBoxManagerService.Stub {
             @Override
             public void handleMessage(Message msg) {
                 if (msg.what == MSG_SEND_BROADCAST) {
+<<<<<<< HEAD
                     mContext.sendBroadcast((Intent)msg.obj, android.Manifest.permission.READ_LOGS);
+=======
+                    mContext.sendBroadcastAsUser((Intent)msg.obj, UserHandle.OWNER,
+                            android.Manifest.permission.READ_LOGS);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
                 }
             }
         };
@@ -263,8 +276,13 @@ public final class DropBoxManagerService extends IDropBoxManagerService.Stub {
     }
 
     public boolean isTagEnabled(String tag) {
+<<<<<<< HEAD
         return !"disabled".equals(Settings.Secure.getString(
                 mContentResolver, Settings.Secure.DROPBOX_TAG_PREFIX + tag));
+=======
+        return !"disabled".equals(Settings.Global.getString(
+                mContentResolver, Settings.Global.DROPBOX_TAG_PREFIX + tag));
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     }
 
     public synchronized DropBoxManager.Entry getNextEntry(String tag, long millis) {
@@ -686,10 +704,17 @@ public final class DropBoxManagerService extends IDropBoxManagerService.Stub {
     private synchronized long trimToFit() {
         // Expunge aged items (including tombstones marking deleted data).
 
+<<<<<<< HEAD
         int ageSeconds = Settings.Secure.getInt(mContentResolver,
                 Settings.Secure.DROPBOX_AGE_SECONDS, DEFAULT_AGE_SECONDS);
         int maxFiles = Settings.Secure.getInt(mContentResolver,
                 Settings.Secure.DROPBOX_MAX_FILES, DEFAULT_MAX_FILES);
+=======
+        int ageSeconds = Settings.Global.getInt(mContentResolver,
+                Settings.Global.DROPBOX_AGE_SECONDS, DEFAULT_AGE_SECONDS);
+        int maxFiles = Settings.Global.getInt(mContentResolver,
+                Settings.Global.DROPBOX_MAX_FILES, DEFAULT_MAX_FILES);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         long cutoffMillis = System.currentTimeMillis() - ageSeconds * 1000;
         while (!mAllFiles.contents.isEmpty()) {
             EntryFile entry = mAllFiles.contents.first();
@@ -708,12 +733,21 @@ public final class DropBoxManagerService extends IDropBoxManagerService.Stub {
 
         long uptimeMillis = SystemClock.uptimeMillis();
         if (uptimeMillis > mCachedQuotaUptimeMillis + QUOTA_RESCAN_MILLIS) {
+<<<<<<< HEAD
             int quotaPercent = Settings.Secure.getInt(mContentResolver,
                     Settings.Secure.DROPBOX_QUOTA_PERCENT, DEFAULT_QUOTA_PERCENT);
             int reservePercent = Settings.Secure.getInt(mContentResolver,
                     Settings.Secure.DROPBOX_RESERVE_PERCENT, DEFAULT_RESERVE_PERCENT);
             int quotaKb = Settings.Secure.getInt(mContentResolver,
                     Settings.Secure.DROPBOX_QUOTA_KB, DEFAULT_QUOTA_KB);
+=======
+            int quotaPercent = Settings.Global.getInt(mContentResolver,
+                    Settings.Global.DROPBOX_QUOTA_PERCENT, DEFAULT_QUOTA_PERCENT);
+            int reservePercent = Settings.Global.getInt(mContentResolver,
+                    Settings.Global.DROPBOX_RESERVE_PERCENT, DEFAULT_RESERVE_PERCENT);
+            int quotaKb = Settings.Global.getInt(mContentResolver,
+                    Settings.Global.DROPBOX_QUOTA_KB, DEFAULT_QUOTA_KB);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 
             mStatFs.restat(mDropBoxDir.getPath());
             int available = mStatFs.getAvailableBlocks();

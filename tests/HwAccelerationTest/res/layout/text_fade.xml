@@ -32,6 +32,10 @@
         android:ellipsize="marquee"
         android:fadingEdgeLength="16sp"
         android:fadingEdge="horizontal"
+<<<<<<< HEAD
+=======
+        android:requiresFadingEdge="horizontal"
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         android:text="This is a really really really really really really long string"
         android:textSize="16sp" />
 

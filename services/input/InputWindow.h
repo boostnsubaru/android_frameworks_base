@@ -110,6 +110,11 @@ struct InputWindowInfo {
 
     enum {
         INPUT_FEATURE_DISABLE_TOUCH_PAD_GESTURES = 0x00000001,
+<<<<<<< HEAD
+=======
+        INPUT_FEATURE_NO_INPUT_CHANNEL = 0x00000002,
+        INPUT_FEATURE_DISABLE_USER_ACTIVITY = 0x00000004,
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     };
 
     sp<InputChannel> inputChannel;
@@ -132,6 +137,10 @@ struct InputWindowInfo {
     int32_t ownerPid;
     int32_t ownerUid;
     int32_t inputFeatures;
+<<<<<<< HEAD
+=======
+    int32_t displayId;
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 
     bool touchableRegionContainsPoint(int32_t x, int32_t y) const;
     bool frameContainsPoint(int32_t x, int32_t y) const;

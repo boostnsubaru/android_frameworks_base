@@ -116,6 +116,15 @@ public class Process {
     public static final int NFC_UID = 1027;
 
     /**
+<<<<<<< HEAD
+=======
+     * Defines the UID/GID for the Bluetooth service process.
+     * @hide
+     */
+    public static final int BLUETOOTH_UID = 1002;
+
+    /**
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
      * Defines the GID for the group that allows write access to the internal media storage.
      * @hide
      */
@@ -146,10 +155,31 @@ public class Process {
     public static final int LAST_ISOLATED_UID = 99999;
 
     /**
+<<<<<<< HEAD
      * Defines a secondary group id for access to the bluetooth hardware.
      */
     public static final int BLUETOOTH_GID = 2000;
     
+=======
+     * First gid for applications to share resources. Used when forward-locking
+     * is enabled but all UserHandles need to be able to read the resources.
+     * @hide
+     */
+    public static final int FIRST_SHARED_APPLICATION_GID = 50000;
+
+    /**
+     * Last gid for applications to share resources. Used when forward-locking
+     * is enabled but all UserHandles need to be able to read the resources.
+     * @hide
+     */
+    public static final int LAST_SHARED_APPLICATION_GID = 59999;
+
+    /**
+     * Defines a secondary group id for access to the bluetooth hardware.
+     */
+    public static final int BLUETOOTH_GID = 2000;
+
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     /**
      * Standard priority of application threads.
      * Use with {@link #setThreadPriority(int)} and
@@ -359,6 +389,10 @@ public class Process {
      * @param gids Additional group-ids associated with the process.
      * @param debugFlags Additional flags.
      * @param targetSdkVersion The target SDK version for the app.
+<<<<<<< HEAD
+=======
+     * @param seInfo null-ok SE Android information for the new process.
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
      * @param zygoteArgs Additional arguments to supply to the zygote process.
      * 
      * @return An object that describes the result of the attempt to start the process.
@@ -369,11 +403,21 @@ public class Process {
     public static final ProcessStartResult start(final String processClass,
                                   final String niceName,
                                   int uid, int gid, int[] gids,
+<<<<<<< HEAD
                                   int debugFlags, int targetSdkVersion,
                                   String[] zygoteArgs) {
         try {
             return startViaZygote(processClass, niceName, uid, gid, gids,
                     debugFlags, targetSdkVersion, zygoteArgs);
+=======
+                                  int debugFlags, int mountExternal,
+                                  int targetSdkVersion,
+                                  String seInfo,
+                                  String[] zygoteArgs) {
+        try {
+            return startViaZygote(processClass, niceName, uid, gid, gids,
+                    debugFlags, mountExternal, targetSdkVersion, seInfo, zygoteArgs);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         } catch (ZygoteStartFailedEx ex) {
             Log.e(LOG_TAG,
                     "Starting VM process through Zygote failed");
@@ -536,6 +580,10 @@ public class Process {
      * new process should setgroup() to.
      * @param debugFlags Additional flags.
      * @param targetSdkVersion The target SDK version for the app.
+<<<<<<< HEAD
+=======
+     * @param seInfo null-ok SE Android information for the new process.
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
      * @param extraArgs Additional arguments to supply to the zygote process.
      * @return An object that describes the result of the attempt to start the process.
      * @throws ZygoteStartFailedEx if process start failed for any reason
@@ -544,7 +592,13 @@ public class Process {
                                   final String niceName,
                                   final int uid, final int gid,
                                   final int[] gids,
+<<<<<<< HEAD
                                   int debugFlags, int targetSdkVersion,
+=======
+                                  int debugFlags, int mountExternal,
+                                  int targetSdkVersion,
+                                  String seInfo,
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
                                   String[] extraArgs)
                                   throws ZygoteStartFailedEx {
         synchronized(Process.class) {
@@ -570,6 +624,14 @@ public class Process {
             if ((debugFlags & Zygote.DEBUG_ENABLE_ASSERT) != 0) {
                 argsForZygote.add("--enable-assert");
             }
+<<<<<<< HEAD
+=======
+            if (mountExternal == Zygote.MOUNT_EXTERNAL_MULTIUSER) {
+                argsForZygote.add("--mount-external-multiuser");
+            } else if (mountExternal == Zygote.MOUNT_EXTERNAL_MULTIUSER_ALL) {
+                argsForZygote.add("--mount-external-multiuser-all");
+            }
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
             argsForZygote.add("--target-sdk-version=" + targetSdkVersion);
 
             //TODO optionally enable debuger
@@ -595,6 +657,13 @@ public class Process {
                 argsForZygote.add("--nice-name=" + niceName);
             }
 
+<<<<<<< HEAD
+=======
+            if (seInfo != null) {
+                argsForZygote.add("--seinfo=" + seInfo);
+            }
+
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
             argsForZygote.add(processClass);
 
             if (extraArgs != null) {
@@ -626,16 +695,40 @@ public class Process {
     public static final native int myTid();
 
     /**
+<<<<<<< HEAD
      * Returns the identifier of this process's user.
+=======
+     * Returns the identifier of this process's uid.  This is the kernel uid
+     * that the process is running under, which is the identity of its
+     * app-specific sandbox.  It is different from {@link #myUserHandle} in that
+     * a uid identifies a specific app sandbox in a specific user.
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
      */
     public static final native int myUid();
 
     /**
+<<<<<<< HEAD
+=======
+     * Returns this process's user handle.  This is the
+     * user the process is running under.  It is distinct from
+     * {@link #myUid()} in that a particular user will have multiple
+     * distinct apps running under it each with their own uid.
+     */
+    public static final UserHandle myUserHandle() {
+        return new UserHandle(UserHandle.getUserId(myUid()));
+    }
+
+    /**
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
      * Returns whether the current process is in an isolated sandbox.
      * @hide
      */
     public static final boolean isIsolated() {
+<<<<<<< HEAD
         int uid = UserId.getAppId(myUid());
+=======
+        int uid = UserHandle.getAppId(myUid());
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         return uid >= FIRST_ISOLATED_UID && uid <= LAST_ISOLATED_UID;
     }
 
@@ -962,6 +1055,7 @@ public class Process {
          */
         public boolean usingWrapper;
     }
+<<<<<<< HEAD
 
     private static final int[] PROCESS_STATE_FORMAT = new int[] {
         PROC_SPACE_TERM,
@@ -987,4 +1081,6 @@ public class Process {
         }
         return ret;
     }
+=======
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 }

@@ -26,8 +26,13 @@ import android.media.AudioManager;
 import android.media.IAudioService;
 import android.os.RemoteException;
 import android.os.ServiceManager;
+<<<<<<< HEAD
 import android.telephony.TelephonyManager;
 import android.util.EventLog;
+=======
+import android.os.UserHandle;
+import android.telephony.TelephonyManager;
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 import android.util.Log;
 import android.util.Slog;
 import android.view.View;
@@ -142,7 +147,12 @@ public class PhoneFallbackEventHandler implements FallbackEventHandler {
                     // Broadcast an intent that the Camera button was longpressed
                     Intent intent = new Intent(Intent.ACTION_CAMERA_BUTTON, null);
                     intent.putExtra(Intent.EXTRA_KEY_EVENT, event);
+<<<<<<< HEAD
                     mContext.sendOrderedBroadcast(intent, null);
+=======
+                    mContext.sendOrderedBroadcastAsUser(intent, UserHandle.CURRENT_OR_SELF,
+                            null, null, null, 0, null, null);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
                 }
                 return true;
             }

@@ -23,6 +23,10 @@ import android.content.ContentService.ObserverNode;
 import android.database.ContentObserver;
 import android.net.Uri;
 import android.os.Handler;
+<<<<<<< HEAD
+=======
+import android.os.UserHandle;
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 import android.test.AndroidTestCase;
 
 public class ObserverNodeTest extends AndroidTestCase {
@@ -33,6 +37,11 @@ public class ObserverNodeTest extends AndroidTestCase {
     }
 
     public void testUri() {
+<<<<<<< HEAD
+=======
+        final int myUserHandle = UserHandle.myUserId();
+
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         ObserverNode root = new ObserverNode("");
         Uri[] uris = new Uri[] {
             Uri.parse("content://c/a/"),
@@ -48,21 +57,38 @@ public class ObserverNodeTest extends AndroidTestCase {
         int[] nums = new int[] {4, 7, 1, 4, 2, 2, 3, 3};
 
         // special case
+<<<<<<< HEAD
         root.addObserverLocked(uris[0], new TestObserver().getContentObserver(), false, root, 0, 0);
         for(int i = 1; i < uris.length; i++) {
             root.addObserverLocked(uris[i], new TestObserver().getContentObserver(), true, root, 0, 0);
+=======
+        root.addObserverLocked(uris[0], new TestObserver().getContentObserver(), false, root,
+                0, 0, myUserHandle);
+        for(int i = 1; i < uris.length; i++) {
+            root.addObserverLocked(uris[i], new TestObserver().getContentObserver(), true, root,
+                    0, 0, myUserHandle);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         }
 
         ArrayList<ObserverCall> calls = new ArrayList<ObserverCall>();
 
         for (int i = nums.length - 1; i >=0; --i) {
+<<<<<<< HEAD
             root.collectObserversLocked(uris[i], 0, null, false, calls);
+=======
+            root.collectObserversLocked(uris[i], 0, null, false, myUserHandle, calls);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
             assertEquals(nums[i], calls.size());
             calls.clear();
         }
     }
 
     public void testUriNotNotify() {
+<<<<<<< HEAD
+=======
+        final int myUserHandle = UserHandle.myUserId();
+
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         ObserverNode root = new ObserverNode("");
         Uri[] uris = new Uri[] {
             Uri.parse("content://c/"),
@@ -77,13 +103,22 @@ public class ObserverNodeTest extends AndroidTestCase {
         int[] nums = new int[] {7, 1, 3, 3, 1, 1, 1, 1};
 
         for(int i = 0; i < uris.length; i++) {
+<<<<<<< HEAD
             root.addObserverLocked(uris[i], new TestObserver().getContentObserver(), false, root, 0, 0);
+=======
+            root.addObserverLocked(uris[i], new TestObserver().getContentObserver(), false, root,
+                    0, 0, myUserHandle);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         }
 
         ArrayList<ObserverCall> calls = new ArrayList<ObserverCall>();
 
         for (int i = uris.length - 1; i >=0; --i) {
+<<<<<<< HEAD
             root.collectObserversLocked(uris[i], 0, null, false, calls);
+=======
+            root.collectObserversLocked(uris[i], 0, null, false, myUserHandle, calls);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
             assertEquals(nums[i], calls.size());
             calls.clear();
         }

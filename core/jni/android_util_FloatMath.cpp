@@ -25,6 +25,21 @@ public:
     static float SqrtF(JNIEnv* env, jobject clazz, float x) {
         return sqrtf(x);
     }
+<<<<<<< HEAD
+=======
+
+    static float ExpF(JNIEnv* env, jobject clazz, float x) {
+        return expf(x);
+    }
+
+    static float PowF(JNIEnv* env, jobject clazz, float x, float y) {
+        return powf(x, y);
+    }
+
+    static float HypotF(JNIEnv* env, jobject clazz, float x, float y) {
+        return hypotf(x, y);
+    }
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 };
 
 static JNINativeMethod gMathUtilsMethods[] = {
@@ -32,7 +47,14 @@ static JNINativeMethod gMathUtilsMethods[] = {
     {"ceil", "(F)F", (void*) MathUtilsGlue::CeilF},
     {"sin", "(F)F", (void*) MathUtilsGlue::SinF},
     {"cos", "(F)F", (void*) MathUtilsGlue::CosF},
+<<<<<<< HEAD
     {"sqrt", "(F)F", (void*) MathUtilsGlue::SqrtF}
+=======
+    {"sqrt", "(F)F", (void*) MathUtilsGlue::SqrtF},
+    {"exp", "(F)F", (void*) MathUtilsGlue::ExpF},
+    {"pow", "(FF)F", (void*) MathUtilsGlue::PowF},
+    {"hypot", "(FF)F", (void*) MathUtilsGlue::HypotF},
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 };
 
 int register_android_util_FloatMath(JNIEnv* env)

@@ -20,6 +20,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+<<<<<<< HEAD
     android:orientation="vertical"
     android:paddingLeft="16dip"
     android:paddingRight="16dip">
@@ -34,6 +35,9 @@
         android:paddingBottom="16dip"
         android:textColor="@android:color/holo_blue_light"
     />
+=======
+    android:orientation="vertical">
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 
     <View android:layout_height="3dip"
           android:layout_width="match_parent"

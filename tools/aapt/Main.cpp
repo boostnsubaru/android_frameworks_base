@@ -1,6 +1,9 @@
 //
 // Copyright 2006 The Android Open Source Project
+<<<<<<< HEAD
 // This code has been modified.  Portions copyright (C) 2010, T-Mobile USA, Inc.
+=======
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 //
 // Android Asset Packaging Tool main entry point.
 //
@@ -15,7 +18,10 @@
 #include <stdlib.h>
 #include <getopt.h>
 #include <assert.h>
+<<<<<<< HEAD
 #include <ctype.h>
+=======
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 
 using namespace android;
 
@@ -57,7 +63,11 @@ void usage(void)
         "   xmltree          Print the compiled xmls in the given assets.\n"
         "   xmlstrings       Print the strings of the given compiled xml assets.\n\n", gProgName);
     fprintf(stderr,
+<<<<<<< HEAD
         " %s p[ackage] [-d][-f][-m][-u][-v][-x[ extending-resource-id]][-z][-M AndroidManifest.xml] \\\n"
+=======
+        " %s p[ackage] [-d][-f][-m][-u][-v][-x][-z][-M AndroidManifest.xml] \\\n"
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         "        [-0 extension [-0 extension ...]] [-g tolerance] [-j jarfile] \\\n"
         "        [--debug-mode] [--min-sdk-version VAL] [--target-sdk-version VAL] \\\n"
         "        [--app-version VAL] [--app-version-name TEXT] [--custom-package VAL] \\\n"
@@ -71,8 +81,13 @@ void usage(void)
         "        [-F apk-file] [-J R-file-dir] \\\n"
         "        [--product product1,product2,...] \\\n"
         "        [-c CONFIGS] [--preferred-configurations CONFIGS] \\\n"
+<<<<<<< HEAD
         "        [-o] \\\n"
         "        [raw-files-dir [raw-files-dir] ...]\n"
+=======
+        "        [raw-files-dir [raw-files-dir] ...] \\\n"
+        "        [--output-text-symbols DIR]\n"
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         "\n"
         "   Package the android resources.  It will read assets and resources that are\n"
         "   supplied with the -M -A -S or raw-files-dir arguments.  The -J -P -F and -R\n"
@@ -112,13 +127,20 @@ void usage(void)
         "   -j  specify a jar or zip file containing classes to include\n"
         "   -k  junk path of file(s) added\n"
         "   -m  make package directories under location specified by -J\n"
+<<<<<<< HEAD
         "   -o  create overlay package (ie only resources; expects <overlay-package> in manifest)\n"
+=======
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 #if 0
         "   -p  pseudolocalize the default configuration\n"
 #endif
         "   -u  update existing packages (add new, replace older, remove deleted files)\n"
         "   -v  verbose output\n"
+<<<<<<< HEAD
         "   -x  either create or assign (if specified) extending (non-application) resource IDs\n"
+=======
+        "   -x  create extending (non-application) resource IDs\n"
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         "   -z  require localization of resource attributes marked with\n"
         "       localization=\"suggested\"\n"
         "   -A  additional directory in which to find raw asset files\n"
@@ -181,6 +203,17 @@ void usage(void)
         "       Make the resources ID non constant. This is required to make an R java class\n"
         "       that does not contain the final value but is used to make reusable compiled\n"
         "       libraries that need to access resources.\n"
+<<<<<<< HEAD
+=======
+        "   --error-on-failed-insert\n"
+        "       Forces aapt to return an error if it fails to insert values into the manifest\n"
+        "       with --debug-mode, --min-sdk-version, --target-sdk-version --version-code\n"
+        "       and --version-name.\n"
+        "       Insertion typically fails if the manifest already defines the attribute.\n"
+        "   --output-text-symbols\n"
+        "       Generates a text file containing the resource symbols of the R class in the\n"
+        "       specified folder.\n"
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         "   --ignore-assets\n"
         "       Assets to be ignored. Default pattern is:\n"
         "       %s\n",
@@ -298,9 +331,12 @@ int main(int argc, char* const argv[])
             case 'm':
                 bundle.setMakePackageDirs(true);
                 break;
+<<<<<<< HEAD
             case 'o':
                 bundle.setIsOverlayPackage(true);
                 break;
+=======
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 #if 0
             case 'p':
                 bundle.setPseudolocalize(true);
@@ -311,6 +347,7 @@ int main(int argc, char* const argv[])
                 break;
             case 'x':
                 bundle.setExtending(true);
+<<<<<<< HEAD
                 argc--;
                 argv++;
                 if (!argc || !isdigit(argv[0][0])) {
@@ -319,6 +356,8 @@ int main(int argc, char* const argv[])
                 } else {
                     bundle.setExtendedPackageId(atoi(argv[0]));
                 }
+=======
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
                 break;
             case 'z':
                 bundle.setRequireLocalization(true);
@@ -557,6 +596,20 @@ int main(int argc, char* const argv[])
                     bundle.setInstrumentationPackageNameOverride(argv[0]);
                 } else if (strcmp(cp, "-auto-add-overlay") == 0) {
                     bundle.setAutoAddOverlay(true);
+<<<<<<< HEAD
+=======
+                } else if (strcmp(cp, "-error-on-failed-insert") == 0) {
+                    bundle.setErrorOnFailedInsert(true);
+                } else if (strcmp(cp, "-output-text-symbols") == 0) {
+                    argc--;
+                    argv++;
+                    if (!argc) {
+                        fprintf(stderr, "ERROR: No argument supplied for '-output-text-symbols' option\n");
+                        wantUsage = true;
+                        goto bail;
+                    }
+                    bundle.setOutputTextSymbols(argv[0]);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
                 } else if (strcmp(cp, "-product") == 0) {
                     argc--;
                     argv++;

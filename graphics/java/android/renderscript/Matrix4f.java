@@ -1,5 +1,9 @@
 /*
+<<<<<<< HEAD
  * Copyright (C) 2009 The Android Open Source Project
+=======
+ * Copyright (C) 2009-2012 The Android Open Source Project
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -59,6 +63,7 @@ public class Matrix4f {
     /**
     * Returns the value for a given row and column
     *
+<<<<<<< HEAD
     * @param i row of the value to return
     * @param j column of the value to return
     *
@@ -66,16 +71,33 @@ public class Matrix4f {
     */
     public float get(int i, int j) {
         return mMat[i*4 + j];
+=======
+    * @param x column of the value to return
+    * @param y row of the value to return
+    *
+    * @return value in the yth row and xth column
+    */
+    public float get(int x, int y) {
+        return mMat[x*4 + y];
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     }
 
     /**
     * Sets the value for a given row and column
     *
+<<<<<<< HEAD
     * @param i row of the value to set
     * @param j column of the value to set
     */
     public void set(int i, int j, float v) {
         mMat[i*4 + j] = v;
+=======
+    * @param x column of the value to set
+    * @param y row of the value to set
+    */
+    public void set(int x, int y, float v) {
+        mMat[x*4 + y] = v;
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     }
 
     /**
@@ -113,6 +135,37 @@ public class Matrix4f {
     }
 
     /**
+<<<<<<< HEAD
+=======
+    * Sets the values of the matrix to those of the parameter
+    *
+    * @param src matrix to load the values from
+    * @hide
+    */
+    public void load(Matrix3f src) {
+        mMat[0] = src.mMat[0];
+        mMat[1] = src.mMat[1];
+        mMat[2] = src.mMat[2];
+        mMat[3] = 0;
+
+        mMat[4] = src.mMat[3];
+        mMat[5] = src.mMat[4];
+        mMat[6] = src.mMat[5];
+        mMat[7] = 0;
+
+        mMat[8] = src.mMat[6];
+        mMat[9] = src.mMat[7];
+        mMat[10] = src.mMat[8];
+        mMat[11] = 0;
+
+        mMat[12] = 0;
+        mMat[13] = 0;
+        mMat[14] = 0;
+        mMat[15] = 1;
+    }
+
+    /**
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     * Sets current values to be a rotation matrix of certain angle
     * about a given axis
     *

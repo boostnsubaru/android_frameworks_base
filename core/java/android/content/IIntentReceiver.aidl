@@ -27,7 +27,12 @@ import android.os.Bundle;
  * {@hide}
  */
 oneway interface IIntentReceiver {
+<<<<<<< HEAD
     void performReceive(in Intent intent, int resultCode,
             String data, in Bundle extras, boolean ordered, boolean sticky);
+=======
+    void performReceive(in Intent intent, int resultCode, String data,
+            in Bundle extras, boolean ordered, boolean sticky, int sendingUser);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 }
 

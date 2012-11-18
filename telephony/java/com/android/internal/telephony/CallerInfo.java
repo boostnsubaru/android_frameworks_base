@@ -103,7 +103,10 @@ public class CallerInfo {
     // including the send to voicemail flag and the ringtone
     // uri reference.
     public Uri contactRingtoneUri;
+<<<<<<< HEAD
     public Uri contactVibrationUri;
+=======
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     public boolean shouldSendToVoicemail;
 
     /**
@@ -228,6 +231,7 @@ public class CallerInfo {
                     info.contactRingtoneUri = null;
                 }
 
+<<<<<<< HEAD
                 // look for the custom vibration, create from the string stored
                 // in the database.
                 columnIndex = cursor.getColumnIndex(PhoneLookup.CUSTOM_VIBRATION);
@@ -237,6 +241,8 @@ public class CallerInfo {
                     info.contactVibrationUri = null;
                 }
 
+=======
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
                 // look for the send to voicemail flag, set it to true only
                 // under certain circumstances.
                 columnIndex = cursor.getColumnIndex(PhoneLookup.SEND_TO_VOICEMAIL);
@@ -613,8 +619,12 @@ public class CallerInfo {
                     .append("\nperson_id: " + person_id)
                     .append("\nneedUpdate: " + needUpdate)
                     .append("\ncontactRefUri: " + contactRefUri)
+<<<<<<< HEAD
                     .append("\ncontactRingtoneUri: " + contactRingtoneUri)
                     .append("\ncontactVibrationUri: " + contactVibrationUri)
+=======
+                    .append("\ncontactRingtoneUri: " + contactRefUri)
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
                     .append("\nshouldSendToVoicemail: " + shouldSendToVoicemail)
                     .append("\ncachedPhoto: " + cachedPhoto)
                     .append("\nisCachedPhotoCurrent: " + isCachedPhotoCurrent)

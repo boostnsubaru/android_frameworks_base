@@ -304,4 +304,28 @@ public class RemoteCallbackList<E extends IInterface> {
         
         mBroadcastCount = -1;
     }
+<<<<<<< HEAD
+=======
+
+    /**
+     * Returns the number of registered callbacks. Note that the number of registered
+     * callbacks may differ from the value returned by {@link #beginBroadcast()} since
+     * the former returns the number of callbacks registered at the time of the call
+     * and the second the number of callback to which the broadcast will be delivered.
+     * <p>
+     * This function is useful to decide whether to schedule a broadcast if this
+     * requires doing some work which otherwise would not be performed.
+     * </p>
+     *
+     * @return The size.
+     */
+    public int getRegisteredCallbackCount() {
+        synchronized (mCallbacks) {
+            if (mKilled) {
+                return 0;
+            }
+            return mCallbacks.size();
+        }
+    }
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 }

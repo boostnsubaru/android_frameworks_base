@@ -108,6 +108,11 @@ interface IAudioService {
 
     boolean isBluetoothA2dpOn();
 
+<<<<<<< HEAD
+=======
+    oneway void setRemoteSubmixOn(boolean on, int address);
+
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     int requestAudioFocus(int mainStreamType, int durationHint, IBinder cb, IAudioFocusDispatcher l,
             String clientId, String callingPackageName);
 
@@ -151,4 +156,9 @@ interface IAudioService {
     int setBluetoothA2dpDeviceConnectionState(in BluetoothDevice device, int state);
 
     AudioRoutesInfo startWatchingRoutes(in IAudioRoutesObserver observer);
+<<<<<<< HEAD
+=======
+
+    boolean isCameraSoundForced();
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 }

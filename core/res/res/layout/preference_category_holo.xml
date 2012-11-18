@@ -18,5 +18,10 @@
 <TextView xmlns:android="http://schemas.android.com/apk/res/android"
     style="?android:attr/listSeparatorTextViewStyle"
     android:id="@+android:id/title"
+<<<<<<< HEAD
     android:paddingLeft="@dimen/preference_item_padding_side"
     android:paddingRight="@dimen/preference_item_padding_side" />
+=======
+    android:paddingStart="@dimen/preference_item_padding_side"
+    android:paddingEnd="@dimen/preference_item_padding_side" />
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a

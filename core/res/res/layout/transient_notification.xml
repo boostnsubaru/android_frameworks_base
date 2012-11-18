@@ -29,6 +29,10 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_weight="1"
+<<<<<<< HEAD
+=======
+        android:layout_gravity="center_horizontal"
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         android:textAppearance="@style/TextAppearance.Small"
         android:textColor="@color/bright_foreground_dark"
         android:shadowColor="#BB000000"

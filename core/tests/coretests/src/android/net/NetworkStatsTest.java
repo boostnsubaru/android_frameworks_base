@@ -287,7 +287,11 @@ public class NetworkStatsTest extends TestCase {
                 .addValues(TEST_IFACE, 101, SET_DEFAULT, TAG_NONE, 128L, 8L, 0L, 0L, 0L)
                 .addValues(TEST_IFACE, 101, SET_DEFAULT, 0xF00D, 128L, 8L, 0L, 0L, 0L);
 
+<<<<<<< HEAD
         final NetworkStats after = before.withoutUid(100);
+=======
+        final NetworkStats after = before.withoutUids(new int[] { 100 });
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         assertEquals(6, before.size());
         assertEquals(2, after.size());
         assertValues(after, 0, TEST_IFACE, 101, SET_DEFAULT, TAG_NONE, 128L, 8L, 0L, 0L, 0L);

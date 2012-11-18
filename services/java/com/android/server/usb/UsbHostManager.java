@@ -16,6 +16,7 @@
 
 package com.android.server.usb;
 
+<<<<<<< HEAD
 import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
 import android.content.ContentResolver;
@@ -23,10 +24,14 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.hardware.usb.IUsbManager;
+=======
+import android.content.Context;
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 import android.hardware.usb.UsbConstants;
 import android.hardware.usb.UsbDevice;
 import android.hardware.usb.UsbEndpoint;
 import android.hardware.usb.UsbInterface;
+<<<<<<< HEAD
 import android.hardware.usb.UsbManager;
 import android.net.Uri;
 import android.os.Binder;
@@ -45,6 +50,16 @@ import java.io.FileReader;
 import java.io.PrintWriter;
 import java.util.HashMap;
 import java.util.List;
+=======
+import android.os.Bundle;
+import android.os.ParcelFileDescriptor;
+import android.os.Parcelable;
+import android.util.Slog;
+
+import java.io.FileDescriptor;
+import java.io.PrintWriter;
+import java.util.HashMap;
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 
 /**
  * UsbHostManager manages USB state in host mode.
@@ -54,22 +69,50 @@ public class UsbHostManager {
     private static final boolean LOG = false;
 
     // contains all connected USB devices
+<<<<<<< HEAD
     private final HashMap<String,UsbDevice> mDevices = new HashMap<String,UsbDevice>();
+=======
+    private final HashMap<String, UsbDevice> mDevices = new HashMap<String, UsbDevice>();
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 
     // USB busses to exclude from USB host support
     private final String[] mHostBlacklist;
 
     private final Context mContext;
     private final Object mLock = new Object();
+<<<<<<< HEAD
     private final UsbSettingsManager mSettingsManager;
 
     public UsbHostManager(Context context, UsbSettingsManager settingsManager) {
         mContext = context;
         mSettingsManager = settingsManager;
+=======
+
+    // @GuardedBy("mLock")
+    private UsbSettingsManager mCurrentSettings;
+
+    public UsbHostManager(Context context) {
+        mContext = context;
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         mHostBlacklist = context.getResources().getStringArray(
                 com.android.internal.R.array.config_usbHostBlacklist);
     }
 
+<<<<<<< HEAD
+=======
+    public void setCurrentSettings(UsbSettingsManager settings) {
+        synchronized (mLock) {
+            mCurrentSettings = settings;
+        }
+    }
+
+    private UsbSettingsManager getCurrentSettings() {
+        synchronized (mLock) {
+            return mCurrentSettings;
+        }
+    }
+
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     private boolean isBlackListed(String deviceName) {
         int count = mHostBlacklist.length;
         for (int i = 0; i < count; i++) {
@@ -154,7 +197,11 @@ public class UsbHostManager {
             UsbDevice device = new UsbDevice(deviceName, vendorID, productID,
                     deviceClass, deviceSubclass, deviceProtocol, interfaces);
             mDevices.put(deviceName, device);
+<<<<<<< HEAD
             mSettingsManager.deviceAttached(device);
+=======
+            getCurrentSettings().deviceAttached(device);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         }
     }
 
@@ -163,7 +210,11 @@ public class UsbHostManager {
         synchronized (mLock) {
             UsbDevice device = mDevices.remove(deviceName);
             if (device != null) {
+<<<<<<< HEAD
                 mSettingsManager.deviceDetached(device);
+=======
+                getCurrentSettings().deviceDetached(device);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
             }
         }
     }
@@ -202,7 +253,11 @@ public class UsbHostManager {
                 throw new IllegalArgumentException(
                         "device " + deviceName + " does not exist or is restricted");
             }
+<<<<<<< HEAD
             mSettingsManager.checkPermission(device);
+=======
+            getCurrentSettings().checkPermission(device);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
             return nativeOpenDevice(deviceName);
         }
     }

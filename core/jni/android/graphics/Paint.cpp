@@ -22,6 +22,10 @@
 #include "jni.h"
 #include "GraphicsJNI.h"
 #include <android_runtime/AndroidRuntime.h>
+<<<<<<< HEAD
+=======
+#include <ScopedUtfChars.h>
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 
 #include "SkBlurDrawLooper.h"
 #include "SkColorFilter.h"
@@ -30,6 +34,10 @@
 #include "SkShader.h"
 #include "SkTypeface.h"
 #include "SkXfermode.h"
+<<<<<<< HEAD
+=======
+#include "unicode/uloc.h"
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 #include "unicode/ushape.h"
 #include "TextLayout.h"
 
@@ -254,11 +262,59 @@ public:
         obj->setTextAlign(align);
     }
 
+<<<<<<< HEAD
     static void setTextLocale(JNIEnv* env, jobject clazz, SkPaint* obj, jstring locale) {
         const char* localeArray = env->GetStringUTFChars(locale, NULL);
         SkString skLocale(localeArray);
         obj->setTextLocale(skLocale);
         env->ReleaseStringUTFChars(locale, localeArray);
+=======
+    // generate bcp47 identifier for the supplied locale
+    static void toLanguageTag(char* output, size_t outSize,
+            const char* locale) {
+        if (output == NULL || outSize <= 0) {
+            return;
+        }
+        if (locale == NULL) {
+            output[0] = '\0';
+            return;
+        }
+        char canonicalChars[ULOC_FULLNAME_CAPACITY];
+        UErrorCode uErr = U_ZERO_ERROR;
+        uloc_canonicalize(locale, canonicalChars, ULOC_FULLNAME_CAPACITY,
+                &uErr);
+        if (U_SUCCESS(uErr)) {
+            char likelyChars[ULOC_FULLNAME_CAPACITY];
+            uErr = U_ZERO_ERROR;
+            uloc_addLikelySubtags(canonicalChars, likelyChars,
+                    ULOC_FULLNAME_CAPACITY, &uErr);
+            if (U_SUCCESS(uErr)) {
+                uErr = U_ZERO_ERROR;
+                uloc_toLanguageTag(likelyChars, output, outSize, FALSE, &uErr);
+                if (U_SUCCESS(uErr)) {
+                    return;
+                } else {
+                    ALOGD("uloc_toLanguageTag(\"%s\") failed: %s", likelyChars,
+                            u_errorName(uErr));
+                }
+            } else {
+                ALOGD("uloc_addLikelySubtags(\"%s\") failed: %s",
+                        canonicalChars, u_errorName(uErr));
+            }
+        } else {
+            ALOGD("uloc_canonicalize(\"%s\") failed: %s", locale,
+                    u_errorName(uErr));
+        }
+        // unable to build a proper language identifier
+        output[0] = '\0';
+    }
+
+    static void setTextLocale(JNIEnv* env, jobject clazz, SkPaint* obj, jstring locale) {
+        ScopedUtfChars localeChars(env, locale);
+        char langTag[ULOC_FULLNAME_CAPACITY];
+        toLanguageTag(langTag, ULOC_FULLNAME_CAPACITY, localeChars.c_str());
+        obj->setLanguage(SkLanguage(langTag));
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     }
 
     static jfloat getTextSize(JNIEnv* env, jobject paint) {
@@ -587,7 +643,11 @@ public:
             jint count, jint flags, jint offset, jint opt) {
         jfloat scalarArray[count];
 
+<<<<<<< HEAD
         TextLayout::getTextRunAdvances(paint, text, start, count, count, flags,
+=======
+        TextLayout::getTextRunAdvances(paint, text, start, count, start + count, flags,
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
                 scalarArray, NULL /* dont need totalAdvance */);
 
         jint pos = offset - start;
@@ -750,7 +810,11 @@ public:
     static void doTextBounds(JNIEnv* env, const jchar* text, int count,
                              jobject bounds, const SkPaint& paint)
     {
+<<<<<<< HEAD
         SkRect  r;
+=======
+        SkRect  r{0,0,0,0};
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         SkIRect ir;
 
         sp<TextLayoutValue> value = TextLayoutEngine::getInstance().getValue(&paint,

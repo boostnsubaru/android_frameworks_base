@@ -22,6 +22,10 @@ import com.android.server.input.InputWindowHandle;
 import android.os.Looper;
 import android.os.Process;
 import android.util.Slog;
+<<<<<<< HEAD
+=======
+import android.view.Display;
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 import android.view.InputChannel;
 import android.view.InputEventReceiver;
 import android.view.InputQueue;
@@ -56,7 +60,11 @@ public final class FakeWindowImpl implements WindowManagerPolicy.FakeWindow {
         mApplicationHandle.dispatchingTimeoutNanos =
                 WindowManagerService.DEFAULT_INPUT_DISPATCHING_TIMEOUT_NANOS;
 
+<<<<<<< HEAD
         mWindowHandle = new InputWindowHandle(mApplicationHandle, null);
+=======
+        mWindowHandle = new InputWindowHandle(mApplicationHandle, null, Display.DEFAULT_DISPLAY);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         mWindowHandle.name = name;
         mWindowHandle.inputChannel = mServerChannel;
         mWindowLayer = getLayerLw(windowType);

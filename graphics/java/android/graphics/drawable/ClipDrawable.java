@@ -209,7 +209,11 @@ public class ClipDrawable extends Drawable implements Drawable.Callback {
         if ((mClipState.mOrientation & VERTICAL) != 0) {
             h -= (h - ih) * (10000 - level) / 10000;
         }
+<<<<<<< HEAD
         final int layoutDirection = getResolvedLayoutDirectionSelf();
+=======
+        final int layoutDirection = getLayoutDirection();
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         Gravity.apply(mClipState.mGravity, w, h, bounds, r, layoutDirection);
 
         if (w > 0 && h > 0) {
@@ -239,7 +243,16 @@ public class ClipDrawable extends Drawable implements Drawable.Callback {
         return null;
     }
 
+<<<<<<< HEAD
     
+=======
+    /** @hide */
+    @Override
+    public void setLayoutDirection(int layoutDirection) {
+        mClipState.mDrawable.setLayoutDirection(layoutDirection);
+        super.setLayoutDirection(layoutDirection);
+    }
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 
     final static class ClipState extends ConstantState {
         Drawable mDrawable;

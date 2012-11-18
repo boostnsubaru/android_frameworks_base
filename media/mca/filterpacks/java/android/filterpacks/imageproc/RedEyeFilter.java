@@ -72,9 +72,13 @@ public class RedEyeFilter extends Filter {
             "void main() {\n" +
             "  vec4 color = texture2D(tex_sampler_0, v_texcoord);\n" +
             "  vec4 mask = texture2D(tex_sampler_1, v_texcoord);\n" +
+<<<<<<< HEAD
             "  gl_FragColor = vec4(mask.a, mask.a, mask.a, 1.0) * intensity + color * (1.0 - intensity);\n" +
             "  if (mask.a > 0.0) {\n" +
             "    gl_FragColor.r = 0.0;\n" +
+=======
+            "  if (mask.a > 0.0) {\n" +
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
             "    float green_blue = color.g + color.b;\n" +
             "    float red_intensity = color.r / green_blue;\n" +
             "    if (red_intensity > intensity) {\n" +
@@ -105,8 +109,13 @@ public class RedEyeFilter extends Filter {
                 ShaderProgram shaderProgram = new ShaderProgram(context, mRedEyeShader);
                 shaderProgram.setMaximumTileSize(mTileSize);
                 mProgram = shaderProgram;
+<<<<<<< HEAD
                 break;
 
+=======
+                mProgram.setHostValue("intensity", DEFAULT_RED_INTENSITY);
+                break;
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
             default:
                 throw new RuntimeException("Filter RedEye does not support frames of " +
                     "target " + target + "!");
@@ -180,8 +189,11 @@ public class RedEyeFilter extends Filter {
     }
 
     private void updateProgramParams() {
+<<<<<<< HEAD
         mProgram.setHostValue("intensity", DEFAULT_RED_INTENSITY);
 
+=======
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         if ( mCenters.length % 2 == 1) {
             throw new RuntimeException("The size of center array must be even.");
         }

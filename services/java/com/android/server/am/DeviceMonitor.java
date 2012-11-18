@@ -16,6 +16,10 @@
 
 package com.android.server.am;
 
+<<<<<<< HEAD
+=======
+import android.os.SELinux;
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 import android.util.Slog;
 
 import java.io.*;
@@ -80,6 +84,12 @@ class DeviceMonitor {
         if (!BASE.isDirectory() && !BASE.mkdirs()) {
             throw new AssertionError("Couldn't create " + BASE + ".");
         }
+<<<<<<< HEAD
+=======
+        if (!SELinux.restorecon(BASE)) {
+            throw new AssertionError("Couldn't restorecon " + BASE + ".");
+        }
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     }
 
     private static final File[] PATHS = {

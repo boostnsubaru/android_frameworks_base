@@ -454,15 +454,28 @@ public class ActionBarContextView extends AbsActionBarView implements AnimatorLi
 
     @Override
     protected void onLayout(boolean changed, int l, int t, int r, int b) {
+<<<<<<< HEAD
         int x = getPaddingLeft();
+=======
+        final boolean isLayoutRtl = isLayoutRtl();
+        int x = isLayoutRtl ? r - l - getPaddingRight() : getPaddingLeft();
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         final int y = getPaddingTop();
         final int contentHeight = b - t - getPaddingTop() - getPaddingBottom();
         
         if (mClose != null && mClose.getVisibility() != GONE) {
             MarginLayoutParams lp = (MarginLayoutParams) mClose.getLayoutParams();
+<<<<<<< HEAD
             x += lp.leftMargin;
             x += positionChild(mClose, x, y, contentHeight);
             x += lp.rightMargin;
+=======
+            final int startMargin = (isLayoutRtl ? lp.rightMargin : lp.leftMargin);
+            final int endMargin = (isLayoutRtl ? lp.leftMargin : lp.rightMargin);
+            x = next(x, startMargin, isLayoutRtl);
+            x += positionChild(mClose, x, y, contentHeight, isLayoutRtl);
+            x = next(x, endMargin, isLayoutRtl);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 
             if (mAnimateInOnLayout) {
                 mAnimationMode = ANIMATE_IN;
@@ -473,6 +486,7 @@ public class ActionBarContextView extends AbsActionBarView implements AnimatorLi
         }
 
         if (mTitleLayout != null && mCustomView == null && mTitleLayout.getVisibility() != GONE) {
+<<<<<<< HEAD
             x += positionChild(mTitleLayout, x, y, contentHeight);
         }
         
@@ -484,6 +498,19 @@ public class ActionBarContextView extends AbsActionBarView implements AnimatorLi
 
         if (mMenuView != null) {
             x -= positionChildInverse(mMenuView, x, y, contentHeight);
+=======
+            x += positionChild(mTitleLayout, x, y, contentHeight, isLayoutRtl);
+        }
+        
+        if (mCustomView != null) {
+            x += positionChild(mCustomView, x, y, contentHeight, isLayoutRtl);
+        }
+
+        x = isLayoutRtl ? getPaddingLeft() : r - l - getPaddingRight();
+
+        if (mMenuView != null) {
+            x += positionChild(mMenuView, x, y, contentHeight, !isLayoutRtl);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         }
     }
 

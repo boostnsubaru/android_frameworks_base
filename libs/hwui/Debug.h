@@ -68,6 +68,12 @@
 // Turn on to dump display list state
 #define DEBUG_DISPLAY_LIST 0
 
+<<<<<<< HEAD
+=======
+// Turn on to insert an event marker for each display list op
+#define DEBUG_DISPLAY_LIST_OPS_AS_EVENTS 0
+
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 #if DEBUG_INIT
     #define INIT_LOGD(...) ALOGD(__VA_ARGS__)
 #else

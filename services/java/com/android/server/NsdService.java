@@ -31,6 +31,10 @@ import android.os.HandlerThread;
 import android.os.Message;
 import android.os.Messenger;
 import android.os.IBinder;
+<<<<<<< HEAD
+=======
+import android.os.UserHandle;
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 import android.provider.Settings;
 import android.util.Slog;
 import android.util.SparseArray;
@@ -110,8 +114,13 @@ public class NsdService extends INsdManager.Stub {
         private final EnabledState mEnabledState = new EnabledState();
 
         @Override
+<<<<<<< HEAD
         protected String getMessageInfo(Message msg) {
             return cmdToString(msg.what);
+=======
+        protected String getWhatToString(int what) {
+            return cmdToString(what);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         }
 
         /**
@@ -130,7 +139,11 @@ public class NsdService extends INsdManager.Stub {
             };
 
             mContext.getContentResolver().registerContentObserver(
+<<<<<<< HEAD
                     Settings.Secure.getUriFor(Settings.Secure.NSD_ON),
+=======
+                    Settings.Global.getUriFor(Settings.Global.NSD_ON),
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
                     false, contentObserver);
         }
 
@@ -144,7 +157,11 @@ public class NsdService extends INsdManager.Stub {
             } else {
                 setInitialState(mDisabledState);
             }
+<<<<<<< HEAD
             setProcessedMessagesSize(25);
+=======
+            setLogRecSize(25);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
             registerForNsdSetting();
         }
 
@@ -432,7 +449,11 @@ public class NsdService extends INsdManager.Stub {
     public void setEnabled(boolean enable) {
         mContext.enforceCallingOrSelfPermission(android.Manifest.permission.CONNECTIVITY_INTERNAL,
                 "NsdService");
+<<<<<<< HEAD
         Settings.Secure.putInt(mContentResolver, Settings.Secure.NSD_ON, enable ? 1 : 0);
+=======
+        Settings.Global.putInt(mContentResolver, Settings.Global.NSD_ON, enable ? 1 : 0);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         if (enable) {
             mNsdStateMachine.sendMessage(NsdManager.ENABLE);
         } else {
@@ -448,11 +469,19 @@ public class NsdService extends INsdManager.Stub {
         } else {
             intent.putExtra(NsdManager.EXTRA_NSD_STATE, NsdManager.NSD_STATE_DISABLED);
         }
+<<<<<<< HEAD
         mContext.sendStickyBroadcast(intent);
     }
 
     private boolean isNsdEnabled() {
         boolean ret = Settings.Secure.getInt(mContentResolver, Settings.Secure.NSD_ON, 1) == 1;
+=======
+        mContext.sendStickyBroadcastAsUser(intent, UserHandle.ALL);
+    }
+
+    private boolean isNsdEnabled() {
+        boolean ret = Settings.Global.getInt(mContentResolver, Settings.Global.NSD_ON, 1) == 1;
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         if (DBG) Slog.d(TAG, "Network service discovery enabled " + ret);
         return ret;
     }

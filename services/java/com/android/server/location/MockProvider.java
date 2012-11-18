@@ -20,15 +20,28 @@ import android.location.Criteria;
 import android.location.ILocationManager;
 import android.location.Location;
 import android.location.LocationProvider;
+<<<<<<< HEAD
 import android.net.NetworkInfo;
+=======
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 import android.os.Bundle;
 import android.os.RemoteException;
 import android.os.WorkSource;
 import android.util.Log;
 import android.util.PrintWriterPrinter;
 
+<<<<<<< HEAD
 import java.io.PrintWriter;
 
+=======
+
+import java.io.FileDescriptor;
+import java.io.PrintWriter;
+
+import com.android.internal.location.ProviderProperties;
+import com.android.internal.location.ProviderRequest;
+
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 /**
  * A mock location provider used by LocationManagerService to implement test providers.
  *
@@ -36,6 +49,7 @@ import java.io.PrintWriter;
  */
 public class MockProvider implements LocationProviderInterface {
     private final String mName;
+<<<<<<< HEAD
     private final ILocationManager mLocationManager;
     private final boolean mRequiresNetwork;
     private final boolean mRequiresSatellite;
@@ -50,12 +64,23 @@ public class MockProvider implements LocationProviderInterface {
     private int mStatus;
     private long mStatusUpdateTime;
     private final Bundle mExtras = new Bundle();
+=======
+    private final ProviderProperties mProperties;
+    private final ILocationManager mLocationManager;
+
+    private final Location mLocation;
+    private final Bundle mExtras = new Bundle();
+
+    private int mStatus;
+    private long mStatusUpdateTime;
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     private boolean mHasLocation;
     private boolean mHasStatus;
     private boolean mEnabled;
 
     private static final String TAG = "MockProvider";
 
+<<<<<<< HEAD
     public MockProvider(String name,  ILocationManager locationManager,
         boolean requiresNetwork, boolean requiresSatellite,
         boolean requiresCell, boolean hasMonetaryCost, boolean supportsAltitude,
@@ -74,22 +99,56 @@ public class MockProvider implements LocationProviderInterface {
         mLocation = new Location(name);
     }
 
+=======
+    public MockProvider(String name, ILocationManager locationManager,
+            ProviderProperties properties) {
+        if (properties == null) throw new NullPointerException("properties is null");
+
+        mName = name;
+        mLocationManager = locationManager;
+        mProperties = properties;
+        mLocation = new Location(name);
+    }
+
+    @Override
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     public String getName() {
         return mName;
     }
 
+<<<<<<< HEAD
+=======
+    @Override
+    public ProviderProperties getProperties() {
+        return mProperties;
+    }
+
+    @Override
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     public void disable() {
         mEnabled = false;
     }
 
+<<<<<<< HEAD
+=======
+    @Override
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     public void enable() {
         mEnabled = true;
     }
 
+<<<<<<< HEAD
+=======
+    @Override
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     public boolean isEnabled() {
         return mEnabled;
     }
 
+<<<<<<< HEAD
+=======
+    @Override
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     public int getStatus(Bundle extras) {
         if (mHasStatus) {
             extras.clear();
@@ -100,10 +159,15 @@ public class MockProvider implements LocationProviderInterface {
         }
     }
 
+<<<<<<< HEAD
+=======
+    @Override
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     public long getStatusUpdateTime() {
         return mStatusUpdateTime;
     }
 
+<<<<<<< HEAD
     public int getAccuracy() {
         return mAccuracy;
     }
@@ -169,6 +233,17 @@ public class MockProvider implements LocationProviderInterface {
             mLocationManager.reportLocation(mLocation, false);
         } catch (RemoteException e) {
             Log.e(TAG, "RemoteException calling reportLocation");
+=======
+    public void setLocation(Location l) {
+        mLocation.set(l);
+        mHasLocation = true;
+        if (mEnabled) {
+            try {
+                mLocationManager.reportLocation(mLocation, false);
+            } catch (RemoteException e) {
+                Log.e(TAG, "RemoteException calling reportLocation");
+            }
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         }
     }
 
@@ -191,6 +266,7 @@ public class MockProvider implements LocationProviderInterface {
         mStatusUpdateTime = 0;
     }
 
+<<<<<<< HEAD
     public String getInternalState() {
         return null;
     }
@@ -219,6 +295,11 @@ public class MockProvider implements LocationProviderInterface {
     }
 
     public void removeListener(int uid) {
+=======
+    @Override
+    public void dump(FileDescriptor fd, PrintWriter pw, String[] args) {
+        dump(pw, "");
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     }
 
     public void dump(PrintWriter pw, String prefix) {
@@ -231,4 +312,20 @@ public class MockProvider implements LocationProviderInterface {
         pw.println(prefix + "mStatusUpdateTime=" + mStatusUpdateTime);
         pw.println(prefix + "mExtras=" + mExtras);
     }
+<<<<<<< HEAD
+=======
+
+    @Override
+    public void setRequest(ProviderRequest request, WorkSource source) { }
+
+    @Override
+    public void switchUser(int userId) {
+        // nothing to do here
+    }
+
+    @Override
+    public boolean sendExtraCommand(String command, Bundle extras) {
+        return false;
+    }
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 }

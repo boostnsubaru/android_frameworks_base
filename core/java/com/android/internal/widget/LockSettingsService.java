@@ -23,8 +23,15 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.os.Binder;
+<<<<<<< HEAD
 import android.os.RemoteException;
 import android.os.UserId;
+=======
+import android.os.Environment;
+import android.os.RemoteException;
+import android.os.SystemProperties;
+import android.os.UserHandle;
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 import android.provider.Settings;
 import android.provider.Settings.Secure;
 import android.text.TextUtils;
@@ -96,7 +103,11 @@ public class LockSettingsService extends ILockSettings.Stub {
 
     private static final void checkWritePermission(int userId) {
         final int callingUid = Binder.getCallingUid();
+<<<<<<< HEAD
         if (UserId.getAppId(callingUid) != android.os.Process.SYSTEM_UID) {
+=======
+        if (UserHandle.getAppId(callingUid) != android.os.Process.SYSTEM_UID) {
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
             throw new SecurityException("uid=" + callingUid
                     + " not authorized to write lock settings");
         }
@@ -104,7 +115,11 @@ public class LockSettingsService extends ILockSettings.Stub {
 
     private static final void checkPasswordReadPermission(int userId) {
         final int callingUid = Binder.getCallingUid();
+<<<<<<< HEAD
         if (UserId.getAppId(callingUid) != android.os.Process.SYSTEM_UID) {
+=======
+        if (UserHandle.getAppId(callingUid) != android.os.Process.SYSTEM_UID) {
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
             throw new SecurityException("uid=" + callingUid
                     + " not authorized to read lock password");
         }
@@ -112,8 +127,13 @@ public class LockSettingsService extends ILockSettings.Stub {
 
     private static final void checkReadPermission(int userId) {
         final int callingUid = Binder.getCallingUid();
+<<<<<<< HEAD
         if (UserId.getAppId(callingUid) != android.os.Process.SYSTEM_UID
                 && UserId.getUserId(callingUid) != userId) {
+=======
+        if (UserHandle.getAppId(callingUid) != android.os.Process.SYSTEM_UID
+                && UserHandle.getUserId(callingUid) != userId) {
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
             throw new SecurityException("uid=" + callingUid
                     + " not authorized to read settings of user " + userId);
         }
@@ -172,7 +192,12 @@ public class LockSettingsService extends ILockSettings.Stub {
             // Leave it in the same place for user 0
             return dataSystemDirectory + LOCK_PATTERN_FILE;
         } else {
+<<<<<<< HEAD
             return  dataSystemDirectory + "users/" + userId + "/" + LOCK_PATTERN_FILE;
+=======
+            return  new File(Environment.getUserSystemDirectory(userId), LOCK_PATTERN_FILE)
+                    .getAbsolutePath();
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         }
     }
 
@@ -184,7 +209,12 @@ public class LockSettingsService extends ILockSettings.Stub {
             // Leave it in the same place for user 0
             return dataSystemDirectory + LOCK_PASSWORD_FILE;
         } else {
+<<<<<<< HEAD
             return  dataSystemDirectory + "users/" + userId + "/" + LOCK_PASSWORD_FILE;
+=======
+            return  new File(Environment.getUserSystemDirectory(userId), LOCK_PASSWORD_FILE)
+                    .getAbsolutePath();
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         }
     }
 
@@ -303,12 +333,22 @@ public class LockSettingsService extends ILockSettings.Stub {
     }
 
     private void writeToDb(String key, String value, int userId) {
+<<<<<<< HEAD
+=======
+        writeToDb(mOpenHelper.getWritableDatabase(), key, value, userId);
+    }
+
+    private void writeToDb(SQLiteDatabase db, String key, String value, int userId) {
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         ContentValues cv = new ContentValues();
         cv.put(COLUMN_KEY, key);
         cv.put(COLUMN_USERID, userId);
         cv.put(COLUMN_VALUE, value);
 
+<<<<<<< HEAD
         SQLiteDatabase db = mOpenHelper.getWritableDatabase();
+=======
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         db.beginTransaction();
         try {
             db.delete(TABLE, COLUMN_KEY + "=? AND " + COLUMN_USERID + "=?",
@@ -359,6 +399,19 @@ public class LockSettingsService extends ILockSettings.Stub {
         @Override
         public void onCreate(SQLiteDatabase db) {
             createTable(db);
+<<<<<<< HEAD
+=======
+            initializeDefaults(db);
+        }
+
+        private void initializeDefaults(SQLiteDatabase db) {
+            // Get the lockscreen default from a system property, if available
+            boolean lockScreenDisable = SystemProperties.getBoolean("ro.lockscreen.disable.default",
+                    false);
+            if (lockScreenDisable) {
+                writeToDb(db, LockPatternUtils.DISABLE_LOCKSCREEN_KEY, "1", 0);
+            }
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         }
 
         @Override

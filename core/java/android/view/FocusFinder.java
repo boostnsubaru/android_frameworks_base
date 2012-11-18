@@ -79,6 +79,7 @@ public class FocusFinder {
     }
 
     private View findNextFocus(ViewGroup root, View focused, Rect focusedRect, int direction) {
+<<<<<<< HEAD
         if ((direction & View.FOCUS_ACCESSIBILITY) != View.FOCUS_ACCESSIBILITY) {
             return findNextInputFocus(root, focused, focusedRect, direction);
         } else {
@@ -90,6 +91,11 @@ public class FocusFinder {
         View next = null;
         if (focused != null) {
             next = findNextUserSpecifiedInputFocus(root, focused, direction);
+=======
+        View next = null;
+        if (focused != null) {
+            next = findNextUserSpecifiedFocus(root, focused, direction);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         }
         if (next != null) {
             return next;
@@ -107,7 +113,11 @@ public class FocusFinder {
         return next;
     }
 
+<<<<<<< HEAD
     private View findNextUserSpecifiedInputFocus(ViewGroup root, View focused, int direction) {
+=======
+    private View findNextUserSpecifiedFocus(ViewGroup root, View focused, int direction) {
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         // check for user specified next focus
         View userSetNextFocus = focused.findUserSetNextFocus(root, direction);
         if (userSetNextFocus != null && userSetNextFocus.isFocusable()
@@ -120,7 +130,10 @@ public class FocusFinder {
 
     private View findNextFocus(ViewGroup root, View focused, Rect focusedRect,
             int direction, ArrayList<View> focusables) {
+<<<<<<< HEAD
         final int directionMasked = (direction & ~View.FOCUS_ACCESSIBILITY);
+=======
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         if (focused != null) {
             if (focusedRect == null) {
                 focusedRect = mFocusedRect;
@@ -132,7 +145,11 @@ public class FocusFinder {
             if (focusedRect == null) {
                 focusedRect = mFocusedRect;
                 // make up a rect at top left or bottom right of root
+<<<<<<< HEAD
                 switch (directionMasked) {
+=======
+                switch (direction) {
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
                     case View.FOCUS_RIGHT:
                     case View.FOCUS_DOWN:
                         setFocusTopLeft(root, focusedRect);
@@ -160,15 +177,24 @@ public class FocusFinder {
             }
         }
 
+<<<<<<< HEAD
         switch (directionMasked) {
             case View.FOCUS_FORWARD:
             case View.FOCUS_BACKWARD:
                 return findNextInputFocusInRelativeDirection(focusables, root, focused, focusedRect,
                         directionMasked);
+=======
+        switch (direction) {
+            case View.FOCUS_FORWARD:
+            case View.FOCUS_BACKWARD:
+                return findNextFocusInRelativeDirection(focusables, root, focused, focusedRect,
+                        direction);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
             case View.FOCUS_UP:
             case View.FOCUS_DOWN:
             case View.FOCUS_LEFT:
             case View.FOCUS_RIGHT:
+<<<<<<< HEAD
                 return findNextInputFocusInAbsoluteDirection(focusables, root, focused,
                         focusedRect, directionMasked);
             default:
@@ -191,6 +217,16 @@ public class FocusFinder {
     }
 
     private View findNextInputFocusInRelativeDirection(ArrayList<View> focusables, ViewGroup root,
+=======
+                return findNextFocusInAbsoluteDirection(focusables, root, focused,
+                        focusedRect, direction);
+            default:
+                throw new IllegalArgumentException("Unknown direction: " + direction);
+        }
+    }
+
+    private View findNextFocusInRelativeDirection(ArrayList<View> focusables, ViewGroup root,
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
             View focused, Rect focusedRect, int direction) {
         try {
             // Note: This sort is stable.
@@ -222,7 +258,11 @@ public class FocusFinder {
         focusedRect.set(rootLeft, rootTop, rootLeft, rootTop);
     }
 
+<<<<<<< HEAD
     View findNextInputFocusInAbsoluteDirection(ArrayList<View> focusables, ViewGroup root, View focused,
+=======
+    View findNextFocusInAbsoluteDirection(ArrayList<View> focusables, ViewGroup root, View focused,
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
             Rect focusedRect, int direction) {
         // initialize the best candidate to something impossible
         // (so the first plausible view will become the best choice)
@@ -250,8 +290,13 @@ public class FocusFinder {
             // only interested in other non-root views
             if (focusable == focused || focusable == root) continue;
 
+<<<<<<< HEAD
             // get visible bounds of other view in same coordinate system
             focusable.getDrawingRect(mOtherRect);
+=======
+            // get focus bounds of other view in same coordinate system
+            focusable.getFocusedRect(mOtherRect);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
             root.offsetDescendantRectToMyCoords(focusable, mOtherRect);
 
             if (isBetterCandidate(direction, focusedRect, mOtherRect, mBestCandidateRect)) {

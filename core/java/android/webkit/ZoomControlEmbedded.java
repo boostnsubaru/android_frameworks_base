@@ -90,7 +90,11 @@ class ZoomControlEmbedded implements ZoomControlBase {
             View controls = mZoomButtonsController.getZoomControls();
             ViewGroup.LayoutParams params = controls.getLayoutParams();
             if (params instanceof FrameLayout.LayoutParams) {
+<<<<<<< HEAD
                 ((FrameLayout.LayoutParams) params).gravity = Gravity.RIGHT;
+=======
+                ((FrameLayout.LayoutParams) params).gravity = Gravity.END;
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
             }
         }
         return mZoomButtonsController;

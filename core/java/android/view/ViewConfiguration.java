@@ -20,6 +20,10 @@ import android.app.AppGlobals;
 import android.content.Context;
 import android.content.res.Configuration;
 import android.content.res.Resources;
+<<<<<<< HEAD
+=======
+import android.graphics.Point;
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 import android.os.RemoteException;
 import android.provider.Settings;
 import android.util.DisplayMetrics;
@@ -30,6 +34,7 @@ import android.util.SparseArray;
  */
 public class ViewConfiguration {
     /**
+<<<<<<< HEAD
      * Expected bit depth of the display panel.
      *
      * @hide
@@ -48,6 +53,8 @@ public class ViewConfiguration {
     public static final float ALPHA_THRESHOLD_INT = 0x7f / PANEL_BIT_DEPTH;
 
     /**
+=======
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
      * Defines the width of the horizontal scrollbar and the height of the vertical scrollbar in
      * dips
      */
@@ -239,7 +246,10 @@ public class ViewConfiguration {
 
     private boolean sHasPermanentMenuKey;
     private boolean sHasPermanentMenuKeySet;
+<<<<<<< HEAD
     private Context mContext;
+=======
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 
     static final SparseArray<ViewConfiguration> sConfigurations =
             new SparseArray<ViewConfiguration>(2);
@@ -288,7 +298,10 @@ public class ViewConfiguration {
             sizeAndDensity = density;
         }
 
+<<<<<<< HEAD
         mContext = context;
+=======
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         mEdgeSlop = (int) (sizeAndDensity * EDGE_SLOP + 0.5f);
         mFadingEdgeLength = (int) (sizeAndDensity * FADING_EDGE_LENGTH + 0.5f);
         mMinimumFlingVelocity = (int) (density * MINIMUM_FLING_VELOCITY + 0.5f);
@@ -297,15 +310,28 @@ public class ViewConfiguration {
         mDoubleTapSlop = (int) (sizeAndDensity * DOUBLE_TAP_SLOP + 0.5f);
         mWindowTouchSlop = (int) (sizeAndDensity * WINDOW_TOUCH_SLOP + 0.5f);
 
+<<<<<<< HEAD
         final Display display = WindowManagerImpl.getDefault().getDefaultDisplay();
         // Size of the screen in bytes, in ARGB_8888 format
         mMaximumDrawingCacheSize = 4 * display.getRawWidth() * display.getRawHeight();
+=======
+        // Size of the screen in bytes, in ARGB_8888 format
+        final WindowManager win = (WindowManager)context.getSystemService(Context.WINDOW_SERVICE);
+        final Display display = win.getDefaultDisplay();
+        final Point size = new Point();
+        display.getRealSize(size);
+        mMaximumDrawingCacheSize = 4 * size.x * size.y;
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 
         mOverscrollDistance = (int) (sizeAndDensity * OVERSCROLL_DISTANCE + 0.5f);
         mOverflingDistance = (int) (sizeAndDensity * OVERFLING_DISTANCE + 0.5f);
 
         if (!sHasPermanentMenuKeySet) {
+<<<<<<< HEAD
             IWindowManager wm = Display.getWindowManager();
+=======
+            IWindowManager wm = WindowManagerGlobal.getWindowManagerService();
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
             try {
                 sHasPermanentMenuKey = !wm.hasSystemNavBar() && !wm.hasNavigationBar();
                 sHasPermanentMenuKeySet = true;
@@ -694,6 +720,7 @@ public class ViewConfiguration {
      * @return true if a permanent menu key is present, false otherwise.
      */
     public boolean hasPermanentMenuKey() {
+<<<<<<< HEAD
         // The action overflow button within app UI can
         // be controlled with a system setting
         int showOverflowButton = Settings.System.getInt(
@@ -706,6 +733,9 @@ public class ViewConfiguration {
         } else {
             return sHasPermanentMenuKey;
         }
+=======
+        return sHasPermanentMenuKey;
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     }
 
     /**

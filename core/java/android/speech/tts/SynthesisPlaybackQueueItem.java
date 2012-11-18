@@ -87,7 +87,14 @@ final class SynthesisPlaybackQueueItem extends PlaybackQueueItem {
         dispatcher.dispatchOnStart();
 
 
+<<<<<<< HEAD
         mAudioTrack.init();
+=======
+        if (!mAudioTrack.init()) {
+            dispatcher.dispatchOnError();
+            return;
+        }
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 
         try {
             byte[] buffer = null;
@@ -242,4 +249,7 @@ final class SynthesisPlaybackQueueItem extends PlaybackQueueItem {
         }
     }
 }
+<<<<<<< HEAD
 
+=======
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a

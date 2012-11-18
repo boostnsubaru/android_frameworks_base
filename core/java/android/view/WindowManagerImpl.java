@@ -16,6 +16,7 @@
 
 package android.view;
 
+<<<<<<< HEAD
 import android.app.ActivityManager;
 import android.content.ComponentCallbacks2;
 import android.content.res.CompatibilityInfo;
@@ -46,6 +47,19 @@ final class WindowLeaked extends AndroidRuntimeException {
  * parameters are defined for control over how windows are displayed.
  * It also implemens the WindowManager interface, allowing you to control the
  * displays attached to the device.
+=======
+/**
+ * Provides low-level communication with the system window manager for
+ * operations that are bound to a particular context, display or parent window.
+ * Instances of this object are sensitive to the compatibility info associated
+ * with the running application.
+ *
+ * This object implements the {@link ViewManager} interface,
+ * allowing you to add any View subclass as a top-level window on the screen.
+ * Additional window manager specific layout parameters are defined for
+ * control over how windows are displayed.  It also implements the {@link WindowManager}
+ * interface, allowing you to control the displays attached to the device.
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
  * 
  * <p>Applications will not normally use WindowManager directly, instead relying
  * on the higher-level facilities in {@link android.app.Activity} and
@@ -53,6 +67,7 @@ final class WindowLeaked extends AndroidRuntimeException {
  * 
  * <p>Even for low-level window manager access, it is almost never correct to use
  * this class.  For example, {@link android.app.Activity#getWindowManager}
+<<<<<<< HEAD
  * provides a ViewManager for adding windows that are associated with that
  * activity -- the window manager will not normally allow you to add arbitrary
  * windows that are not associated with an activity.
@@ -655,5 +670,60 @@ public class WindowManagerImpl implements WindowManager {
             }
             return -1;
         }
+=======
+ * provides a window manager for adding windows that are associated with that
+ * activity -- the window manager will not normally allow you to add arbitrary
+ * windows that are not associated with an activity.
+ *
+ * @see WindowManager
+ * @see WindowManagerGlobal
+ * @hide
+ */
+public final class WindowManagerImpl implements WindowManager {
+    private final WindowManagerGlobal mGlobal = WindowManagerGlobal.getInstance();
+    private final Display mDisplay;
+    private final Window mParentWindow;
+
+    public WindowManagerImpl(Display display) {
+        this(display, null);
+    }
+
+    private WindowManagerImpl(Display display, Window parentWindow) {
+        mDisplay = display;
+        mParentWindow = parentWindow;
+    }
+
+    public WindowManagerImpl createLocalWindowManager(Window parentWindow) {
+        return new WindowManagerImpl(mDisplay, parentWindow);
+    }
+
+    public WindowManagerImpl createPresentationWindowManager(Display display) {
+        return new WindowManagerImpl(display, mParentWindow);
+    }
+
+    @Override
+    public void addView(View view, ViewGroup.LayoutParams params) {
+        mGlobal.addView(view, params, mDisplay, mParentWindow);
+    }
+
+    @Override
+    public void updateViewLayout(View view, ViewGroup.LayoutParams params) {
+        mGlobal.updateViewLayout(view, params);
+    }
+
+    @Override
+    public void removeView(View view) {
+        mGlobal.removeView(view, false);
+    }
+
+    @Override
+    public void removeViewImmediate(View view) {
+        mGlobal.removeView(view, true);
+    }
+
+    @Override
+    public Display getDefaultDisplay() {
+        return mDisplay;
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     }
 }

@@ -22,6 +22,10 @@ import android.content.res.AssetFileDescriptor;
 import android.media.MediaCodec;
 import android.media.MediaFormat;
 import android.net.Uri;
+<<<<<<< HEAD
+=======
+
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 import java.io.FileDescriptor;
 import java.io.IOException;
 import java.nio.ByteBuffer;
@@ -44,7 +48,11 @@ import java.util.Map;
  * }
  * ByteBuffer inputBuffer = ByteBuffer.allocate(...)
  * while (extractor.readSampleData(inputBuffer, ...) &gt;= 0) {
+<<<<<<< HEAD
  *   int trackIndex = extractor.getTrackIndex();
+=======
+ *   int trackIndex = extractor.getSampleTrackIndex();
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
  *   long presentationTimeUs = extractor.getSampleTime();
  *   ...
  *   extractor.advance();
@@ -60,6 +68,15 @@ final public class MediaExtractor {
     }
 
     /**
+<<<<<<< HEAD
+=======
+     * Sets the DataSource object to be used as the data source for this extractor
+     * {@hide}
+     */
+    public native final void setDataSource(DataSource source);
+
+    /**
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
      * Sets the data source as a content Uri.
      *
      * @param context the Context to use when resolving the Uri
@@ -295,7 +312,11 @@ final public class MediaExtractor {
      * Returns true iff we are caching data and the cache has reached the
      * end of the data stream (for now, a future seek may of course restart
      * the fetching of data).
+<<<<<<< HEAD
      * This API only returns a meaningful result if {link #getCachedDuration}
+=======
+     * This API only returns a meaningful result if {@link #getCachedDuration}
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
      * indicates the presence of a cache, i.e. does NOT return -1.
      */
     public native boolean hasCacheReachedEndOfStream();

@@ -69,14 +69,22 @@ public class DdmHandleAppName extends ChunkHandler {
      * before or after DDMS connects.  For the latter we need to send up
      * an APNM message.
      */
+<<<<<<< HEAD
     public static void setAppName(String name) {
+=======
+    public static void setAppName(String name, int userId) {
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         if (name == null || name.length() == 0)
             return;
 
         mAppName = name;
 
         // if DDMS is already connected, send the app name up
+<<<<<<< HEAD
         sendAPNM(name);
+=======
+        sendAPNM(name, userId);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     }
 
     public static String getAppName() {
@@ -86,6 +94,7 @@ public class DdmHandleAppName extends ChunkHandler {
     /*
      * Send an APNM (APplication NaMe) chunk.
      */
+<<<<<<< HEAD
     private static void sendAPNM(String appName) {
         if (false)
             Log.v("ddm", "Sending app name");
@@ -94,6 +103,20 @@ public class DdmHandleAppName extends ChunkHandler {
         out.order(ChunkHandler.CHUNK_ORDER);
         out.putInt(appName.length());
         putString(out, appName);
+=======
+    private static void sendAPNM(String appName, int userId) {
+        if (false)
+            Log.v("ddm", "Sending app name");
+
+        ByteBuffer out = ByteBuffer.allocate(
+                            4 /* appName's length */
+                            + appName.length()*2 /* appName */
+                            + 4 /* userId */);
+        out.order(ChunkHandler.CHUNK_ORDER);
+        out.putInt(appName.length());
+        putString(out, appName);
+        out.putInt(userId);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 
         Chunk chunk = new Chunk(CHUNK_APNM, out);
         DdmServer.sendChunk(chunk);

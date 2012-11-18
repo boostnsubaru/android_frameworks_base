@@ -22,8 +22,13 @@
     android:textAppearance="?android:attr/textAppearanceMedium"
     android:textColor="?android:attr/textColorAlertDialogListItem"
     android:gravity="center_vertical"
+<<<<<<< HEAD
     android:paddingLeft="16dip"
     android:paddingRight="16dip"
+=======
+    android:paddingStart="16dip"
+    android:paddingEnd="16dip"
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     android:checkMark="?android:attr/listChoiceIndicatorSingle"
     android:ellipsize="marquee"
 />

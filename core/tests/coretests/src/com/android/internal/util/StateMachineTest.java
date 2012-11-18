@@ -24,7 +24,11 @@ import android.os.SystemClock;
 
 import com.android.internal.util.State;
 import com.android.internal.util.StateMachine;
+<<<<<<< HEAD
 import com.android.internal.util.StateMachine.ProcessedMessageInfo;
+=======
+import com.android.internal.util.StateMachine.LogRec;
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 
 import android.test.suitebuilder.annotation.MediumTest;
 import android.test.suitebuilder.annotation.SmallTest;
@@ -36,6 +40,13 @@ import junit.framework.TestCase;
  * Test for StateMachine.
  */
 public class StateMachineTest extends TestCase {
+<<<<<<< HEAD
+=======
+    private static final String ENTER = "enter";
+    private static final String EXIT = "exit";
+    private static final String ON_QUITTING = "ON_QUITTING";
+
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     private static final int TEST_CMD_1 = 1;
     private static final int TEST_CMD_2 = 2;
     private static final int TEST_CMD_3 = 3;
@@ -47,11 +58,26 @@ public class StateMachineTest extends TestCase {
     private static final boolean WAIT_FOR_DEBUGGER = false;
     private static final String TAG = "StateMachineTest";
 
+<<<<<<< HEAD
     /**
      * Tests that we can quit the state machine.
      */
     class StateMachineQuitTest extends StateMachine {
         private int mQuitCount = 0;
+=======
+    private void sleep(int millis) {
+        try {
+            Thread.sleep(millis);
+        } catch(InterruptedException e) {
+        }
+    }
+
+    /**
+     * Tests {@link StateMachine#quit()}.
+     */
+    class StateMachineQuitTest extends StateMachine {
+        Object mWaitUntilTestDone = new Object();
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 
         StateMachineQuitTest(String name) {
             super(name);
@@ -65,6 +91,7 @@ public class StateMachineTest extends TestCase {
             setInitialState(mS1);
         }
 
+<<<<<<< HEAD
         class S1 extends State {
             @Override
             public boolean processMessage(Message message) {
@@ -88,6 +115,47 @@ public class StateMachineTest extends TestCase {
         protected void quitting() {
             synchronized (mThisSm) {
                 mThisSm.notifyAll();
+=======
+        @Override
+        public void onQuitting() {
+            Log.d(TAG, "onQuitting");
+            addLogRec(ON_QUITTING);
+            synchronized (mThisSm) {
+                mThisSm.notifyAll();
+            }
+
+            // Don't leave onQuitting before the test is done as everything is cleared
+            // including the log records.
+            synchronized (mWaitUntilTestDone) {
+                try {
+                    mWaitUntilTestDone.wait();
+                } catch(InterruptedException e) {
+                }
+            }
+        }
+
+        class S1 extends State {
+            public void exit() {
+                Log.d(TAG, "S1.exit");
+                addLogRec(EXIT, mS1);
+            }
+            @Override
+            public boolean processMessage(Message message) {
+                switch(message.what) {
+                    // Sleep and assume the other messages will be queued up.
+                    case TEST_CMD_1: {
+                        Log.d(TAG, "TEST_CMD_1");
+                        sleep(500);
+                        quit();
+                        break;
+                    }
+                    default: {
+                        Log.d(TAG, "default what=" + message.what);
+                        break;
+                    }
+                }
+                return HANDLED;
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
             }
         }
 
@@ -96,11 +164,16 @@ public class StateMachineTest extends TestCase {
     }
 
     @SmallTest
+<<<<<<< HEAD
     public void testStateMachineQuitTest() throws Exception {
+=======
+    public void testStateMachineQuit() throws Exception {
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         if (WAIT_FOR_DEBUGGER) Debug.waitForDebugger();
 
         StateMachineQuitTest smQuitTest = new StateMachineQuitTest("smQuitTest");
         smQuitTest.start();
+<<<<<<< HEAD
         if (smQuitTest.isDbg()) Log.d(TAG, "testStateMachineQuitTest E");
 
         synchronized (smQuitTest) {
@@ -146,12 +219,167 @@ public class StateMachineTest extends TestCase {
         assertEquals(null, pmi.getOriginalState());
 
         if (smQuitTest.isDbg()) Log.d(TAG, "testStateMachineQuitTest X");
+=======
+        if (smQuitTest.isDbg()) Log.d(TAG, "testStateMachineQuit E");
+
+        synchronized (smQuitTest) {
+
+            // Send 6 message we'll quit on the first but all 6 should be processed before quitting.
+            for (int i = 1; i <= 6; i++) {
+                smQuitTest.sendMessage(smQuitTest.obtainMessage(i));
+            }
+
+            try {
+                // wait for the messages to be handled
+                smQuitTest.wait();
+            } catch (InterruptedException e) {
+                Log.e(TAG, "testStateMachineQuit: exception while waiting " + e.getMessage());
+            }
+        }
+
+        assertEquals(8, smQuitTest.getLogRecCount());
+
+        LogRec lr;
+
+        for (int i = 0; i < 6; i++) {
+            lr = smQuitTest.getLogRec(i);
+            assertEquals(i+1, lr.getWhat());
+            assertEquals(smQuitTest.mS1, lr.getState());
+            assertEquals(smQuitTest.mS1, lr.getOriginalState());
+        }
+        lr = smQuitTest.getLogRec(6);
+        assertEquals(EXIT, lr.getInfo());
+        assertEquals(smQuitTest.mS1, lr.getState());
+
+        lr = smQuitTest.getLogRec(7);
+        assertEquals(ON_QUITTING, lr.getInfo());
+
+        synchronized (smQuitTest.mWaitUntilTestDone) {
+            smQuitTest.mWaitUntilTestDone.notifyAll();
+        }
+        if (smQuitTest.isDbg()) Log.d(TAG, "testStateMachineQuit X");
+    }
+
+    /**
+     * Tests {@link StateMachine#quitNow()}
+     */
+    class StateMachineQuitNowTest extends StateMachine {
+        Object mWaitUntilTestDone = new Object();
+
+        StateMachineQuitNowTest(String name) {
+            super(name);
+            mThisSm = this;
+            setDbg(DBG);
+
+            // Setup state machine with 1 state
+            addState(mS1);
+
+            // Set the initial state
+            setInitialState(mS1);
+        }
+
+        @Override
+        public void onQuitting() {
+            Log.d(TAG, "onQuitting");
+            addLogRec(ON_QUITTING);
+            synchronized (mThisSm) {
+                mThisSm.notifyAll();
+            }
+
+            // Don't leave onQuitting before the test is done as everything is cleared
+            // including the log records.
+            synchronized (mWaitUntilTestDone) {
+                try {
+                    mWaitUntilTestDone.wait();
+                } catch(InterruptedException e) {
+                }
+            }
+        }
+
+        class S1 extends State {
+            public void exit() {
+                Log.d(TAG, "S1.exit");
+                addLogRec(EXIT, mS1);
+            }
+            @Override
+            public boolean processMessage(Message message) {
+                switch(message.what) {
+                    // Sleep and assume the other messages will be queued up.
+                    case TEST_CMD_1: {
+                        Log.d(TAG, "TEST_CMD_1");
+                        sleep(500);
+                        quitNow();
+                        break;
+                    }
+                    default: {
+                        Log.d(TAG, "default what=" + message.what);
+                        break;
+                    }
+                }
+                return HANDLED;
+            }
+        }
+
+        private StateMachineQuitNowTest mThisSm;
+        private S1 mS1 = new S1();
+    }
+
+    @SmallTest
+    public void testStateMachineQuitNow() throws Exception {
+        if (WAIT_FOR_DEBUGGER) Debug.waitForDebugger();
+
+        StateMachineQuitNowTest smQuitNowTest = new StateMachineQuitNowTest("smQuitNowTest");
+        smQuitNowTest.start();
+        if (smQuitNowTest.isDbg()) Log.d(TAG, "testStateMachineQuitNow E");
+
+        synchronized (smQuitNowTest) {
+
+            // Send 6 messages but we'll QuitNow on the first so even though
+            // we send 6 only one will be processed.
+            for (int i = 1; i <= 6; i++) {
+                smQuitNowTest.sendMessage(smQuitNowTest.obtainMessage(i));
+            }
+
+            try {
+                // wait for the messages to be handled
+                smQuitNowTest.wait();
+            } catch (InterruptedException e) {
+                Log.e(TAG, "testStateMachineQuitNow: exception while waiting " + e.getMessage());
+            }
+        }
+
+        // Only three records because we executed quitNow.
+        assertEquals(3, smQuitNowTest.getLogRecCount());
+
+        LogRec lr;
+
+        lr = smQuitNowTest.getLogRec(0);
+        assertEquals(1, lr.getWhat());
+        assertEquals(smQuitNowTest.mS1, lr.getState());
+        assertEquals(smQuitNowTest.mS1, lr.getOriginalState());
+
+        lr = smQuitNowTest.getLogRec(1);
+        assertEquals(EXIT, lr.getInfo());
+        assertEquals(smQuitNowTest.mS1, lr.getState());
+
+        lr = smQuitNowTest.getLogRec(2);
+        assertEquals(ON_QUITTING, lr.getInfo());
+
+        synchronized (smQuitNowTest.mWaitUntilTestDone) {
+            smQuitNowTest.mWaitUntilTestDone.notifyAll();
+        }
+        if (smQuitNowTest.isDbg()) Log.d(TAG, "testStateMachineQuitNow X");
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     }
 
     /**
      * Test enter/exit can use transitionTo
      */
     class StateMachineEnterExitTransitionToTest extends StateMachine {
+<<<<<<< HEAD
+=======
+
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         StateMachineEnterExitTransitionToTest(String name) {
             super(name);
             mThisSm = this;
@@ -170,20 +398,29 @@ public class StateMachineTest extends TestCase {
         class S1 extends State {
             @Override
             public void enter() {
+<<<<<<< HEAD
                 // Test that message is HSM_INIT_CMD
                 assertEquals(SM_INIT_CMD, getCurrentMessage().what);
 
                 // Test that a transition in enter and the initial state works
                 mS1EnterCount += 1;
+=======
+                // Test transitions in enter on the initial state work
+                addLogRec(ENTER, mS1);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
                 transitionTo(mS2);
                 Log.d(TAG, "S1.enter");
             }
             @Override
             public void exit() {
                 // Test that message is HSM_INIT_CMD
+<<<<<<< HEAD
                 assertEquals(SM_INIT_CMD, getCurrentMessage().what);
 
                 mS1ExitCount += 1;
+=======
+                addLogRec(EXIT, mS1);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
                 Log.d(TAG, "S1.exit");
             }
         }
@@ -191,19 +428,30 @@ public class StateMachineTest extends TestCase {
         class S2 extends State {
             @Override
             public void enter() {
+<<<<<<< HEAD
                 // Test that message is HSM_INIT_CMD
                 assertEquals(SM_INIT_CMD, getCurrentMessage().what);
 
                 mS2EnterCount += 1;
+=======
+                addLogRec(ENTER, mS2);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
                 Log.d(TAG, "S2.enter");
             }
             @Override
             public void exit() {
+<<<<<<< HEAD
                 // Test that message is TEST_CMD_1
                 assertEquals(TEST_CMD_1, getCurrentMessage().what);
 
                 // Test transition in exit work
                 mS2ExitCount += 1;
+=======
+                addLogRec(EXIT, mS2);
+                assertEquals(TEST_CMD_1, getCurrentMessage().what);
+
+                // Test transition in exit work
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
                 transitionTo(mS4);
                 Log.d(TAG, "S2.exit");
             }
@@ -220,18 +468,27 @@ public class StateMachineTest extends TestCase {
         class S3 extends State {
             @Override
             public void enter() {
+<<<<<<< HEAD
                 // Test that we can do halting in an enter/exit
                 transitionToHaltingState();
                 mS3EnterCount += 1;
+=======
+                addLogRec(ENTER, mS3);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
                 Log.d(TAG, "S3.enter");
             }
             @Override
             public void exit() {
+<<<<<<< HEAD
                 mS3ExitCount += 1;
+=======
+                addLogRec(EXIT, mS3);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
                 Log.d(TAG, "S3.exit");
             }
         }
 
+<<<<<<< HEAD
 
         class S4 extends State {
             @Override
@@ -239,17 +496,33 @@ public class StateMachineTest extends TestCase {
                 // Test that we can do halting in an enter/exit
                 transitionToHaltingState();
                 mS4EnterCount += 1;
+=======
+        class S4 extends State {
+            @Override
+            public void enter() {
+                addLogRec(ENTER, mS4);
+                // Test that we can do halting in an enter/exit
+                transitionToHaltingState();
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
                 Log.d(TAG, "S4.enter");
             }
             @Override
             public void exit() {
+<<<<<<< HEAD
                 mS4ExitCount += 1;
+=======
+                addLogRec(EXIT, mS4);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
                 Log.d(TAG, "S4.exit");
             }
         }
 
         @Override
+<<<<<<< HEAD
         protected void halting() {
+=======
+        protected void onHalting() {
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
             synchronized (mThisSm) {
                 mThisSm.notifyAll();
             }
@@ -260,6 +533,7 @@ public class StateMachineTest extends TestCase {
         private S2 mS2 = new S2();
         private S3 mS3 = new S3();
         private S4 mS4 = new S4();
+<<<<<<< HEAD
         private int mS1EnterCount = 0;
         private int mS1ExitCount = 0;
         private int mS2EnterCount = 0;
@@ -268,6 +542,8 @@ public class StateMachineTest extends TestCase {
         private int mS3ExitCount = 0;
         private int mS4EnterCount = 0;
         private int mS4ExitCount = 0;
+=======
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     }
 
     @SmallTest
@@ -293,6 +569,7 @@ public class StateMachineTest extends TestCase {
             }
         }
 
+<<<<<<< HEAD
         assertTrue(smEnterExitTranstionToTest.getProcessedMessagesCount() == 1);
 
         ProcessedMessageInfo pmi;
@@ -311,6 +588,48 @@ public class StateMachineTest extends TestCase {
         assertEquals(smEnterExitTranstionToTest.mS3ExitCount, 1);
         assertEquals(smEnterExitTranstionToTest.mS3EnterCount, 1);
         assertEquals(smEnterExitTranstionToTest.mS3ExitCount, 1);
+=======
+        assertEquals(smEnterExitTranstionToTest.getLogRecCount(), 9);
+
+        LogRec lr;
+
+        lr = smEnterExitTranstionToTest.getLogRec(0);
+        assertEquals(ENTER, lr.getInfo());
+        assertEquals(smEnterExitTranstionToTest.mS1, lr.getState());
+
+        lr = smEnterExitTranstionToTest.getLogRec(1);
+        assertEquals(EXIT, lr.getInfo());
+        assertEquals(smEnterExitTranstionToTest.mS1, lr.getState());
+
+        lr = smEnterExitTranstionToTest.getLogRec(2);
+        assertEquals(ENTER, lr.getInfo());
+        assertEquals(smEnterExitTranstionToTest.mS2, lr.getState());
+
+        lr = smEnterExitTranstionToTest.getLogRec(3);
+        assertEquals(TEST_CMD_1, lr.getWhat());
+        assertEquals(smEnterExitTranstionToTest.mS2, lr.getState());
+        assertEquals(smEnterExitTranstionToTest.mS2, lr.getOriginalState());
+
+        lr = smEnterExitTranstionToTest.getLogRec(4);
+        assertEquals(EXIT, lr.getInfo());
+        assertEquals(smEnterExitTranstionToTest.mS2, lr.getState());
+
+        lr = smEnterExitTranstionToTest.getLogRec(5);
+        assertEquals(ENTER, lr.getInfo());
+        assertEquals(smEnterExitTranstionToTest.mS3, lr.getState());
+
+        lr = smEnterExitTranstionToTest.getLogRec(6);
+        assertEquals(EXIT, lr.getInfo());
+        assertEquals(smEnterExitTranstionToTest.mS3, lr.getState());
+
+        lr = smEnterExitTranstionToTest.getLogRec(7);
+        assertEquals(ENTER, lr.getInfo());
+        assertEquals(smEnterExitTranstionToTest.mS4, lr.getState());
+
+        lr = smEnterExitTranstionToTest.getLogRec(8);
+        assertEquals(EXIT, lr.getInfo());
+        assertEquals(smEnterExitTranstionToTest.mS4, lr.getState());
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 
         if (smEnterExitTranstionToTest.isDbg()) {
             Log.d(TAG, "testStateMachineEnterExitTransitionToTest X");
@@ -325,7 +644,11 @@ public class StateMachineTest extends TestCase {
             super(name);
             mThisSm = this;
             setDbg(DBG);
+<<<<<<< HEAD
             setProcessedMessagesSize(3);
+=======
+            setLogRecSize(3);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 
             // Setup state machine with 1 state
             addState(mS1);
@@ -345,7 +668,11 @@ public class StateMachineTest extends TestCase {
         }
 
         @Override
+<<<<<<< HEAD
         protected void halting() {
+=======
+        protected void onHalting() {
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
             synchronized (mThisSm) {
                 mThisSm.notifyAll();
             }
@@ -377,6 +704,7 @@ public class StateMachineTest extends TestCase {
             }
         }
 
+<<<<<<< HEAD
         assertTrue(sm0.getProcessedMessagesCount() == 6);
         assertTrue(sm0.getProcessedMessagesSize() == 3);
 
@@ -395,6 +723,26 @@ public class StateMachineTest extends TestCase {
         assertEquals(TEST_CMD_6, pmi.getWhat());
         assertEquals(sm0.mS1, pmi.getState());
         assertEquals(sm0.mS1, pmi.getOriginalState());
+=======
+        assertEquals(6, sm0.getLogRecCount());
+        assertEquals(3, sm0.getLogRecSize());
+
+        LogRec lr;
+        lr = sm0.getLogRec(0);
+        assertEquals(TEST_CMD_4, lr.getWhat());
+        assertEquals(sm0.mS1, lr.getState());
+        assertEquals(sm0.mS1, lr.getOriginalState());
+
+        lr = sm0.getLogRec(1);
+        assertEquals(TEST_CMD_5, lr.getWhat());
+        assertEquals(sm0.mS1, lr.getState());
+        assertEquals(sm0.mS1, lr.getOriginalState());
+
+        lr = sm0.getLogRec(2);
+        assertEquals(TEST_CMD_6, lr.getWhat());
+        assertEquals(sm0.mS1, lr.getState());
+        assertEquals(sm0.mS1, lr.getOriginalState());
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 
         if (sm0.isDbg()) Log.d(TAG, "testStateMachine0 X");
     }
@@ -444,7 +792,11 @@ public class StateMachineTest extends TestCase {
         }
 
         @Override
+<<<<<<< HEAD
         protected void halting() {
+=======
+        protected void onHalting() {
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
             synchronized (mThisSm) {
                 mThisSm.notifyAll();
             }
@@ -479,6 +831,7 @@ public class StateMachineTest extends TestCase {
         assertEquals(2, sm1.mEnterCount);
         assertEquals(2, sm1.mExitCount);
 
+<<<<<<< HEAD
         assertTrue(sm1.getProcessedMessagesSize() == 2);
 
         ProcessedMessageInfo pmi;
@@ -491,6 +844,20 @@ public class StateMachineTest extends TestCase {
         assertEquals(TEST_CMD_2, pmi.getWhat());
         assertEquals(sm1.mS1, pmi.getState());
         assertEquals(sm1.mS1, pmi.getOriginalState());
+=======
+        assertEquals(2, sm1.getLogRecSize());
+
+        LogRec lr;
+        lr = sm1.getLogRec(0);
+        assertEquals(TEST_CMD_1, lr.getWhat());
+        assertEquals(sm1.mS1, lr.getState());
+        assertEquals(sm1.mS1, lr.getOriginalState());
+
+        lr = sm1.getLogRec(1);
+        assertEquals(TEST_CMD_2, lr.getWhat());
+        assertEquals(sm1.mS1, lr.getState());
+        assertEquals(sm1.mS1, lr.getOriginalState());
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 
         assertEquals(2, sm1.mEnterCount);
         assertEquals(2, sm1.mExitCount);
@@ -550,7 +917,11 @@ public class StateMachineTest extends TestCase {
         }
 
         @Override
+<<<<<<< HEAD
         protected void halting() {
+=======
+        protected void onHalting() {
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
             synchronized (mThisSm) {
                 mThisSm.notifyAll();
             }
@@ -583,6 +954,7 @@ public class StateMachineTest extends TestCase {
             }
         }
 
+<<<<<<< HEAD
         assertTrue(sm2.getProcessedMessagesSize() == 4);
 
         ProcessedMessageInfo pmi;
@@ -601,6 +973,26 @@ public class StateMachineTest extends TestCase {
         pmi = sm2.getProcessedMessageInfo(3);
         assertEquals(TEST_CMD_2, pmi.getWhat());
         assertEquals(sm2.mS2, pmi.getState());
+=======
+        assertEquals(4, sm2.getLogRecSize());
+
+        LogRec lr;
+        lr = sm2.getLogRec(0);
+        assertEquals(TEST_CMD_1, lr.getWhat());
+        assertEquals(sm2.mS1, lr.getState());
+
+        lr = sm2.getLogRec(1);
+        assertEquals(TEST_CMD_2, lr.getWhat());
+        assertEquals(sm2.mS1, lr.getState());
+
+        lr = sm2.getLogRec(2);
+        assertEquals(TEST_CMD_1, lr.getWhat());
+        assertEquals(sm2.mS2, lr.getState());
+
+        lr = sm2.getLogRec(3);
+        assertEquals(TEST_CMD_2, lr.getWhat());
+        assertEquals(sm2.mS2, lr.getState());
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 
         assertTrue(sm2.mDidEnter);
         assertTrue(sm2.mDidExit);
@@ -647,7 +1039,11 @@ public class StateMachineTest extends TestCase {
         }
 
         @Override
+<<<<<<< HEAD
         protected void halting() {
+=======
+        protected void onHalting() {
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
             synchronized (mThisSm) {
                 mThisSm.notifyAll();
             }
@@ -677,6 +1073,7 @@ public class StateMachineTest extends TestCase {
             }
         }
 
+<<<<<<< HEAD
         assertTrue(sm3.getProcessedMessagesSize() == 2);
 
         ProcessedMessageInfo pmi;
@@ -689,6 +1086,20 @@ public class StateMachineTest extends TestCase {
         assertEquals(TEST_CMD_2, pmi.getWhat());
         assertEquals(sm3.mParentState, pmi.getState());
         assertEquals(sm3.mChildState, pmi.getOriginalState());
+=======
+        assertEquals(2, sm3.getLogRecSize());
+
+        LogRec lr;
+        lr = sm3.getLogRec(0);
+        assertEquals(TEST_CMD_1, lr.getWhat());
+        assertEquals(sm3.mParentState, lr.getState());
+        assertEquals(sm3.mChildState, lr.getOriginalState());
+
+        lr = sm3.getLogRec(1);
+        assertEquals(TEST_CMD_2, lr.getWhat());
+        assertEquals(sm3.mParentState, lr.getState());
+        assertEquals(sm3.mChildState, lr.getOriginalState());
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 
         if (sm3.isDbg()) Log.d(TAG, "testStateMachine3 X");
     }
@@ -742,7 +1153,11 @@ public class StateMachineTest extends TestCase {
         }
 
         @Override
+<<<<<<< HEAD
         protected void halting() {
+=======
+        protected void onHalting() {
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
             synchronized (mThisSm) {
                 mThisSm.notifyAll();
             }
@@ -774,6 +1189,7 @@ public class StateMachineTest extends TestCase {
         }
 
 
+<<<<<<< HEAD
         assertTrue(sm4.getProcessedMessagesSize() == 2);
 
         ProcessedMessageInfo pmi;
@@ -786,6 +1202,20 @@ public class StateMachineTest extends TestCase {
         assertEquals(TEST_CMD_2, pmi.getWhat());
         assertEquals(sm4.mParentState, pmi.getState());
         assertEquals(sm4.mChildState2, pmi.getOriginalState());
+=======
+        assertEquals(2, sm4.getLogRecSize());
+
+        LogRec lr;
+        lr = sm4.getLogRec(0);
+        assertEquals(TEST_CMD_1, lr.getWhat());
+        assertEquals(sm4.mChildState1, lr.getState());
+        assertEquals(sm4.mChildState1, lr.getOriginalState());
+
+        lr = sm4.getLogRec(1);
+        assertEquals(TEST_CMD_2, lr.getWhat());
+        assertEquals(sm4.mParentState, lr.getState());
+        assertEquals(sm4.mChildState2, lr.getOriginalState());
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 
         if (sm4.isDbg()) Log.d(TAG, "testStateMachine4 X");
     }
@@ -1018,7 +1448,11 @@ public class StateMachineTest extends TestCase {
         }
 
         @Override
+<<<<<<< HEAD
         protected void halting() {
+=======
+        protected void onHalting() {
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
             synchronized (mThisSm) {
                 mThisSm.notifyAll();
             }
@@ -1073,7 +1507,11 @@ public class StateMachineTest extends TestCase {
         }
 
 
+<<<<<<< HEAD
         assertTrue(sm5.getProcessedMessagesSize() == 6);
+=======
+        assertEquals(6, sm5.getLogRecSize());
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 
         assertEquals(1, sm5.mParentState1EnterCount);
         assertEquals(1, sm5.mParentState1ExitCount);
@@ -1090,6 +1528,7 @@ public class StateMachineTest extends TestCase {
         assertEquals(1, sm5.mChildState5EnterCount);
         assertEquals(1, sm5.mChildState5ExitCount);
 
+<<<<<<< HEAD
         ProcessedMessageInfo pmi;
         pmi = sm5.getProcessedMessageInfo(0);
         assertEquals(TEST_CMD_1, pmi.getWhat());
@@ -1120,6 +1559,38 @@ public class StateMachineTest extends TestCase {
         assertEquals(TEST_CMD_6, pmi.getWhat());
         assertEquals(sm5.mParentState2, pmi.getState());
         assertEquals(sm5.mParentState2, pmi.getOriginalState());
+=======
+        LogRec lr;
+        lr = sm5.getLogRec(0);
+        assertEquals(TEST_CMD_1, lr.getWhat());
+        assertEquals(sm5.mChildState1, lr.getState());
+        assertEquals(sm5.mChildState1, lr.getOriginalState());
+
+        lr = sm5.getLogRec(1);
+        assertEquals(TEST_CMD_2, lr.getWhat());
+        assertEquals(sm5.mChildState2, lr.getState());
+        assertEquals(sm5.mChildState2, lr.getOriginalState());
+
+        lr = sm5.getLogRec(2);
+        assertEquals(TEST_CMD_3, lr.getWhat());
+        assertEquals(sm5.mChildState5, lr.getState());
+        assertEquals(sm5.mChildState5, lr.getOriginalState());
+
+        lr = sm5.getLogRec(3);
+        assertEquals(TEST_CMD_4, lr.getWhat());
+        assertEquals(sm5.mChildState3, lr.getState());
+        assertEquals(sm5.mChildState3, lr.getOriginalState());
+
+        lr = sm5.getLogRec(4);
+        assertEquals(TEST_CMD_5, lr.getWhat());
+        assertEquals(sm5.mChildState4, lr.getState());
+        assertEquals(sm5.mChildState4, lr.getOriginalState());
+
+        lr = sm5.getLogRec(5);
+        assertEquals(TEST_CMD_6, lr.getWhat());
+        assertEquals(sm5.mParentState2, lr.getState());
+        assertEquals(sm5.mParentState2, lr.getOriginalState());
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 
         if (sm5.isDbg()) Log.d(TAG, "testStateMachine5 X");
     }
@@ -1161,7 +1632,11 @@ public class StateMachineTest extends TestCase {
         }
 
         @Override
+<<<<<<< HEAD
         protected void halting() {
+=======
+        protected void onHalting() {
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
             synchronized (mThisSm) {
                 mThisSm.notifyAll();
             }
@@ -1176,7 +1651,10 @@ public class StateMachineTest extends TestCase {
 
     @MediumTest
     public void testStateMachine6() throws Exception {
+<<<<<<< HEAD
         long sentTimeMsg2;
+=======
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         final int DELAY_TIME = 250;
         final int DELAY_FUDGE = 20;
 
@@ -1186,7 +1664,10 @@ public class StateMachineTest extends TestCase {
 
         synchronized (sm6) {
             // Send a message
+<<<<<<< HEAD
             sentTimeMsg2 = SystemClock.elapsedRealtime();
+=======
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
             sm6.sendMessageDelayed(TEST_CMD_2, DELAY_TIME);
 
             try {
@@ -1268,7 +1749,11 @@ public class StateMachineTest extends TestCase {
         }
 
         @Override
+<<<<<<< HEAD
         protected void halting() {
+=======
+        protected void onHalting() {
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
             synchronized (mThisSm) {
                 mThisSm.notifyAll();
             }
@@ -1285,7 +1770,10 @@ public class StateMachineTest extends TestCase {
 
     @MediumTest
     public void testStateMachine7() throws Exception {
+<<<<<<< HEAD
         long sentTimeMsg2;
+=======
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         final int SM7_DELAY_FUDGE = 20;
 
         StateMachine7 sm7 = new StateMachine7("sm7");
@@ -1294,7 +1782,10 @@ public class StateMachineTest extends TestCase {
 
         synchronized (sm7) {
             // Send a message
+<<<<<<< HEAD
             sentTimeMsg2 = SystemClock.elapsedRealtime();
+=======
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
             sm7.sendMessage(TEST_CMD_1);
 
             try {
@@ -1350,7 +1841,11 @@ public class StateMachineTest extends TestCase {
         }
 
         @Override
+<<<<<<< HEAD
         protected void halting() {
+=======
+        protected void onHalting() {
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
             synchronized (mThisSm) {
                 mThisSm.notifyAll();
             }
@@ -1383,7 +1878,11 @@ public class StateMachineTest extends TestCase {
             }
         }
 
+<<<<<<< HEAD
         assertTrue(sm.getProcessedMessagesCount() == 2);
+=======
+        assertEquals(sm.getLogRecCount(), 2);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         assertEquals(2, sm.mUnhandledMessageCount);
 
         if (sm.isDbg()) Log.d(TAG, "testStateMachineUnhandledMessage X");
@@ -1420,7 +1919,11 @@ public class StateMachineTest extends TestCase {
         }
 
         @Override
+<<<<<<< HEAD
         protected void halting() {
+=======
+        protected void onHalting() {
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
             // Update the shared counter, which is OK since all state
             // machines are using the same thread.
             sharedCounter += 1;
@@ -1470,12 +1973,21 @@ public class StateMachineTest extends TestCase {
         }
 
         for (StateMachineSharedThread sm : sms) {
+<<<<<<< HEAD
             assertTrue(sm.getProcessedMessagesCount() == 4);
             for (int i = 0; i < sm.getProcessedMessagesCount(); i++) {
                 ProcessedMessageInfo pmi = sm.getProcessedMessageInfo(i);
                 assertEquals(i+1, pmi.getWhat());
                 assertEquals(sm.mS1, pmi.getState());
                 assertEquals(sm.mS1, pmi.getOriginalState());
+=======
+            assertEquals(sm.getLogRecCount(), 4);
+            for (int i = 0; i < sm.getLogRecCount(); i++) {
+                LogRec lr = sm.getLogRec(i);
+                assertEquals(i+1, lr.getWhat());
+                assertEquals(sm.mS1, lr.getState());
+                assertEquals(sm.mS1, lr.getOriginalState());
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
             }
         }
 
@@ -1501,6 +2013,7 @@ public class StateMachineTest extends TestCase {
             }
         }
 
+<<<<<<< HEAD
         assertEquals(7, sm.getProcessedMessagesCount());
         ProcessedMessageInfo pmi = sm.getProcessedMessageInfo(0);
         assertEquals(Hsm1.CMD_1, pmi.getWhat());
@@ -1536,6 +2049,43 @@ public class StateMachineTest extends TestCase {
         assertEquals(Hsm1.CMD_5, pmi.getWhat());
         assertEquals(sm.mP2, pmi.getState());
         assertEquals(sm.mP2, pmi.getOriginalState());
+=======
+        assertEquals(7, sm.getLogRecCount());
+        LogRec lr = sm.getLogRec(0);
+        assertEquals(Hsm1.CMD_1, lr.getWhat());
+        assertEquals(sm.mS1, lr.getState());
+        assertEquals(sm.mS1, lr.getOriginalState());
+
+        lr = sm.getLogRec(1);
+        assertEquals(Hsm1.CMD_2, lr.getWhat());
+        assertEquals(sm.mP1, lr.getState());
+        assertEquals(sm.mS1, lr.getOriginalState());
+
+        lr = sm.getLogRec(2);
+        assertEquals(Hsm1.CMD_2, lr.getWhat());
+        assertEquals(sm.mS2, lr.getState());
+        assertEquals(sm.mS2, lr.getOriginalState());
+
+        lr = sm.getLogRec(3);
+        assertEquals(Hsm1.CMD_3, lr.getWhat());
+        assertEquals(sm.mS2, lr.getState());
+        assertEquals(sm.mS2, lr.getOriginalState());
+
+        lr = sm.getLogRec(4);
+        assertEquals(Hsm1.CMD_3, lr.getWhat());
+        assertEquals(sm.mP2, lr.getState());
+        assertEquals(sm.mP2, lr.getOriginalState());
+
+        lr = sm.getLogRec(5);
+        assertEquals(Hsm1.CMD_4, lr.getWhat());
+        assertEquals(sm.mP2, lr.getState());
+        assertEquals(sm.mP2, lr.getOriginalState());
+
+        lr = sm.getLogRec(6);
+        assertEquals(Hsm1.CMD_5, lr.getWhat());
+        assertEquals(sm.mP2, lr.getState());
+        assertEquals(sm.mP2, lr.getOriginalState());
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 
         if (DBG) Log.d(TAG, "testStateMachineSharedThread X");
     }
@@ -1684,7 +2234,11 @@ class Hsm1 extends StateMachine {
     }
 
     @Override
+<<<<<<< HEAD
     protected void halting() {
+=======
+    protected void onHalting() {
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         Log.d(TAG, "halting");
         synchronized (this) {
             this.notifyAll();

@@ -8,7 +8,11 @@
 <ul id="nav">
   <!--  Walkthrough for Developers -- quick overview of what it's like to develop on Android -->
   <!--<li style="color:red">Overview</li> -->
+<<<<<<< HEAD
   
+=======
+
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
   <li class="nav-section">
     <div class="nav-section-header"><a href="<?cs var:toroot ?>guide/components/index.html">
         <span class="en">App Components</span>
@@ -191,15 +195,19 @@
       <li><a href="<?cs var:toroot ?>guide/topics/ui/menus.html">
           <span class="en">Menus</span></span>
           </a></li>
+<<<<<<< HEAD
       <li><a href="<?cs var:toroot ?>guide/topics/ui/dialogs.html">
            <span class="en">Dialogs</span>
           </a></li>
+=======
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
       <li><a href="<?cs var:toroot ?>guide/topics/ui/actionbar.html">
            <span class="en">Action Bar</span>
           </a></li>
       <li><a href="<?cs var:toroot ?>guide/topics/ui/settings.html">
             <span class="en">Settings</span>
           </a></li>
+<<<<<<< HEAD
       <li class="nav-section">
           <div class="nav-section-header"><a href="<?cs var:toroot ?>guide/topics/ui/notifiers/index.html">
               <span class="en">Notifications</span>
@@ -213,6 +221,17 @@
             </a></li>
           </ul>
       </li>
+=======
+      <li><a href="<?cs var:toroot ?>guide/topics/ui/dialogs.html">
+           <span class="en">Dialogs</span>
+          </a></li>
+      <li><a href="<?cs var:toroot ?>guide/topics/ui/notifiers/notifications.html">
+          <span class="en">Notifications</span>
+        </a></li>
+      <li><a href="<?cs var:toroot ?>guide/topics/ui/notifiers/toasts.html">
+          <span class="en">Toasts</span>
+        </a></li>
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
       <li class="nav-section">
         <div class="nav-section-header"><a href="<?cs var:toroot ?>guide/topics/search/index.html">
             <span class="en">Search</span>
@@ -223,7 +242,11 @@
             <li><a href="<?cs var:toroot ?>guide/topics/search/adding-custom-suggestions.html">Adding Custom Suggestions</a></li>
             <li><a href="<?cs var:toroot ?>guide/topics/search/searchable-config.html">Searchable Configuration</a></li>
           </ul>
+<<<<<<< HEAD
       </li>  
+=======
+      </li>
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
       <li><a href="<?cs var:toroot ?>guide/topics/ui/drag-drop.html">
           <span class="en">Drag and Drop</span>
         </a></li>
@@ -235,6 +258,12 @@
           <li><a href="<?cs var:toroot ?>guide/topics/ui/accessibility/apps.html">
               <span class="en">Making Applications Accessible</span>
             </a></li>
+<<<<<<< HEAD
+=======
+          <li><a href="<?cs var:toroot ?>guide/topics/ui/accessibility/checklist.html">
+              <span class="en">Accessibility Developer Checklist</span>
+            </a></li>
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
           <li><a href="<?cs var:toroot ?>guide/topics/ui/accessibility/services.html">
               <span class="en">Building Accessibility Services</span>
             </a></li>
@@ -382,9 +411,15 @@
             </a></li>
         </ul>
       </li><!-- end of location and sensors -->
+<<<<<<< HEAD
       
 
       
+=======
+
+
+
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
       <li class="nav-section">
         <div class="nav-section-header"><a href="<?cs var:toroot ?>guide/topics/connectivity/index.html">
                <span class="en">Connectivity</span>
@@ -419,10 +454,17 @@
             <span class="en">SIP</span>
           </a>
      </li>
+<<<<<<< HEAD
      
     </ul>
   </li><!-- end of connectivity -->
   
+=======
+
+    </ul>
+  </li><!-- end of connectivity -->
+
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
       <li class="nav-section">
         <div class="nav-section-header"><a href="<?cs var:toroot ?>guide/topics/text/index.html">
             <span class="en">Text and Input</span>
@@ -439,7 +481,11 @@
             </a></li>
         </ul>
       </li><!-- end of text and input -->
+<<<<<<< HEAD
       
+=======
+
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
      <li class="nav-section">
       <div class="nav-section-header"><a href="<?cs var:toroot ?>guide/topics/data/index.html">
           <span class="en">Data Storage</span>
@@ -457,7 +503,11 @@
       </ul>
     </li><!-- end of data storage -->
 
+<<<<<<< HEAD
   
+=======
+
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
   <li class="nav-section">
            <div class="nav-section-header"><a href="<?cs var:toroot?>guide/topics/admin/index.html">
                <span class="en">Administration</span>
@@ -475,7 +525,11 @@
             -->
            </ul>
   </li><!-- end of administration -->
+<<<<<<< HEAD
   
+=======
+
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
   <li class="nav-section">
     <div class="nav-section-header"><a href="<?cs var:toroot ?>guide/webapps/index.html">
     <span class="en">Web Apps</span>
@@ -498,7 +552,11 @@
           </a></li>
     </ul>
   </li><!-- end of web apps -->
+<<<<<<< HEAD
   
+=======
+
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
   <li class="nav-section">
     <div class="nav-section-header"><a href="<?cs var:toroot ?>guide/practices/index.html">
       <span class="en">Best Practices</span>
@@ -555,13 +613,22 @@
 
     </ul>
   </li>
+<<<<<<< HEAD
   
   
+=======
+
+
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
   <li class="nav-section">
     <div class="nav-section-header"><a href="<?cs var:toroot ?>guide/google/index.html">
         <span class="en">Google Services</span>
       </a></div>
+<<<<<<< HEAD
     <ul>      
+=======
+    <ul>
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 
       <li class="nav-section">
         <div class="nav-section-header"><a href="<?cs var:toroot?>guide/google/play/billing/index.html">
@@ -623,7 +690,11 @@
       <li><a href="<?cs var:toroot ?>guide/google/play/expansion-files.html">
           <span class="en">APK Expansion Files</span></a>
       </li>
+<<<<<<< HEAD
       
+=======
+
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
       <li class="nav-section">
         <div class="nav-section-header"><a href="<?cs var:toroot ?>guide/google/gcm/index.html">
           <span class="en">Google Cloud Messaging</span></a>
@@ -649,9 +720,15 @@
 
     </ul>
   </li><!-- end Google Play -->
+<<<<<<< HEAD
   
   
   
+=======
+
+
+
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
       <!-- this needs to move
       <li class="nav-section">
         <div class="nav-section-header"><a href="<?cs var:toroot ?>guide/practices/ui_guidelines/index.html">
@@ -691,9 +768,15 @@
               </a></div>
           </li>
         </ul>
+<<<<<<< HEAD
       </li> 
         </ul> -->
         
+=======
+      </li>
+        </ul> -->
+
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 <!-- Remove
   <li class="nav-section">
     <div class="nav-section-header"><a href="<?cs var:toroot ?>guide/appendix/index.html">
@@ -710,7 +793,11 @@
       <li><a href="<?cs var:toroot ?>guide/appendix/g-app-intents.html">
             <span class="en">Intents List: Google Apps</span>
           </a></li>
+<<<<<<< HEAD
        
+=======
+
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 
       <li><a href="<?cs var:toroot ?>guide/appendix/glossary.html">
             <span class="en">Glossary</span>

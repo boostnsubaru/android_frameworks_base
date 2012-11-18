@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <resources xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+<<<<<<< HEAD
     <string name="month_long_standalone_january">Ocak</string>
     <string name="month_long_standalone_february">Şubat</string>
     <string name="month_long_standalone_march">Mart</string>
@@ -91,6 +92,8 @@
     <string name="today">Bugün</string>
     <string name="tomorrow">Yarın</string>
 
+=======
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     <string name="hour_minute_24">%H:%M</string>
     <string name="hour_minute_ampm">%-l:%M %p</string>
     <string name="hour_minute_cap_ampm">%-l:%M %^p</string>

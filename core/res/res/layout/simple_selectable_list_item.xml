@@ -21,6 +21,11 @@
     android:textAppearance="?android:attr/textAppearanceListItem"
     android:gravity="center_vertical"
     android:background="?android:attr/listChoiceBackgroundIndicator"
+<<<<<<< HEAD
     android:paddingLeft="8dip"
     android:paddingRight="8dip"
+=======
+    android:paddingStart="8dip"
+    android:paddingEnd="8dip"
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 />

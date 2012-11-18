@@ -61,8 +61,11 @@ interface IWifiManager
 
     void setCountryCode(String country, boolean persist);
 
+<<<<<<< HEAD
     String getCountryCode();
 
+=======
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     void setFrequencyBand(int band, boolean persist);
 
     int getFrequencyBand();
@@ -108,5 +111,10 @@ interface IWifiManager
     Messenger getWifiStateMachineMessenger();
 
     String getConfigFile();
+<<<<<<< HEAD
+=======
+
+    void captivePortalCheckComplete();
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 }
 

@@ -30,9 +30,18 @@ import android.os.Binder;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.os.Parcel;
+<<<<<<< HEAD
 import android.os.RemoteException;
 import android.os.ServiceManager;
 import android.util.Slog;
+=======
+import android.os.Process;
+import android.os.RemoteException;
+import android.os.ServiceManager;
+import android.os.UserHandle;
+import android.util.Slog;
+import android.view.Display;
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 import android.view.IWindow;
 import android.view.IWindowSession;
 import android.view.InputChannel;
@@ -68,8 +77,22 @@ final class Session extends IWindowSession.Stub
         StringBuilder sb = new StringBuilder();
         sb.append("Session{");
         sb.append(Integer.toHexString(System.identityHashCode(this)));
+<<<<<<< HEAD
         sb.append(" uid ");
         sb.append(mUid);
+=======
+        sb.append(" ");
+        sb.append(mPid);
+        if (mUid < Process.FIRST_APPLICATION_UID) {
+            sb.append(":");
+            sb.append(mUid);
+        } else {
+            sb.append(":u");
+            sb.append(UserHandle.getUserId(mUid));
+            sb.append('a');
+            sb.append(UserHandle.getAppId(mUid));
+        }
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         sb.append("}");
         mStringName = sb.toString();
 
@@ -134,6 +157,7 @@ final class Session extends IWindowSession.Stub
         }
     }
 
+<<<<<<< HEAD
     public int add(IWindow window, int seq, WindowManager.LayoutParams attrs,
             int viewVisibility, Rect outContentInsets, InputChannel outInputChannel) {
         return mService.addWindow(this, window, seq, attrs, viewVisibility, outContentInsets,
@@ -143,6 +167,35 @@ final class Session extends IWindowSession.Stub
     public int addWithoutInputChannel(IWindow window, int seq, WindowManager.LayoutParams attrs,
             int viewVisibility, Rect outContentInsets) {
         return mService.addWindow(this, window, seq, attrs, viewVisibility, outContentInsets, null);
+=======
+    @Override
+    public int add(IWindow window, int seq, WindowManager.LayoutParams attrs,
+            int viewVisibility, Rect outContentInsets, InputChannel outInputChannel) {
+        return addToDisplay(window, seq, attrs, viewVisibility, Display.DEFAULT_DISPLAY,
+                outContentInsets, outInputChannel);
+    }
+
+    @Override
+    public int addToDisplay(IWindow window, int seq, WindowManager.LayoutParams attrs,
+            int viewVisibility, int displayId, Rect outContentInsets,
+            InputChannel outInputChannel) {
+        return mService.addWindow(this, window, seq, attrs, viewVisibility, displayId,
+                outContentInsets, outInputChannel);
+    }
+
+    @Override
+    public int addWithoutInputChannel(IWindow window, int seq, WindowManager.LayoutParams attrs,
+            int viewVisibility, Rect outContentInsets) {
+        return addToDisplayWithoutInputChannel(window, seq, attrs, viewVisibility,
+                Display.DEFAULT_DISPLAY, outContentInsets);
+    }
+
+    @Override
+    public int addToDisplayWithoutInputChannel(IWindow window, int seq, WindowManager.LayoutParams attrs,
+            int viewVisibility, int displayId, Rect outContentInsets) {
+        return mService.addWindow(this, window, seq, attrs, viewVisibility, displayId,
+            outContentInsets, null);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     }
 
     public void remove(IWindow window) {
@@ -261,7 +314,12 @@ final class Session extends IWindowSession.Stub
             // !!! FIXME: put all this heavy stuff onto the mH looper, as well as
             // the actual drag event dispatch stuff in the dragstate
 
+<<<<<<< HEAD
             mService.mDragState.register();
+=======
+            Display display = callingWin.mDisplayContent.getDisplay();
+            mService.mDragState.register(display);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
             mService.mInputMonitor.updateInputWindowsLw(true /*force*/);
             if (!mService.mInputManager.transferTouchFocus(callingWin.mInputChannel,
                     mService.mDragState.mServerChannel)) {
@@ -291,6 +349,10 @@ final class Session extends IWindowSession.Stub
                         touchY - thumbCenterY);
                 surface.setAlpha(.7071f);
                 surface.setLayer(mService.mDragState.getDragLayerLw());
+<<<<<<< HEAD
+=======
+                surface.setLayerStack(display.getLayerStack());
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
                 surface.show();
             } finally {
                 Surface.closeTransaction();
@@ -389,6 +451,34 @@ final class Session extends IWindowSession.Stub
         mService.wallpaperCommandComplete(window, result);
     }
 
+<<<<<<< HEAD
+=======
+    public void setUniverseTransform(IBinder window, float alpha, float offx, float offy,
+            float dsdx, float dtdx, float dsdy, float dtdy) {
+        synchronized(mService.mWindowMap) {
+            long ident = Binder.clearCallingIdentity();
+            try {
+                mService.setUniverseTransformLocked(
+                        mService.windowForClientLocked(this, window, true),
+                        alpha, offx, offy, dsdx, dtdx, dsdy, dtdy);
+            } finally {
+                Binder.restoreCallingIdentity(ident);
+            }
+        }
+    }
+
+    public void onRectangleOnScreenRequested(IBinder token, Rect rectangle, boolean immediate) {
+        synchronized(mService.mWindowMap) {
+            final long identity = Binder.clearCallingIdentity();
+            try {
+                mService.onRectangleOnScreenRequested(token, rectangle, immediate);
+            } finally {
+                Binder.restoreCallingIdentity(identity);
+            }
+        }
+    }
+
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     void windowAddedLocked() {
         if (mSurfaceSession == null) {
             if (WindowManagerService.localLOGV) Slog.v(

@@ -54,7 +54,10 @@ import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.Signature;
+<<<<<<< HEAD
 import android.content.pm.UserInfo;
+=======
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 import android.net.ConnectivityManager;
 import android.net.IConnectivityManager;
 import android.net.INetworkManagementEventObserver;
@@ -71,7 +74,11 @@ import android.os.Binder;
 import android.os.INetworkManagementService;
 import android.os.IPowerManager;
 import android.os.MessageQueue.IdleHandler;
+<<<<<<< HEAD
 import android.os.UserId;
+=======
+import android.os.UserHandle;
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 import android.test.AndroidTestCase;
 import android.test.mock.MockPackageManager;
 import android.test.suitebuilder.annotation.LargeTest;
@@ -87,9 +94,13 @@ import org.easymock.EasyMock;
 import org.easymock.IAnswer;
 
 import java.io.File;
+<<<<<<< HEAD
 import java.util.ArrayList;
 import java.util.LinkedHashSet;
 import java.util.List;
+=======
+import java.util.LinkedHashSet;
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
@@ -133,15 +144,23 @@ public class NetworkPolicyManagerServiceTest extends AndroidTestCase {
     private long mElapsedRealtime;
 
     private static final int USER_ID = 0;
+<<<<<<< HEAD
     private static final int USER_ID_GUEST = 1;
+=======
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 
     private static final int APP_ID_A = android.os.Process.FIRST_APPLICATION_UID + 800;
     private static final int APP_ID_B = android.os.Process.FIRST_APPLICATION_UID + 801;
 
+<<<<<<< HEAD
     private static final int UID_A = UserId.getUid(USER_ID, APP_ID_A);
     private static final int UID_B = UserId.getUid(USER_ID, APP_ID_B);
     private static final int UID_A_GUEST = UserId.getUid(USER_ID_GUEST, APP_ID_A);
     private static final int UID_B_GUEST = UserId.getUid(USER_ID_GUEST, APP_ID_B);
+=======
+    private static final int UID_A = UserHandle.getUid(USER_ID, APP_ID_A);
+    private static final int UID_B = UserHandle.getUid(USER_ID, APP_ID_B);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 
     private static final int PID_1 = 400;
     private static final int PID_2 = 401;
@@ -176,6 +195,7 @@ public class NetworkPolicyManagerServiceTest extends AndroidTestCase {
                         return info;
                     }
 
+<<<<<<< HEAD
                     @Override
                     public List<UserInfo> getUsers() {
                         final ArrayList<UserInfo> users = new ArrayList<UserInfo>();
@@ -183,6 +203,8 @@ public class NetworkPolicyManagerServiceTest extends AndroidTestCase {
                         users.add(new UserInfo(USER_ID_GUEST, "Guest", 0));
                         return users;
                     }
+=======
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
                 };
             }
 
@@ -265,13 +287,21 @@ public class NetworkPolicyManagerServiceTest extends AndroidTestCase {
 
     @Suppress
     public void testPolicyChangeTriggersBroadcast() throws Exception {
+<<<<<<< HEAD
         mService.setAppPolicy(APP_ID_A, POLICY_NONE);
+=======
+        mService.setUidPolicy(APP_ID_A, POLICY_NONE);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 
         // change background policy and expect broadcast
         final Future<Intent> backgroundChanged = mServiceContext.nextBroadcastIntent(
                 ConnectivityManager.ACTION_BACKGROUND_DATA_SETTING_CHANGED);
 
+<<<<<<< HEAD
         mService.setAppPolicy(APP_ID_A, POLICY_REJECT_METERED_BACKGROUND);
+=======
+        mService.setUidPolicy(APP_ID_A, POLICY_REJECT_METERED_BACKGROUND);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 
         backgroundChanged.get();
     }
@@ -325,7 +355,10 @@ public class NetworkPolicyManagerServiceTest extends AndroidTestCase {
 
     public void testScreenChangesRules() throws Exception {
         Future<Void> future;
+<<<<<<< HEAD
         Future<Void> futureGuest;
+=======
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 
         expectSetUidNetworkRules(UID_A, false);
         expectSetUidForeground(UID_A, true);
@@ -338,6 +371,7 @@ public class NetworkPolicyManagerServiceTest extends AndroidTestCase {
         // push strict policy for foreground uid, verify ALLOW rule
         expectSetUidNetworkRules(UID_A, false);
         expectSetUidForeground(UID_A, true);
+<<<<<<< HEAD
         expectSetUidNetworkRules(UID_A_GUEST, true);
         expectSetUidForeground(UID_A_GUEST, false);
         future = expectRulesChanged(UID_A, RULE_ALLOW_ALL);
@@ -346,6 +380,12 @@ public class NetworkPolicyManagerServiceTest extends AndroidTestCase {
         mService.setAppPolicy(APP_ID_A, POLICY_REJECT_METERED_BACKGROUND);
         future.get();
         futureGuest.get();
+=======
+        future = expectRulesChanged(UID_A, RULE_ALLOW_ALL);
+        replay();
+        mService.setUidPolicy(APP_ID_A, POLICY_REJECT_METERED_BACKGROUND);
+        future.get();
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         verifyAndReset();
 
         // now turn screen off and verify REJECT rule
@@ -371,7 +411,10 @@ public class NetworkPolicyManagerServiceTest extends AndroidTestCase {
 
     public void testPolicyNone() throws Exception {
         Future<Void> future;
+<<<<<<< HEAD
         Future<Void> futureGuest;
+=======
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 
         expectSetUidNetworkRules(UID_A, false);
         expectSetUidForeground(UID_A, true);
@@ -384,6 +427,7 @@ public class NetworkPolicyManagerServiceTest extends AndroidTestCase {
         // POLICY_NONE should RULE_ALLOW in foreground
         expectSetUidNetworkRules(UID_A, false);
         expectSetUidForeground(UID_A, true);
+<<<<<<< HEAD
         expectSetUidNetworkRules(UID_A_GUEST, false);
         expectSetUidForeground(UID_A_GUEST, false);
         future = expectRulesChanged(UID_A, RULE_ALLOW_ALL);
@@ -392,6 +436,12 @@ public class NetworkPolicyManagerServiceTest extends AndroidTestCase {
         mService.setAppPolicy(APP_ID_A, POLICY_NONE);
         future.get();
         futureGuest.get();
+=======
+        future = expectRulesChanged(UID_A, RULE_ALLOW_ALL);
+        replay();
+        mService.setUidPolicy(APP_ID_A, POLICY_NONE);
+        future.get();
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         verifyAndReset();
 
         // POLICY_NONE should RULE_ALLOW in background
@@ -406,11 +456,15 @@ public class NetworkPolicyManagerServiceTest extends AndroidTestCase {
 
     public void testPolicyReject() throws Exception {
         Future<Void> future;
+<<<<<<< HEAD
         Future<Void> futureGuest;
+=======
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 
         // POLICY_REJECT should RULE_ALLOW in background
         expectSetUidNetworkRules(UID_A, true);
         expectSetUidForeground(UID_A, false);
+<<<<<<< HEAD
         expectSetUidNetworkRules(UID_A_GUEST, true);
         expectSetUidForeground(UID_A_GUEST, false);
         future = expectRulesChanged(UID_A, RULE_REJECT_METERED);
@@ -419,6 +473,12 @@ public class NetworkPolicyManagerServiceTest extends AndroidTestCase {
         mService.setAppPolicy(APP_ID_A, POLICY_REJECT_METERED_BACKGROUND);
         future.get();
         futureGuest.get();
+=======
+        future = expectRulesChanged(UID_A, RULE_REJECT_METERED);
+        replay();
+        mService.setUidPolicy(APP_ID_A, POLICY_REJECT_METERED_BACKGROUND);
+        future.get();
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         verifyAndReset();
 
         // POLICY_REJECT should RULE_ALLOW in foreground
@@ -442,11 +502,15 @@ public class NetworkPolicyManagerServiceTest extends AndroidTestCase {
 
     public void testPolicyRejectAddRemove() throws Exception {
         Future<Void> future;
+<<<<<<< HEAD
         Future<Void> futureGuest;
+=======
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 
         // POLICY_NONE should have RULE_ALLOW in background
         expectSetUidNetworkRules(UID_A, false);
         expectSetUidForeground(UID_A, false);
+<<<<<<< HEAD
         expectSetUidNetworkRules(UID_A_GUEST, false);
         expectSetUidForeground(UID_A_GUEST, false);
         future = expectRulesChanged(UID_A, RULE_ALLOW_ALL);
@@ -456,11 +520,19 @@ public class NetworkPolicyManagerServiceTest extends AndroidTestCase {
         mService.setAppPolicy(APP_ID_A, POLICY_NONE);
         future.get();
         futureGuest.get();
+=======
+        future = expectRulesChanged(UID_A, RULE_ALLOW_ALL);
+        replay();
+        mProcessObserver.onForegroundActivitiesChanged(PID_1, UID_A, false);
+        mService.setUidPolicy(APP_ID_A, POLICY_NONE);
+        future.get();
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         verifyAndReset();
 
         // adding POLICY_REJECT should cause RULE_REJECT
         expectSetUidNetworkRules(UID_A, true);
         expectSetUidForeground(UID_A, false);
+<<<<<<< HEAD
         expectSetUidNetworkRules(UID_A_GUEST, true);
         expectSetUidForeground(UID_A_GUEST, false);
         future = expectRulesChanged(UID_A, RULE_REJECT_METERED);
@@ -469,11 +541,18 @@ public class NetworkPolicyManagerServiceTest extends AndroidTestCase {
         mService.setAppPolicy(APP_ID_A, POLICY_REJECT_METERED_BACKGROUND);
         future.get();
         futureGuest.get();
+=======
+        future = expectRulesChanged(UID_A, RULE_REJECT_METERED);
+        replay();
+        mService.setUidPolicy(APP_ID_A, POLICY_REJECT_METERED_BACKGROUND);
+        future.get();
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         verifyAndReset();
 
         // removing POLICY_REJECT should return us to RULE_ALLOW
         expectSetUidNetworkRules(UID_A, false);
         expectSetUidForeground(UID_A, false);
+<<<<<<< HEAD
         expectSetUidNetworkRules(UID_A_GUEST, false);
         expectSetUidForeground(UID_A_GUEST, false);
         future = expectRulesChanged(UID_A, RULE_ALLOW_ALL);
@@ -482,6 +561,12 @@ public class NetworkPolicyManagerServiceTest extends AndroidTestCase {
         mService.setAppPolicy(APP_ID_A, POLICY_NONE);
         future.get();
         futureGuest.get();
+=======
+        future = expectRulesChanged(UID_A, RULE_ALLOW_ALL);
+        replay();
+        mService.setUidPolicy(APP_ID_A, POLICY_NONE);
+        future.get();
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         verifyAndReset();
     }
 
@@ -652,11 +737,15 @@ public class NetworkPolicyManagerServiceTest extends AndroidTestCase {
 
     public void testUidRemovedPolicyCleared() throws Exception {
         Future<Void> future;
+<<<<<<< HEAD
         Future<Void> futureGuest;
+=======
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 
         // POLICY_REJECT should RULE_REJECT in background
         expectSetUidNetworkRules(UID_A, true);
         expectSetUidForeground(UID_A, false);
+<<<<<<< HEAD
         expectSetUidNetworkRules(UID_A_GUEST, true);
         expectSetUidForeground(UID_A_GUEST, false);
         future = expectRulesChanged(UID_A, RULE_REJECT_METERED);
@@ -665,21 +754,34 @@ public class NetworkPolicyManagerServiceTest extends AndroidTestCase {
         mService.setAppPolicy(APP_ID_A, POLICY_REJECT_METERED_BACKGROUND);
         future.get();
         futureGuest.get();
+=======
+        future = expectRulesChanged(UID_A, RULE_REJECT_METERED);
+        replay();
+        mService.setUidPolicy(APP_ID_A, POLICY_REJECT_METERED_BACKGROUND);
+        future.get();
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         verifyAndReset();
 
         // uninstall should clear RULE_REJECT
         expectSetUidNetworkRules(UID_A, false);
         expectSetUidForeground(UID_A, false);
+<<<<<<< HEAD
         expectSetUidNetworkRules(UID_A_GUEST, false);
         expectSetUidForeground(UID_A_GUEST, false);
         future = expectRulesChanged(UID_A, RULE_ALLOW_ALL);
         futureGuest = expectRulesChanged(UID_A_GUEST, RULE_ALLOW_ALL);
+=======
+        future = expectRulesChanged(UID_A, RULE_ALLOW_ALL);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         replay();
         final Intent intent = new Intent(ACTION_UID_REMOVED);
         intent.putExtra(EXTRA_UID, UID_A);
         mServiceContext.sendBroadcast(intent);
         future.get();
+<<<<<<< HEAD
         futureGuest.get();
+=======
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         verifyAndReset();
     }
 
@@ -887,7 +989,12 @@ public class NetworkPolicyManagerServiceTest extends AndroidTestCase {
 
     private Future<Void> expectClearNotifications() throws Exception {
         final FutureAnswer future = new FutureAnswer();
+<<<<<<< HEAD
         mNotifManager.cancelNotificationWithTag(isA(String.class), isA(String.class), anyInt());
+=======
+        mNotifManager.cancelNotificationWithTag(
+                isA(String.class), isA(String.class), anyInt(), anyInt());
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         expectLastCall().andAnswer(future).anyTimes();
         return future;
     }
@@ -895,7 +1002,11 @@ public class NetworkPolicyManagerServiceTest extends AndroidTestCase {
     private Future<String> expectEnqueueNotification() throws Exception {
         final FutureCapture<String> tag = new FutureCapture<String>();
         mNotifManager.enqueueNotificationWithTag(isA(String.class), capture(tag.capture), anyInt(),
+<<<<<<< HEAD
                 isA(Notification.class), isA(int[].class));
+=======
+                isA(Notification.class), isA(int[].class), UserHandle.myUserId());
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         return tag;
     }
 

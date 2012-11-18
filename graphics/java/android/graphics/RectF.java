@@ -66,6 +66,7 @@ public class RectF implements Parcelable {
      *          rectangle.
      */
     public RectF(RectF r) {
+<<<<<<< HEAD
         left = r.left;
         top = r.top;
         right = r.right;
@@ -77,6 +78,27 @@ public class RectF implements Parcelable {
         top = r.top;
         right = r.right;
         bottom = r.bottom;
+=======
+        if (r == null) {
+            left = top = right = bottom = 0.0f;
+        } else {
+            left = r.left;
+            top = r.top;
+            right = r.right;
+            bottom = r.bottom;
+        }
+    }
+    
+    public RectF(Rect r) {
+        if (r == null) {
+            left = top = right = bottom = 0.0f;
+        } else {
+            left = r.left;
+            top = r.top;
+            right = r.right;
+            bottom = r.bottom;
+        }
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     }
 
     @Override

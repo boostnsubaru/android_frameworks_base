@@ -326,7 +326,10 @@ public class SearchView extends LinearLayout implements CollapsibleActionView {
                         int oldLeft, int oldTop, int oldRight, int oldBottom) {
                     adjustDropDownSizeAndPosition();
                 }
+<<<<<<< HEAD
 
+=======
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
             });
         }
 
@@ -1285,15 +1288,32 @@ public class SearchView extends LinearLayout implements CollapsibleActionView {
             Resources res = getContext().getResources();
             int anchorPadding = mSearchPlate.getPaddingLeft();
             Rect dropDownPadding = new Rect();
+<<<<<<< HEAD
+=======
+            final boolean isLayoutRtl = isLayoutRtl();
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
             int iconOffset = mIconifiedByDefault
                     ? res.getDimensionPixelSize(R.dimen.dropdownitem_icon_width)
                     + res.getDimensionPixelSize(R.dimen.dropdownitem_text_padding_left)
                     : 0;
             mQueryTextView.getDropDownBackground().getPadding(dropDownPadding);
+<<<<<<< HEAD
             mQueryTextView.setDropDownHorizontalOffset(-(dropDownPadding.left + iconOffset)
                     + anchorPadding);
             mQueryTextView.setDropDownWidth(mDropDownAnchor.getWidth() + dropDownPadding.left
                     + dropDownPadding.right + iconOffset - (anchorPadding));
+=======
+            int offset;
+            if (isLayoutRtl) {
+                offset = - dropDownPadding.left;
+            } else {
+                offset = anchorPadding - (dropDownPadding.left + iconOffset);
+            }
+            mQueryTextView.setDropDownHorizontalOffset(offset);
+            final int width = mDropDownAnchor.getWidth() + dropDownPadding.left
+                    + dropDownPadding.right + iconOffset - anchorPadding;
+            mQueryTextView.setDropDownWidth(width);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         }
     }
 
@@ -1347,6 +1367,14 @@ public class SearchView extends LinearLayout implements CollapsibleActionView {
         }
     };
 
+<<<<<<< HEAD
+=======
+    @Override
+    public void onRtlPropertiesChanged(int layoutDirection) {
+        mQueryTextView.setLayoutDirection(layoutDirection);
+    }
+
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     /**
      * Query rewriting.
      */
@@ -1506,6 +1534,12 @@ public class SearchView extends LinearLayout implements CollapsibleActionView {
         // because the voice search activity will always need to insert "QUERY" into
         // it anyway.
         Bundle queryExtras = new Bundle();
+<<<<<<< HEAD
+=======
+        if (mAppSearchData != null) {
+            queryExtras.putParcelable(SearchManager.APP_DATA, mAppSearchData);
+        }
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 
         // Now build the intent to launch the voice search.  Add all necessary
         // extras to launch the voice recognizer, and then all the necessary extras
@@ -1595,8 +1629,13 @@ public class SearchView extends LinearLayout implements CollapsibleActionView {
             } catch (RuntimeException e2 ) {
                 rowNum = -1;
             }
+<<<<<<< HEAD
             Log.w(LOG_TAG, "Search Suggestions cursor at row " + rowNum +
                             " returned exception" + e.toString());
+=======
+            Log.w(LOG_TAG, "Search suggestions cursor at row " + rowNum +
+                            " returned exception.", e);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
             return null;
         }
     }

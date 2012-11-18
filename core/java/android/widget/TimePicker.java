@@ -48,8 +48,13 @@ import java.util.Locale;
  * or 'P' to pick. For a dialog using this view, see
  * {@link android.app.TimePickerDialog}.
  *<p>
+<<<<<<< HEAD
  * See the <a href="{@docRoot}resources/tutorials/views/hello-timepicker.html">Time Picker
  * tutorial</a>.
+=======
+ * See the <a href="{@docRoot}guide/topics/ui/controls/pickers.html">Pickers</a>
+ * guide.
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
  * </p>
  */
 @Widget
@@ -172,7 +177,11 @@ public class TimePicker extends FrameLayout {
         mMinuteSpinner.setMinValue(0);
         mMinuteSpinner.setMaxValue(59);
         mMinuteSpinner.setOnLongPressUpdateInterval(100);
+<<<<<<< HEAD
         mMinuteSpinner.setFormatter(NumberPicker.TWO_DIGIT_FORMATTER);
+=======
+        mMinuteSpinner.setFormatter(NumberPicker.getTwoDigitFormatter());
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         mMinuteSpinner.setOnValueChangedListener(new NumberPicker.OnValueChangeListener() {
             public void onValueChange(NumberPicker spinner, int oldVal, int newVal) {
                 updateInputState();
@@ -500,7 +509,11 @@ public class TimePicker extends FrameLayout {
         if (is24HourView()) {
             mHourSpinner.setMinValue(0);
             mHourSpinner.setMaxValue(23);
+<<<<<<< HEAD
             mHourSpinner.setFormatter(NumberPicker.TWO_DIGIT_FORMATTER);
+=======
+            mHourSpinner.setFormatter(NumberPicker.getTwoDigitFormatter());
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         } else {
             mHourSpinner.setMinValue(1);
             mHourSpinner.setMaxValue(12);

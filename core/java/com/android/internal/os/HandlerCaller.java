@@ -22,15 +22,20 @@ import android.os.Looper;
 import android.os.Message;
 
 public class HandlerCaller {
+<<<<<<< HEAD
     private static final String TAG = "HandlerCaller";
     private static final boolean DEBUG = false;
     
+=======
+
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     public final Context mContext;
     
     final Looper mMainLooper;
     final Handler mH;
 
     final Callback mCallback;
+<<<<<<< HEAD
     
     public static class SomeArgs {
         SomeArgs next;
@@ -51,6 +56,9 @@ public class HandlerCaller {
     int mArgsPoolSize;
     SomeArgs mArgsPool;
     
+=======
+
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     class MyHandler extends Handler {
         MyHandler(Looper looper) {
             super(looper);
@@ -80,6 +88,7 @@ public class HandlerCaller {
         mCallback = callback;
     }
 
+<<<<<<< HEAD
     public SomeArgs obtainArgs() {
         synchronized (mH) {
             SomeArgs args = mArgsPool;
@@ -103,6 +112,8 @@ public class HandlerCaller {
         }
     }
     
+=======
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     public void executeOrSendMessage(Message msg) {
         // If we are calling this from the main thread, then we can call
         // right through.  Otherwise, we need to send the message to the
@@ -141,7 +152,11 @@ public class HandlerCaller {
     }
     
     public Message obtainMessageBOO(int what, boolean arg1, Object arg2, Object arg3) {
+<<<<<<< HEAD
         SomeArgs args = obtainArgs();
+=======
+        SomeArgs args = SomeArgs.obtain();
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         args.arg1 = arg2;
         args.arg2 = arg3;
         return mH.obtainMessage(what, arg1 ? 1 : 0, 0, args);
@@ -169,28 +184,44 @@ public class HandlerCaller {
     
     public Message obtainMessageIIOO(int what, int arg1, int arg2,
             Object arg3, Object arg4) {
+<<<<<<< HEAD
         SomeArgs args = obtainArgs();
+=======
+        SomeArgs args = SomeArgs.obtain();
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         args.arg1 = arg3;
         args.arg2 = arg4;
         return mH.obtainMessage(what, arg1, arg2, args);
     }
     
     public Message obtainMessageIOO(int what, int arg1, Object arg2, Object arg3) {
+<<<<<<< HEAD
         SomeArgs args = obtainArgs();
+=======
+        SomeArgs args = SomeArgs.obtain();
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         args.arg1 = arg2;
         args.arg2 = arg3;
         return mH.obtainMessage(what, arg1, 0, args);
     }
     
     public Message obtainMessageOO(int what, Object arg1, Object arg2) {
+<<<<<<< HEAD
         SomeArgs args = obtainArgs();
+=======
+        SomeArgs args = SomeArgs.obtain();
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         args.arg1 = arg1;
         args.arg2 = arg2;
         return mH.obtainMessage(what, 0, 0, args);
     }
     
     public Message obtainMessageOOO(int what, Object arg1, Object arg2, Object arg3) {
+<<<<<<< HEAD
         SomeArgs args = obtainArgs();
+=======
+        SomeArgs args = SomeArgs.obtain();
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         args.arg1 = arg1;
         args.arg2 = arg2;
         args.arg3 = arg3;
@@ -199,7 +230,11 @@ public class HandlerCaller {
     
     public Message obtainMessageOOOO(int what, Object arg1, Object arg2,
             Object arg3, Object arg4) {
+<<<<<<< HEAD
         SomeArgs args = obtainArgs();
+=======
+        SomeArgs args = SomeArgs.obtain();
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         args.arg1 = arg1;
         args.arg2 = arg2;
         args.arg3 = arg3;
@@ -209,7 +244,11 @@ public class HandlerCaller {
     
     public Message obtainMessageIIII(int what, int arg1, int arg2,
             int arg3, int arg4) {
+<<<<<<< HEAD
         SomeArgs args = obtainArgs();
+=======
+        SomeArgs args = SomeArgs.obtain();
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         args.argi1 = arg1;
         args.argi2 = arg2;
         args.argi3 = arg3;
@@ -219,7 +258,11 @@ public class HandlerCaller {
     
     public Message obtainMessageIIIIII(int what, int arg1, int arg2,
             int arg3, int arg4, int arg5, int arg6) {
+<<<<<<< HEAD
         SomeArgs args = obtainArgs();
+=======
+        SomeArgs args = SomeArgs.obtain();
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         args.argi1 = arg1;
         args.argi2 = arg2;
         args.argi3 = arg3;
@@ -231,7 +274,11 @@ public class HandlerCaller {
     
     public Message obtainMessageIIIIO(int what, int arg1, int arg2,
             int arg3, int arg4, Object arg5) {
+<<<<<<< HEAD
         SomeArgs args = obtainArgs();
+=======
+        SomeArgs args = SomeArgs.obtain();
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         args.arg1 = arg5;
         args.argi1 = arg1;
         args.argi2 = arg2;

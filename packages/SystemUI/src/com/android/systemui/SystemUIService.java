@@ -31,8 +31,13 @@ import android.os.RemoteException;
 import android.os.ServiceManager;
 import android.util.Slog;
 import android.view.IWindowManager;
+<<<<<<< HEAD
 
 import android.widget.FrameLayout;
+=======
+import android.view.WindowManagerGlobal;
+import android.view.accessibility.AccessibilityManager;
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 
 public class SystemUIService extends Service {
     static final String TAG = "SystemUIService";
@@ -68,9 +73,18 @@ public class SystemUIService extends Service {
 
     @Override
     public void onCreate() {
+<<<<<<< HEAD
         // Pick status bar or system bar.
         IWindowManager wm = IWindowManager.Stub.asInterface(
                 ServiceManager.getService(Context.WINDOW_SERVICE));
+=======
+        // Tell the accessibility layer that this process will
+        // run as the current user, i.e. run across users.
+        AccessibilityManager.createAsSharedAcrossUsers(this);
+
+        // Pick status bar or system bar.
+        IWindowManager wm = WindowManagerGlobal.getWindowManagerService();
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         try {
             SERVICES[0] = wm.hasSystemNavBar()
                     ? R.string.config_systemBarComponent
@@ -92,9 +106,13 @@ public class SystemUIService extends Service {
                 throw new RuntimeException(ex);
             }
             mServices[i].mContext = this;
+<<<<<<< HEAD
             mServices[i].mStatusBarContainer = new FrameLayout(this);
             Slog.d(TAG, "running: " + mServices[i]);
 
+=======
+            Slog.d(TAG, "running: " + mServices[i]);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
             mServices[i].start();
         }
     }

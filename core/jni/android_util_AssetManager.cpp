@@ -1,7 +1,10 @@
 /* //device/libs/android_runtime/android_util_AssetManager.cpp
 **
 ** Copyright 2006, The Android Open Source Project
+<<<<<<< HEAD
 ** This code has been modified.  Portions copyright (C) 2010, T-Mobile USA, Inc.
+=======
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 **
 ** Licensed under the Apache License, Version 2.0 (the "License");
 ** you may not use this file except in compliance with the License.
@@ -35,6 +38,7 @@
 #include <androidfw/Asset.h>
 #include <androidfw/AssetManager.h>
 #include <androidfw/ResourceTypes.h>
+<<<<<<< HEAD
 #include <androidfw/PackageRedirectionMap.h>
 #include <androidfw/ZipFile.h>
 
@@ -42,6 +46,11 @@
 
 #define REDIRECT_NOISY(x) //x
 
+=======
+
+#include <stdio.h>
+
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 namespace android {
 
 // ----------------------------------------------------------------------------
@@ -696,6 +705,7 @@ static jint android_content_AssetManager_loadResourceValue(JNIEnv* env, jobject 
     }
     const ResTable& res(am->getResources());
 
+<<<<<<< HEAD
     uint32_t ref = res.lookupRedirectionMap(ident);
     if (ref == 0) {
         ref = ident;
@@ -707,12 +717,22 @@ static jint android_content_AssetManager_loadResourceValue(JNIEnv* env, jobject 
     ResTable_config config;
     uint32_t typeSpecFlags;
     ssize_t block = res.getResource(ref, &value, false, density, &typeSpecFlags, &config);
+=======
+    Res_value value;
+    ResTable_config config;
+    uint32_t typeSpecFlags;
+    ssize_t block = res.getResource(ident, &value, false, density, &typeSpecFlags, &config);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 #if THROW_ON_BAD_ID
     if (block == BAD_INDEX) {
         jniThrowException(env, "java/lang/IllegalStateException", "Bad resource!");
         return 0;
     }
 #endif
+<<<<<<< HEAD
+=======
+    uint32_t ref = ident;
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     if (resolve) {
         block = res.resolveReference(&value, block, &ref, &typeSpecFlags, &config);
 #if THROW_ON_BAD_ID
@@ -896,7 +916,11 @@ static jboolean android_content_AssetManager_applyStyle(JNIEnv* env, jobject cla
         return JNI_FALSE;
     }
 
+<<<<<<< HEAD
     DEBUG_STYLES(ALOGI("APPLY STYLE: theme=0x%x defStyleAttr=0x%x defStyleRes=0x%x xml=0x%x",
+=======
+    DEBUG_STYLES(LOGI("APPLY STYLE: theme=0x%x defStyleAttr=0x%x defStyleRes=0x%x xml=0x%x",
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         themeToken, defStyleAttr, defStyleRes, xmlParserToken));
 
     ResTable::Theme* theme = (ResTable::Theme*)themeToken;
@@ -963,6 +987,7 @@ static jboolean android_content_AssetManager_applyStyle(JNIEnv* env, jobject cla
     // Now lock down the resource object and start pulling stuff from it.
     res.lock();
 
+<<<<<<< HEAD
     // Apply theme redirections to the referenced styles.
     if (defStyleRes != 0) {
         uint32_t ref = res.lookupRedirectionMap(defStyleRes);
@@ -977,6 +1002,8 @@ static jboolean android_content_AssetManager_applyStyle(JNIEnv* env, jobject cla
         }
     }
 
+=======
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     // Retrieve the default style bag, if requested.
     const ResTable::bag_entry* defStyleEnt = NULL;
     uint32_t defStyleTypeSetFlags = 0;
@@ -1008,7 +1035,11 @@ static jboolean android_content_AssetManager_applyStyle(JNIEnv* env, jobject cla
     for (jsize ii=0; ii<NI; ii++) {
         const uint32_t curIdent = (uint32_t)src[ii];
 
+<<<<<<< HEAD
         DEBUG_STYLES(ALOGI("RETRIEVING ATTR 0x%08x...", curIdent));
+=======
+        DEBUG_STYLES(LOGI("RETRIEVING ATTR 0x%08x...", curIdent));
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 
         // Try to find a value for this attribute...  we prioritize values
         // coming from, first XML attributes, then XML style, then default
@@ -1029,7 +1060,11 @@ static jboolean android_content_AssetManager_applyStyle(JNIEnv* env, jobject cla
             xmlParser->getAttributeValue(ix, &value);
             ix++;
             curXmlAttr = xmlParser->getAttributeNameResID(ix);
+<<<<<<< HEAD
             DEBUG_STYLES(ALOGI("-> From XML: type=0x%x, data=0x%08x",
+=======
+            DEBUG_STYLES(LOGI("-> From XML: type=0x%x, data=0x%08x",
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
                     value.dataType, value.data));
         }
 
@@ -1043,7 +1078,11 @@ static jboolean android_content_AssetManager_applyStyle(JNIEnv* env, jobject cla
                 block = styleEnt->stringBlock;
                 typeSetFlags = styleTypeSetFlags;
                 value = styleEnt->map.value;
+<<<<<<< HEAD
                 DEBUG_STYLES(ALOGI("-> From style: type=0x%x, data=0x%08x",
+=======
+                DEBUG_STYLES(LOGI("-> From style: type=0x%x, data=0x%08x",
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
                         value.dataType, value.data));
             }
             styleEnt++;
@@ -1059,7 +1098,11 @@ static jboolean android_content_AssetManager_applyStyle(JNIEnv* env, jobject cla
                 block = defStyleEnt->stringBlock;
                 typeSetFlags = defStyleTypeSetFlags;
                 value = defStyleEnt->map.value;
+<<<<<<< HEAD
                 DEBUG_STYLES(ALOGI("-> From def style: type=0x%x, data=0x%08x",
+=======
+                DEBUG_STYLES(LOGI("-> From def style: type=0x%x, data=0x%08x",
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
                         value.dataType, value.data));
             }
             defStyleEnt++;
@@ -1071,14 +1114,22 @@ static jboolean android_content_AssetManager_applyStyle(JNIEnv* env, jobject cla
             ssize_t newBlock = theme->resolveAttributeReference(&value, block,
                     &resid, &typeSetFlags, &config);
             if (newBlock >= 0) block = newBlock;
+<<<<<<< HEAD
             DEBUG_STYLES(ALOGI("-> Resolved attr: type=0x%x, data=0x%08x",
+=======
+            DEBUG_STYLES(LOGI("-> Resolved attr: type=0x%x, data=0x%08x",
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
                     value.dataType, value.data));
         } else {
             // If we still don't have a value for this attribute, try to find
             // it in the theme!
             ssize_t newBlock = theme->getAttribute(curIdent, &value, &typeSetFlags);
             if (newBlock >= 0) {
+<<<<<<< HEAD
                 DEBUG_STYLES(ALOGI("-> From theme: type=0x%x, data=0x%08x",
+=======
+                DEBUG_STYLES(LOGI("-> From theme: type=0x%x, data=0x%08x",
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
                         value.dataType, value.data));
                 newBlock = res.resolveReference(&value, block, &resid,
                         &typeSetFlags, &config);
@@ -1089,18 +1140,27 @@ static jboolean android_content_AssetManager_applyStyle(JNIEnv* env, jobject cla
                 }
 #endif
                 if (newBlock >= 0) block = newBlock;
+<<<<<<< HEAD
                 DEBUG_STYLES(ALOGI("-> Resolved theme: type=0x%x, data=0x%08x",
+=======
+                DEBUG_STYLES(LOGI("-> Resolved theme: type=0x%x, data=0x%08x",
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
                         value.dataType, value.data));
             }
         }
 
         // Deal with the special @null value -- it turns back to TYPE_NULL.
         if (value.dataType == Res_value::TYPE_REFERENCE && value.data == 0) {
+<<<<<<< HEAD
             DEBUG_STYLES(ALOGI("-> Setting to @null!"));
+=======
+            DEBUG_STYLES(LOGI("-> Setting to @null!"));
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
             value.dataType = Res_value::TYPE_NULL;
             block = kXmlBlock;
         }
 
+<<<<<<< HEAD
         // One final test for a resource redirection from the applied theme.
         if (resid != 0) {
             uint32_t redirect = res.lookupRedirectionMap(resid);
@@ -1127,6 +1187,9 @@ static jboolean android_content_AssetManager_applyStyle(JNIEnv* env, jobject cla
         }
 
         DEBUG_STYLES(ALOGI("Attribute 0x%08x: type=0x%x, data=0x%08x",
+=======
+        DEBUG_STYLES(LOGI("Attribute 0x%08x: type=0x%x, data=0x%08x",
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
                 curIdent, value.dataType, value.data));
 
         // Write the final value back to Java.
@@ -1383,6 +1446,7 @@ static jint android_content_AssetManager_retrieveArray(JNIEnv* env, jobject claz
             value.dataType = Res_value::TYPE_NULL;
         }
 
+<<<<<<< HEAD
         // One final test for a resource redirection from the applied theme.
         if (resid != 0) {
             uint32_t redirect = res.lookupRedirectionMap(resid);
@@ -1408,6 +1472,8 @@ static jint android_content_AssetManager_retrieveArray(JNIEnv* env, jobject claz
             }
         }
 
+=======
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         //printf("Attribute 0x%08x: final type=0x%x, data=0x%08x\n", curIdent, value.dataType, value.data);
 
         // Write the final value back to Java.
@@ -1636,6 +1702,7 @@ static jintArray android_content_AssetManager_getArrayIntResource(JNIEnv* env, j
     return array;
 }
 
+<<<<<<< HEAD
 static jint android_content_AssetManager_splitThemePackage(JNIEnv* env, jobject clazz,
 		jstring srcFileName, jstring dstFileName, jobjectArray drmProtectedAssetNames)
 {
@@ -1714,6 +1781,8 @@ static jint android_content_AssetManager_splitThemePackage(JNIEnv* env, jobject 
     return (jint)result;
 }
 
+=======
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 static void android_content_AssetManager_init(JNIEnv* env, jobject clazz)
 {
     AssetManager* am = new AssetManager();
@@ -1760,6 +1829,7 @@ static jint android_content_AssetManager_getGlobalAssetManagerCount(JNIEnv* env,
     return AssetManager::getGlobalCount();
 }
 
+<<<<<<< HEAD
 static jint android_content_AssetManager_getBasePackageCount(JNIEnv* env, jobject clazz)
 {
     AssetManager* am = assetManagerForJavaObject(env, clazz);
@@ -1927,6 +1997,8 @@ static jint android_content_AssetManager_attachThemePath(
     return (res) ? (jint)cookie : 0;
 }
 
+=======
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 // ----------------------------------------------------------------------------
 
 /*
@@ -2036,6 +2108,7 @@ static JNINativeMethod gAssetManagerMethods[] = {
         (void*) android_content_AssetManager_getAssetAllocations },
     { "getGlobalAssetManagerCount", "()I",
         (void*) android_content_AssetManager_getGlobalAssetCount },
+<<<<<<< HEAD
 
     // Split theme package apk into two.
     { "splitThemePackage","(Ljava/lang/String;Ljava/lang/String;[Ljava/lang/String;)I",
@@ -2058,6 +2131,8 @@ static JNINativeMethod gAssetManagerMethods[] = {
         (void*) android_content_AssetManager_clearRedirectionsNative },
     { "generateStyleRedirections", "(III)Z",
         (void*) android_content_AssetManager_generateStyleRedirections },
+=======
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 };
 
 int register_android_content_AssetManager(JNIEnv* env)

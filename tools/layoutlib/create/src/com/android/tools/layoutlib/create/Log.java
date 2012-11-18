@@ -33,11 +33,26 @@ public class Log {
         }
     }
 
+<<<<<<< HEAD
+=======
+    /** Similar to debug() but doesn't do a \n automatically. */
+    public void debugNoln(String format, Object... args) {
+        if (mVerbose) {
+            String s = String.format(format, args);
+            System.out.print(s);
+        }
+    }
+
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     public void info(String format, Object... args) {
         String s = String.format(format, args);
         outPrintln(s);
     }
+<<<<<<< HEAD
     
+=======
+
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     public void error(String format, Object... args) {
         String s = String.format(format, args);
         errPrintln(s);
@@ -50,15 +65,27 @@ public class Log {
         pw.flush();
         error(format + "\n" + sw.toString(), args);
     }
+<<<<<<< HEAD
     
+=======
+
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     /** for unit testing */
     protected void errPrintln(String msg) {
         System.err.println(msg);
     }
+<<<<<<< HEAD
     
+=======
+
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     /** for unit testing */
     protected void outPrintln(String msg) {
         System.out.println(msg);
     }
+<<<<<<< HEAD
     
+=======
+
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 }

@@ -939,6 +939,7 @@ class TextLine {
                 continue;
             }
 
+<<<<<<< HEAD
             if (c == null) {
                 x += handleText(wp, i, mlimit, i, inext, runIsRtl, c, x, top,
                         y, bottom, fmi, needWidth || mlimit < measureLimit);
@@ -960,6 +961,24 @@ class TextLine {
                     x += handleText(wp, j, jnext, i, inext, runIsRtl, c, x,
                             top, y, bottom, fmi, needWidth || jnext < measureLimit);
                 }
+=======
+            for (int j = i, jnext; j < mlimit; j = jnext) {
+                jnext = mCharacterStyleSpanSet.getNextTransition(mStart + j, mStart + mlimit) -
+                        mStart;
+
+                wp.set(mPaint);
+                for (int k = 0; k < mCharacterStyleSpanSet.numberOfSpans; k++) {
+                    // Intentionally using >= and <= as explained above
+                    if ((mCharacterStyleSpanSet.spanStarts[k] >= mStart + jnext) ||
+                            (mCharacterStyleSpanSet.spanEnds[k] <= mStart + j)) continue;
+
+                    CharacterStyle span = mCharacterStyleSpanSet.spans[k];
+                    span.updateDrawState(wp);
+                }
+
+                x += handleText(wp, j, jnext, i, inext, runIsRtl, c, x,
+                        top, y, bottom, fmi, needWidth || jnext < measureLimit);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
             }
         }
 

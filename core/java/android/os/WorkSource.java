@@ -1,5 +1,12 @@
 package android.os;
 
+<<<<<<< HEAD
+=======
+import com.android.internal.util.ArrayUtils;
+
+import java.util.Arrays;
+
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 /**
  * Describes the source of some work that may be done by someone else.
  * Currently the public representation of what a work source is is not
@@ -76,6 +83,23 @@ public class WorkSource implements Parcelable {
         mNum = 0;
     }
 
+<<<<<<< HEAD
+=======
+    @Override
+    public boolean equals(Object o) {
+        return o instanceof WorkSource && !diff((WorkSource)o);
+    }
+
+    @Override
+    public int hashCode() {
+        int result = 0;
+        for (int i = 0; i < mNum; i++) {
+            result = ((result << 4) | (result >>> 28)) ^ mUids[i];
+        }
+        return result;
+    }
+
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     /**
      * Compare this WorkSource with another.
      * @param other The WorkSource to compare against.
@@ -299,6 +323,23 @@ public class WorkSource implements Parcelable {
         dest.writeIntArray(mUids);
     }
 
+<<<<<<< HEAD
+=======
+    @Override
+    public String toString() {
+        StringBuilder result = new StringBuilder();
+        result.append("{WorkSource: uids=[");
+        for (int i = 0; i < mNum; i++) {
+            if (i != 0) {
+                result.append(", ");
+            }
+            result.append(mUids[i]);
+        }
+        result.append("]}");
+        return result.toString();
+    }
+
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     public static final Parcelable.Creator<WorkSource> CREATOR
             = new Parcelable.Creator<WorkSource>() {
         public WorkSource createFromParcel(Parcel in) {

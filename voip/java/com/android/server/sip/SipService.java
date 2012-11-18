@@ -282,6 +282,7 @@ public final class SipService extends ISipService.Stub {
         }
     }
 
+<<<<<<< HEAD
     private String determineLocalIp(SipProfile localProfile) {
         try {
             DatagramSocket s = new DatagramSocket();
@@ -294,6 +295,8 @@ public final class SipService extends ISipService.Stub {
         }
     }
 
+=======
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     private SipSessionGroupExt createGroup(SipProfile localProfile)
             throws SipException {
         String key = localProfile.getUriString();
@@ -365,7 +368,11 @@ public final class SipService extends ISipService.Stub {
             SipProfile localProfile, int maxInterval) {
         if ((mIntervalMeasurementProcess == null)
                 && (mKeepAliveInterval == -1)
+<<<<<<< HEAD
                 && isBehindNAT(mLocalIp, localProfile)) {
+=======
+                && isBehindNAT(mLocalIp)) {
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
             Log.d(TAG, "start NAT port mapping timeout measurement on "
                     + localProfile.getUriString());
 
@@ -438,7 +445,11 @@ public final class SipService extends ISipService.Stub {
                 : mKeepAliveInterval;
     }
 
+<<<<<<< HEAD
     private boolean isPrivateAddress(String address) {
+=======
+    private boolean isBehindNAT(String address) {
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         try {
             byte[] d = InetAddress.getByName(address).getAddress();
             if ((d[0] == 10) ||
@@ -449,6 +460,7 @@ public final class SipService extends ISipService.Stub {
                 return true;
             }
         } catch (UnknownHostException e) {
+<<<<<<< HEAD
             Log.e(TAG, "isPrivateIP()" + address, e);
         }
         return false;
@@ -468,6 +480,9 @@ public final class SipService extends ISipService.Stub {
                         + " is true because client is private and server is public");
             }
             return true;
+=======
+            Log.e(TAG, "isBehindAT()" + address, e);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         }
         return false;
     }
@@ -1029,8 +1044,12 @@ public final class SipService extends ISipService.Stub {
                         restart(duration);
 
                         SipProfile localProfile = mSession.getLocalProfile();
+<<<<<<< HEAD
                         if ((mKeepAliveSession == null) 
                                 && (isBehindNAT(determineLocalIp(localProfile), localProfile)
+=======
+                        if ((mKeepAliveSession == null) && (isBehindNAT(mLocalIp)
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
                                 || localProfile.getSendKeepAlive())) {
                             startKeepAliveProcess(getKeepAliveInterval());
                         }

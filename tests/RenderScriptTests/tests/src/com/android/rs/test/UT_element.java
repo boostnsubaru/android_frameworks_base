@@ -84,7 +84,11 @@ public class UT_element extends UnitTest {
     }
 
     private void testScriptSide(RenderScript pRS) {
+<<<<<<< HEAD
         ScriptC_element s = new ScriptC_element(pRS, mRes, R.raw.element);
+=======
+        ScriptC_element s = new ScriptC_element(pRS);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         pRS.setMessageHandler(mRsMessage);
         initializeGlobals(pRS, s);
         s.invoke_element_test();

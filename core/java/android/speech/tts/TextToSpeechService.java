@@ -549,7 +549,11 @@ public abstract class TextToSpeechService extends Service {
         @Override
         public boolean isValid() {
             if (mText == null) {
+<<<<<<< HEAD
                 Log.wtf(TAG, "Got null text");
+=======
+                Log.e(TAG, "null synthesis text");
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
                 return false;
             }
             if (mText.length() >= MAX_SPEECH_ITEM_CHAR_LENGTH) {
@@ -641,6 +645,7 @@ public abstract class TextToSpeechService extends Service {
         }
 
         @Override
+<<<<<<< HEAD
         public boolean isValid() {
             if (!super.isValid()) {
                 return false;
@@ -649,6 +654,8 @@ public abstract class TextToSpeechService extends Service {
         }
 
         @Override
+=======
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         protected AbstractSynthesisCallback createSynthesisCallback() {
             return new FileSynthesisCallback(mFile);
         }
@@ -664,6 +671,7 @@ public abstract class TextToSpeechService extends Service {
             }
             return status;
         }
+<<<<<<< HEAD
 
         /**
          * Checks that the given file can be used for synthesis output.
@@ -691,6 +699,8 @@ public abstract class TextToSpeechService extends Service {
                 return false;
             }
         }
+=======
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     }
 
     private class AudioSpeechItem extends SpeechItem {

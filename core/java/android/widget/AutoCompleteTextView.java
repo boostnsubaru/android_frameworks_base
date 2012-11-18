@@ -75,8 +75,13 @@ import com.android.internal.R;
  * }
  * </pre>
  *
+<<<<<<< HEAD
  * <p>See the <a href="{@docRoot}resources/tutorials/views/hello-autocomplete.html">Auto Complete
  * tutorial</a>.</p>
+=======
+ * <p>See the <a href="{@docRoot}guide/topics/ui/controls/text.html">Text Fields</a>
+ * guide.</p>
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
  *
  * @attr ref android.R.styleable#AutoCompleteTextView_completionHint
  * @attr ref android.R.styleable#AutoCompleteTextView_completionThreshold
@@ -579,6 +584,26 @@ public class AutoCompleteTextView extends EditText implements Filter.FilterListe
     }
 
     /**
+<<<<<<< HEAD
+=======
+     * Set a listener that will be invoked whenever the AutoCompleteTextView's
+     * list of completions is dismissed.
+     * @param dismissListener Listener to invoke when completions are dismissed
+     */
+    public void setOnDismissListener(final OnDismissListener dismissListener) {
+        PopupWindow.OnDismissListener wrappedListener = null;
+        if (dismissListener != null) {
+            wrappedListener = new PopupWindow.OnDismissListener() {
+                @Override public void onDismiss() {
+                    dismissListener.onDismiss();
+                }
+            };
+        }
+        mPopup.setOnDismissListener(wrappedListener);
+    }
+
+    /**
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
      * <p>Returns a filterable list adapter used for auto completion.</p>
      *
      * @return a data adapter used for auto completion
@@ -904,8 +929,11 @@ public class AutoCompleteTextView extends EditText implements Filter.FilterListe
      *
      * @param filter If <code>false</code>, no filtering will be performed
      *        as a result of this call.
+<<<<<<< HEAD
      * 
      * @hide Pending API council approval.
+=======
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
      */
     public void setText(CharSequence text, boolean filter) {
         if (filter) {
@@ -1208,6 +1236,22 @@ public class AutoCompleteTextView extends EditText implements Filter.FilterListe
     }
     
     /**
+<<<<<<< HEAD
+=======
+     * Listener to respond to the AutoCompleteTextView's completion list being dismissed.
+     * @see AutoCompleteTextView#setOnDismissListener(OnDismissListener)
+     */
+    public interface OnDismissListener {
+        /**
+         * This method will be invoked whenever the AutoCompleteTextView's list
+         * of completion options has been dismissed and is no longer available
+         * for user interaction.
+         */
+        void onDismiss();
+    }
+
+    /**
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
      * Allows us a private hook into the on click event without preventing users from setting
      * their own click listener.
      */

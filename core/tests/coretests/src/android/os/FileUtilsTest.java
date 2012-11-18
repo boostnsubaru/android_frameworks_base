@@ -17,6 +17,7 @@
 package android.os;
 
 import android.content.Context;
+<<<<<<< HEAD
 import android.os.FileUtils;
 import android.os.FileUtils.FileStatus;
 import android.test.AndroidTestCase;
@@ -32,6 +33,15 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 
 import junit.framework.Assert;
+=======
+import android.test.AndroidTestCase;
+import android.test.suitebuilder.annotation.MediumTest;
+
+import java.io.ByteArrayInputStream;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.FileWriter;
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 
 public class FileUtilsTest extends AndroidTestCase {
     private static final String TEST_DATA =
@@ -60,6 +70,7 @@ public class FileUtilsTest extends AndroidTestCase {
         if (mCopyFile.exists()) mCopyFile.delete();
     }
 
+<<<<<<< HEAD
     @LargeTest
     public void testGetFileStatus() {
         final byte[] MAGIC = { 0xB, 0xE, 0x0, 0x5 };
@@ -114,6 +125,8 @@ public class FileUtilsTest extends AndroidTestCase {
         Assert.assertFalse(FileUtils.getFileStatus(mTestFile.getPath(), null));
     }
 
+=======
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     // TODO: test setPermissions(), getPermissions()
 
     @MediumTest

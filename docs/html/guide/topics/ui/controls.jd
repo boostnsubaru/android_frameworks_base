@@ -15,7 +15,11 @@ checkboxes, zoom buttons, toggle buttons, and many more.</p>
 href="{@docRoot}guide/topics/ui/declaring-layout.html">XML layout</a>. For example, here's a
 layout with a text field and button:</p>
 
+<<<<<<< HEAD
 <pre>
+=======
+<pre style="clear:right">
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 &lt;?xml version="1.0" encoding="utf-8"?>
 &lt;LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"

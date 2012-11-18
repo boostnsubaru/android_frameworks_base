@@ -36,6 +36,10 @@ import android.os.Message;
 import android.os.PowerManager;
 import android.os.ServiceManager;
 import android.os.SystemClock;
+<<<<<<< HEAD
+=======
+import android.os.UserHandle;
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 import android.provider.Settings;
 import android.util.Log;
 import android.view.KeyEvent;
@@ -64,6 +68,11 @@ public class ConnectivityManagerTestActivity extends Activity {
     public static final long LONG_TIMEOUT = 50 * 1000;
     // 2 minutes timer between wifi stop and start
     public static final long  WIFI_STOP_START_INTERVAL = 2 * 60 * 1000;
+<<<<<<< HEAD
+=======
+    // Set ping test timer to be 3 minutes
+    public static final long PING_TIMER = 3 * 60 *1000;
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     public static final int SUCCESS = 0;  // for Wifi tethering state change
     public static final int FAILURE = 1;
     public static final int INIT = -1;
@@ -94,7 +103,10 @@ public class ConnectivityManagerTestActivity extends Activity {
      * Control Wifi States
      */
     public WifiManager mWifiManager;
+<<<<<<< HEAD
     public WifiManager.Channel mChannel;
+=======
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 
     /*
      * Verify connectivity state
@@ -242,7 +254,10 @@ public class ConnectivityManagerTestActivity extends Activity {
         // Get an instance of WifiManager
         mWifiManager =(WifiManager)getSystemService(Context.WIFI_SERVICE);
         mContext = this;
+<<<<<<< HEAD
         mChannel = mWifiManager.initialize(mContext, mContext.getMainLooper(), null);
+=======
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 
         if (mWifiManager.isWifiApEnabled()) {
             // if soft AP is enabled, disable it
@@ -502,12 +517,17 @@ public class ConnectivityManagerTestActivity extends Activity {
         log("Turn screen off");
         PowerManager pm =
             (PowerManager) getSystemService(Context.POWER_SERVICE);
+<<<<<<< HEAD
         pm.goToSleep(SystemClock.uptimeMillis() + 100);
+=======
+        pm.goToSleep(SystemClock.uptimeMillis());
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     }
 
     // Turn screen on
     public void turnScreenOn() {
         log("Turn screen on");
+<<<<<<< HEAD
         IPowerManager mPowerManagerService = IPowerManager.Stub.asInterface(
                 ServiceManager.getService("power"));;
         try {
@@ -515,6 +535,11 @@ public class ConnectivityManagerTestActivity extends Activity {
         } catch (Exception e) {
             log(e.toString());
         }
+=======
+        PowerManager pm =
+                (PowerManager) getSystemService(Context.POWER_SERVICE);
+        pm.wakeUp(SystemClock.uptimeMillis());
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     }
 
     /**
@@ -522,12 +547,16 @@ public class ConnectivityManagerTestActivity extends Activity {
      * @return true if the ping test is successful, false otherwise.
      */
     public boolean pingTest(String[] pingServerList) {
+<<<<<<< HEAD
         boolean result = false;
+=======
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         String[] hostList = {"www.google.com", "www.yahoo.com",
                 "www.bing.com", "www.facebook.com", "www.ask.com"};
         if (pingServerList != null) {
             hostList = pingServerList;
         }
+<<<<<<< HEAD
         try {
             // assume the chance that all servers are down is very small
             for (int i = 0; i < hostList.length; i++ ) {
@@ -553,6 +582,33 @@ public class ConnectivityManagerTestActivity extends Activity {
         }
         log("return");
         return result;
+=======
+
+        long startTime = System.currentTimeMillis();
+        while ((System.currentTimeMillis() - startTime) < PING_TIMER) {
+            try {
+                // assume the chance that all servers are down is very small
+                for (int i = 0; i < hostList.length; i++ ) {
+                    String host = hostList[i];
+                    log("Start ping test, ping " + host);
+                    Process p = Runtime.getRuntime().exec("ping -c 10 -w 100 " + host);
+                    int status = p.waitFor();
+                    if (status == 0) {
+                        // if any of the ping test is successful, return true
+                        return true;
+                    }
+                }
+            } catch (UnknownHostException e) {
+                log("Ping test Fail: Unknown Host");
+            } catch (IOException e) {
+                log("Ping test Fail:  IOException");
+            } catch (InterruptedException e) {
+                log("Ping test Fail: InterruptedException");
+            }
+        }
+        // ping test timeout
+        return false;
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     }
 
     /**
@@ -599,7 +655,11 @@ public class ConnectivityManagerTestActivity extends Activity {
                         log("found " + ssid + " in the scan result list");
                         log("retry: " + retry);
                         foundApInScanResults = true;
+<<<<<<< HEAD
                         mWifiManager.connect(mChannel, config,
+=======
+                        mWifiManager.connect(config,
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
                                 new WifiManager.ActionListener() {
                                     public void onSuccess() {
                                     }
@@ -658,7 +718,11 @@ public class ConnectivityManagerTestActivity extends Activity {
         for (WifiConfiguration wifiConfig: wifiConfigList) {
             log("remove wifi configuration: " + wifiConfig.networkId);
             int netId = wifiConfig.networkId;
+<<<<<<< HEAD
             mWifiManager.forget(mChannel, netId, new WifiManager.ActionListener() {
+=======
+            mWifiManager.forget(netId, new WifiManager.ActionListener() {
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
                     public void onSuccess() {
                     }
                     public void onFailure(int reason) {
@@ -702,12 +766,20 @@ public class ConnectivityManagerTestActivity extends Activity {
      */
     public void setAirplaneMode(Context context, boolean enableAM) {
         //set the airplane mode
+<<<<<<< HEAD
         Settings.System.putInt(context.getContentResolver(), Settings.System.AIRPLANE_MODE_ON,
+=======
+        Settings.Global.putInt(context.getContentResolver(), Settings.Global.AIRPLANE_MODE_ON,
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
                 enableAM ? 1 : 0);
         // Post the intent
         Intent intent = new Intent(Intent.ACTION_AIRPLANE_MODE_CHANGED);
         intent.putExtra("state", enableAM);
+<<<<<<< HEAD
         context.sendBroadcast(intent);
+=======
+        context.sendBroadcastAsUser(intent, UserHandle.ALL);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     }
 
     protected static String convertToQuotedString(String string) {

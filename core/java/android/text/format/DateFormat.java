@@ -35,10 +35,25 @@ import java.text.SimpleDateFormat;
     Utility class for producing strings with formatted date/time.
 
     <p>
+<<<<<<< HEAD
     This class takes as inputs a format string and a representation of a date/time.
     The format string controls how the output is generated.
     </p>
     <p>
+=======
+    Most callers should avoid supplying their own format strings to this
+    class' {@code format} methods and rely on the correctly localized ones
+    supplied by the system. This class' factory methods return
+    appropriately-localized {@link java.text.DateFormat} instances, suitable
+    for both formatting and parsing dates. For the canonical documentation
+    of format strings, see {@link java.text.SimpleDateFormat}.
+    </p>
+    <p>
+    The format methods in this class takes as inputs a format string and a representation of a date/time.
+    The format string controls how the output is generated.
+    This class only supports a subset of the full Unicode specification.
+    Use {@link java.text.SimpleDateFormat} if you need more.
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     Formatting characters may be repeated in order to get more detailed representations
     of that field.  For instance, the format character &apos;M&apos; is used to
     represent the month.  Depending on how many times that character is repeated
@@ -152,7 +167,12 @@ public class DateFormat {
     public  static final char    MINUTE                 =    'm';
 
     /**
+<<<<<<< HEAD
         This designator indicates the month of the year
+=======
+        This designator indicates the month of the year. See also
+        {@link #STANDALONE_MONTH}.
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
      
         Examples for September:
         M -> 9
@@ -163,6 +183,17 @@ public class DateFormat {
     public  static final char    MONTH                  =    'M';
 
     /**
+<<<<<<< HEAD
+=======
+        This designator indicates the standalone month of the year,
+        necessary in some format strings in some languages. For
+        example, Russian distinguishes between the "June" in
+        "June" and that in "June 2010".
+     */
+    public  static final char    STANDALONE_MONTH       =    'L';
+
+    /**
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         This designator indicates the seconds of the minute.
      
         Examples for 7 seconds past the minute:
@@ -232,12 +263,22 @@ public class DateFormat {
 
             synchronized (sLocaleLock) {
                 sIs24HourLocale = locale;
+<<<<<<< HEAD
                 sIs24Hour = !value.equals("12");
             }
         }
 
         boolean b24 =  !(value == null || value.equals("12"));
         return b24;
+=======
+                sIs24Hour = value.equals("24");
+            }
+
+            return sIs24Hour;
+        }
+
+        return value.equals("24");
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     }
 
     /**
@@ -246,7 +287,11 @@ public class DateFormat {
      * @param context the application context
      * @return the {@link java.text.DateFormat} object that properly formats the time.
      */
+<<<<<<< HEAD
     public static final java.text.DateFormat getTimeFormat(Context context) {
+=======
+    public static java.text.DateFormat getTimeFormat(Context context) {
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         boolean b24 = is24HourFormat(context);
         int res;
 
@@ -266,7 +311,11 @@ public class DateFormat {
      * @param context the application context
      * @return the {@link java.text.DateFormat} object that properly formats the date.
      */
+<<<<<<< HEAD
     public static final java.text.DateFormat getDateFormat(Context context) {
+=======
+    public static java.text.DateFormat getDateFormat(Context context) {
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         String value = Settings.System.getString(context.getContentResolver(),
                 Settings.System.DATE_FORMAT);
 
@@ -336,7 +385,11 @@ public class DateFormat {
      * @param context the application context
      * @return the {@link java.text.DateFormat} object that formats the date in long form.
      */
+<<<<<<< HEAD
     public static final java.text.DateFormat getLongDateFormat(Context context) {
+=======
+    public static java.text.DateFormat getLongDateFormat(Context context) {
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         return java.text.DateFormat.getDateInstance(java.text.DateFormat.LONG);
     }
 
@@ -346,7 +399,11 @@ public class DateFormat {
      * @param context the application context
      * @return the {@link java.text.DateFormat} object that formats the date in long form.
      */
+<<<<<<< HEAD
     public static final java.text.DateFormat getMediumDateFormat(Context context) {
+=======
+    public static java.text.DateFormat getMediumDateFormat(Context context) {
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         return java.text.DateFormat.getDateInstance(java.text.DateFormat.MEDIUM);
     }
 
@@ -359,7 +416,11 @@ public class DateFormat {
      * not just the day, month, and year, and not necessarily in the same
      * order returned here.
      */    
+<<<<<<< HEAD
     public static final char[] getDateFormatOrder(Context context) {
+=======
+    public static char[] getDateFormatOrder(Context context) {
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         char[] order = new char[] {DATE, MONTH, YEAR};
         String value = getDateFormatString(context);
         int index = 0;
@@ -374,7 +435,11 @@ public class DateFormat {
                 index++;
             }
 
+<<<<<<< HEAD
             if (!foundMonth && (c == MONTH)) {
+=======
+            if (!foundMonth && (c == MONTH || c == STANDALONE_MONTH)) {
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
                 foundMonth = true;
                 order[index] = MONTH;
                 index++;
@@ -403,7 +468,11 @@ public class DateFormat {
      * @param inTimeInMillis in milliseconds since Jan 1, 1970 GMT
      * @return a {@link CharSequence} containing the requested text
      */
+<<<<<<< HEAD
     public static final CharSequence format(CharSequence inFormat, long inTimeInMillis) {
+=======
+    public static CharSequence format(CharSequence inFormat, long inTimeInMillis) {
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         return format(inFormat, new Date(inTimeInMillis));
     }
 
@@ -414,7 +483,11 @@ public class DateFormat {
      * @param inDate the date to format
      * @return a {@link CharSequence} containing the requested text
      */
+<<<<<<< HEAD
     public static final CharSequence format(CharSequence inFormat, Date inDate) {
+=======
+    public static CharSequence format(CharSequence inFormat, Date inDate) {
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         Calendar    c = new GregorianCalendar();
         
         c.setTime(inDate);
@@ -423,13 +496,82 @@ public class DateFormat {
     }
 
     /**
+<<<<<<< HEAD
+=======
+     * Indicates whether the specified format string contains seconds.
+     * 
+     * Always returns false if the input format is null.
+     * 
+     * @param inFormat the format string, as described in {@link android.text.format.DateFormat}
+     *                 
+     * @return true if the format string contains {@link #SECONDS}, false otherwise
+     * 
+     * @hide
+     */
+    public static boolean hasSeconds(CharSequence inFormat) {
+        if (inFormat == null) return false;
+
+        final int length = inFormat.length();
+
+        int c;
+        int count;
+
+        for (int i = 0; i < length; i += count) {
+            count = 1;
+            c = inFormat.charAt(i);
+
+            if (c == QUOTE) {
+                count = skipQuotedText(inFormat, i, length);
+            } else if (c == SECONDS) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    private static int skipQuotedText(CharSequence s, int i, int len) {
+        if (i + 1 < len && s.charAt(i + 1) == QUOTE) {
+            return 2;
+        }
+
+        int count = 1;
+        // skip leading quote
+        i++;
+
+        while (i < len) {
+            char c = s.charAt(i);
+
+            if (c == QUOTE) {
+                count++;
+                //  QUOTEQUOTE -> QUOTE
+                if (i + 1 < len && s.charAt(i + 1) == QUOTE) {
+                    i++;
+                } else {
+                    break;
+                }
+            } else {
+                i++;
+                count++;
+            }
+        }
+
+        return count;
+    }
+
+    /**
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
      * Given a format string and a {@link java.util.Calendar} object, returns a CharSequence 
      * containing the requested date.
      * @param inFormat the format string, as described in {@link android.text.format.DateFormat}
      * @param inDate the date to format
      * @return a {@link CharSequence} containing the requested text
      */
+<<<<<<< HEAD
     public static final CharSequence format(CharSequence inFormat, Calendar inDate) {
+=======
+    public static CharSequence format(CharSequence inFormat, Calendar inDate) {
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         SpannableStringBuilder      s = new SpannableStringBuilder(inFormat);
         int             c;
         int             count;
@@ -494,9 +636,16 @@ public class DateFormat {
                     break;
                     
                 case MONTH:
+<<<<<<< HEAD
                     replacement = getMonthString(inDate, count);
                     break;
                     
+=======
+                case STANDALONE_MONTH:
+                    replacement = getMonthString(inDate, count, c);
+                    break;
+
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
                 case SECONDS:
                     replacement = zeroPad(inDate.get(Calendar.SECOND), count);
                     break;
@@ -527,6 +676,7 @@ public class DateFormat {
             return s.toString();
     }
     
+<<<<<<< HEAD
     private static final String getMonthString(Calendar inDate, int count) {
         int month = inDate.get(Calendar.MONTH);
         
@@ -535,12 +685,31 @@ public class DateFormat {
         else if (count == 3)
             return DateUtils.getMonthString(month, DateUtils.LENGTH_MEDIUM);
         else {
+=======
+    private static String getMonthString(Calendar inDate, int count, int kind) {
+        boolean standalone = (kind == STANDALONE_MONTH);
+        int month = inDate.get(Calendar.MONTH);
+        
+        if (count >= 4) {
+            return standalone
+                ? DateUtils.getStandaloneMonthString(month, DateUtils.LENGTH_LONG)
+                : DateUtils.getMonthString(month, DateUtils.LENGTH_LONG);
+        } else if (count == 3) {
+            return standalone
+                ? DateUtils.getStandaloneMonthString(month, DateUtils.LENGTH_MEDIUM)
+                : DateUtils.getMonthString(month, DateUtils.LENGTH_MEDIUM);
+        } else {
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
             // Calendar.JANUARY == 0, so add 1 to month.
             return zeroPad(month+1, count);
         }
     }
         
+<<<<<<< HEAD
     private static final String getTimeZoneString(Calendar inDate, int count) {
+=======
+    private static String getTimeZoneString(Calendar inDate, int count) {
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         TimeZone tz = inDate.getTimeZone();
         
         if (count < 2) { // FIXME: shouldn't this be <= 2 ?
@@ -553,7 +722,11 @@ public class DateFormat {
         }
     }
 
+<<<<<<< HEAD
     private static final String formatZoneOffset(int offset, int count) {
+=======
+    private static String formatZoneOffset(int offset, int count) {
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         offset /= 1000; // milliseconds to seconds
         StringBuilder tb = new StringBuilder();
 
@@ -572,12 +745,22 @@ public class DateFormat {
         return tb.toString();
     }
     
+<<<<<<< HEAD
     private static final String getYearString(Calendar inDate, int count) {
         int year = inDate.get(Calendar.YEAR);
         return (count <= 2) ? zeroPad(year % 100, 2) : String.valueOf(year);
     }
    
     private static final int appendQuotedText(SpannableStringBuilder s, int i, int len) {
+=======
+    private static String getYearString(Calendar inDate, int count) {
+        int year = inDate.get(Calendar.YEAR);
+        return (count <= 2) ? zeroPad(year % 100, 2)
+                            : String.format(Locale.getDefault(), "%d", year);
+    }
+   
+    private static int appendQuotedText(SpannableStringBuilder s, int i, int len) {
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         if (i + 1 < len && s.charAt(i + 1) == QUOTE) {
             s.delete(i, i + 1);
             return 1;
@@ -614,6 +797,7 @@ public class DateFormat {
         return count;
     }
 
+<<<<<<< HEAD
     private static final String zeroPad(int inValue, int inMinDigits) {
         String val = String.valueOf(inValue);
 
@@ -627,5 +811,9 @@ public class DateFormat {
             val = new String(buf);
         }
         return val;
+=======
+    private static String zeroPad(int inValue, int inMinDigits) {
+        return String.format(Locale.getDefault(), "%0" + inMinDigits + "d", inValue);
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     }
 }

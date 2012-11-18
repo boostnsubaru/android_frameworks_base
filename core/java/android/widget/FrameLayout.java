@@ -55,7 +55,11 @@ import android.widget.RemoteViews.RemoteView;
  */
 @RemoteView
 public class FrameLayout extends ViewGroup {
+<<<<<<< HEAD
     private static final int DEFAULT_CHILD_GRAVITY = Gravity.TOP | Gravity.LEFT;
+=======
+    private static final int DEFAULT_CHILD_GRAVITY = Gravity.TOP | Gravity.START;
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 
     @ViewDebug.ExportedProperty(category = "measurement")
     boolean mMeasureAllChildren = false;
@@ -411,7 +415,11 @@ public class FrameLayout extends ViewGroup {
                     gravity = DEFAULT_CHILD_GRAVITY;
                 }
 
+<<<<<<< HEAD
                 final int layoutDirection = getResolvedLayoutDirection();
+=======
+                final int layoutDirection = getLayoutDirection();
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
                 final int absoluteGravity = Gravity.getAbsoluteGravity(gravity, layoutDirection);
                 final int verticalGravity = gravity & Gravity.VERTICAL_GRAVITY_MASK;
 
@@ -483,7 +491,11 @@ public class FrameLayout extends ViewGroup {
                     selfBounds.set(mPaddingLeft, mPaddingTop, w - mPaddingRight, h - mPaddingBottom);
                 }
 
+<<<<<<< HEAD
                 final int layoutDirection = getResolvedLayoutDirection();
+=======
+                final int layoutDirection = getLayoutDirection();
+>>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
                 Gravity.apply(mForegroundGravity, foreground.getIntrinsicWidth(),
                         foreground.getIntrinsicHeight(), selfBounds, overlayBounds,
                         layoutDirection);
