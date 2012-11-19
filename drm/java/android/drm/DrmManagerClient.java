@@ -29,12 +29,9 @@ import android.os.Message;
 import android.provider.MediaStore;
 import android.util.Log;
 
-<<<<<<< HEAD
-=======
 import java.io.File;
 import java.io.FileDescriptor;
 import java.io.FileInputStream;
->>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 import java.io.IOException;
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
@@ -588,9 +585,6 @@ public class DrmManagerClient {
         if (null == path || path.equals("")) {
             throw new IllegalArgumentException("Given path should be non null");
         }
-<<<<<<< HEAD
-        return _getOriginalMimeType(mUniqueId, path);
-=======
 
         String mime = null;
 
@@ -613,7 +607,6 @@ public class DrmManagerClient {
         }
 
         return mime;
->>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     }
 
     /**
@@ -879,11 +872,7 @@ public class DrmManagerClient {
 
     private native int _getDrmObjectType(int uniqueId, String path, String mimeType);
 
-<<<<<<< HEAD
-    private native String _getOriginalMimeType(int uniqueId, String path);
-=======
     private native String _getOriginalMimeType(int uniqueId, String path, FileDescriptor fd);
->>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 
     private native int _checkRightsStatus(int uniqueId, String path, int action);
 
