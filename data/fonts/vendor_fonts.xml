@@ -7,12 +7,7 @@
     that in your makefile, this directory should be referenced as $(TARGET_COPY_OUT_VENDOR)/etc/:
 
         PRODUCT_COPY_FILES += \
-<<<<<<< HEAD
-            frameworks/base/data/fonts/vendor_fonts.xml:$(TARGET_COPY_OUT_VENDOR)/etc/fallback_fonts.xml \
-            frameworks/base/data/fonts/vendor_fonts-ja.xml:$(TARGET_COPY_OUT_VENDOR)/etc/fallback_fonts-ja.xml
-=======
             frameworks/base/data/fonts/vendor_fonts.xml:$(TARGET_COPY_OUT_VENDOR)/etc/fallback_fonts.xml
->>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 
     For example, vendors might want to build configurations for locales that are
     better served by fonts which either handle glyphs not supported in the default fonts or which
@@ -36,7 +31,6 @@
 
     Han languages (Chinese, Japanese, and Korean) share a common range of unicode characters;
     their ordering in the fallback or vendor files gives priority to the first in the list.
-<<<<<<< HEAD
     Locale-specific ordering can be configured by adding language and region codes to the end
     of the filename (e.g. /vendor/etc/fallback_fonts-ja.xml). When no region code is used,
     as with this example, all regions are matched. Use separate files for each supported locale.
@@ -63,11 +57,9 @@
                 </fileset>
             </family>
         </familyset>
-=======
     Language-specific ordering can be configured by adding a BCP 47-style "lang" attribute to
     a "file" element; fonts matching the language of text being drawn will be prioritised over
     all others.
->>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 
     The sample configuration below is an example of how one might provide two families of fonts
     that get inserted at the first and second (0  and 1) position in the overall fallback fonts.
@@ -92,8 +84,4 @@
         </fileset>
     </family>
 </familyset>
-<<<<<<< HEAD
--->
-=======
 --->
->>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a

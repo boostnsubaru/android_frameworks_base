@@ -42,8 +42,6 @@
         <group gid="net_bt" />
     </permission>
 
-<<<<<<< HEAD
-=======
     <permission name="android.permission.BLUETOOTH_STACK" >
         <group gid="net_bt_stack" />
     </permission>
@@ -52,7 +50,6 @@
         <group gid="vpn" />
     </permission>
 
->>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     <permission name="android.permission.INTERNET" >
         <group gid="inet" />
     </permission>
@@ -109,14 +106,11 @@
         <group gid="net_bw_acct" />
     </permission>
 
-<<<<<<< HEAD
     <!-- Permissions to read DRM-protected theme resources. -->
     <permission name="com.tmobile.permission.ACCESS_DRM_THEME" >
         <group gid="theme_manager" />
     </permission>
 
-=======
->>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     <!-- ================================================================== -->
     <!-- ================================================================== -->
     <!-- ================================================================== -->
@@ -188,15 +182,11 @@
     <assign-permission name="android.permission.SET_SCREEN_COMPATIBILITY" uid="shell" />
     <assign-permission name="android.permission.READ_EXTERNAL_STORAGE" uid="shell" />
     <assign-permission name="android.permission.WRITE_EXTERNAL_STORAGE" uid="shell" />
-<<<<<<< HEAD
-
-=======
     <assign-permission name="android.permission.INTERACT_ACROSS_USERS" uid="shell" />
     <assign-permission name="android.permission.INTERACT_ACROSS_USERS_FULL" uid="shell" />
     <assign-permission name="android.permission.MANAGE_USERS" uid="shell" />
     <assign-permission name="android.permission.BLUETOOTH_STACK" uid="shell" />
     
->>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     <assign-permission name="android.permission.MODIFY_AUDIO_SETTINGS" uid="media" />
     <assign-permission name="android.permission.ACCESS_DRM" uid="media" />
     <assign-permission name="android.permission.ACCESS_SURFACE_FLINGER" uid="media" />

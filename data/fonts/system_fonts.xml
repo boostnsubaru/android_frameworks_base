@@ -46,8 +46,6 @@
 
     <family>
         <nameset>
-<<<<<<< HEAD
-=======
             <name>sans-serif-thin</name>
         </nameset>
         <fileset>
@@ -58,7 +56,6 @@
 
     <family>
         <nameset>
->>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
             <name>sans-serif-condensed</name>
         </nameset>
         <fileset>
