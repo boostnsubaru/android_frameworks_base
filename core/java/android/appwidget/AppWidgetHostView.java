@@ -44,10 +44,7 @@ import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.FrameLayout;
 import android.widget.RemoteViews;
-<<<<<<< HEAD
-=======
 import android.widget.RemoteViews.OnClickHandler;
->>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 import android.widget.RemoteViewsAdapter.RemoteAdapterConnectionCallback;
 import android.widget.TextView;
 
@@ -87,12 +84,8 @@ public class AppWidgetHostView extends FrameLayout {
     long mFadeStartTime = -1;
     Bitmap mOld;
     Paint mOldPaint = new Paint();
-<<<<<<< HEAD
-    
-=======
     private OnClickHandler mOnClickHandler;
 
->>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     /**
      * Create a host view.  Uses default fade animations.
      */
@@ -101,11 +94,6 @@ public class AppWidgetHostView extends FrameLayout {
     }
 
     /**
-<<<<<<< HEAD
-     * Create a host view. Uses specified animations when pushing
-     * {@link #updateAppWidget(RemoteViews)}.
-     * 
-=======
      * @hide
      */
     public AppWidgetHostView(Context context, OnClickHandler handler) {
@@ -117,7 +105,6 @@ public class AppWidgetHostView extends FrameLayout {
      * Create a host view. Uses specified animations when pushing
      * {@link #updateAppWidget(RemoteViews)}.
      *
->>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
      * @param animationIn Resource ID of in animation to use
      * @param animationOut Resource ID of out animation to use
      */
@@ -132,8 +119,6 @@ public class AppWidgetHostView extends FrameLayout {
     }
 
     /**
-<<<<<<< HEAD
-=======
      * Pass the given handler to RemoteViews when updating this widget. Unless this
      * is done immediatly after construction, a call to {@link #updateAppWidget(RemoteViews)}
      * should be made.
@@ -145,7 +130,6 @@ public class AppWidgetHostView extends FrameLayout {
     }
 
     /**
->>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
      * Set the AppWidget that will be displayed by this view. This method also adds default padding
      * to widgets, as described in {@link #getDefaultPaddingForWidget(Context, ComponentName, Rect)}
      * and can be overridden in order to add custom padding.
@@ -160,10 +144,7 @@ public class AppWidgetHostView extends FrameLayout {
             // We add padding to the AppWidgetHostView if necessary
             Rect padding = getDefaultPaddingForWidget(mContext, info.provider, null);
             setPadding(padding.left, padding.top, padding.right, padding.bottom);
-<<<<<<< HEAD
-=======
             setContentDescription(info.label);
->>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         }
     }
 
@@ -181,11 +162,7 @@ public class AppWidgetHostView extends FrameLayout {
      * @param component the component name of the widget
      * @param padding Rect in which to place the output, if null, a new Rect will be allocated and
      *                returned
-<<<<<<< HEAD
-     * @return default padding for this widget
-=======
      * @return default padding for this widget, in pixels
->>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
      */
     public static Rect getDefaultPaddingForWidget(Context context, ComponentName component,
             Rect padding) {
@@ -222,11 +199,7 @@ public class AppWidgetHostView extends FrameLayout {
     public int getAppWidgetId() {
         return mAppWidgetId;
     }
-<<<<<<< HEAD
-    
-=======
 
->>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     public AppWidgetProviderInfo getAppWidgetInfo() {
         return mInfo;
     }
@@ -254,16 +227,12 @@ public class AppWidgetHostView extends FrameLayout {
 
         if (jail == null) jail = new ParcelableSparseArray();
 
-<<<<<<< HEAD
-        super.dispatchRestoreInstanceState(jail);
-=======
         try  {
             super.dispatchRestoreInstanceState(jail);
         } catch (Exception e) {
             Log.e(TAG, "failed to restoreInstanceState for widget id: " + mAppWidgetId + ", "
                     + (mInfo == null ? "null" : mInfo.provider), e);
         }
->>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     }
 
     /**
@@ -273,20 +242,6 @@ public class AppWidgetHostView extends FrameLayout {
      * AppWidget options and causes a callback to the AppWidgetProvider.
      * @see AppWidgetProvider#onAppWidgetOptionsChanged(Context, AppWidgetManager, int, Bundle)
      *
-<<<<<<< HEAD
-     * @param options The bundle of options, in addition to the size information,
-     *          can be null.
-     * @param minWidth The minimum width that the widget will be displayed at.
-     * @param minHeight The maximum height that the widget will be displayed at.
-     * @param maxWidth The maximum width that the widget will be displayed at.
-     * @param maxHeight The maximum height that the widget will be displayed at.
-     *
-     */
-    public void updateAppWidgetSize(Bundle options, int minWidth, int minHeight, int maxWidth,
-            int maxHeight) {
-        if (options == null) {
-            options = new Bundle();
-=======
      * @param newOptions The bundle of options, in addition to the size information,
      *          can be null.
      * @param minWidth The minimum width in dips that the widget will be displayed at.
@@ -307,7 +262,6 @@ public class AppWidgetHostView extends FrameLayout {
             int maxHeight, boolean ignorePadding) {
         if (newOptions == null) {
             newOptions = new Bundle();
->>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         }
 
         Rect padding = new Rect();
@@ -319,13 +273,6 @@ public class AppWidgetHostView extends FrameLayout {
         int xPaddingDips = (int) ((padding.left + padding.right) / density);
         int yPaddingDips = (int) ((padding.top + padding.bottom) / density);
 
-<<<<<<< HEAD
-        options.putInt(AppWidgetManager.OPTION_APPWIDGET_MIN_WIDTH, minWidth - xPaddingDips);
-        options.putInt(AppWidgetManager.OPTION_APPWIDGET_MIN_HEIGHT, minHeight - yPaddingDips);
-        options.putInt(AppWidgetManager.OPTION_APPWIDGET_MAX_WIDTH, maxWidth - xPaddingDips);
-        options.putInt(AppWidgetManager.OPTION_APPWIDGET_MAX_HEIGHT, maxHeight - yPaddingDips);
-        updateAppWidgetOptions(options);
-=======
         int newMinWidth = minWidth - (ignorePadding ? 0 : xPaddingDips);
         int newMinHeight = minHeight - (ignorePadding ? 0 : yPaddingDips);
         int newMaxWidth = maxWidth - (ignorePadding ? 0 : xPaddingDips);
@@ -350,7 +297,6 @@ public class AppWidgetHostView extends FrameLayout {
             newOptions.putInt(AppWidgetManager.OPTION_APPWIDGET_MAX_HEIGHT, newMaxHeight);
             updateAppWidgetOptions(newOptions);
         }
->>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     }
 
     /**
@@ -389,20 +335,13 @@ public class AppWidgetHostView extends FrameLayout {
      * AppWidget provider. Will animate into these new views as needed
      */
     public void updateAppWidget(RemoteViews remoteViews) {
-<<<<<<< HEAD
-=======
 
->>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         if (LOGD) Log.d(TAG, "updateAppWidget called mOld=" + mOld);
 
         boolean recycled = false;
         View content = null;
         Exception exception = null;
-<<<<<<< HEAD
-        
-=======
 
->>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         // Capture the old view into a bitmap so we can do the crossfade.
         if (CROSSFADE) {
             if (mFadeStartTime < 0) {
@@ -421,11 +360,7 @@ public class AppWidgetHostView extends FrameLayout {
                 }
             }
         }
-<<<<<<< HEAD
-        
-=======
 
->>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         if (remoteViews == null) {
             if (mViewMode == VIEW_MODE_DEFAULT) {
                 // We've already done this -- nothing to do.
@@ -444,11 +379,7 @@ public class AppWidgetHostView extends FrameLayout {
             // layout matches, try recycling it
             if (content == null && layoutId == mLayoutId) {
                 try {
-<<<<<<< HEAD
-                    remoteViews.reapply(mContext, mView);
-=======
                     remoteViews.reapply(mContext, mView, mOnClickHandler);
->>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
                     content = mView;
                     recycled = true;
                     if (LOGD) Log.d(TAG, "was able to recycled existing layout");
@@ -456,19 +387,11 @@ public class AppWidgetHostView extends FrameLayout {
                     exception = e;
                 }
             }
-<<<<<<< HEAD
-            
-            // Try normal RemoteView inflation
-            if (content == null) {
-                try {
-                    content = remoteViews.apply(mContext, this);
-=======
 
             // Try normal RemoteView inflation
             if (content == null) {
                 try {
                     content = remoteViews.apply(mContext, this, mOnClickHandler);
->>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
                     if (LOGD) Log.d(TAG, "had to inflate new layout");
                 } catch (RuntimeException e) {
                     exception = e;
@@ -478,11 +401,7 @@ public class AppWidgetHostView extends FrameLayout {
             mLayoutId = layoutId;
             mViewMode = VIEW_MODE_CONTENT;
         }
-<<<<<<< HEAD
-        
-=======
 
->>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         if (content == null) {
             if (mViewMode == VIEW_MODE_ERROR) {
                 // We've already done this -- nothing to do.
@@ -492,11 +411,7 @@ public class AppWidgetHostView extends FrameLayout {
             content = getErrorView();
             mViewMode = VIEW_MODE_ERROR;
         }
-<<<<<<< HEAD
-        
-=======
 
->>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         if (!recycled) {
             prepareView(content);
             addView(content);
@@ -595,11 +510,7 @@ public class AppWidgetHostView extends FrameLayout {
             return super.drawChild(canvas, child, drawingTime);
         }
     }
-<<<<<<< HEAD
-    
-=======
 
->>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     /**
      * Prepare the given view to be shown. This might include adjusting
      * {@link FrameLayout.LayoutParams} before inserting.
@@ -615,11 +526,7 @@ public class AppWidgetHostView extends FrameLayout {
         requested.gravity = Gravity.CENTER;
         view.setLayoutParams(requested);
     }
-<<<<<<< HEAD
-    
-=======
 
->>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     /**
      * Inflate and return the default layout requested by AppWidget provider.
      */
@@ -629,11 +536,7 @@ public class AppWidgetHostView extends FrameLayout {
         }
         View defaultView = null;
         Exception exception = null;
-<<<<<<< HEAD
-        
-=======
 
->>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         try {
             if (mInfo != null) {
                 Context theirContext = mContext.createPackageContext(
@@ -643,9 +546,6 @@ public class AppWidgetHostView extends FrameLayout {
                         theirContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
                 inflater = inflater.cloneInContext(theirContext);
                 inflater.setFilter(sInflaterFilter);
-<<<<<<< HEAD
-                defaultView = inflater.inflate(mInfo.initialLayout, this, false);
-=======
                 AppWidgetManager manager = AppWidgetManager.getInstance(mContext);
                 Bundle options = manager.getAppWidgetOptions(mAppWidgetId);
 
@@ -660,7 +560,6 @@ public class AppWidgetHostView extends FrameLayout {
                     }
                 }
                 defaultView = inflater.inflate(layoutId, this, false);
->>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
             } else {
                 Log.w(TAG, "can't inflate defaultView because mInfo is missing");
             }
@@ -669,34 +568,19 @@ public class AppWidgetHostView extends FrameLayout {
         } catch (RuntimeException e) {
             exception = e;
         }
-<<<<<<< HEAD
-        
-        if (exception != null) {
-            Log.w(TAG, "Error inflating AppWidget " + mInfo + ": " + exception.toString());
-        }
-        
-=======
 
         if (exception != null) {
             Log.w(TAG, "Error inflating AppWidget " + mInfo + ": " + exception.toString());
         }
 
->>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         if (defaultView == null) {
             if (LOGD) Log.d(TAG, "getDefaultView couldn't find any view, so inflating error");
             defaultView = getErrorView();
         }
-<<<<<<< HEAD
-        
-        return defaultView;
-    }
-    
-=======
 
         return defaultView;
     }
 
->>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
     /**
      * Inflate and return a view that represents an error state.
      */

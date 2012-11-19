@@ -80,8 +80,6 @@ public class AppWidgetManager {
     public static final String ACTION_APPWIDGET_PICK = "android.appwidget.action.APPWIDGET_PICK";
 
     /**
-<<<<<<< HEAD
-=======
      * Similar to ACTION_APPWIDGET_PICK, but used from keyguard
      * @hide
      */
@@ -89,7 +87,6 @@ public class AppWidgetManager {
             ACTION_KEYGUARD_APPWIDGET_PICK = "android.appwidget.action.KEYGUARD_APPWIDGET_PICK";
 
     /**
->>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
      * Send this from your {@link AppWidgetHost} activity when you want to bind an AppWidget to
      * display and bindAppWidgetIdIfAllowed returns false.
      * <p>
@@ -160,44 +157,25 @@ public class AppWidgetManager {
     public static final String EXTRA_APPWIDGET_ID = "appWidgetId";
 
     /**
-<<<<<<< HEAD
-     * An bundle extra that contains the lower bound on the current width, in dips, of a widget instance.
-=======
      * A bundle extra that contains the lower bound on the current width, in dips, of a widget instance.
->>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
      */
     public static final String OPTION_APPWIDGET_MIN_WIDTH = "appWidgetMinWidth";
 
     /**
-<<<<<<< HEAD
-     * An bundle extra that contains the lower bound on the current height, in dips, of a widget instance.
-=======
      * A bundle extra that contains the lower bound on the current height, in dips, of a widget instance.
->>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
      */
     public static final String OPTION_APPWIDGET_MIN_HEIGHT = "appWidgetMinHeight";
 
     /**
-<<<<<<< HEAD
-     * An bundle extra that contains the upper bound on the current width, in dips, of a widget instance.
-=======
      * A bundle extra that contains the upper bound on the current width, in dips, of a widget instance.
->>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
      */
     public static final String OPTION_APPWIDGET_MAX_WIDTH = "appWidgetMaxWidth";
 
-    /**
-<<<<<<< HEAD
-     * An bundle extra that contains the upper bound on the current width, in dips, of a widget instance.
-=======
      * A bundle extra that contains the upper bound on the current width, in dips, of a widget instance.
->>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
      */
     public static final String OPTION_APPWIDGET_MAX_HEIGHT = "appWidgetMaxHeight";
 
     /**
-<<<<<<< HEAD
-=======
      * A bundle extra that hints to the AppWidgetProvider the category of host that owns this
      * this widget. Can have the value {@link
      * AppWidgetProviderInfo#WIDGET_CATEGORY_HOME_SCREEN} or {@link
@@ -206,7 +184,6 @@ public class AppWidgetManager {
     public static final String OPTION_APPWIDGET_HOST_CATEGORY = "appWidgetCategory";
 
     /**
->>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
      * An intent extra which points to a bundle of extra information for a particular widget id.
      * In particular this bundle can contain EXTRA_APPWIDGET_WIDTH and EXTRA_APPWIDGET_HEIGHT.
      */
@@ -245,8 +222,6 @@ public class AppWidgetManager {
     public static final String EXTRA_CUSTOM_EXTRAS = "customExtras";
 
     /**
-<<<<<<< HEAD
-=======
      * An intent extra to pass to the AppWidget picker which allows the picker to filter
      * the list based on the {@link AppWidgetProviderInfo#widgetCategory}.
      *
@@ -262,7 +237,6 @@ public class AppWidgetManager {
     public static final String EXTRA_CUSTOM_SORT = "customSort";
 
     /**
->>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
      * A sentiel value that the AppWidget manager will never return as a appWidgetId.
      */
     public static final int INVALID_APPWIDGET_ID = 0;
@@ -292,14 +266,9 @@ public class AppWidgetManager {
     /**
      * Sent when the custom extras for an AppWidget change.
      *
-<<<<<<< HEAD
-     * @see AppWidgetProvider#onAppWidgetExtrasChanged AppWidgetProvider#onAppWidgetExtrasChanged(
-     *      Context context, AppWidgetManager appWidgetManager, int appWidgetId, Bundle newExtras)
-=======
      * @see AppWidgetProvider#onAppWidgetOptionsChanged 
      *      AppWidgetProvider.onAppWidgetOptionsChanged(Context context, 
      *      AppWidgetManager appWidgetManager, int appWidgetId, Bundle newExtras)
->>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
      */
     public static final String ACTION_APPWIDGET_OPTIONS_CHANGED = "android.appwidget.action.APPWIDGET_UPDATE_OPTIONS";
 
@@ -466,16 +435,9 @@ public class AppWidgetManager {
      *
      * This update  differs from {@link #updateAppWidget(int[], RemoteViews)} in that the
      * RemoteViews object which is passed is understood to be an incomplete representation of the 
-<<<<<<< HEAD
-     * widget, and hence is not cached by the AppWidgetService. Note that because these updates are 
-     * not cached, any state that they modify that is not restored by restoreInstanceState will not
-     * persist in the case that the widgets are restored using the cached version in
-     * AppWidgetService.
-=======
      * widget, and hence does not replace the cached representation of the widget. As of API
      * level 17, the new properties set within the views objects will be appended to the cached
      * representation of the widget, and hence will persist.
->>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
      *
      * Use with {@link RemoteViews#showNext(int)}, {@link RemoteViews#showPrevious(int)},
      * {@link RemoteViews#setScrollPosition(int, int)} and similar commands.
@@ -485,13 +447,10 @@ public class AppWidgetManager {
      * and outside of the handler.
      * This method will only work when called from the uid that owns the AppWidget provider.
      *
-<<<<<<< HEAD
-=======
      * <p>
      * This method will be ignored if a widget has not received a full update via
      * {@link #updateAppWidget(int[], RemoteViews)}.
      *
->>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
      * @param appWidgetIds     The AppWidget instances for which to set the RemoteViews.
      * @param views            The RemoteViews object containing the incremental update / command.
      */
@@ -520,13 +479,10 @@ public class AppWidgetManager {
      * and outside of the handler.
      * This method will only work when called from the uid that owns the AppWidget provider.
      *
-<<<<<<< HEAD
-=======
      * <p>
      * This method will be ignored if a widget has not received a full update via
      * {@link #updateAppWidget(int[], RemoteViews)}.
      *
->>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
      * @param appWidgetId      The AppWidget instance for which to set the RemoteViews.
      * @param views            The RemoteViews object containing the incremental update / command.
      */
@@ -648,9 +604,6 @@ public class AppWidgetManager {
      */
     public void bindAppWidgetId(int appWidgetId, ComponentName provider) {
         try {
-<<<<<<< HEAD
-            sService.bindAppWidgetId(appWidgetId, provider);
-=======
             sService.bindAppWidgetId(appWidgetId, provider, null);
         }
         catch (RemoteException e) {
@@ -676,7 +629,6 @@ public class AppWidgetManager {
     public void bindAppWidgetId(int appWidgetId, ComponentName provider, Bundle options) {
         try {
             sService.bindAppWidgetId(appWidgetId, provider, options);
->>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         }
         catch (RemoteException e) {
             throw new RuntimeException("system server dead?", e);
@@ -702,9 +654,6 @@ public class AppWidgetManager {
         }
         try {
             return sService.bindAppWidgetIdIfAllowed(
-<<<<<<< HEAD
-                    mContext.getPackageName(), appWidgetId, provider);
-=======
                     mContext.getPackageName(), appWidgetId, provider, null);
         }
         catch (RemoteException e) {
@@ -736,7 +685,6 @@ public class AppWidgetManager {
         try {
             return sService.bindAppWidgetIdIfAllowed(
                     mContext.getPackageName(), appWidgetId, provider, options);
->>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
         }
         catch (RemoteException e) {
             throw new RuntimeException("system server dead?", e);

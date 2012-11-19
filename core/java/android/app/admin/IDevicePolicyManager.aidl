@@ -25,77 +25,6 @@ import android.os.RemoteCallback;
  * {@hide}
  */
 interface IDevicePolicyManager {
-<<<<<<< HEAD
-    void setPasswordQuality(in ComponentName who, int quality);
-    int getPasswordQuality(in ComponentName who);
-
-    void setPasswordMinimumLength(in ComponentName who, int length);
-    int getPasswordMinimumLength(in ComponentName who);
-
-    void setPasswordMinimumUpperCase(in ComponentName who, int length);
-    int getPasswordMinimumUpperCase(in ComponentName who);
-
-    void setPasswordMinimumLowerCase(in ComponentName who, int length);
-    int getPasswordMinimumLowerCase(in ComponentName who);
-
-    void setPasswordMinimumLetters(in ComponentName who, int length);
-    int getPasswordMinimumLetters(in ComponentName who);
-
-    void setPasswordMinimumNumeric(in ComponentName who, int length);
-    int getPasswordMinimumNumeric(in ComponentName who);
-
-    void setPasswordMinimumSymbols(in ComponentName who, int length);
-    int getPasswordMinimumSymbols(in ComponentName who);
-
-    void setPasswordMinimumNonLetter(in ComponentName who, int length);
-    int getPasswordMinimumNonLetter(in ComponentName who);
-    
-    void setPasswordHistoryLength(in ComponentName who, int length);
-    int getPasswordHistoryLength(in ComponentName who);
-
-    void setPasswordExpirationTimeout(in ComponentName who, long expiration);
-    long getPasswordExpirationTimeout(in ComponentName who);
-
-    long getPasswordExpiration(in ComponentName who);
-
-    boolean isActivePasswordSufficient();
-    int getCurrentFailedPasswordAttempts();
-    
-    void setMaximumFailedPasswordsForWipe(in ComponentName admin, int num);
-    int getMaximumFailedPasswordsForWipe(in ComponentName admin);
-    
-    boolean resetPassword(String password, int flags);
-    
-    void setMaximumTimeToLock(in ComponentName who, long timeMs);
-    long getMaximumTimeToLock(in ComponentName who);
-    
-    void lockNow();
-    
-    void wipeData(int flags);
-
-    ComponentName setGlobalProxy(in ComponentName admin, String proxySpec, String exclusionList);
-    ComponentName getGlobalProxyAdmin();
-
-    int setStorageEncryption(in ComponentName who, boolean encrypt);
-    boolean getStorageEncryption(in ComponentName who);
-    int getStorageEncryptionStatus();
-
-    void setCameraDisabled(in ComponentName who, boolean disabled);
-    boolean getCameraDisabled(in ComponentName who);
-
-    void setActiveAdmin(in ComponentName policyReceiver, boolean refreshing);
-    boolean isAdminActive(in ComponentName policyReceiver);
-    List<ComponentName> getActiveAdmins();
-    boolean packageHasActiveAdmins(String packageName);
-    void getRemoveWarning(in ComponentName policyReceiver, in RemoteCallback result);
-    void removeActiveAdmin(in ComponentName policyReceiver);
-    boolean hasGrantedPolicy(in ComponentName policyReceiver, int usesPolicy);
-    
-    void setActivePasswordState(int quality, int length, int letters, int uppercase, int lowercase,
-        int numbers, int symbols, int nonletter);
-    void reportFailedPasswordAttempt();
-    void reportSuccessfulPasswordAttempt();
-=======
     void setPasswordQuality(in ComponentName who, int quality, int userHandle);
     int getPasswordQuality(in ComponentName who, int userHandle);
 
@@ -168,5 +97,4 @@ interface IDevicePolicyManager {
         int numbers, int symbols, int nonletter, int userHandle);
     void reportFailedPasswordAttempt(int userHandle);
     void reportSuccessfulPasswordAttempt(int userHandle);
->>>>>>> 6457d361a7e38464d2679a053e8b417123e00c6a
 }
